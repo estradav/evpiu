@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>@yield('title') - {{ config('app.name') }}</title>
+    <title>@yield('page_title') - {{ config('app.name') }}</title>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon_192x192.png') }}">
     <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
     <link rel="stylesheet" href="https://colorlib.com//polygon/concept/assets/vendor/fonts/circular-std/style.css">
-    <link rel="stylesheet" href="https://colorlib.com//polygon/concept/assets/libs/css/style.css">
 </head>
 <body>
     <div class="dashboard-main-wrapper">
@@ -63,15 +63,15 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h2 class="pageheader-title"><i class="@yield('title_icon_class')"></i> @yield('title')</h2>
+                                <h2 class="pageheader-title"><i class="@yield('title_icon_class')"></i> @yield('module_title')</h2>
                                 <p class="lead">@yield('subtitle')</p>
-                                <div class="page-breadcrumb">
+                                <!--<div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">@yield('title')</a></li>
+                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
                                         </ol>
                                     </nav>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -91,5 +91,28 @@
     </div>
 
     <script src="{{ asset('/js/app.js') }}"></script>
+    <script src="{{ asset('/js/main.js') }}"></script>
+    <script>
+        @if(Session::has('alerts'))
+            let alerts = {!! json_encode(Session::get('alerts')) !!};
+            helpers.displayAlerts(alerts, toastr);
+        @endif
+
+        @if(Session::has('message'))
+
+        // TODO: change Controllers to use AlertsMessages trait... then remove this
+        var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
+        var alertMessage = {!! json_encode(Session::get('message')) !!};
+        var alerter = toastr[alertType];
+
+        if (alerter) {
+            alerter(alertMessage);
+        } else {
+            toastr.error("toastr alert-type " + alertType + " is unknown");
+        }
+
+        @endif
+    </script>
+    @yield('javascript')
 </body>
 </html>
