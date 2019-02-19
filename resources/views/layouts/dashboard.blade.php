@@ -52,7 +52,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
-                        {{ menu('user', 'layouts.sidebar') }}
+                        {{ evpiu_menu('admin', 'layouts.sidebar') }}
                     </div>
                 </nav>
             </div>
