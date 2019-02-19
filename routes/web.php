@@ -19,10 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
-});
-
 // Menu Routes
 Route::resource('/menus', 'MenuController');
 Route::get('/menus/{menu}/builder', 'MenuItemController@builder')->name('menus.builder');

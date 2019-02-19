@@ -3,12 +3,6 @@
         Menu
     </li>
 
-    @if (Auth::user()->hasRole('admin'))
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('/admin') }}" target="_blank"><i class="fas fa-ship"></i>Laravel Voyager</a>
-    </li>
-    @endif
-
     @foreach ($items as $item)
         @php
             $isActive = null;
