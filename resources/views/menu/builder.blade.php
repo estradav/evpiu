@@ -13,9 +13,13 @@ Menu ({{ $menu->name }})
 @stop
 
 @section('content')
+    @can('create menu items')
     <button type="button" class="btn btn-sm btn-success add_item">
         <i class="fas fa-plus-circle"></i> Crear item
     </button>
+    @endcan
+
+    @can('show menu structure')
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <section class="card card-fluid">
@@ -26,6 +30,13 @@ Menu ({{ $menu->name }})
             </section>
         </div>
     </div>
+    @else
+    <div class="alert alert-danger" role="alert">
+        No tienes permisos para visualizar la estructura de este menú.
+    </div>
+    @endcan
+
+    @can('destroy menu items')
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -52,8 +63,9 @@ Menu ({{ $menu->name }})
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    @endcan
 
-
+    @can('create menu items|edit menu items')
     <div class="modal modal-info fade" tabindex="-1" id="menu_item_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -105,8 +117,10 @@ Menu ({{ $menu->name }})
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    @endcan
 @stop
 
+@can('show menu structure')
 @section('javascript')
     <script src="{{ asset('vendor/nestable/jquery.nestable.js') }}"></script>
     <script>
@@ -243,3 +257,4 @@ Menu ({{ $menu->name }})
         });
     </script>
 @stop
+@endcan

@@ -11,6 +11,7 @@
 @stop
 
 @section('content')
+    @can('edit menus')
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             @if($errors->any())
@@ -38,4 +39,9 @@
             </div>
         </div>
     </div>
+    @else
+    <div class="alert alert-danger" role="alert">
+        No tienes permisos para editar este menu.
+    </div>
+    @endcan
 @stop

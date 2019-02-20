@@ -11,9 +11,13 @@
 @stop
 
 @section('content')
+    @can('create menus')
     <a href="{{ route('menus.create') }}" class="btn btn-sm btn-success" role="button">
         <i class="fas fa-plus-circle"></i> Crear menu
     </a>
+    @endcan
+
+    @can('search menus')
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
@@ -32,15 +36,21 @@
                                     <td>{{ $menu->name }}</td>
                                     <td>
                                         <div class="btn-group ml-auto float-right">
+                                            @can('show menu structure')
                                             <a href="{{ route('menus.builder', ['menu' => $menu->id]) }}" class="btn btn-sm btn-outline-light">
                                                 <i class="far fa-list-alt"></i> Estructura
                                             </a>
+                                            @endcan
+                                            @can('edit menus')
                                             <a href="{{ route('menus.edit', $menu->id) }}" class="btn btn-sm btn-outline-light edit">
                                                 <i class="far fa-edit"></i>
                                             </a>
+                                            @endcan
+                                            @can('destroy menus')
                                             <div class="btn btn-sm btn-outline-light delete" data-id="{{ $menu->id }}">
                                                 <i class="far fa-trash-alt"></i>
                                             </div>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>
@@ -52,6 +62,13 @@
             </div>
         </div>
     </div>
+    @else
+    <div class="alert alert-danger" role="alert">
+        No tienes permisos para visualizar los menus.
+    </div>
+    @endcan
+
+    @can('destroy menus')
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -76,8 +93,10 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-@endsection
+    @endcan
+@stop
 
+@can('search menus')
 @section('javascript')
     <!-- DataTables -->
     <script>
@@ -95,3 +114,4 @@
         });
     </script>
 @stop
+@endcan
