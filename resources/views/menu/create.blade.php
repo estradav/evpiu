@@ -6,6 +6,10 @@
 
 @section('subtitle', 'Este módulo sirve para gestionar los menus y sus elementos que permiten acceder a diferentes secciones de la plataforma.')
 
+@section('breadcrumbs')
+{{ Breadcrumbs::render('menu_create') }}
+@stop
+
 @section('content')
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

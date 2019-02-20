@@ -6,6 +6,10 @@
 
 @section('subtitle', 'Este módulo sirve para gestionar los menus y sus elementos que permiten acceder a diferentes secciones de la plataforma.')
 
+@section('breadcrumbs')
+{{ Breadcrumbs::render('menu_builder') }}
+@stop
+
 @section('content')
     <a href="{{ route('menus.create') }}" class="btn btn-sm btn-success" role="button">
         <i class="fas fa-plus-circle"></i> Crear menu

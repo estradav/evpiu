@@ -65,13 +65,11 @@
                             <div class="page-header">
                                 <h2 class="pageheader-title"><i class="@yield('title_icon_class')"></i> @yield('module_title')</h2>
                                 <p class="lead">@yield('subtitle')</p>
-                                <!--<div class="page-breadcrumb">
+                                <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        </ol>
+                                        @yield('breadcrumbs')
                                     </nav>
-                                </div>-->
+                                </div>
                             </div>
                         </div>
                     </div>

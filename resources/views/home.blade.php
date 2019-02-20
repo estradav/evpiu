@@ -8,6 +8,10 @@
 
 @section('subtitle', 'Aquí podrás ver diferentes estadísticas y gráficas basadas en tus intereses.')
 
+@section('breadcrumbs')
+{{ Breadcrumbs::render('dashboard') }}
+@stop
+
 @section('content')
 <div class="row justify-content-center">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

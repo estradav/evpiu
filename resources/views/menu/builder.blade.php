@@ -8,6 +8,10 @@ Menu ({{ $menu->name }})
 
 @section('subtitle', 'Este módulo sirve para gestionar los menus y sus elementos que permiten acceder a diferentes secciones de la plataforma.')
 
+@section('breadcrumbs')
+{{ Breadcrumbs::render('menu_structure', $menu) }}
+@stop
+
 @section('content')
     <button type="button" class="btn btn-sm btn-success add_item">
         <i class="fas fa-plus-circle"></i> Crear item
