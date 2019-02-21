@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Spatie\Permission\Models\Role;
+use App\Menu;
+use App\MenuItem;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +54,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'min:4', 'max:20', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
@@ -63,10 +67,53 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'username' => $data['username'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $user = $this->setDefaultRole($user);
+        $menu = $this->setDefaultMenuToNewUser($user);
+        $menuItem = $this->setDefaultMenuItemsToNewUser($menu);
+
+        return $user;
+    }
+
+    /**
+     * Sets a default role for each new registered user.
+     *
+     * @param  \App\User  $user
+     * @return \App\User
+     */
+    protected function setDefaultRole(User $user)
+    {
+        $role = Role::where('name', 'user')->firstOrFail();
+        return $user->assignRole($role);
+    }
+
+    /**
+     * Sets a default menu for each new registered user.
+     *
+     * @param  \App\User  $user
+     * @return \App\Menu
+     */
+    protected function setDefaultMenuToNewUser(User $user)
+    {
+        $menu = new Menu();
+        return $menu->createDefaultMenu($user->username);
+    }
+
+    /**
+     * Sets a default menu item for each new registered user.
+     *
+     * @param  \App\Menu  $menu
+     * @return \App\MenuItem
+     */
+    protected function setDefaultMenuItemsToNewUser(Menu $menu)
+    {
+        $menuItem = new MenuItem();
+        return $menuItem->createDefaultMenuItem($menu->id);
     }
 }

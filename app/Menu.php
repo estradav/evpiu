@@ -60,4 +60,15 @@ class Menu extends Model
             \Illuminate\Support\Facades\View::make($type, ['items' => $items])->render()
         );
     }
+
+    /**
+     * Create a default menu for each new registered user.
+     *
+     * @param  $username
+     * @return \App\Menu
+     */
+    public function createDefaultMenu($username)
+    {
+        return Menu::create(['name' => $username]);
+    }
 }

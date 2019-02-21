@@ -100,4 +100,30 @@ class MenuItem extends Model
 
         return $order;
     }
+
+    /**
+     * Create a default menu item for the new registered user's default menu.
+     *
+     * @param  $menu_id
+     * @return \App\Menu
+     */
+    public function createDefaultMenuItem($menu_id)
+    {
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => $menu_id,
+            'title'   => 'Tablero',
+            'url'     => '',
+            'route'   => 'home',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-tachometer-alt',
+                'parent_id'  => null,
+                'order'      => 1,
+            ])->save();
+        }
+
+        return $menuItem;
+    }
 }
