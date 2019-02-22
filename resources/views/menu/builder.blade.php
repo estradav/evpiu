@@ -65,7 +65,7 @@ Menu ({{ $menu->name }})
     </div><!-- /.modal -->
     @endcan
 
-    @can('create menu items|edit menu items')
+    @if(auth()->user()->can('create menu items') && auth()->user()->can('edit menu items'))
     <div class="modal modal-info fade" tabindex="-1" id="menu_item_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -117,7 +117,7 @@ Menu ({{ $menu->name }})
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    @endcan
+    @endif
 @stop
 
 @can('show menu structure')
