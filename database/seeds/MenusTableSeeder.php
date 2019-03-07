@@ -13,7 +13,6 @@ class MenusTableSeeder extends Seeder
     public function run()
     {
         Menu::create(['name' => 'administrator']);
-        Menu::create(['name' => 'msarboleda']);
-        Menu::create(['name' => 'recheverri']);
+        Menu::create(['name' => 'user']);
     }
 }

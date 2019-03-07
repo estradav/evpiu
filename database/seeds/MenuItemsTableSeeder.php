@@ -13,6 +13,25 @@ class MenuItemsTableSeeder extends Seeder
      */
     public function run()
     {
+        // Administrator
+
+        // Blog
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'EVPIU Blog',
+            'url'     => '',
+            'route'   => 'blog',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-blog',
+                'parent_id'  => null,
+                'order'      => 1,
+            ])->save();
+        }
+
+        // Tablero
         $menuItem = MenuItem::firstOrNew([
             'menu_id' => 1,
             'title'   => 'Tablero',
@@ -24,40 +43,146 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-tachometer-alt',
                 'parent_id'  => null,
-                'order'      => 1,
+                'order'      => 2,
             ])->save();
         }
 
-        $menuItem = MenuItem::firstOrNew([
-            'menu_id' => 2,
-            'title'   => 'Tablero',
+        // Categorías
+        $categoriesMenuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Categorías',
             'url'     => '',
-            'route'   => 'home',
+        ]);
+        if (!$categoriesMenuItem->exists) {
+            $categoriesMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-folder',
+                'parent_id'  => null,
+                'order'      => 3,
+            ])->save();
+        }
+
+        // Categorías - Crear categoría
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Crear categoría',
+            'url'     => '',
+            'route'   => 'categories.create',
         ]);
         if (!$menuItem->exists) {
             $menuItem->fill([
                 'target'     => '_self',
-                'icon_class' => 'fas fa-tachometer-alt',
-                'parent_id'  => null,
+                'parent_id'  => $categoriesMenuItem->id,
                 'order'      => 1,
             ])->save();
         }
 
+        // Categorías - Mostrar categorías
         $menuItem = MenuItem::firstOrNew([
-            'menu_id' => 3,
-            'title'   => 'Tablero',
+            'menu_id' => 1,
+            'title'   => 'Mostrar categorías',
             'url'     => '',
-            'route'   => 'home',
+            'route'   => 'categories.index',
         ]);
         if (!$menuItem->exists) {
             $menuItem->fill([
                 'target'     => '_self',
-                'icon_class' => 'fas fa-tachometer-alt',
+                'parent_id'  => $categoriesMenuItem->id,
+                'order'      => 2,
+            ])->save();
+        }
+
+        // Etiquetas
+        $tagsMenuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Etiquetas',
+            'url'     => '',
+        ]);
+        if (!$tagsMenuItem->exists) {
+            $tagsMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-tags',
                 'parent_id'  => null,
+                'order'      => 4,
+            ])->save();
+        }
+
+        // Etiquetas - Crear etiqueta
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Crear etiqueta',
+            'url'     => '',
+            'route'   => 'tags.create',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $tagsMenuItem->id,
                 'order'      => 1,
             ])->save();
         }
 
+        // Etiquetas - Mostrar etiquetas
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Mostrar etiquetas',
+            'url'     => '',
+            'route'   => 'tags.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $tagsMenuItem->id,
+                'order'      => 2,
+            ])->save();
+        }
+
+        // Publicaciones
+        $postsMenuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Publicaciones',
+            'url'     => '',
+        ]);
+        if (!$postsMenuItem->exists) {
+            $postsMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-newspaper',
+                'parent_id'  => null,
+                'order'      => 5,
+            ])->save();
+        }
+
+        // Publicaciones - Crear publicación
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Crear publicación',
+            'url'     => '',
+            'route'   => 'posts.create',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $postsMenuItem->id,
+                'order'      => 1,
+            ])->save();
+        }
+
+        // Publicaciones - Mostrar publicaciones
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Mostrar publicaciones',
+            'url'     => '',
+            'route'   => 'posts.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $postsMenuItem->id,
+                'order'      => 2,
+            ])->save();
+        }
+
+        // Herramientas
         $toolsMenuItem = MenuItem::firstOrNew([
             'menu_id' => 1,
             'title'   => 'Herramientas',
@@ -68,10 +193,11 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-tools',
                 'parent_id'  => null,
-                'order'      => 2,
+                'order'      => 6,
             ])->save();
         }
 
+        // Herramientas - Menu builder
         $menuItem = MenuItem::firstOrNew([
             'menu_id' => 1,
             'title'   => 'Menu Builder',
@@ -83,37 +209,45 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-list',
                 'parent_id'  => $toolsMenuItem->id,
-                'order'      => 3,
+                'order'      => 1,
             ])->save();
         }
 
-        $toolsMenuItem = MenuItem::firstOrNew([
-            'menu_id' => 2,
-            'title'   => 'Herramientas',
-            'url'     => '',
-        ]);
-        if (!$toolsMenuItem->exists) {
-            $toolsMenuItem->fill([
-                'target'     => '_self',
-                'icon_class' => 'fas fa-tools',
-                'parent_id'  => null,
-                'order'      => 2,
-            ])->save();
-        }
+        // Administrator //
 
+        // Usuario
+
+        // Blog
         $menuItem = MenuItem::firstOrNew([
             'menu_id' => 2,
-            'title'   => 'Menu Builder',
+            'title'   => 'EVPIU Blog',
             'url'     => '',
-            'route'   => 'menus.index',
+            'route'   => 'blog',
         ]);
         if (!$menuItem->exists) {
             $menuItem->fill([
                 'target'     => '_self',
-                'icon_class' => 'fas fa-list',
-                'parent_id'  => $toolsMenuItem->id,
-                'order'      => 3,
+                'icon_class' => 'fas fa-blog',
+                'parent_id'  => null,
+                'order'      => 1,
             ])->save();
         }
+
+        // Tablero
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 2,
+            'title'   => 'Tablero',
+            'url'     => '',
+            'route'   => 'home',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-tachometer-alt',
+                'parent_id'  => null,
+                'order'      => 2,
+            ])->save();
+        }
+        // Usuario //
     }
 }

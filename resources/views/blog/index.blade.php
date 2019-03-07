@@ -15,18 +15,26 @@
 @section('content')
 <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
+        @if($posts->isEmpty())
+            <div class="post-preview">
+                <p>Aún no hay artículos para mostrar. 😔</p>
+            </div>
+        @else
+        @foreach ($posts as $post)
         <div class="post-preview">
-            <a href="{{ url('/post') }}">
-                <h2 class="post-title">Un nuevo comienzo...</h2>
-                <h3 class="post-subtitle">En busca de centralizar y integrar la información</h3>
+            <a href="{{ route('post', $post->slug) }}">
+                <h2 class="post-title">{{ $post->title }}</h2>
+                <h3 class="post-subtitle">{{ $post->subtitle }}</h3>
             </a>
-            <p class="post-meta">Publicado por <a href="#">Martin Arboleda</a> en September 24, 2019</p>
+            <p class="post-meta">Publicado por <a href="javascript:void(0)">{{ $post->user->name  }}</a> {{ $post->created_at->diffForHumans() }}</p>
         </div>
         <hr>
+        @endforeach
         <!-- Pager -->
         <div class="clearfix">
-        <a class="btn btn-primary float-right" href="#">Publicaciones Antiguas &rarr;</a>
+        {{ $posts->links() }}
         </div>
+        @endif
     </div>
 </div>
 @stop

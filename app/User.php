@@ -28,4 +28,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Obtiene todas las publicaciones que posee el usuario.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
 }

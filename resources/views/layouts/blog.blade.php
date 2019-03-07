@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon_192x192.png') }}">
     <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
-    <meta name="author" content="">
     <title>{{ config('app.name') }}</title>
 
     <!-- Bootstrap core CSS -->
@@ -32,7 +31,10 @@
                     <ul class="navbar-nav ml-auto">
                         @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/home') }}">Inicio</a>
+                            <a class="nav-link" href="{{ url('/') }}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/home') }}">Plataforma</a>
                         </li>
                         @else
                             <li class="nav-item">

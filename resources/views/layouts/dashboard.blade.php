@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
     <link rel="stylesheet" href="https://colorlib.com//polygon/concept/assets/vendor/fonts/circular-std/style.css">
+    @stack('styles')
 </head>
 <body>
     <div class="dashboard-main-wrapper">
