@@ -97,7 +97,7 @@
 @stop
 
 @can('search menus')
-@section('javascript')
+@push('javascript')
     <!-- DataTables -->
     <script>
         $(document).ready(function () {
@@ -113,5 +113,5 @@
             $('#delete_modal').modal('show');
         });
     </script>
-@stop
+@endpush
 @endcan

@@ -112,6 +112,6 @@
 
         @endif
     </script>
-    @yield('javascript')
+    @stack('javascript')
 </body>
 </html>

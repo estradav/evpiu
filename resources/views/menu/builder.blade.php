@@ -121,7 +121,7 @@ Menu ({{ $menu->name }})
 @stop
 
 @can('show menu structure')
-@section('javascript')
+@push('javascript')
     <script src="{{ asset('vendor/nestable/jquery.nestable.js') }}"></script>
     <script>
         $(document).ready(function () {
@@ -256,5 +256,5 @@ Menu ({{ $menu->name }})
             });
         });
     </script>
-@stop
+@endpush
 @endcan

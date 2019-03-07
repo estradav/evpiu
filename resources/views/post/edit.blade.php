@@ -131,11 +131,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">
 @endpush
 
-@section('javascript')
+@push('javascript')
 <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
 <script>
     $('.select2').select2();
     CKEDITOR.replace( 'p_body' );
 </script>
-@endsection
+@endpush
