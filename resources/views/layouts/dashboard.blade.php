@@ -7,9 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon_192x192.png') }}">
     <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
-    <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
-    <link rel="stylesheet" href="https://colorlib.com//polygon/concept/assets/vendor/fonts/circular-std/style.css">
+    <link rel="stylesheet" href="{{ asset('dashboard/styles/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/styles/main.css') }}">
     @stack('styles')
 </head>
 <body>
@@ -89,8 +88,8 @@
         </div>
     </div>
 
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/js/main.js') }}"></script>
+    <script src="{{ asset('dashboard/scripts/app.js') }}"></script>
+    <script src="{{ asset('dashboard/scripts/main.js') }}"></script>
     <script>
         @if(Session::has('alerts'))
             let alerts = {!! json_encode(Session::get('alerts')) !!};

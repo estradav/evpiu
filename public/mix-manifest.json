@@ -1,8 +1,8 @@
 {
     "/clean-blog/scripts/app.js": "/clean-blog/scripts/app.js",
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
+    "/dashboard/scripts/app.js": "/dashboard/scripts/app.js",
+    "/dashboard/styles/app.css": "/dashboard/styles/app.css",
     "/clean-blog/styles/app.css": "/clean-blog/styles/app.css",
-    "/js/main.js": "/js/main.js",
-    "/css/main.css": "/css/main.css"
+    "/dashboard/scripts/main.js": "/dashboard/scripts/main.js",
+    "/dashboard/styles/main.css": "/dashboard/styles/main.css"
 }

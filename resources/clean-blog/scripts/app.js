@@ -1,3 +1,3 @@
 window.jQuery = window.$ = $ = require('jquery');
-require('../../js/bootstrap');
+require('../../dashboard/scripts/bootstrap');
 require('./clean-blog');

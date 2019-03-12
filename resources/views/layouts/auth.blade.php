@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon_192x192.png') }}">
     <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
-    <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
-    <link rel="stylesheet" href="https://colorlib.com//polygon/concept/assets/vendor/fonts/circular-std/style.css">
+    <link rel="stylesheet" href="{{ asset('dashboard/styles/app.css') }}">
     <style>
         html,
         body {
@@ -28,6 +27,6 @@
     <div class="splash-container">
         @yield('content')
     </div>
-    <script src="{{ asset('/js/app.js') }}"></script>
+    <script src="{{ asset('dashboard/scripts/app.js') }}"></script>
 </body>
 </html>
