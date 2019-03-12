@@ -7,15 +7,7 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon_192x192.png') }}">
     <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
     <title>{{ config('app.name') }}</title>
-
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <!-- Custom fonts for this template -->
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-    <!-- Custom styles for this template -->
-    <link href="{{ asset('/css/clean-blog.css') }}" rel="stylesheet" type='text/css'>
+    <link href="{{ asset('/clean-blog/styles/app.css') }}" rel="stylesheet" type='text/css'>
 </head>
 <body>
     <!-- Navigation -->
@@ -85,10 +77,6 @@
         </div>
     </footer>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ asset('/js/app.js') }}"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="{{ asset('/js/clean-blog.js') }}"></script>
+    <script src="{{ asset('/clean-blog/scripts/app.js') }}"></script>
 </body>
 </html>

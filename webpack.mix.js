@@ -20,4 +20,6 @@ mix.js('resources/js/app.js', 'public/js')
    .styles([
         'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css'
    ], 'public/css/main.css')
-   .sass('resources/sass/app.scss', 'public/css');
+   .sass('resources/sass/app.scss', 'public/css')
+   .js('resources/clean-blog/scripts/app.js', 'public/clean-blog/scripts')
+   .sass('resources/clean-blog/styles/app.scss', 'public/clean-blog/styles');
