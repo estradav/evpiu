@@ -24,55 +24,25 @@ Route::middleware(['auth'])->group(function() {
         ->name('home')
         ->middleware('role:user');
 
-    // Menus
-    Route::get('menus', 'MenuController@index')
-        ->name('menus.index')
-        ->middleware('role:super-admin|admin');
-
-    Route::get('menus/create', 'MenuController@create')
-        ->name('menus.create')
-        ->middleware('role:super-admin|admin');
-
-    Route::post('menus/store', 'MenuController@store')
-        ->name('menus.store')
-        ->middleware('role:super-admin|admin');
-
-    Route::get('menus/{menu}/edit', 'MenuController@edit')
-        ->name('menus.edit')
-        ->middleware('role:super-admin|admin');
-
-    Route::put('menus/{menu}', 'MenuController@update')
-        ->name('menus.update')
-        ->middleware('role:super-admin|admin');
-
-    Route::delete('menus/{menu}', 'MenuController@destroy')
-        ->name('menus.destroy')
-        ->middleware('role:super-admin|admin');
-
-    // Menu Items
-    Route::get('/menus/{menu}/builder', 'MenuItemController@builder')
-        ->name('menus.builder')
-        ->middleware('role:super-admin|admin');
-
-    Route::post('/menus/{menu}/order', 'MenuController@sort_item')
-        ->name('menus.order')
-        ->middleware('role:super-admin|admin');
-
-    Route::post('/menus/{menu}/item/', 'MenuItemController@store')
-        ->name('menus.item.add')
-        ->middleware('role:super-admin|admin');
-
-    Route::put('/menus/{menu}/item/', 'MenuItemController@update')
-        ->name('menus.item.update')
-        ->middleware('role:super-admin|admin');
-
-    Route::delete('/menus/{menu}/item/{id}', 'MenuItemController@destroy')
-        ->name('menus.item.destroy')
-        ->middleware('role:super-admin|admin');
-
+    // Anyone who has the role of super-admin or admin
     Route::group(['middleware' => 'role:super-admin|admin'], function () {
         Route::resource('posts', 'PostController');
         Route::resource('tags', 'TagController');
         Route::resource('categories', 'CategoryController');
+
+        // Menus
+        Route::get('menus', 'MenuController@index')->name('menus.index');
+        Route::get('menus/create', 'MenuController@create')->name('menus.create');
+        Route::post('menus/store', 'MenuController@store')->name('menus.store');
+        Route::get('menus/{menu}/edit', 'MenuController@edit')->name('menus.edit');
+        Route::put('menus/{menu}', 'MenuController@update')->name('menus.update');
+        Route::delete('menus/{menu}', 'MenuController@destroy')->name('menus.destroy');
+
+        // Menu Items
+        Route::get('/menus/{menu}/builder', 'MenuItemController@builder')->name('menus.builder');
+        Route::post('/menus/{menu}/order', 'MenuController@sort_item')->name('menus.order');
+        Route::post('/menus/{menu}/item/', 'MenuItemController@store')->name('menus.item.add');
+        Route::put('/menus/{menu}/item/', 'MenuItemController@update')->name('menus.item.update');
+        Route::delete('/menus/{menu}/item/{id}', 'MenuItemController@destroy')->name('menus.item.destroy');
     });
 });
