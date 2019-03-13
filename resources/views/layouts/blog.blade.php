@@ -30,9 +30,6 @@
                         </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="about.html">Nosotros</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">Ingresar</a>
                             </li>
                             @if (Route::has('register'))
