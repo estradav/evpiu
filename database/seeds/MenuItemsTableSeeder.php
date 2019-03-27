@@ -137,6 +137,51 @@ class MenuItemsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Permisos
+        $permissionsMenuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Permisos',
+            'url'     => '',
+        ]);
+        if (!$permissionsMenuItem->exists) {
+            $permissionsMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-key',
+                'parent_id'  => null,
+                'order'      => 5,
+            ])->save();
+        }
+
+        // Permisos - Crear permiso
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Crear permiso',
+            'url'     => '',
+            'route'   => 'permissions.create',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $permissionsMenuItem->id,
+                'order'      => 1,
+            ])->save();
+        }
+
+        // Permisos - Mostrar permisos
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Mostrar permisos',
+            'url'     => '',
+            'route'   => 'permissions.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $permissionsMenuItem->id,
+                'order'      => 2,
+            ])->save();
+        }
+
         // Publicaciones
         $postsMenuItem = MenuItem::firstOrNew([
             'menu_id' => 1,
@@ -148,7 +193,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-newspaper',
                 'parent_id'  => null,
-                'order'      => 5,
+                'order'      => 6,
             ])->save();
         }
 
@@ -182,6 +227,81 @@ class MenuItemsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Roles
+        $rolesMenuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Roles',
+            'url'     => '',
+        ]);
+        if (!$rolesMenuItem->exists) {
+            $rolesMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-scroll',
+                'parent_id'  => null,
+                'order'      => 7,
+            ])->save();
+        }
+
+        // Roles - Crear rol
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Crear rol',
+            'url'     => '',
+            'route'   => 'roles.create',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $rolesMenuItem->id,
+                'order'      => 1,
+            ])->save();
+        }
+
+        // Roles - Mostrar roles
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Mostrar roles',
+            'url'     => '',
+            'route'   => 'roles.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $rolesMenuItem->id,
+                'order'      => 2,
+            ])->save();
+        }
+
+        // Usuarios
+        $usersMenuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Usuarios',
+            'url'     => '',
+        ]);
+        if (!$usersMenuItem->exists) {
+            $usersMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-users',
+                'parent_id'  => null,
+                'order'      => 8,
+            ])->save();
+        }
+
+        // Usuarios - Mostrar usuarios
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Mostrar usuarios',
+            'url'     => '',
+            'route'   => 'users.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $usersMenuItem->id,
+                'order'      => 1,
+            ])->save();
+        }
+
         // Herramientas
         $toolsMenuItem = MenuItem::firstOrNew([
             'menu_id' => 1,
@@ -193,7 +313,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-tools',
                 'parent_id'  => null,
-                'order'      => 6,
+                'order'      => 9,
             ])->save();
         }
 

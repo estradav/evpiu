@@ -77,3 +77,63 @@ Breadcrumbs::for('tag_edit', function($trail, $tag) {
     $trail->parent('tags');
     $trail->push("Modificar etiqueta ($tag->name)", route('tags.edit', $tag));
 });
+
+Breadcrumbs::for('roles', function($trail) {
+    $trail->parent('dashboard');
+    $trail->push('Roles', route('roles.index'));
+});
+
+Breadcrumbs::for('role_show', function($trail, $role) {
+    $trail->parent('roles');
+    $trail->push("Mostrar rol ($role->description)", route('roles.show', $role));
+});
+
+Breadcrumbs::for('role_create', function($trail) {
+    $trail->parent('roles');
+    $trail->push('Crear rol', route('roles.create'));
+});
+
+Breadcrumbs::for('role_edit', function($trail, $role) {
+    $trail->parent('roles');
+    $trail->push("Modificar rol ($role->description)", route('roles.edit', $role));
+});
+
+Breadcrumbs::for('permissions', function($trail) {
+    $trail->parent('dashboard');
+    $trail->push('Permisos', route('permissions.index'));
+});
+
+Breadcrumbs::for('permission_show', function($trail, $permission) {
+    $trail->parent('permissions');
+    $trail->push("Mostrar permiso ($permission->description)", route('permissions.show', $permission));
+});
+
+Breadcrumbs::for('permission_create', function($trail) {
+    $trail->parent('permissions');
+    $trail->push('Crear permiso', route('permissions.create'));
+});
+
+Breadcrumbs::for('permission_edit', function($trail, $permission) {
+    $trail->parent('permissions');
+    $trail->push("Modificar permiso ($permission->description)", route('permissions.edit', $permission));
+});
+
+Breadcrumbs::for('users', function($trail) {
+    $trail->parent('dashboard');
+    $trail->push('Usuarios', route('users.index'));
+});
+
+Breadcrumbs::for('user_show', function($trail, $user) {
+    $trail->parent('users');
+    $trail->push("Mostrar usuario ($user->name)", route('users.show', $user));
+});
+
+Breadcrumbs::for('user_create', function($trail) {
+    $trail->parent('users');
+    $trail->push('Crear usuario', route('users.create'));
+});
+
+Breadcrumbs::for('user_edit', function($trail, $user) {
+    $trail->parent('users');
+    $trail->push("Modificar usuario ($user->name)", route('users.edit', $user));
+});

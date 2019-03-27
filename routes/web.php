@@ -45,4 +45,8 @@ Route::middleware(['auth'])->group(function() {
         Route::put('/menus/{menu}/item/', 'MenuItemController@update')->name('menus.item.update');
         Route::delete('/menus/{menu}/item/{id}', 'MenuItemController@destroy')->name('menus.item.destroy');
     });
+
+    Route::resource('roles', 'RoleController');
+    Route::resource('permissions', 'PermissionController');
+    Route::resource('users', 'UserController');
 });
