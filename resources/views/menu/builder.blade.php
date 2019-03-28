@@ -13,13 +13,13 @@ Menu ({{ $menu->name }})
 @stop
 
 @section('content')
-    @can('create menu items')
+    @can('menus.items.create')
     <button type="button" class="btn btn-sm btn-success add_item">
         <i class="fas fa-plus-circle"></i> Crear item
     </button>
     @endcan
 
-    @can('show menu structure')
+    @can('menus.items.list')
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <section class="card card-fluid">
@@ -36,7 +36,7 @@ Menu ({{ $menu->name }})
     </div>
     @endcan
 
-    @can('destroy menu items')
+    @can('menus.items.destroy')
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -65,7 +65,7 @@ Menu ({{ $menu->name }})
     </div><!-- /.modal -->
     @endcan
 
-    @if(auth()->user()->can('create menu items') && auth()->user()->can('edit menu items'))
+    @if(auth()->user()->can('menus.items.create') || auth()->user()->can('menus.items.edit'))
     <div class="modal modal-info fade" tabindex="-1" id="menu_item_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -120,12 +120,16 @@ Menu ({{ $menu->name }})
     @endif
 @stop
 
-@can('show menu structure')
+@can('menus.items.list')
 @push('javascript')
+    @can('menus.items.edit')
     <script src="{{ asset('vendor/nestable/jquery.nestable.js') }}"></script>
+    @endcan
     <script>
         $(document).ready(function () {
+            @can('menus.items.edit')
             $('.dd').nestable({/* config options */});
+            @endcan
 
 
             /**

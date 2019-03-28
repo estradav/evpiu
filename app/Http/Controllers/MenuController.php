@@ -9,9 +9,18 @@ use App\User;
 
 class MenuController extends Controller
 {
+    /**
+     * Protege los métodos del controlador por medio de permisos
+     * y utilizando el middleware del paquete de roles y permisos.
+     *
+     * @return void
+     */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('permission:menus.list', ['only' => ['index', 'show']]);
+        $this->middleware('permission:menus.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:menus.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:menus.destroy', ['only' => ['destroy']]);
     }
 
     /**

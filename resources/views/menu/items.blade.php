@@ -5,7 +5,7 @@
                 <span class="drag-indicator"></span>
                 <div>{{ $item->title }} <span class="url text-secondary">{{ $item->link() }}</span></div>
                 <div class="dd-nodrag btn-group ml-auto item_actions">
-                    @can('edit menu items')
+                    @can('menus.items.edit')
                     <button class="btn btn-sm btn-outline-light edit"
                         data-id="{{ $item->id }}"
                         data-title="{{ $item->title }}"
@@ -16,7 +16,7 @@
                         Editar
                     </button>
                     @endcan
-                    @can('destroy menu items')
+                    @can('menus.items.destroy')
                     <button class="btn btn-sm btn-outline-light delete"
                         data-id="{{ $item->id }}">
                     <i class="far fa-trash-alt"></i>

@@ -8,9 +8,18 @@ use App\MenuItem;
 
 class MenuItemController extends Controller
 {
+    /**
+     * Protege los métodos del controlador por medio de permisos
+     * y utilizando el middleware del paquete de roles y permisos.
+     *
+     * @return void
+     */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('permission:menus.items.list', ['only' => ['builder']]);
+        $this->middleware('permission:menus.items.create', ['only' => ['store']]);
+        $this->middleware('permission:menus.items.edit', ['only' => ['update']]);
+        $this->middleware('permission:menus.items.destroy', ['only' => ['destroy']]);
     }
 
     /**

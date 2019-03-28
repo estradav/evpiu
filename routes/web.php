@@ -29,24 +29,17 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('posts', 'PostController');
         Route::resource('tags', 'TagController');
         Route::resource('categories', 'CategoryController');
-
-        // Menus
-        Route::get('menus', 'MenuController@index')->name('menus.index');
-        Route::get('menus/create', 'MenuController@create')->name('menus.create');
-        Route::post('menus/store', 'MenuController@store')->name('menus.store');
-        Route::get('menus/{menu}/edit', 'MenuController@edit')->name('menus.edit');
-        Route::put('menus/{menu}', 'MenuController@update')->name('menus.update');
-        Route::delete('menus/{menu}', 'MenuController@destroy')->name('menus.destroy');
-
-        // Menu Items
-        Route::get('/menus/{menu}/builder', 'MenuItemController@builder')->name('menus.builder');
-        Route::post('/menus/{menu}/order', 'MenuController@sort_item')->name('menus.order');
-        Route::post('/menus/{menu}/item/', 'MenuItemController@store')->name('menus.item.add');
-        Route::put('/menus/{menu}/item/', 'MenuItemController@update')->name('menus.item.update');
-        Route::delete('/menus/{menu}/item/{id}', 'MenuItemController@destroy')->name('menus.item.destroy');
     });
 
     Route::resource('roles', 'RoleController');
     Route::resource('permissions', 'PermissionController');
     Route::resource('users', 'UserController');
+
+    // Menus
+    Route::resource('menus', 'MenuController');
+    Route::post('/menus/{menu}/order', 'MenuController@sort_item')->name('menus.order');
+    Route::get('/menus/{menu}/builder', 'MenuItemController@builder')->name('menus.builder');
+    Route::post('/menus/{menu}/item/', 'MenuItemController@store')->name('menus.item.add');
+    Route::put('/menus/{menu}/item/', 'MenuItemController@update')->name('menus.item.update');
+    Route::delete('/menus/{menu}/item/{id}', 'MenuItemController@destroy')->name('menus.item.destroy');
 });
