@@ -13,6 +13,20 @@ use App\Tag;
 class PostController extends Controller
 {
     /**
+     * Protege los métodos del controlador por medio de permisos
+     * y utilizando el middleware del paquete de roles y permisos.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('permission:posts.list', ['only' => ['index', 'show']]);
+        $this->middleware('permission:posts.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:posts.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:posts.destroy', ['only' => ['destroy']]);
+    }
+
+    /**
      * Muestra un listado de las publicaciones existentes.
      *
      * @return \Illuminate\Http\Response

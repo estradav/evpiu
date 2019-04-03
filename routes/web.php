@@ -24,16 +24,12 @@ Route::middleware(['auth'])->group(function() {
         ->name('home')
         ->middleware('role:user');
 
-    // Anyone who has the role of super-admin or admin
-    Route::group(['middleware' => 'role:super-admin|admin'], function () {
-        Route::resource('posts', 'PostController');
-        Route::resource('tags', 'TagController');
-        Route::resource('categories', 'CategoryController');
-    });
-
     Route::resource('roles', 'RoleController');
     Route::resource('permissions', 'PermissionController');
     Route::resource('users', 'UserController');
+    Route::resource('categories', 'CategoryController');
+    Route::resource('tags', 'TagController');
+    Route::resource('posts', 'PostController');
 
     // Menus
     Route::resource('menus', 'MenuController');

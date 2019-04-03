@@ -11,6 +11,7 @@
 @stop
 
 @section('content')
+@can('categories.create')
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="section-block" id="basicform">
@@ -55,4 +56,9 @@
         </div>
     </div>
 </div>
+@else
+<div class="alert alert-danger" role="alert">
+    No tienes permiso para crear categorías.
+</div>
+@endcan
 @stop

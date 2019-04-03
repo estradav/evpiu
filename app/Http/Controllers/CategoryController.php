@@ -9,6 +9,20 @@ use App\Category;
 class CategoryController extends Controller
 {
     /**
+     * Protege los métodos del controlador por medio de permisos
+     * y utilizando el middleware del paquete de roles y permisos.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('permission:categories.list', ['only' => ['index', 'show']]);
+        $this->middleware('permission:categories.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:categories.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:categories.destroy', ['only' => ['destroy']]);
+    }
+
+    /**
      * Muestra un listado de las categorías existentes.
      *
      * @return \Illuminate\Http\Response

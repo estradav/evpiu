@@ -11,9 +11,11 @@
 @stop
 
 @section('content')
+    @can('categories.create')
     <a href="{{ route('categories.create') }}" class="btn btn-sm btn-success" role="button">
         <i class="fas fa-plus-circle"></i> Crear categoría
     </a>
+    @endcan
 
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -42,12 +44,16 @@
                                             <a href="{{ route('category', $category->slug) }}" class="btn btn-sm btn-outline-light">
                                                 <i class="fas fa-eye"></i> Ver
                                             </a>
+                                            @can('categories.edit')
                                             <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-outline-light edit">
                                                 <i class="far fa-edit"></i>
                                             </a>
+                                            @endcan
+                                            @can('categories.destroy')
                                             <div class="btn btn-sm btn-outline-light delete" data-id="{{ $category->id }}">
                                                 <i class="far fa-trash-alt"></i>
                                             </div>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>
@@ -60,6 +66,7 @@
         </div>
     </div>
 
+    @can('categories.destroy')
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -84,6 +91,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    @endcan
 @stop
 
 @push('javascript')
