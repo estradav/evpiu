@@ -19,6 +19,22 @@ class RolesAndPermissionsSeeder extends Seeder
         // Set default permissions
         $permissions = [
             [
+                'name'          => 'categories.list',
+                'description'   => 'Mostrar categorías'
+            ],
+            [
+                'name'          => 'categories.create',
+                'description'   => 'Crear categorías'
+            ],
+            [
+                'name'          => 'categories.edit',
+                'description'   => 'Modificar categorías'
+            ],
+            [
+                'name'          => 'categories.destroy',
+                'description'   => 'Eliminar categorías'
+            ],
+            [
                 'name'          => 'dashboard.view',
                 'description'   => 'Tablero'
             ],
@@ -71,6 +87,22 @@ class RolesAndPermissionsSeeder extends Seeder
                 'description'   => 'Eliminar permisos'
             ],
             [
+                'name'          => 'posts.list',
+                'description'   => 'Mostrar publicaciones'
+            ],
+            [
+                'name'          => 'posts.create',
+                'description'   => 'Crear publicaciones'
+            ],
+            [
+                'name'          => 'posts.edit',
+                'description'   => 'Modificar publicaciones'
+            ],
+            [
+                'name'          => 'posts.destroy',
+                'description'   => 'Eliminar publicaciones'
+            ],
+            [
                 'name'          => 'roles.list',
                 'description'   => 'Mostrar roles'
             ],
@@ -85,6 +117,22 @@ class RolesAndPermissionsSeeder extends Seeder
             [
                 'name'          => 'roles.destroy',
                 'description'   => 'Eliminar roles'
+            ],
+            [
+                'name'          => 'tags.list',
+                'description'   => 'Mostrar etiquetas'
+            ],
+            [
+                'name'          => 'tags.create',
+                'description'   => 'Crear etiquetas'
+            ],
+            [
+                'name'          => 'tags.edit',
+                'description'   => 'Modificar etiquetas'
+            ],
+            [
+                'name'          => 'tags.destroy',
+                'description'   => 'Eliminar etiquetas'
             ],
             [
                 'name'          => 'users.list',
