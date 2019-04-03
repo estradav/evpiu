@@ -27,7 +27,7 @@ class UserFormRequest extends FormRequest
             'name'                  => 'required|string|min:4',
             'email'                 => 'required|string|email|unique:users,email,'. $this->user->id ,
             'username'              => 'required|string|min:4|unique:users,username,'. $this->user->id ,
-            'password'              => 'nullable|string|min:6|confirmed',
+            'password'              => 'nullable|string|min:8|confirmed',
             'password_confirmation' => 'required_with:password',
         ];
     }
