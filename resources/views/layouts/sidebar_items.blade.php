@@ -1,7 +1,7 @@
 @foreach ($items as $item)
     <li class="nav-item">
         @if ($item->children->isEmpty())
-            <a class="nav-link" href="{{ url($item->link()) }}">
+            <a class="nav-link" href="{{ url($item->link()) }}" target="{{ $item->target }}">
                 {{ $item->title }}
             </a>
         @else
