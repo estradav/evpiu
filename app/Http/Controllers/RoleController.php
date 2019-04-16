@@ -101,7 +101,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         // Únicamente un 'super-admin' puede editar el rol de 'super-admin' o 'admin'
-        if ($role->id == 'super-admin' || $role->name == 'admin') {
+        if ($role->name == 'super-admin' || $role->name == 'admin') {
             if (!Auth::user()->hasRole('super-admin')) {
                 return redirect()
                     ->route('roles.index')
