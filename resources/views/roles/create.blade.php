@@ -39,7 +39,7 @@
                         <div class="invalid-feedback">{{ $errors->first('description') }}</div>
                         @endif
                     </div>
-                    <h4>Asignación de permisos</h4>
+                    <h4>Permisos disponibles ({{ count($permissions) }})</h4>
                     <div class="form-group">
                         <div class="row">
                             @foreach ($permissions as $id => $description)
