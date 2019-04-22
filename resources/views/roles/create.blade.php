@@ -39,6 +39,14 @@
                         <div class="invalid-feedback">{{ $errors->first('description') }}</div>
                         @endif
                     </div>
+                    <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" name="protected" value="1">
+                            <span class="custom-control-label">Rol del sistema</span>
+                        </label>
+                        <p>Un rol del sistema solo puede ser asignado a los usuarios por un súper administrador.</p>
+                    </div>
+                    <hr>
                     <h4>Permisos disponibles ({{ count($permissions) }})</h4>
                     <div class="form-group">
                         <div class="row">

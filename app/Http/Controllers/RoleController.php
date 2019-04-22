@@ -136,8 +136,11 @@ class RoleController extends Controller
      */
     public function update(RoleFormRequest $request, Role $role)
     {
-        $role->name         = $request->get('name');
-        $role->description  = $request->get('description');
+        if ($request->input('protected') === null) {
+            $role->protected = '0';
+        }
+
+        $role->fill($request->except('permissions'));
         $role->syncPermissions($request->get('permissions', []));
         $role->updated_at   = date('Y-m-d H:i:s');
         $role->save();

@@ -38,7 +38,14 @@
                                 @foreach($roles as $role)
                                 <tr>
                                     <td>{{ $role->id }}</td>
-                                    <td>{{ $role->name }}</td>
+                                    <td>
+                                        @if ($role->protected)
+                                            <span class="badge badge-primary"><i class="fas fa-lock"></i></span>
+                                            {{ $role->name }}
+                                        @else
+                                            {{ $role->name }}
+                                        @endif
+                                    </td>
                                     <td>{{ $role->description }}</td>
                                     <td>{{ $role->guard_name }}</td>
                                     <td>{{ $role->created_at->format('d M Y h:ia') }}</td>

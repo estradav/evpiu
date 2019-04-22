@@ -95,20 +95,26 @@ class UserController extends Controller
             }
         }
 
-        // Son los roles que el usuario aún no tiene y están disponibles su asignación
-        $availableRoles = Role::whereDoesntHave('users', function (Builder $query) use ($user) {
-            $query->where('id', $user->id);
-        })->pluck('description', 'id');
-
         // Son los permisos heredados de los roles que posee el usuario
         $inheritedPermissions = $user->getPermissionsViaRoles()->pluck('description', 'id');
 
         if (Auth::user()->hasRole('super-admin')) {
+            // Son los roles que el usuario aún no tiene y está disponible su asignación
+            $availableRoles = Role::whereDoesntHave('users', function (Builder $query) use ($user) {
+                $query->where('id', $user->id);
+            })->pluck('description', 'id');
+
             // Son todos los permisos directos de la plataforma que el usuario aún no tiene
             $allAvailablePermissions = Permission::whereDoesntHave('users', function (Builder $query) use ($user) {
                 $query->where('id', $user->id);
             })->pluck('description', 'id');
         } else {
+            // Son los roles que el usuario aún no tiene y está disponible su asignación. Además no son roles del sistema.
+            $availableRoles = Role::where('protected', 0)
+            ->whereDoesntHave('users', function (Builder $query) use ($user) {
+                $query->where('id', $user->id); })
+            ->pluck('description', 'id');
+
             // Son todos los permisos directos de la plataforma que el usuario aún no tiene y además no son permisos del sistema
             $allAvailablePermissions = Permission::where('protected', 0)
             ->whereDoesntHave('users', function (Builder $query) use ($user) {

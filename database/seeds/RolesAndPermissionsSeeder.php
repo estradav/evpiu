@@ -184,15 +184,18 @@ class RolesAndPermissionsSeeder extends Seeder
         $roles = [
             [
                 'name'          => 'super-admin',
-                'description'   => 'Super administrador'
+                'description'   => 'Super administrador',
+                'protected'     => 1
             ],
             [
                 'name'          => 'admin',
-                'description'   => 'Administrador'
+                'description'   => 'Administrador',
+                'protected'     => 1
             ],
             [
                 'name'          => 'user',
-                'description'   => 'Usuario general'
+                'description'   => 'Usuario general',
+                'protected'     => 0
             ]
         ];
 
@@ -209,7 +212,8 @@ class RolesAndPermissionsSeeder extends Seeder
         foreach ($roles as $role) {
             Role::create([
                 'name'          => $role['name'],
-                'description'   => $role['description']
+                'description'   => $role['description'],
+                'protected'     => $role['protected']
             ]);
         }
 
