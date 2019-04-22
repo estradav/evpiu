@@ -99,7 +99,12 @@ class PermissionController extends Controller
      */
     public function update(PermissionFormRequest $request, Permission $permission)
     {
-        $permission->update($request->all());
+        if ($request->input('protected') === null) {
+            $permission->protected = '0';
+        }
+
+        $permission->fill($request->all());
+        $permission->save();
 
         return redirect()
             ->route('permissions.edit', $permission->id)

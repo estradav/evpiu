@@ -39,6 +39,13 @@
                         <div class="invalid-feedback">{{ $errors->first('description') }}</div>
                         @endif
                     </div>
+                    <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" name="protected" value="1">
+                            <span class="custom-control-label">Permiso del sistema</span>
+                        </label>
+                        <p>Un permiso del sistema solo puede ser asignado a los usuarios y roles por un súper administrador.</p>
+                    </div>
                     <div class="col-sm-12 pl-0">
                         <p class="text-right">
                             <a href="{{ route('permissions.index') }}" class="btn btn-sm btn-secondary" role="button">Volver</a>

@@ -29,6 +29,7 @@
                                     <th>Identificador</th>
                                     <th>Descripción</th>
                                     <th>Tipo</th>
+                                    <th>Sistema</th>
                                     <th>Creado en</th>
                                     <th>Actualizado en</th>
                                     <th></th>
@@ -38,7 +39,14 @@
                                 @foreach($permissions as $permission)
                                 <tr>
                                     <td>{{ $permission->id }}</td>
-                                    <td>{{ $permission->name }}</td>
+                                    <td>
+                                        @if ($permission->protected)
+                                            <span class="badge badge-primary"><i class="fas fa-lock"></i></span>
+                                            {{ $permission->name }}
+                                        @else
+                                            {{ $permission->name }}
+                                        @endif
+                                    </td>
                                     <td>{{ $permission->description }}</td>
                                     <td>{{ $permission->guard_name }}</td>
                                     <td>{{ $permission->created_at->format('d M Y h:ia') }}</td>

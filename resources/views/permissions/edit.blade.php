@@ -44,6 +44,13 @@
                             </div>
                             @endif
                         </div>
+                        <div class="form-group">
+                            <label class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="protectedCbx" name="protected" value="1" @if ($permission->protected) checked @endif>
+                                <span class="custom-control-label">Permiso del sistema</span>
+                            </label>
+                            <p>Un permiso del sistema solo puede ser asignado a los usuarios y roles por un súper administrador.</p>
+                        </div>
                         <div class="row">
                             <div class="col-sm-12 pl-0">
                                 <p class="text-right">

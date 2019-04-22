@@ -19,132 +19,164 @@ class RolesAndPermissionsSeeder extends Seeder
         // Set default permissions
         $permissions = [
             [
+                'name'          => 'dashboard.view',
+                'description'   => 'Tablero',
+                'protected'     => 0
+            ],
+            [
                 'name'          => 'categories.list',
-                'description'   => 'Mostrar categorías'
+                'description'   => 'Mostrar categorías',
+                'protected'     => 0
             ],
             [
                 'name'          => 'categories.create',
-                'description'   => 'Crear categorías'
+                'description'   => 'Crear categorías',
+                'protected'     => 0
             ],
             [
                 'name'          => 'categories.edit',
-                'description'   => 'Modificar categorías'
+                'description'   => 'Modificar categorías',
+                'protected'     => 0
             ],
             [
                 'name'          => 'categories.destroy',
-                'description'   => 'Eliminar categorías'
-            ],
-            [
-                'name'          => 'dashboard.view',
-                'description'   => 'Tablero'
+                'description'   => 'Eliminar categorías',
+                'protected'     => 1
             ],
             [
                 'name'          => 'menus.list',
-                'description'   => 'Mostrar menus'
+                'description'   => 'Mostrar menus',
+                'protected'     => 0
             ],
             [
                 'name'          => 'menus.create',
-                'description'   => 'Crear menus'
+                'description'   => 'Crear menus',
+                'protected'     => 0
             ],
             [
                 'name'          => 'menus.edit',
-                'description'   => 'Modificar menus'
+                'description'   => 'Modificar menus',
+                'protected'     => 0
             ],
             [
                 'name'          => 'menus.destroy',
-                'description'   => 'Eliminar menus'
+                'description'   => 'Eliminar menus',
+                'protected'     => 1
             ],
             [
                 'name'          => 'menus.items.list',
-                'description'   => 'Mostrar elementos de menus'
+                'description'   => 'Mostrar elementos de menus',
+                'protected'     => 0
             ],
             [
                 'name'          => 'menus.items.create',
-                'description'   => 'Crear elementos de menus'
+                'description'   => 'Crear elementos de menus',
+                'protected'     => 0
             ],
             [
                 'name'          => 'menus.items.edit',
-                'description'   => 'Modificar elementos de menus'
+                'description'   => 'Modificar elementos de menus',
+                'protected'     => 0
             ],
             [
                 'name'          => 'menus.items.destroy',
-                'description'   => 'Eliminar elementos de menus'
+                'description'   => 'Eliminar elementos de menus',
+                'protected'     => 1
             ],
             [
                 'name'          => 'permissions.list',
-                'description'   => 'Mostrar permisos'
+                'description'   => 'Mostrar permisos',
+                'protected'     => 1
             ],
             [
                 'name'          => 'permissions.create',
-                'description'   => 'Crear permisos'
+                'description'   => 'Crear permisos',
+                'protected'     => 1
             ],
             [
                 'name'          => 'permissions.edit',
-                'description'   => 'Modificar permisos'
+                'description'   => 'Modificar permisos',
+                'protected'     => 1
             ],
             [
                 'name'          => 'permissions.destroy',
-                'description'   => 'Eliminar permisos'
+                'description'   => 'Eliminar permisos',
+                'protected'     => 1
             ],
             [
                 'name'          => 'posts.list',
-                'description'   => 'Mostrar publicaciones'
+                'description'   => 'Mostrar publicaciones',
+                'protected'     => 0
             ],
             [
                 'name'          => 'posts.create',
-                'description'   => 'Crear publicaciones'
+                'description'   => 'Crear publicaciones',
+                'protected'     => 0
             ],
             [
                 'name'          => 'posts.edit',
-                'description'   => 'Modificar publicaciones'
+                'description'   => 'Modificar publicaciones',
+                'protected'     => 0
             ],
             [
                 'name'          => 'posts.destroy',
-                'description'   => 'Eliminar publicaciones'
+                'description'   => 'Eliminar publicaciones',
+                'protected'     => 1
             ],
             [
                 'name'          => 'roles.list',
-                'description'   => 'Mostrar roles'
+                'description'   => 'Mostrar roles',
+                'protected'     => 1
             ],
             [
                 'name'          => 'roles.create',
-                'description'   => 'Crear roles'
+                'description'   => 'Crear roles',
+                'protected'     => 1
             ],
             [
                 'name'          => 'roles.edit',
-                'description'   => 'Modificar roles'
+                'description'   => 'Modificar roles',
+                'protected'     => 1
             ],
             [
                 'name'          => 'roles.destroy',
-                'description'   => 'Eliminar roles'
+                'description'   => 'Eliminar roles',
+                'protected'     => 1
             ],
             [
                 'name'          => 'tags.list',
-                'description'   => 'Mostrar etiquetas'
+                'description'   => 'Mostrar etiquetas',
+                'protected'     => 0
             ],
             [
                 'name'          => 'tags.create',
-                'description'   => 'Crear etiquetas'
+                'description'   => 'Crear etiquetas',
+                'protected'     => 0
             ],
             [
                 'name'          => 'tags.edit',
-                'description'   => 'Modificar etiquetas'
+                'description'   => 'Modificar etiquetas',
+                'protected'     => 0
             ],
             [
                 'name'          => 'tags.destroy',
-                'description'   => 'Eliminar etiquetas'
+                'description'   => 'Eliminar etiquetas',
+                'protected'     => 1
             ],
             [
                 'name'          => 'users.list',
-                'description'   => 'Mostrar usuarios'
+                'description'   => 'Mostrar usuarios',
+                'protected'     => 0
             ],
             [
                 'name'          => 'users.edit',
-                'description'   => 'Modificar usuarios'
+                'description'   => 'Modificar usuarios',
+                'protected'     => 0
             ],
             [
                 'name'          => 'users.destroy',
-                'description'   => 'Eliminar usuarios'
+                'description'   => 'Eliminar usuarios',
+                'protected'     => 1
             ]
         ];
 
@@ -168,7 +200,8 @@ class RolesAndPermissionsSeeder extends Seeder
         foreach ($permissions as $permission) {
             Permission::create([
                 'name'          => $permission['name'],
-                'description'   => $permission['description']
+                'description'   => $permission['description'],
+                'protected'     => $permission['protected']
             ]);
         }
 

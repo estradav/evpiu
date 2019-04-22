@@ -103,10 +103,18 @@ class UserController extends Controller
         // Son los permisos heredados de los roles que posee el usuario
         $inheritedPermissions = $user->getPermissionsViaRoles()->pluck('description', 'id');
 
-        // Son todos los permisos directos de la plataforma que el usuario aún no tiene
-        $allAvailablePermissions = Permission::whereDoesntHave('users', function (Builder $query) use ($user) {
-            $query->where('id', $user->id);
-        })->pluck('description', 'id');
+        if (Auth::user()->hasRole('super-admin')) {
+            // Son todos los permisos directos de la plataforma que el usuario aún no tiene
+            $allAvailablePermissions = Permission::whereDoesntHave('users', function (Builder $query) use ($user) {
+                $query->where('id', $user->id);
+            })->pluck('description', 'id');
+        } else {
+            // Son todos los permisos directos de la plataforma que el usuario aún no tiene y además no son permisos del sistema
+            $allAvailablePermissions = Permission::where('protected', 0)
+            ->whereDoesntHave('users', function (Builder $query) use ($user) {
+                $query->where('id', $user->id); })
+            ->pluck('description', 'id');
+        }
 
         // Finalmente, son los permisos que están disponibles para asignar a el usuario
         $availablePermissions = array_diff($allAvailablePermissions->toArray(), $inheritedPermissions->toArray());

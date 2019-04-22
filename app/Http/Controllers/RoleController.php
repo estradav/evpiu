@@ -112,8 +112,13 @@ class RoleController extends Controller
             }
         }
 
-        // Obtiene todos los permisos de la plataforma
-        $permissions = Permission::all();
+        if (Auth::user()->hasRole('super-admin')) {
+            // Obtiene todos los permisos de la plataforma
+            $permissions = Permission::all();
+        } else {
+            // Obtiene los permisos que no sean del sistema
+            $permissions = Permission::where('protected', 0)->get();
+        }
 
         // Obtiene los permisos asociados al rol
         $rolePermissions = $role->permissions()->get();
