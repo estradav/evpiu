@@ -186,6 +186,14 @@ class UserController extends Controller
                 ]);
         }
 
+        if ($user->username == 'administrator') {
+            return redirect()->route('users.index')
+                ->with([
+                    'message'    => 'No puedes eliminar el super usuario de la plataforma.',
+                    'alert-type' => 'error',
+                ]);
+        }
+
         if ( $user->delete() ) {
             return redirect()->route('users.index')
                 ->with([
