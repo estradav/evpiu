@@ -95,6 +95,18 @@ class UserController extends Controller
             }
         }
 
+        // El usuario actual no puede editarse a sí mismo
+        if ($user->hasPermissionTo('users.edit')) {
+            if (Auth::user()->id == $user->id) {
+                return redirect()
+                    ->route('users.index')
+                    ->with([
+                        'message'    => 'No puedes editar tu perfil.',
+                        'alert-type' => 'error'
+                    ]);
+            }
+        }
+
         // Son los permisos heredados de los roles que posee el usuario
         $inheritedPermissions = $user->getPermissionsViaRoles()->pluck('description', 'id');
 
