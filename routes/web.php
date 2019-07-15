@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function() {
 
     Route::resource('roles', 'RoleController');
     Route::resource('permissions', 'PermissionController');
+    Route::resource('permission_groups', 'PermissionGroupController');
     Route::resource('users', 'UserController');
     Route::resource('categories', 'CategoryController');
     Route::resource('tags', 'TagController');

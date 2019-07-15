@@ -118,6 +118,11 @@ Breadcrumbs::for('permission_edit', function($trail, $permission) {
     $trail->push("Modificar permiso ($permission->description)", route('permissions.edit', $permission));
 });
 
+Breadcrumbs::for('permission_groups', function($trail) {
+    $trail->parent('permissions');
+    $trail->push('Grupos', route('permission_groups.index'));
+});
+
 Breadcrumbs::for('users', function($trail) {
     $trail->parent('dashboard');
     $trail->push('Usuarios', route('users.index'));
