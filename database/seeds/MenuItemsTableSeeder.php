@@ -182,6 +182,21 @@ class MenuItemsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Permisos - Mostrar grupos de permisos
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Mostrar grupos de permisos',
+            'url'     => '',
+            'route'   => 'permission_groups.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $permissionsMenuItem->id,
+                'order'      => 3,
+            ])->save();
+        }
+
         // Publicaciones
         $postsMenuItem = MenuItem::firstOrNew([
             'menu_id' => 1,

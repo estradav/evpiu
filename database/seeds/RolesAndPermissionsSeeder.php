@@ -104,6 +104,11 @@ class RolesAndPermissionsSeeder extends Seeder
                 'protected'     => 1
             ],
             [
+                'name'          => 'permission_groups.list',
+                'description'   => 'Mostrar grupos de permisos',
+                'protected'     => 1
+            ],
+            [
                 'name'          => 'posts.list',
                 'description'   => 'Mostrar publicaciones',
                 'protected'     => 0
