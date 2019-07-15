@@ -11,6 +11,11 @@
 @stop
 
 @section('content')
+    @can('permission_groups.create')
+    <a href="{{ route('permission_groups.create') }}" class="btn btn-sm btn-success" role="button">
+        <i class="fas fa-plus-circle"></i> Crear grupo de permisos
+    </a>
+    @endcan
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
