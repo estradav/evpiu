@@ -21,6 +21,11 @@
         <div class="card">
             <h5 class="card-header">Crear Grupo de Permisos</h5>
             <div class="card-body">
+                @if ($permissions->isEmpty())
+                <div class="alert alert-danger" role="alert">
+                    Actualmente no hay permisos disponibles para asociar al nuevo grupo de permisos.
+                </div>
+                @endif
                 <form action="{{ route('permission_groups.store') }}" method="POST">
                     @csrf
                     <div class="form-group">
@@ -58,7 +63,7 @@
                     <div class="col-sm-12 pl-0">
                         <p class="text-right">
                             <a href="{{ route('permission_groups.index') }}" class="btn btn-sm btn-secondary" role="button">Volver</a>
-                            <button class="btn btn-sm btn-primary" type="submit">Guardar cambios</button>
+                            <button class="btn btn-sm btn-primary" type="submit" @if($permissions->isEmpty()) disabled @endif>Guardar cambios</button>
                         </p>
                     </div>
                 </form>
