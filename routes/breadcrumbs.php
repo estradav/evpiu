@@ -128,6 +128,11 @@ Breadcrumbs::for('permission_groups_create', function($trail) {
     $trail->push('Crear grupo de permisos', route('permission_groups.create'));
 });
 
+Breadcrumbs::for('permission_groups_show', function($trail, $permissionGroup) {
+    $trail->parent('permission_groups');
+    $trail->push("Mostrar grupo de permisos ($permissionGroup->name)", route('permission_groups.show', $permissionGroup));
+});
+
 Breadcrumbs::for('users', function($trail) {
     $trail->parent('dashboard');
     $trail->push('Usuarios', route('users.index'));

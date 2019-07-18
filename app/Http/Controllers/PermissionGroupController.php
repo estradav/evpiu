@@ -81,4 +81,16 @@ class PermissionGroupController extends Controller
                 'alert-type' => 'error'
             ]);
     }
+
+    /**
+     * Proporciona la información de un grupo de permisos en específico
+     * junto con sus permisos asociados.
+     *
+     * @param  \App\PermissionGroup  $permissionGroup
+     * @return \Illuminate\Http\Response
+     */
+    public function show(PermissionGroup $permissionGroup)
+    {
+        return view('permission_groups.show', compact('permissionGroup',));
+    }
 }

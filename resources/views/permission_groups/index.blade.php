@@ -28,6 +28,7 @@
                                     <th>Nombre</th>
                                     <th>Creado en</th>
                                     <th>Actualizado en</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,6 +38,15 @@
                                     <td>{{ $permissionGroup->name }}</td>
                                     <td>{{ $permissionGroup->created_at->format('d M Y h:ia') }}</td>
                                     <td>{{ $permissionGroup->updated_at->format('d M Y h:ia') }}</td>
+                                    <td>
+                                        <div class="btn-group ml-auto float-right">
+                                            @can('permission_groups.list')
+                                            <a href="{{ route('permission_groups.show', $permissionGroup->id) }}" class="btn btn-sm btn-outline-light">
+                                                <i class="fas fa-eye"></i> Ver
+                                            </a>
+                                            @endcan
+                                        </div>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -59,6 +69,7 @@
                     { "orderable": true, "searchable": true },
                     { "orderable": true, "searchable": false },
                     { "orderable": true, "searchable": false },
+                    { "orderable": false, "searchable": false },
                 ]
             });
         });
