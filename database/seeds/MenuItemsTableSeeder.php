@@ -197,6 +197,21 @@ class MenuItemsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Permisos - Crear grupos de permisos
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Crear grupos de permisos',
+            'url'     => '',
+            'route'   => 'permission_groups.create',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $permissionsMenuItem->id,
+                'order'      => 4,
+            ])->save();
+        }
+
         // Publicaciones
         $postsMenuItem = MenuItem::firstOrNew([
             'menu_id' => 1,

@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\PermissionGroup;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -109,6 +110,11 @@ class RolesAndPermissionsSeeder extends Seeder
                 'protected'     => 1
             ],
             [
+                'name'          => 'permission_groups.create',
+                'description'   => 'Crear grupos de permisos',
+                'protected'     => 1
+            ],
+            [
                 'name'          => 'posts.list',
                 'description'   => 'Mostrar publicaciones',
                 'protected'     => 0
@@ -203,6 +209,9 @@ class RolesAndPermissionsSeeder extends Seeder
                 'protected'     => 0
             ]
         ];
+
+        // Creates default permission group to associate all default permissions
+        PermissionGroup::create(['name' => 'Estándar']);
 
         // Create permissions
         foreach ($permissions as $permission) {
