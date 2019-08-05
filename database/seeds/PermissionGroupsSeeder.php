@@ -38,35 +38,35 @@ class PermissionGroupsSeeder extends Seeder
             'name' => 'Permisos',
         ]);
 
-        Permission::whereIn('id', [14,15,16,17,18,19])
+        Permission::whereIn('id', [14,15,16,17,18,19,20])
                     ->update(['group_id' => $permissionsGroup->id]);
 
         $postsGroup = PermissionGroup::create([
             'name' => 'Publicaciones',
         ]);
 
-        Permission::whereIn('id', [20,21,22,23])
+        Permission::whereIn('id', [21,22,23,24])
                     ->update(['group_id' => $postsGroup->id]);
 
         $rolesGroup = PermissionGroup::create([
             'name' => 'Roles',
         ]);
 
-        Permission::whereIn('id', [24,25,26,27])
+        Permission::whereIn('id', [25,26,27,28])
                     ->update(['group_id' => $rolesGroup->id]);
 
         $tagsGroup = PermissionGroup::create([
             'name' => 'Etiquetas',
         ]);
 
-        Permission::whereIn('id', [28,29,30,31])
+        Permission::whereIn('id', [29,30,31,32])
                     ->update(['group_id' => $tagsGroup->id]);
 
         $usersGroup = PermissionGroup::create([
             'name' => 'Usuarios',
         ]);
 
-        Permission::whereIn('id', [32,33,34])
+        Permission::whereIn('id', [33,34,35])
                     ->update(['group_id' => $usersGroup->id]);
     }
 }
