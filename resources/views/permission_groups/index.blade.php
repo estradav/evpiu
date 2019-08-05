@@ -45,6 +45,11 @@
                                                 <i class="fas fa-eye"></i> Ver
                                             </a>
                                             @endcan
+                                            @can('permission_groups.edit')
+                                            <a href="{{ route('permission_groups.edit', $permissionGroup->id) }}" class="btn btn-sm btn-outline-light">
+                                                <i class="far fa-edit"></i>
+                                            </a>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>
