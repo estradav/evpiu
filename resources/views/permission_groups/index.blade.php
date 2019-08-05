@@ -50,6 +50,11 @@
                                                 <i class="far fa-edit"></i>
                                             </a>
                                             @endcan
+                                            @can('permission_groups.destroy')
+                                            <div class="btn btn-sm btn-outline-light delete" data-id="{{ $permissionGroup->id }}">
+                                                <i class="far fa-trash-alt"></i>
+                                            </div>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>
@@ -61,6 +66,33 @@
             </div>
         </div>
     </div>
+
+    @can('permission_groups.destroy')
+    <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"><i class="fas fa-trash"></i> Eliminar grupo de permisos</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar este grupo de permisos?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="#" id="delete_form" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-danger delete-confirm"
+                               value="Sí, eliminar este grupo de permisos">
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    @endcan
 @stop
 
 @push('javascript')
@@ -77,6 +109,12 @@
                     { "orderable": false, "searchable": false },
                 ]
             });
+        });
+
+        $('td').on('click', '.delete', function (e) {
+            $('#delete_form')[0].action = '{{ route('permission_groups.destroy', ['permission' => '__permission']) }}'.replace('__permission', $(this).data('id'));
+
+            $('#delete_modal').modal('show');
         });
     </script>
 @endpush

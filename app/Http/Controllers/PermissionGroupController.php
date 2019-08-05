@@ -18,6 +18,7 @@ class PermissionGroupController extends Controller
         $this->middleware('permission:permission_groups.list', ['only' => ['index']]);
         $this->middleware('permission:permission_groups.create', ['only' => ['create', 'store']]);
         $this->middleware('permission:permission_groups.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:permission_groups.destroy', ['only' => ['destroy']]);
     }
 
     /**
@@ -186,6 +187,29 @@ class PermissionGroupController extends Controller
             ->with([
                 'message'    => 'Grupo de permisos actualizado con éxito.',
                 'alert-type' => 'success'
+            ]);
+    }
+
+    /**
+     * Elimina un grupo de permisos específico de la plataforma
+     *
+     * @param  \App\PermissionGroup  $permissionGroup
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(PermissionGroup $permissionGroup)
+    {
+        if ( $permissionGroup->delete() ) {
+            return redirect()->route('permission_groups.index')
+                ->with([
+                    'message'    => 'Grupo de permisos eliminado con éxito.',
+                    'alert-type' => 'success',
+                ]);
+        }
+
+        return redirect()->route('permission_groups.index')
+            ->with([
+                'message'    => 'Grupo de permisos no eliminado.',
+                'alert-type' => 'error',
             ]);
     }
 }
