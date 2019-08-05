@@ -29,7 +29,6 @@
                                     <th>Identificador</th>
                                     <th>Descripción</th>
                                     <th>Tipo</th>
-                                    <th>Sistema</th>
                                     <th>Creado en</th>
                                     <th>Actualizado en</th>
                                     <th></th>
