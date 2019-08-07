@@ -46,8 +46,19 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissionGroups = PermissionGroup::with('permissions')->get();
-        $permissionsQuantity = Permission::count();
+        if (Auth::user()->hasRole('super-admin')) {
+            // Obtiene todos los permisos de la plataforma con todos sus permisos asociados
+            $permissionGroups = PermissionGroup::with('permissions')->get();
+        } else {
+            // Obtiene todos los grupos de permisos de la plataforma, pero discrimina los permisos asociados al grupo que sean del sistema
+            $permissionGroups = PermissionGroup::with(['permissions' => function ($query) {
+                $query->where('protected', 0);
+            }])->get();
+        }
+
+        $permissionsQuantity = array_sum(array_map(function ($permissionGroup) {
+            return count($permissionGroup['permissions']);
+        }, $permissionGroups->toArray()));
 
         return view('roles.create', compact('permissionGroups', 'permissionsQuantity'));
     }
