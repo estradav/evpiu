@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
 use App\Permission;
+use App\PermissionGroup;
 use App\Http\Requests\RoleFormRequest;
 
 class RoleController extends Controller
@@ -45,9 +46,10 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::pluck('description', 'id');
+        $permissionGroups = PermissionGroup::with('permissions')->get();
+        $permissionsQuantity = Permission::count();
 
-        return view('roles.create', compact('permissions'));
+        return view('roles.create', compact('permissionGroups', 'permissionsQuantity'));
     }
 
     /**
