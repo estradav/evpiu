@@ -125,18 +125,17 @@ class RoleController extends Controller
             }
         }
 
-        if (Auth::user()->hasRole('super-admin')) {
-            // Obtiene todos los permisos de la plataforma
-            $permissions = Permission::all();
-        } else {
-            // Obtiene los permisos que no sean del sistema
-            $permissions = Permission::where('protected', 0)->get();
-        }
+        // Obtiene todos los permisos de la plataforma con todos sus permisos asociados
+        $permissionGroups = PermissionGroup::with('permissions')->get();
 
         // Obtiene los permisos asociados al rol
         $rolePermissions = $role->permissions()->get();
 
-        return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        $permissionsQuantity = array_sum(array_map(function ($permissionGroup) {
+            return count($permissionGroup['permissions']);
+        }, $permissionGroups->toArray()));
+
+        return view('roles.edit', compact('role', 'permissionGroups', 'rolePermissions', 'permissionsQuantity'));
     }
 
     /**
