@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\User;
 use App\Role;
 use App\Permission;
+use App\PermissionGroup;
 use App\Http\Requests\UserFormRequest;
 
 class UserController extends Controller
@@ -107,37 +108,52 @@ class UserController extends Controller
             }
         }
 
-        // Son los permisos heredados de los roles que posee el usuario
-        $inheritedPermissions = $user->getPermissionsViaRoles()->pluck('description', 'id');
-
         if (Auth::user()->hasRole('super-admin')) {
             // Son los roles que el usuario aún no tiene y está disponible su asignación
             $availableRoles = Role::whereDoesntHave('users', function (Builder $query) use ($user) {
                 $query->where('id', $user->id);
-            })->pluck('description', 'id');
-
-            // Son todos los permisos directos de la plataforma que el usuario aún no tiene
-            $allAvailablePermissions = Permission::whereDoesntHave('users', function (Builder $query) use ($user) {
-                $query->where('id', $user->id);
-            })->pluck('description', 'id');
+            })->get();
         } else {
             // Son los roles que el usuario aún no tiene y está disponible su asignación. Además no son roles del sistema.
             $availableRoles = Role::where('protected', 0)
             ->whereDoesntHave('users', function (Builder $query) use ($user) {
-                $query->where('id', $user->id); })
-            ->pluck('description', 'id');
-
-            // Son todos los permisos directos de la plataforma que el usuario aún no tiene y además no son permisos del sistema
-            $allAvailablePermissions = Permission::where('protected', 0)
-            ->whereDoesntHave('users', function (Builder $query) use ($user) {
-                $query->where('id', $user->id); })
-            ->pluck('description', 'id');
+                $query->where('id', $user->id);
+            })->get();
         }
 
-        // Finalmente, son los permisos que están disponibles para asignar a el usuario
-        $availablePermissions = array_diff($allAvailablePermissions->toArray(), $inheritedPermissions->toArray());
+        // Son todos los permisos directos de la plataforma que el usuario aún no tiene
+        $allAvailablePermissions = Permission::whereDoesntHave('users', function (Builder $query) use ($user) {
+            $query->where('id', $user->id);
+        })->get();
 
-        return view('users.edit', compact('user', 'availableRoles', 'inheritedPermissions', 'availablePermissions'));
+        // Son los permisos heredados de los roles que posee el usuario
+        $inheritedPermissions = $user->getPermissionsViaRoles();
+
+        // Se clasifican todos los permisos heredados de los roles a cada grupo perteneciente
+        $inheritedPermissionsGroups = $inheritedPermissions->groupBy('group_id')->transform(function($item, $key) {
+            $permissionGroup = PermissionGroup::find($key);
+            return ['id' => $permissionGroup->id, 'name' => $permissionGroup->name, 'permissions' => $item];
+        })->values();
+
+        // Son los permisos asociados a el usuario
+        $associatedPermissions = $user->permissions;
+
+        // Se clasifican todos los permisos asociados al usuario a cada grupo perteneciente
+        $associatedPermissionsGroups = $associatedPermissions->groupBy('group_id')->transform(function($item, $key) {
+            $permissionGroup = PermissionGroup::find($key);
+            return ['id' => $permissionGroup->id, 'name' => $permissionGroup->name, 'permissions' => $item];
+        })->values();
+
+        // Son los permisos que están disponibles para asignar a el usuario
+        $availablePermissions = $allAvailablePermissions->diff($inheritedPermissions);
+
+        // Se clasifican todos los permisos que están disponibles para asignar a los grupos pertenecientes
+        $availablePermissionsGroups = $availablePermissions->groupBy('group_id')->transform(function($item, $key) {
+            $permissionGroup = PermissionGroup::find($key);
+            return ['id' => $permissionGroup->id, 'name' => $permissionGroup->name, 'permissions' => $item];
+        })->values();
+
+        return view('users.edit', compact('user', 'availableRoles', 'inheritedPermissions', 'inheritedPermissionsGroups', 'associatedPermissions', 'associatedPermissionsGroups', 'availablePermissions', 'availablePermissionsGroups'));
     }
 
     /**
