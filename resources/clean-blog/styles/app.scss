@@ -1,0 +1,26 @@
+// Variables
+@import '../../dashboard/styles/variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Lora Font
+@import 'lora_italic';
+@import 'lora_regular';
+
+// Open Sans Font
+@import 'osans_italic';
+@import 'osans_regular';
+
+/*!
+ * Start Bootstrap - Clean Blog v5.0.3 (https://startbootstrap.com/template-overviews/clean-blog)
+ * Copyright 2013-2019 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-clean-blog/blob/master/LICENSE)
+ */
+ @import 'blog_style';
+
+ // Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';

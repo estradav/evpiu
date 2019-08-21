@@ -1,0 +1,38 @@
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+/*!
+ * Concept Bootstrap 4 Admin Dashboard Template (https://github.com/puikinsh/concept)
+ * Copyright 2018-2019 Colorlib (https://colorlib.com/)
+ * Licensed under MIT (https://github.com/puikinsh/concept#license)
+ */
+@import 'style';
+
+// Circular Std Font
+@import 'circular_std';
+
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+
+// Toastr
+@import '~toastr/toastr.scss';
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.toast {
+    border: none;
+}
+
+.dd .dd-handle .url {
+    font-weight:normal;
+    margin-left:10px;
+}
