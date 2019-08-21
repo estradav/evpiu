@@ -32,7 +32,7 @@
             <div class="card-body">
                 <div class="row">
                     @foreach ($user->roles as $role)
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-4 col-6">
                         <ul class="list-unstyled arrow">
                             <li><a href="{{ route('roles.show', $role->id) }}">{{ $role->description }}</a></li>
                         </ul>
