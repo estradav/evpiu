@@ -26,6 +26,21 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        // Post Explicit Model Binding: Multiple Route Key
+        Route::bind('post', function($value) {
+            return \App\Post::where('id', $value)->orWhere('slug', $value)->first();
+        });
+
+        // Category Explicit Model Binding: Multiple Route Key
+        Route::bind('category', function($value) {
+            return \App\Category::where('id', $value)->orWhere('slug', $value)->first();
+        });
+
+        // Tag Explicit Model Binding: Multiple Route Key
+        Route::bind('tag', function($value) {
+            return \App\Tag::where('id', $value)->orWhere('slug', $value)->first();
+        });
     }
 
     /**
