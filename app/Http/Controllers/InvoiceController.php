@@ -36,7 +36,7 @@ class InvoiceController extends Controller
                 'invoice_master.cntct_31','invoice_master.phone_31','invoice_master.custid_31','invoice_master.creationdate',
                 'tax_master.taxdes_25 as tax_type', 'customer_master.udfkey_23 as nit')
             ->where('invoice_master.ordnum_31', '=', $invoice)
-            ->limit('1') // trae un solo registro , para evitar duplicados
+            ->limit('1') 
             ->get();
 
 //
