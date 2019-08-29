@@ -32,6 +32,23 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('tags', 'TagController');
     Route::resource('posts', 'PostController');
 
+
+    //usuarios DMS
+    Route::resource('dmsusers','DmsUserController');
+
+    //terceros DMS
+    Route::resource('terceros','TercerosController');
+
+    // Clientes MAX
+    Route::resource('customers','CustomerController');
+    Route::get('customers/{custid_23}', 'CustomerController@show');
+
+    // Facturas
+    Route::resource('invoices','InvoiceController');
+    Route::get('invoices/{INVCE_31}', 'InvoiceController@show')->name('invoices.show');
+
+
+
     // Menus
     Route::resource('menus', 'MenuController');
     Route::post('/menus/{menu}/order', 'MenuController@sort_item')->name('menus.order');
