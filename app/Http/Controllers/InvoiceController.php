@@ -36,15 +36,9 @@ class InvoiceController extends Controller
                 'invoice_master.cntct_31','invoice_master.phone_31','invoice_master.custid_31','invoice_master.creationdate',
                 'tax_master.taxdes_25 as tax_type', 'customer_master.udfkey_23 as nit')
             ->where('invoice_master.ordnum_31', '=', $invoice)
-            ->limit('1') // trae un solo registro , para evitar duplicados
+            ->limit('1')
             ->get();
-
-//
-//        $detail = DB::table('invoice_detail')
-//            ->leftJoin('part_sales','part_sales.prtnum_29', '=', 'invoice_detail.prtnum_32')
-//            ->select('invoice_detail.ordnum_32','part_sales.pmdes1_29 as descr_prod','part_sales.bomuom_29 as u_med')
-//            ->where('invoice_detail.ordnum_32','=', $invoice)
-//            ->unionAll($invoice)
+       
 
         return view('max.invoice.show', compact('invoice'));
     }
