@@ -189,7 +189,6 @@
                     {"orderable": false, "searchable": false},
                     {"orderable": false, "searchable": false},
                     {"orderable": true, "searchable": true},
-                    {"orderable": false, "searchable": false},
                 ],
 
                 columnDefs: [
