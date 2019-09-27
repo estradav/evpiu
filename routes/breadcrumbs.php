@@ -79,7 +79,7 @@ Breadcrumbs::for('tag_edit', function($trail, $tag) {
     $trail->parent('tags');
     $trail->push("Modificar etiqueta ($tag->name)", route('tags.edit', $tag));
 });
-//Roles
+
 Breadcrumbs::for('roles', function($trail) {
     $trail->parent('dashboard');
     $trail->push('Roles', route('roles.index'));
@@ -99,7 +99,7 @@ Breadcrumbs::for('role_edit', function($trail, $role) {
     $trail->parent('roles');
     $trail->push("Modificar rol ($role->description)", route('roles.edit', $role));
 });
-//permisos
+
 Breadcrumbs::for('permissions', function($trail) {
     $trail->parent('dashboard');
     $trail->push('Permisos', route('permissions.index'));
@@ -160,65 +160,23 @@ Breadcrumbs::for('user_edit', function($trail, $user) {
     $trail->push("Modificar usuario ($user->name)", route('users.edit', $user));
 });
 
-// DMS
-Breadcrumbs::for('dms', function($trail) {
+
+
+//Fact
+
+Breadcrumbs::for('fact_electr', function($trail) {
     $trail->parent('dashboard');
-    $trail->push('DMS', route('home'));
+    $trail->push("Facturacion Electronica", route('fe.index'));
 });
 
-Breadcrumbs::for('dmsusers', function($trail) {
-    $trail->parent('dms');
-    $trail->push('Usuarios DMS', route('dmsusers.index'));
+Breadcrumbs::for('fact_electr_facturas', function($trail) {
+    $trail->parent('fact_electr');
+    $trail->push("Facturas", route('fe.index'));
 });
 
-Breadcrumbs::for('dmsuser_show', function($trail, $dmsuser) {
-    $trail->parent('dmsusers');
-    $trail->push("Mostrar usuario ($dmsuser->usuario)", route('dmsusers.show', $dmsuser));
+
+// notas credito
+Breadcrumbs::for('fact_electr_notas_cre', function($trail) {
+    $trail->parent('fact_electr');
+    $trail->push("Notas Credito", route('nc.index'));
 });
-
-Breadcrumbs::for('dmsuser_create', function($trail) {
-    $trail->parent('dmsuser');
-    $trail->push('Crear Usuario de DMS', route('dmsusers.create'));
-});
-
-Breadcrumbs::for('dmsuser_edit', function($trail, $dmsuser) {
-    $trail->parent('dmsuser');
-    $trail->push("Modificar Usuario DMS ($dmsuser->usuario)", route('dmsusers.edit', $dmsuser));
-});
-
-//Terceros DMS
-
-Breadcrumbs::for('terceros', function($trail) {
-    $trail->parent('dms');
-    $trail->push('Terceros DMS', route('dmsusers.index'));
-});
-
-// Max
-
-Breadcrumbs::for('max', function($trail) {
-    $trail->parent('dashboard');
-    $trail->push('MAX', route('home'));
-});
-
-//clientes Max
-Breadcrumbs::for('customers_max', function($trail) {
-    $trail->parent('max');
-    $trail->push('Clientes Max', route('customers.index'));
-});
-
-Breadcrumbs::for('customer_max_show', function($trail, $customer) {
-    $trail->parent('max');
-    $trail->push("Mostrar Cliente ($customer->name_23)", route('customers.show', $customer));
-});
-
-//Facturas Max
-Breadcrumbs::for('invoices_max', function($trail) {
-    $trail->parent('max');
-    $trail->push('Facturas Max', route('invoices.index'));
-});
-
-Breadcrumbs::for('invoices_show', function($trail, $invoice) {
-    $trail->parent('max');
-    $trail->push("Mostrar Factura ($invoice->ordnum_31)", route('invoices.show', $invoice));
-});
-

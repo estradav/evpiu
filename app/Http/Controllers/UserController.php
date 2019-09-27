@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\User;
@@ -31,7 +29,7 @@ class UserController extends Controller
     /**
      * Muestra una lista de todos los usuarios de la plataforma.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -66,9 +64,8 @@ class UserController extends Controller
      * Proporciona la información de un usuario en específico
      * junto con sus roles y permisos asociados.
      *
-     * @param User $user
-     * @return Response
-     * @throws Exception
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
@@ -82,8 +79,8 @@ class UserController extends Controller
      * Muestra el formulario para editar la información de un
      * usuario en específico.
      *
-     * @param User $user
-     * @return Response
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
     {
@@ -164,8 +161,8 @@ class UserController extends Controller
      * junto con sus nuevos roles y permisos.
      *
      * @param  \App\Http\Requests\UserFormRequest  $request
-     * @param User $user
-     * @return Response
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
      */
     public function update(UserFormRequest $request, User $user)
     {
@@ -194,19 +191,18 @@ class UserController extends Controller
         $user->save();
 
         return redirect()
-            ->route('users.edit', $user->id)
-            ->with([
-                'message'    => 'Usuario actualizado con éxito.',
-                'alert-type' => 'success'
-            ]);
+        ->route('users.edit', $user->id)
+        ->with([
+            'message'    => 'Usuario actualizado con éxito.',
+            'alert-type' => 'success'
+        ]);
     }
 
     /**
      * Elimina un usuario en específico de la plataforma.
      *
-     * @param User $user
-     * @return Response
-     * @throws Exception
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
     {

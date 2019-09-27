@@ -1,5 +1,7 @@
 <?php
-return array(
+
+return [
+
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -10,7 +12,9 @@ return array(
     | you may use many connections at once using the Database library.
     |
     */
-    'default' => 'evpiu',
+
+    'default' => env('EV_CONNECTION', 'evpiu'),
+
     /*
     |--------------------------------------------------------------------------
     | Database Connections
@@ -26,54 +30,67 @@ return array(
     | choice installed on your machine before you begin development.
     |
     */
-    'connections' => array (
 
-        //CONEXION BASE DE DATOS EVPUI
-        'evpiu'  => array (
-            'driver'        =>  'mysql',
-            'host'          =>  env('EVPIU_HOST'),
-            'database'      =>  env('EVPIU_DATABASE'),
-            'username'      =>  env('EVPIU_USERNAME'),
-            'password'      =>  env('EVPIU_PASSWORD'),
-            'charset'       =>  'utf8',
-            'collation'     =>  'utf8_unicode_ci',
-            'prefix'        =>  '',
-            'strict'        =>  false,
-        ),
-        //CONEXION A BASE DE DATOS DE DMS
-        'sqlsrv_dms'     => array (
-            'driver'        =>  'sqlsrv',
-            'host'          =>  env('DMS_HOST'),
-            'port'          =>  env('DMS_PORT'),
-            'database'      =>  env('DMS_DATABASE'),
-            'username'      =>  env('DMS_USERNAME'),
-            'password'      =>  env('DMS_PASSWORD'),
-            'charset'       =>  'utf8',
-            'collation'     =>  'Modern_Spanish_CI_AS',
-            'prefix'        =>  '',
+    'connections' => [
+
+
+
+        'evpiu' => [
+            'driver' => 'mysql',
+            'host' => env('EV_HOST'),
+            'port' => env('EV_PORT'),
+            'database' => env('EV_DATABASE'),
+            'username' => env('EV_USERNAME'),
+            'password' => env('EV_PASSWORD'),
+            'unix_socket' => env('EV_SOCKET'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
             'prefix_indexes' => true,
-        ),
+            'strict' => true,
+            'engine' => null,
+        ],
 
-        // CONEXION A BASEDE DATOS DE MAX
-        'sqlsrv_max'     => array (
-            'driver'        =>  'sqlsrv',
-            'host'          =>  env('MAX_HOST'),
-            'port'          =>  env('MAX_PORT'),
-            'database'      =>  env('MAX_DATABASE'),
-            'username'      =>  env('MAX_USERNAME'),
-            'password'      =>  env('MAX_PASSWORD'),
-            'charset'       =>  'utf8',
-            'collation'     =>  'Modern_Spanish_CI_AS',
-            'prefix'        =>  '',
+
+        'DMS' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DMS_HOST'),
+            'port' => env('DMS_PORT'),
+            'database' => env('DMS_DATABASE'),
+            'username' => env('DMS_USERNAME'),
+            'password' => env('DMS_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
             'prefix_indexes' => true,
-        ),
+        ],
 
 
-        'migrations' => 'migrations',
-    ),
-);
 
+        'MAX' => [
+            'driver' => 'sqlsrv',
+            'host' => env('MAX_HOST'),
+            'port' => env('MAX_PORT'),
+            'database' => env('MAX_DATABASE'),
+            'username' => env('MAX_USERNAME'),
+            'password' => env('MAX_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
 
+        'FE'  => [
+            'driver' => 'sqlsrv',
+            'host' => env('FE_HOST'),
+            'port' => env('FE_PORT'),
+            'database' => env('FE_DATABASE'),
+            'username' => env('FE_USERNAME'),
+            'password' => env('FE_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ]
+
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -86,41 +103,37 @@ return array(
     |
     */
 
+    'migrations' => 'migrations',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Redis Databases
+    |--------------------------------------------------------------------------
+    |
+    | Redis is an open source, fast, and advanced key-value store that also
+    | provides a richer body of commands than a typical key-value system
+    | such as APC or Memcached. Laravel makes it easy to dig right in.
+    |
+    */
 
+    'redis' => [
 
-//        'pgsql' => [
-//            'driver' => 'pgsql',
-//            'host' => env('DB_HOST', '127.0.0.1'),
-//            'port' => env('DB_PORT', '5432'),
-//            'database' => env('DB_DATABASE', 'forge'),
-//            'username' => env('DB_USERNAME', 'forge'),
-//            'password' => env('DB_PASSWORD', ''),
-//            'charset' => 'utf8',
-//            'prefix' => '',
-//            'prefix_indexes' => true,
-//            'schema' => 'public',
-//            'sslmode' => 'prefer',
-//        ],
-//
-//        'sqlite' => [
-//            'driver' => 'sqlite',
-//            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-//            'prefix' => '',
-//            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-//        ],
+        'client' => 'predis',
 
-//'redis' => [
-//        'client' => 'predis',
-//        'default' => [
-//            'host' => env('REDIS_HOST', '127.0.0.1'),
-//            'password' => env('REDIS_PASSWORD', null),
-//            'port' => env('REDIS_PORT', 6379),
-//            'database' => env('REDIS_DB', 0),
-//        ],
-//        'cache' => [
-//            'host' => env('REDIS_HOST', '127.0.0.1'),
-//            'password' => env('REDIS_PASSWORD', null),
-//            'port' => env('REDIS_PORT', 6379),
-//            'database' => env('REDIS_CACHE_DB', 1),
-//        ],
+        'default' => [
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_DB', 0),
+        ],
+
+        'cache' => [
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_CACHE_DB', 1),
+        ],
+
+    ],
+
+];

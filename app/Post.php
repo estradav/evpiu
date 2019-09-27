@@ -2,10 +2,7 @@
 
 namespace App;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
@@ -36,7 +33,7 @@ class Post extends Model
     /**
      * Obtiene el usuario que posee el artículo.
      *
-     * @return BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -46,7 +43,7 @@ class Post extends Model
     /**
      * Obtiene las categorías que posee el artículo.
      *
-     * @return BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categories()
     {
@@ -56,7 +53,7 @@ class Post extends Model
     /**
      * Obtiene las etiquetas que posee el artículo.
      *
-     * @return BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tags()
     {
@@ -77,8 +74,7 @@ class Post extends Model
     /**
      * Borra el archivo de imagen y el modelo.
      *
-     * @return bool|null     *
-     * @throws Exception
+     * @return bool|null
      */
     public function delete()
     {
