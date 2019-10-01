@@ -57,8 +57,18 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/nc/{nc}', 'FeNotasCreditoController@updatefactura')->name('fe.nc.update');
 
 
+
     Route::resource('ConfigFe','FeConfigController');
 
+
+
+    // Productos CIEV --> Codificador
+    Route::resource('ProdCievMaestro','ProdCievMaestroController');
+
+
+
+    Route::resource('ProdCievCod','ProdCievCodController');
+    Route::get('lineas','ProdCievCodController@lineas_show')->name('prod.lineas.show');
 
 });
 

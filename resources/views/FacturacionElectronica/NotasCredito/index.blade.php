@@ -76,7 +76,7 @@
                                   <tr>
                                       <td><input type="checkbox" class="checkboxes" id="CHK{{ $nc->numero }}" name="CHK{{ $nc->numero}}"/></td>
                                       <td>{{ $nc->numero }}</td>
-                                      <td>{{ $nc->ov }}</td>
+                                      <td>{{ $nc->OC }}</td>
                                       <td>{{ $nc->fecha }}</td>
                                       <td>{{ $nc->razon_social }} </td>
                                       <td>{{ $nc->tipo_cliente }} </td>
@@ -188,7 +188,7 @@
                     {"orderable": false, "searchable": false},
                     {"orderable": false, "searchable": false},
                     {"orderable": false, "searchable": false},
-                    {"orderable": true, "searchable": true},
+                    {"orderable": false, "searchable": false},
                 ],
 
                 columnDefs: [
