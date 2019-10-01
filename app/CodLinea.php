@@ -6,12 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CodLinea extends Model
 {
-    //
-    public static function create(array $formData)
-    {
-    }
-
-    public static function UpdateOrCreate(array $array)
-    {
-    }
+    protected $fillable = [
+        'name', 'cod','coments','abreviatura'
+    ];
 }

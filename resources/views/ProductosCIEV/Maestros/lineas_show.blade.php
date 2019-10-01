@@ -13,9 +13,7 @@
 @section('content')
     <div class="col-lg-4">
         <div class="form-group">
-            <a href="javascript:void(0)" class="btn btn-primary add_item" id="crearLinea">
-                Crear Linea
-            </a>
+            <a class="btn btn-primary" href="javascript:void(0)" id="CrearLineas">Crear Nueva Linea</a>
         </div>
     </div>
     <div class="row">
@@ -23,39 +21,18 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-responsive table-striped" id="lineas_table">
+                        <table class="table table-striped first data-table">
                             <thead>
-                                <tr>
-                                    <th>Codigo de linea</th>
-                                    <th>Nombre de Linea</th>
-                                    <th>Abreviatura</th>
-                                    <th>Comentarios</th>
-                                    <th>Usuario</th>
-                                    <th>Opciones</th>
-                                </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Codigo de linea</th>
+                                <th>Nombre</th>
+                                <th>Abreviatura</th>
+                                <th>Comentarios</th>
+                                <th width="280px">Action</th>
+                            </tr>
                             </thead>
                             <tbody>
-                            @foreach( $Codlinea as $cod )
-                                <tr>
-                                    <td>{{ $codl->cod}}</td>
-                                    <td>{{ $codl->name}}</td>
-                                    <td>{{ $codl->abreviatura}}</td>
-                                    <td>{{ $codl->coments}}</td>
-                                    <td>{{ $codl->usuario}}</td>
-                                    <td>
-                                      <div class="btn-group ml-auto float-right">
-                                          <button class="btn btn-sm btn-light" disabled>
-                                          </button>
-                                          <a href="#" class="btn btn-sm btn-outline-light" id="edit-fac" >
-                                              <i class="far fa-edit"></i>
-                                          </a>
-                                          <a href="#" class="btn btn-sm btn-outline-light" id="ver-fac">
-                                              <i class="fa fa-eye"></i>
-                                          </a>
-                                      </div>
-                                    </td>
-                                </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -63,88 +40,81 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="LineasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
+
+    <div class="modal fade" id="Lineamodal" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" id="modalheader">
-                    <h5 class="modal-title" id="exampleModalScrollableTitle">Agregar Linea</h5>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modelHeading"> </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="lineas_form" name="lineas_form" class="form-horizontal">
-                    <input type="hidden" name="lineas_id" id="lineas_id">
-                    @csrf
-                    <div class="modal-body">
-                        <label for="name">Codigo de Linea:</label>
-                        <input type="text" class="form-control" id="cod_linea" name="cod" placeholder="Codigo de Linea"><br>
-                        <label for="name">Nombre de Linea:</label>
-                        <input type="text" class="form-control" id="nom_linea" name="name" placeholder="Nombre de Linea"><br>
-                        <label for="name">Abreviatura:</label>
-                        <input type="text" class="form-control" id="com_linea" name="abreviatura" placeholder="Abreviatura"><br>
-                        <label for="name">Comentarios:</label>
-                        <textarea class="form-control" id="coment_linea" name="coments" placeholder="Comentarios"> </textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <input type="submit" class="btn btn-primary " value="Actualizar" id="GuardarLinea">
-                    </div>
-                </form>
+                <div class="modal-body">
+                    <form id="lineaForm" name="lineaForm" class="form-horizontal">
+                        <input type="hidden" name="linea_id" id="linea_id">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-6 control-label">Codigo de Linea:</label>
+                            <div class="col-sm-12">
+                                <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter value" value="" maxlength="50" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">Nombre:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="abreviatura" name="abreviatura" placeholder="Enter Name" value="" maxlength="50" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Comentarios:</label>
+                            <div class="col-sm-12">
+                                <textarea id="coments" name="coments" required="" placeholder="Enter Details" class="form-control"> </textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Crear</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
 
+    <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"><i class="fas fa-trash"></i> Eliminar Linea</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar esta Linea?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="#" id="delete_form" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-danger delete-confirm"
+                               value="Sí, eliminar esta Linea">
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     @push('javascript')
-        <script>
-            $(document).ready(function () {
-                $("#lineas_table").DataTable({
-                    order: [],
-                    columns: [
-                        // permite ordenar columnas y le da el abributo buscar
-                        {"orderable": false, "searchable": false},
-                        {"orderable": true, "searchable": true},
-                        {"orderable": false, "searchable": false},
-                        {"orderable": false, "searchable": false},
-                        {"orderable": false, "searchable": false},
-                        {"orderable": false, "searchable": false},
-                    ],
-
-                    columnDefs: [
-                        {
-                            targets: 0,
-                        }
-                    ],
-
-                    select: {
-                        style: 'multi'
-                    },
-
-                    language: {
-                        // traduccion de datatables
-                        processing: "Procesando...",
-                        search: "Buscar&nbsp;:",
-                        lengthMenu: "Mostrar _MENU_ registros",
-                        info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                        infoPostFix: "",
-                        loadingRecords: "Cargando...",
-                        zeroRecords: "No se encontraron resultados",
-                        emptyTable: "Ningún registro disponible en esta tabla :C",
-                        paginate: {
-                            first: "Primero",
-                            previous: "Anterior",
-                            next: "Siguiente",
-                            last: "Ultimo"
-                        },
-                        aria: {
-                            sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                            sortDescending: ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
-            });
+        <script type="text/javascript">
             $(function () {
 
                 $.ajaxSetup({
@@ -153,43 +123,93 @@
                     }
                 });
 
+                var table = $('.data-table').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('ProdCievCod.index') }}",
+                    columns: [
+                        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                        {data: 'cod', name: 'cod'},
+                        {data: 'name', name: 'name'},
+                        {data: 'abreviatura', name: 'abreviatura'},
+                        {data: 'coments', name: 'coments'},
+                        {data: 'action', name: 'action', orderable: false, searchable: false},
+                    ]
+                });
+
+                $('#CrearLineas').click(function () {
+                    $('#saveBtn').val("create-linea");
+                    $('#linea_id').val('');
+                    $('#lineaForm').trigger("reset");
+                    $('#modelHeading').html("Crear Nueva Linea");
+                    $('#Lineamodal').modal('show');
+                });
+
+                $('body').on('click', '.editLinea', function () {
+                    var linea_id = $(this).data('id');
+                    $.get("{{ route('ProdCievCod.index') }}" +'/' + linea_id +'/edit', function (data) {
+                        $('#modelHeading').html("Editar Linea");
+                        $('#saveBtn').val("edit-linea");
+                        $('#Lineamodal').modal('show');
+                        $('#linea_id').val(data.id);
+                        $('#cod').val(data.cod);
+                        $('#name').val(data.name);
+                        $('#abreviatura').val(data.abreviatura);
+                        $('#coments').val(data.coments);
+                    })
+                });
 
 
-            $('#crearLinea').click(function () {
-                $('#GuardarLinea').val("Crear Lineas");
-                $('#lineas_id').val('');
-                $('#lineas_form').trigger("reset");
-                $('#modalheader').html("Crear nueva Linea");
-                $('#LineasModal').modal('show');
-            });
+                $('#saveBtn').click(function (e) {
+                    e.preventDefault();
+                    $(this).html('Guardando...');
+                    $.ajax({
+                        data: $('#lineaForm').serialize(),
+                        url: "{{ route('ProdCievCod.store') }}",
+                        type: "POST",
+                        dataType: 'json',
+                        success: function (data) {
 
-            $('#GuardarLinea').click(function (e) {
-                e.preventDefault();
-                $(this).html('Sending..');
+                            $('#lineaForm').trigger("reset");
+                            $('#Lineamodal').modal('hide');
+                            table.draw();
+                            toastr.success("Registro Guardado con Exito!");
+                        },
+                        error: function (data) {
+                            console.log('Error:', data);
+                            $('#saveBtn').html('Guardar Cambios');
+                        }
+                    });
+                });
 
-                $.ajax({
-                    data: $('#lineas_form').serialize(),
-                    url: "{{ route('ProdCievCod.store') }}",
-                    type: "POST",
-                    dataType: 'json',
-                    success: function (data) {
+                $('body').on('click', '.deleteLinea', function () {
 
-                        $('#lineas_form').trigger("reset");
-                        $('#LineasModal').modal('hide');
-                       // table.draw();
-
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        $('#GuardarLinea').html('Guardado');
+                    var linea_id = $(this).data("id");
+                    if(confirm("¿Esta seguro de Eliminar?")) {
+                         $.ajax({
+                             type: "DELETE",
+                             url: "{{ route('ProdCievCod.store') }}" + '/' + linea_id,
+                             success: function (data) {
+                                 table.draw();
+                                 toastr.success("Registro Eliminado con exito");
+                             },
+                             error: function (data) {
+                                 console.log('Error:', data);
+                                 toastr.danger("Error al eliminar el registro");
+                             }
+                         });
                     }
                 });
             });
-            });
         </script>
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
-        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+        {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />--}}
+        {{--<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">--}}
+        {{--<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
     @endpush
 @endsection

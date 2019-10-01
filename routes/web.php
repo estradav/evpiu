@@ -68,7 +68,6 @@ Route::middleware(['auth'])->group(function() {
 
 
     Route::resource('ProdCievCod','ProdCievCodController');
-    Route::get('lineas','ProdCievCodController@lineas_show')->name('prod.lineas.show');
 
 });
 
