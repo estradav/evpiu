@@ -25,7 +25,7 @@
                     <li> Edita</li>
                     <li> Eliminar</li>
                 </ul>
-                <a href="{{route('prod.lineas.show')}}" class="btn btn-lg btn-block btn-primary">IR</a>
+                <a href="{{route('ProdCievCod.index')}}" class="btn btn-lg btn-block btn-primary">IR</a>
             </div>
         </div>
         <div class="card mb-4 shadow-sm">
