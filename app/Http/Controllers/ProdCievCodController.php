@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CodLinea;
 use App\Http\Requests\CodLineasFormRequest;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Contracts\DataTable;
 
 class ProdCievCodController extends Controller
 {
@@ -17,8 +18,8 @@ class ProdCievCodController extends Controller
     public function store(Request $request)
     {
 
-        CodLinea::UpdateOrCreate(['id' => $request->lineas_id,
-            'name' => $request->name, 'abreviatura' => $request->abreviatura, 'cod' => $request->cod, 'coments' => $request->coments]);
+        CodLinea::UpdateOrCreate(['id' => $request->lineas_id],
+            ['name' => $request->name, 'abreviatura' => $request->abreviatura, 'cod' => $request->cod, 'coments' => $request->coments]);
 
          return response()->json(['success'=>'linea creada con exito.']);
 
