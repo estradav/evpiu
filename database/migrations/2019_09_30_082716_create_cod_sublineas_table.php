@@ -14,17 +14,21 @@ class CreateCodSublineasTable extends Migration
     public function up()
     {
         Schema::create('cod_sublineas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('cod');
             $table->string('name',20);
             $table->string('abreviatura',10);
             $table->string('coments', 250);
             $table->string('usuario');
             $table->timestamps();
+
+
+            $table->unsignedBigInteger('lineas_id');
+            $table->foreign('lineas_id')->references('id')->on('cod_lineas');
         });
     }
 
-    /**cd ho
+    /**cd hoº
      * Reverse the migrations.
      *
      * @return void

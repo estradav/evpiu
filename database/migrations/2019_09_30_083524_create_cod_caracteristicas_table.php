@@ -22,6 +22,14 @@ class CreateCodCaracteristicasTable extends Migration
             $table->string('coments', 250);
             $table->string('usuario');
             $table->timestamps();
+
+
+            $table->unsignedBigInteger('car_lineas_id');
+            $table->foreign('car_lineas_id')->references('id')->on('cod_lineas');
+
+            $table->unsignedBigInteger('car_sublineas_id');
+            $table->foreign('car_sublineas_id')->references('id')->on('cod_sublineas');
+
         });
     }
 

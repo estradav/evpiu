@@ -4,23 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CodLinea extends Model
+class CodSublinea extends Model
 {
     protected $fillable = [
-        'name', 'cod','coments','abreviatura','tipoproducto_id'
+        'name', 'cod','coments','abreviatura','lineas_id'
     ];
 
-
-    public function CodTipoProductos ()
+    public function Codlineas ()
     {
-        return $this->belongsTo(CodTipoProducto::class); // pertecene a Tipo de producto
+        return $this->belongsTo(CodLinea::class); // pertecene a linea
     }
-
-    public function CodSublineas()
-    {
-        return $this->hasMany(CodSublinea::class); // tiene muchas sublineas
-    }
-
 
     public function CodMateriales()
     {

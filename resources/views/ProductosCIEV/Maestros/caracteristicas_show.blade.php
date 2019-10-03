@@ -11,10 +11,10 @@
 @stop
 
 @section('content')
-    @inject('TipoProductos','App\Services\TipoProductos')
+    @inject('Lineas','App\Services\Lineas')
     <div class="col-lg-4">
         <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearLineas">Crear Nueva Linea</a>
+            <a class="btn btn-primary" href="javascript:void(0)" id="CrearCaracteristica">Crear Nueva Caracteristica</a>
         </div>
     </div>
     <div class="row">
@@ -24,15 +24,15 @@
                     <div class="table-responsive">
                         <table class="table table-striped first data-table">
                             <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tipo de Producto</th>
-                                <th>Codigo de linea</th>
-                                <th>Nombre</th>
-                                <th>Abreviatura</th>
-                                <th>Comentarios</th>
-                                <th width="280px">Opciones</th>
-                            </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Codigo de linea</th>
+                                    <th>Codigo de Sublinea</th>
+                                    <th>Codigo</th>
+                                    <th>Nombre Caracteristica</th>
+                                    <th>Comentarios</th>
+                                    <th width="280px">Opciones</th>
+                                </tr>
                             </thead>
                             <tbody>
                             </tbody>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="Lineamodal" aria-hidden="true">
+    <div class="modal fade" id="caracteristicamodal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -53,28 +53,34 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="lineaForm" name="lineaForm" class="form-horizontal">
-                        <input type="hidden" name="linea_id" id="linea_id">
+                    <form id="caracteristicaForm" name="caracteristicaForm" class="form-horizontal">
+                        <input type="hidden" name="caracteristica_id" id="caracteristica_id">
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Tipo de Producto:</label>
+                            <label for="name" class="col-sm-6 control-label">Linea:</label>
                             <div class="col-sm-12">
-                                <select class="form-control" name="tipoproducto_id" id="tipoproducto_id" >
-                                @foreach( $TipoProductos->get() as $index => $TipoProducto)
-                                    <option value="{{ $index }}" {{ old('TipoProducto_id') == $index ? 'selected' : ''}}>
-                                        {{ $TipoProducto }}
-                                    </option>
-@                               @endforeach
+                                <select class="custom-select" name="car_lineas" id="car_lineas">
+                                    @foreach ( $Lineas->get() as $index => $Linea)
+                                        <option value="{{ $index }}" {{ old('car_lineas_id') == $index ? 'selected' : ''}}>
+                                            {{ $Linea }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Codigo de Linea:</label>
+                            <label for="name" class="col-sm-6 control-label">Sublinea:</label>
                             <div class="col-sm-12">
-                                <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter value" value="" maxlength="50" required="required">
+                                <select class="custom-select" name="car_sublineas" id="car_sublineas"></select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">Nombre:</label>
+                            <label for="name" class="col-sm-6 control-label">Codigo de Caracteristica:</label>
+                            <div class="col-sm-12">
+                                <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter Name" value="" maxlength="50" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-6 control-label">Nombre de Caracteristica:</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="required">
                             </div>
@@ -115,15 +121,15 @@
                 var table = $('.data-table').DataTable({
                     processing: true,
                     serverSide: true,
-                    ajax: "{{ route('ProdCievCod.index') }}",
+                    ajax: "{{ route('ProdCievCodCaracteristica.index') }}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                        {data: 'tipoproducto_id', name: 'tipoproducto_id'},
                         {data: 'cod', name: 'cod'},
+                        {data: 'car_lineas_id', name: 'car_lineas_id'},
+                        {data: 'car_sublineas_id', name: 'car_sublineas_id'},
                         {data: 'name', name: 'name'},
-                        {data: 'abreviatura', name: 'abreviatura'},
                         {data: 'coments', name: 'coments'},
-                        {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+                        {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false},
                     ],
                     language: {
                         // traduccion de datatables
@@ -150,24 +156,25 @@
                     }
                 });
 
-                $('#CrearLineas').click(function () {
-                    $('#saveBtn').val("create-linea");
-                    $('#linea_id').val('');
-                    $('#lineaForm').trigger("reset");
-                    $('#modelHeading').html("Crear Nueva Linea");
-                    $('#Lineamodal').modal('show');
+                $('#CrearCaracteristica').click(function () {
+                    $('#saveBtn').val("create-caracteristica");
+                    $('#caracteristica_id').val('');
+                    $('#caracteristicaForm').trigger("reset");
+                    $('#modelHeading').html("Crear Nueva Caracteristica");
+                    $('#caracteristicamodal').modal('show');
                 });
 
-                $('body').on('click', '.editLinea', function () {
+                $('body').on('click', '.editcaracteristica', function () {
 
-                    var linea_id = $(this).data('id');
-                    $.get("{{ route('ProdCievCod.index') }}" +'/' + linea_id +'/edit', function (data) {
-                        $('#modelHeading').html("Editar Linea");
-                        $('#saveBtn').val("edit-linea");
-                        $('#Lineamodal').modal('show');
-                        $('#linea_id').val(data.id);
+                    var caracteristica_id = $(this).data('id');
+                    $.get("{{ route('ProdCievCodCaracteristica.index') }}" +'/' + caracteristica_id +'/edit', function (data) {
+                        $('#modelHeading').html("Editar Caracteristica");
+                        $('#saveBtn').val("edit-caracteristica");
+                        $('#caracteristicamodal').modal('show');
+                        $('#caracteristica_id').val(data.id);
                         $('#cod').val(data.cod);
-                        $('#tipoproducto_id').val(data.tipoproducto_id);
+                        $('#car_lineas_id').val(data.car_lineas_id);
+                        $('#sublineas_id').val(data.sublineas_id);
                         $('#name').val(data.name);
                         $('#abreviatura').val(data.abreviatura);
                         $('#coments').val(data.coments);
@@ -179,17 +186,17 @@
                     e.preventDefault();
                     //$(this).html('Guardando...');
                     $.ajax({
-                        data: $('#lineaForm').serialize(),
-                        url: "{{ route('ProdCievCod.store') }}",
+                        data: $('#caracteristicaForm').serialize(),
+                        url: "{{ route('ProdCievCodCaracteristica.store') }}",
                         type: "POST",
                         dataType: 'json',
                         success: function (data) {
 
-                            $('#lineaForm').trigger("reset");
-                            $('#Lineamodal').modal('hide');
+                            $('#caracteristicaForm').trigger("reset");
+                            $('#caracteristicamodal').modal('hide');
                             table.draw();
                             toastr.success("Registro Guardado con Exito!");
-                         //   $(this).html('Crear');
+                            //   $(this).html('Crear');
                         },
                         error: function (data) {
                             console.log('Error:', data);
@@ -198,24 +205,39 @@
                     });
                 });
 
-                $('body').on('click', '.deleteLinea', function () {
+                $('body').on('click', '.deletecaracteristica', function () {
 
-                    var linea_id = $(this).data("id");
+                    var caracteristica_id = $(this).data("id");
                     if(confirm("¿Esta seguro de Eliminar?")) {
-                         $.ajax({
-                             type: "DELETE",
-                             url: "{{ route('ProdCievCod.store') }}" + '/' + linea_id,
-                             success: function (data) {
-                                 table.draw();
-                                 toastr.success("Registro Eliminado con exito");
-                             },
-                             error: function (data) {
-                                 console.log('Error:', data);
-                                 toastr.danger("Error al eliminar el registro");
-                             }
-                         });
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ route('ProdCievCodCaracteristica.store') }}" + '/' + caracteristica_id,
+                            success: function (data) {
+                                table.draw();
+                                toastr.success("Registro Eliminado con exito");
+                            },
+                            error: function (data) {
+                                console.log('Error:', data);
+                                toastr.danger("Error al eliminar el registro");
+                            }
+                        });
                     }
                 });
+            });
+
+            $(document).ready(function(){
+            	$('#car_lineas').on('change', function () {
+                    var lineas_id = $(this).val();
+                    if ($.trim(lineas_id) != ''){
+                    	$.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
+                            $('#car_sublineas').empty();
+                            $('#car_sublineas').append("<option value=''>Seleccionar una sublinea</option>");
+                            $.each(getsublineas, function (index, value) {
+                            	$('#car_sublineas').append("<option value='" + index + "'>"+ value +"</option>");
+                            })
+                        });
+                    }
+            	});
             });
         </script>
         {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />--}}
@@ -229,4 +251,3 @@
 
     @endpush
 @endsection
-

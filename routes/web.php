@@ -65,9 +65,15 @@ Route::middleware(['auth'])->group(function() {
     // Productos CIEV --> Codificador
     Route::resource('ProdCievMaestro','ProdCievMaestroController');
 
+    Route::resource('ProdCievCodTipoProducto','ProdCodTipoProductoController');
+
+    Route::resource('ProdCievCod','ProdCodLineasController');
 
 
-    Route::resource('ProdCievCod','ProdCievCodController');
+    Route::resource('ProdCievCodSublinea','ProdCodSublineasController');
+
+    Route::resource('ProdCievCodCaracteristica','ProdCievCodCaracteristicaController');
+    Route::get('/getsublineas','ProdCievCodCaracteristicaController@getSublineas');
 
 });
 

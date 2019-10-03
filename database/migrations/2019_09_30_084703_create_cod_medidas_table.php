@@ -27,6 +27,13 @@ class CreateCodMedidasTable extends Migration
             $table->string('coments', 250);
             $table->string('usuario');
             $table->timestamps();
+
+
+            $table->unsignedBigInteger('med_lineas_id');
+            $table->foreign('med_lineas_id')->references('id')->on('cod_lineas');
+
+            $table->unsignedBigInteger('med_sublineas_id');
+            $table->foreign('med_sublineas_id')->references('id')->on('cod_sublineas');
         });
     }
 

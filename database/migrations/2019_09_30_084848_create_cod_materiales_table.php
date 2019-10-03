@@ -22,6 +22,12 @@ class CreateCodMaterialesTable extends Migration
             $table->string('coments', 250);
             $table->string('usuario');
             $table->timestamps();
+
+            $table->unsignedBigInteger('mat_lineas_id');
+            $table->foreign('mat_lineas_id')->references('id')->on('cod_lineas');
+
+            $table->unsignedBigInteger('mat_sublineas_id');
+            $table->foreign('mat_sublineas_id')->references('id')->on('cod_sublineas');
         });
     }
 
