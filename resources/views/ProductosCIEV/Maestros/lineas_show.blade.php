@@ -7,7 +7,7 @@
 @section('subtitle', 'sbutitulo.')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('fact_electr_facturas') }}
+    {{ Breadcrumbs::render('Prod_ciev_maestros_lineas') }}
 @stop
 
 @section('content')
@@ -63,7 +63,7 @@
                                     <option value="{{ $index }}" {{ old('TipoProducto_id') == $index ? 'selected' : ''}}>
                                         {{ $TipoProducto }}
                                     </option>
-@                               @endforeach
+                                @endforeach
                                 </select>
                             </div>
                         </div>

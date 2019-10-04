@@ -2,39 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\CodCaracteristica;
+use App\CodMaterial;
 use App\CodSublinea;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class ProdCievCodCaracteristicaController extends Controller
+class ProdCievCodMaterialController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $getsublineas = CodSublinea::all('name','id');
 
-            $data = CodCaracteristica::latest()->get();
+            $data = CodMaterial::latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('Opciones', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editcaracteristica" id="edit-btn">Editar</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletecaracteristica">Eliminar</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmaterial" id="edit-btn">Editar</a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletematerial">Eliminar</a>';
                     return $btn;
                 })
                 ->rawColumns(['Opciones'])
                 ->make(true);
         }
-        return view('ProductosCIEV.Maestros.caracteristicas_show')->with('getsublineas');
+        return view('ProductosCIEV.Maestros.materiales_show');
     }
 
     public function store(Request $request)
     {
-        CodCaracteristica::updateOrCreate(['id' => $request->caracteristica_id],
+        CodMaterial::updateOrCreate(['id' => $request->material_id],
             [   'cod'               => $request->cod,
                 'name'              => $request->name,
-                'car_lineas_id'     => $request->car_lineas_id,
-                'car_sublineas_id'  => $request->car_sublineas_id,
+                'mat_lineas_id'     => $request->mat_lineas_id,
+                'mat_sublineas_id'  => $request->mat_sublineas_id,
                 'abreviatura'       => $request->abreviatura,
                 'coments'           => $request->coments,
             ]);
@@ -44,13 +43,13 @@ class ProdCievCodCaracteristicaController extends Controller
 
     public function edit($id)
     {
-        $codcaracteristica = CodCaracteristica::find($id);
-        return response()->json($codcaracteristica);
+        $codmaterial = CodMaterial::find($id);
+        return response()->json($codmaterial);
     }
 
     public function destroy($id)
     {
-        CodCaracteristica::find($id)->delete();
+        CodMaterial::find($id)->delete();
         return response()->json(['success'=>'deleted successfully.']);
     }
 
@@ -65,4 +64,5 @@ class ProdCievCodCaracteristicaController extends Controller
             return response()->json($getsublineasArray);
         }
     }
+
 }

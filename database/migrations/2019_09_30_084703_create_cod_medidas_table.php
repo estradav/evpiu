@@ -15,7 +15,7 @@ class CreateCodMedidasTable extends Migration
     {
         Schema::create('cod_medidas', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('cod');
             $table->string('name', 20);
             $table->string('denominacion',10);

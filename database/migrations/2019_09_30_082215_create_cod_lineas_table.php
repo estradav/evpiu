@@ -24,7 +24,7 @@ class CreateCodLineasTable extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('tipoproducto_id');
-            $table->foreign('tipoproducto_id')->references('id')->on('cod_tipoproducto');
+            $table->foreign('tipoproducto_id')->references('id')->on('cod_tipo_productos');
         });
     }
 

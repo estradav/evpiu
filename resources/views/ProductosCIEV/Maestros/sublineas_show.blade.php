@@ -2,12 +2,12 @@
 
 @section('page_title', 'Maestros')
 
-@section('module_title', 'Lineas')
+@section('module_title', 'Sublineas')
 
 @section('subtitle', 'sbutitulo.')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('fact_electr_facturas') }}
+    {{ Breadcrumbs::render('Prod_ciev_maestros_sublineas') }}
 @stop
 
 @section('content')
@@ -117,9 +117,8 @@
                     ajax: "{{ route('ProdCievCodSublinea.index') }}",
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-
-                        {data: 'cod', name: 'cod'},
                         {data: 'lineas_id', name: 'lineas_id'},
+						{data: 'cod', name: 'cod'},
                         {data: 'name', name: 'name'},
                         {data: 'coments', name: 'coments'},
                         {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false},
@@ -197,7 +196,7 @@
                     });
                 });
 
-                $('body').on('click', '.deletesublinea', function () {
+                $('body').on('click', '.deletesubLinea', function () {
 
                     var sublinea_id = $(this).data("id");
                     if(confirm("¿Esta seguro de Eliminar?")) {

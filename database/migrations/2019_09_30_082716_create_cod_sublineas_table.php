@@ -14,6 +14,7 @@ class CreateCodSublineasTable extends Migration
     public function up()
     {
         Schema::create('cod_sublineas', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('cod');
             $table->string('name',20);

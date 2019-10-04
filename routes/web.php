@@ -69,11 +69,33 @@ Route::middleware(['auth'])->group(function() {
 
     Route::resource('ProdCievCod','ProdCodLineasController');
 
-
     Route::resource('ProdCievCodSublinea','ProdCodSublineasController');
 
     Route::resource('ProdCievCodCaracteristica','ProdCievCodCaracteristicaController');
     Route::get('/getsublineas','ProdCievCodCaracteristicaController@getSublineas');
+
+    Route::resource('ProdCievCodMaterial','ProdCievCodMaterialController');
+    Route::get('/getsublineas','ProdCievCodMaterialController@getSublineas');
+
+    Route::resource('ProdCievCodMedida','ProdCievCodMedidaController');
+    Route::get('/getsublineas','ProdCievCodMedidaController@getSublineas');
+
+
+    Route::resource('ProdCievCodCodigo','ProdCievCodCodigoController');
+    Route::get('/getlineas','ProdCievCodCodigoController@getlineas');
+    Route::get('/getsublineas','ProdCievCodCodigoController@getsublineas');
+    Route::get('/getcaracteristica','ProdCievCodCodigoController@getcaracteristica');
+    Route::get('/getmaterial','ProdCievCodCodigoController@getmaterial');
+    Route::get('/getmedida','ProdCievCodCodigoController@getmedida');
+
+
+    Route::get('/ctp','ProdCievCodCodigoController@ctp');
+    Route::get('/lns','ProdCievCodCodigoController@lns');
+    Route::get('/sln','ProdCievCodCodigoController@sln');
+    Route::get('/mat','ProdCievCodCodigoController@mat');
+    Route::get('/car','ProdCievCodCodigoController@car');
+    Route::get('/med','ProdCievCodCodigoController@med');
+
 
 });
 

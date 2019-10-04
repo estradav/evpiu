@@ -13,15 +13,14 @@ class CreateCodTipoproducto extends Migration
      */
     public function up()
     {
-        Schema::create('cod_tipoproducto', function (Blueprint $table) {
+        Schema::create('cod_tipo_productos', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('cod');
             $table->string('name', 20);
             $table->string('coments',250);
             $table->string('usuario');
             $table->timestamps();
-
-
         });
     }
 

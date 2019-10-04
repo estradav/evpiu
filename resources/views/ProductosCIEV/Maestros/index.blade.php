@@ -75,7 +75,7 @@
                         <li> Definicion de los posibles elementos con los que se puede construir una pieza, dependerán de la Linea y la sublinea.</li>
                         &nbsp;
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Ir</button>
+                    <a href="{{ route('ProdCievCodMaterial.index')}}" class="btn btn-lg btn-block btn-primary">Ir</a>
                 </div>
             </div>
             <div class="card mb-4 shadow-sm">
@@ -87,7 +87,7 @@
                         <li>Definición de las diferentes dimensiones en las que se puede elaborar una pieza, dependerán directamente de la Linea y la Sublinea.</li>
                         &nbsp;
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Ir</button>
+                    <a href="{{ route('ProdCievCodMedida.index')}}" class="btn btn-lg btn-block btn-primary">Ir</a>
                 </div>
             </div>
         </div>

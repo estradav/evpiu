@@ -2,12 +2,12 @@
 
 @section('page_title', 'Maestros')
 
-@section('module_title', 'Lineas')
+@section('module_title', 'Tipos Producto')
 
 @section('subtitle', 'sbutitulo.')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('fact_electr_facturas') }}
+    {{ Breadcrumbs::render('Prod_ciev_maestros_tipos_producto') }}
 @stop
 
 @section('content')
@@ -55,7 +55,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Codigo de Tipo Producto:</label>
                             <div class="col-sm-12">
-                                <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter value" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="cod" name="cod" placeholder="Enter value" value="" maxlength="2" required="required">
                             </div>
                         </div>
                         <div class="form-group">

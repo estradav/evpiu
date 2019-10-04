@@ -13,9 +13,9 @@ class CreateCodMaterialesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cod_materiales', function (Blueprint $table) {
+        Schema::create('cod_materials', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('cod');
             $table->string('name', 20);
             $table->string('abreviatura',10);

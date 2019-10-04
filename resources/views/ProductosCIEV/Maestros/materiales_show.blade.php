@@ -2,19 +2,19 @@
 
 @section('page_title', 'Maestros')
 
-@section('module_title', 'Caracteristicas')
+@section('module_title', 'Materiales')
 
-@section('subtitle', 'Este modulo permite ver, crear y editar caracteristicas.')
+@section('subtitle', 'Este modulo permite ver, crear y editar Materiales.')
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('Prod_ciev_maestros_caracteristicas') }}
+    {{ Breadcrumbs::render('Prod_ciev_maestros_materiales') }}
 @stop
 
 @section('content')
     @inject('Lineas','App\Services\Lineas')
     <div class="col-lg-4">
         <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearCaracteristica">Crear Nueva Caracteristica</a>
+            <a class="btn btn-primary" href="javascript:void(0)" id="CrearMaterial">Crear Nuevo Material</a>
         </div>
     </div>
     <div class="row">
@@ -24,15 +24,15 @@
                     <div class="table-responsive">
                         <table class="table table-striped first data-table">
                             <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Codigo de linea</th>
-                                    <th>Codigo de Sublinea</th>
-                                    <th>Codigo</th>
-                                    <th>Nombre Caracteristica</th>
-                                    <th>Comentarios</th>
-                                    <th width="280px">Opciones</th>
-                                </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Codigo de linea</th>
+                                <th>Codigo de Sublinea</th>
+                                <th>Codigo</th>
+                                <th>Nombre Material</th>
+                                <th>Comentarios</th>
+                                <th width="280px">Opciones</th>
+                            </tr>
                             </thead>
                             <tbody>
                             </tbody>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="caracteristicamodal" aria-hidden="true">
+    <div class="modal fade" id="materialmodal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -53,12 +53,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="caracteristicaForm" name="caracteristicaForm" class="form-horizontal">
-                        <input type="hidden" name="caracteristica_id" id="caracteristica_id">
+                    <form id="materialForm" name="materialForm" class="form-horizontal">
+                        <input type="hidden" name="material_id" id="material_id">
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Linea:</label>
                             <div class="col-sm-12">
-                                <select class="custom-select" name="car_lineas_id" id="car_lineas_id">
+                                <select class="custom-select" name="mat_lineas_id" id="mat_lineas_id">
                                     @foreach ( $Lineas->get() as $index => $Linea)
                                         <option value="{{ $index }}" {{ old('car_lineas_id') == $index ? 'selected' : ''}}>
                                             {{ $Linea }}
@@ -70,17 +70,17 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Sublinea:</label>
                             <div class="col-sm-12">
-                                <select class="custom-select" name="car_sublineas_id" id="car_sublineas_id"></select>
+                                <select class="custom-select" name="mat_sublineas_id" id="mat_sublineas_id"></select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Codigo de Caracteristica:</label>
+                            <label for="name" class="col-sm-6 control-label">Codigo del Material:</label>
                             <div class="col-sm-12">
-                                <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="cod" name="cod" placeholder="Enter Name" value="" maxlength="2" required="required">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Nombre de Caracteristica:</label>
+                            <label for="name" class="col-sm-6 control-label">Nombre del Material:</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="required">
                             </div>
@@ -121,11 +121,11 @@
                     var table = $('.data-table').DataTable({
                         processing: true,
                         serverSide: true,
-                        ajax: "{{ route('ProdCievCodCaracteristica.index') }}",
+                        ajax: "{{ route('ProdCievCodMaterial.index') }}",
                         columns: [
                             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                            {data: 'car_lineas_id', name: 'car_lineas_id'},
-                            {data: 'car_sublineas_id', name: 'car_sublineas_id'},
+                            {data: 'mat_lineas_id', name: 'mat_lineas_id'},
+                            {data: 'mat_sublineas_id', name: 'mat_sublineas_id'},
                             {data: 'cod', name: 'cod'},
                             {data: 'name', name: 'name'},
                             {data: 'coments', name: 'coments'},
@@ -156,25 +156,25 @@
                         }
                     });
 
-                    $('#CrearCaracteristica').click(function () {
-                        $('#saveBtn').val("create-caracteristica");
-                        $('#caracteristica_id').val('');
-                        $('#caracteristicaForm').trigger("reset");
-                        $('#modelHeading').html("Crear Nueva Caracteristica");
-                        $('#caracteristicamodal').modal('show');
+                    $('#CrearMaterial').click(function () {
+                        $('#saveBtn').val("create-material");
+                        $('#material_id').val('');
+                        $('#materialForm').trigger("reset");
+                        $('#modelHeading').html("Crear Nuevo Material");
+                        $('#materialmodal').modal('show');
                     });
 
-                    $('body').on('click', '.editcaracteristica', function () {
+                    $('body').on('click', '.editmaterial', function () {
 
-                        var caracteristica_id = $(this).data('id');
-                        $.get("{{ route('ProdCievCodCaracteristica.index') }}" +'/' + caracteristica_id +'/edit', function (data) {
-                            $('#modelHeading').html("Editar Caracteristica");
-                            $('#saveBtn').val("edit-caracteristica");
-                            $('#caracteristicamodal').modal('show');
-                            $('#caracteristica_id').val(data.id);
+                        var material_id = $(this).data('id');
+                        $.get("{{ route('ProdCievCodMaterial.index') }}" +'/' + material_id +'/edit', function (data) {
+                            $('#modelHeading').html("Editar Material");
+                            $('#saveBtn').val("edit-Material");
+                            $('#materialmodal').modal('show');
+                            $('#material_id').val(data.id);
                             $('#cod').val(data.cod);
-                            $('#car_lineas_id').val(data.car_lineas_id);
-                            $('#car_sublineas_id').val(data.car_sublineas_id);
+                            $('#mat_lineas_id').val(data.mat_lineas_id);
+                            $('#mat_sublineas_id').val(data.mat_sublineas_id);
                             $('#name').val(data.name);
                             $('#abreviatura').val(data.abreviatura);
                             $('#coments').val(data.coments);
@@ -186,14 +186,14 @@
                         e.preventDefault();
                         //$(this).html('Guardando...');
                         $.ajax({
-                            data: $('#caracteristicaForm').serialize(),
-                            url: "{{ route('ProdCievCodCaracteristica.store') }}",
+                            data: $('#materialForm').serialize(),
+                            url: "{{ route('ProdCievCodMaterial.store') }}",
                             type: "POST",
                             dataType: 'json',
                             success: function (data) {
 
-                                $('#caracteristicaForm').trigger("reset");
-                                $('#caracteristicamodal').modal('hide');
+                                $('#materialForm').trigger("reset");
+                                $('#materialmodal').modal('hide');
                                 table.draw();
                                 toastr.success("Registro Guardado con Exito!");
                                 //   $(this).html('Crear');
@@ -205,13 +205,13 @@
                         });
                     });
 
-                    $('body').on('click', '.deletecaracteristica', function () {
+                    $('body').on('click', '.deletematerial', function () {
 
-                        var caracteristica_id = $(this).data("id");
+                        var material_id = $(this).data("id");
                         if(confirm("¿Esta seguro de Eliminar?")) {
                             $.ajax({
                                 type: "DELETE",
-                                url: "{{ route('ProdCievCodCaracteristica.store') }}" + '/' + caracteristica_id,
+                                url: "{{ route('ProdCievCodMaterial.store') }}" + '/' + material_id,
                                 success: function (data) {
                                     table.draw();
                                     toastr.success("Registro eliminado con exito");
@@ -225,14 +225,14 @@
                     });
                 });
 
-                $('#car_lineas_id').on('change', function () {
+                $('#mat_lineas_id').on('change', function () {
                     var lineas_id = $(this).val();
                     if ($.trim(lineas_id) != ''){
                         $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
-                            $('#car_sublineas_id').empty();
-                            $('#car_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
+                            $('#mat_sublineas_id').empty();
+                            $('#mat_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
                             $.each(getsublineas, function (index, value) {
-                                $('#car_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
+                                $('#mat_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
                             })
                         });
                     }
