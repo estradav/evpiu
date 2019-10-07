@@ -22,8 +22,8 @@ class ProdCievCodCodigoController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('Opciones', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmedida" id="edit-btn">Editar</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletemedida">Eliminar</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editCodigo" id="edit-btn">Editar</a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteCodigo">Eliminar</a>';
                     return $btn;
                 })
                 ->rawColumns(['Opciones'])
@@ -34,15 +34,16 @@ class ProdCievCodCodigoController extends Controller
 
     public function store(Request $request)
     {
-        CodCodigo::updateOrCreate(['id' => $request->medida_id],
-            [   'codigo'            => $request->codigo,
-                'coments'           => $request->coments,
-                'cod_tipoproducto'  => $request->cod_tipoproducto,
-                'cod_lineas_id'     => $request->cod_lineas_id,
-                'cod_sublineas_id'  => $request->cod_sublineas_id,
-                'cod_medidas_id'    => $request->cod_medidas_id,
-                'cod_caracteristicas'=> $request->cod_caracteristicas,
-                'cod_materials_id'  => $request->cod_materials_id,
+        CodCodigo::updateOrCreate(['id'     => $request->medida_id],
+            [   'codigo'                    => $request->codigo,
+                'coments'                   => $request->coments,
+                'cod_tipo_producto_id'      => $request->ctipoproducto_id,
+                'cod_lineas_id'             => $request->clineas_id,
+                'cod_sublineas_id'          => $request->sublineas_id,
+                'cod_medidas_id'            => $request->medida_id,
+                'cod_caracteristicas_id'    => $request->caracteristica_id,
+                'cod_materials_id'          => $request->material_id,
+                'descripcion'               => $request->descripcion
             ]);
 
         return response()->json(['success'=>'Medida Guardada Correctamente.']);

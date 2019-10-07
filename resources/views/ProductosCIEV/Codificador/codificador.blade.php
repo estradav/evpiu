@@ -12,10 +12,6 @@
 
 @section('content')
     @inject('TipoProductos','App\Services\TipoProductos')
-    @inject('Caracteristicas','App\Services\Caracteristicas')
-    @inject('Materiales','App\Services\Materiales')
-    @inject('Medidas','App\Services\Medidas')
-
     <div class="col-lg-4">
         <div class="form-group">
             <a class="btn btn-primary" href="javascript:void(0)" id="CrearCodigo">Crear Codigo</a>
@@ -31,6 +27,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Codigo</th>
+                                    <th>Descripcion</th>
                                     <th>Tipo Producto</th>
                                     <th>Linea</th>
                                     <th>Sublinea</th>
@@ -68,7 +65,6 @@
                         <input type="hidden" name="sln-g" id="sln-g">
                         <input type="hidden" name="mat-g" id="mat-g">
 
-
                         <input type="hidden" name="lin-d" id="lin-d">
                         <input type="hidden" name="sln-d" id="sln-d">
                         <input type="hidden" name="car-d" id="car-d">
@@ -80,7 +76,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Codigo:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="" maxlength="50" disabled>
+                                        <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="" maxlength="50" >
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +84,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Descripcion:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Descripcion" value="" maxlength="50" disabled>
+                                        <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Descripcion" value="" maxlength="50" >
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +94,7 @@
                                     <div class="col-sm-12">
                                         <select class="custom-select" name="tipoproducto_id" id="tipoproducto_id" >
                                             @foreach( $TipoProductos->get() as $index => $TipoProducto)
-                                                <option value="{{ $index }}" {{ old('TipoProducto_id') == $index ? 'selected' : ''}}>
+                                                <option value="{{ $index }}" {{ old('tipoproducto_id') == $index ? 'selected' : ''}}>
                                                     {{ $TipoProducto }}
                                                 </option>
                                             @endforeach
@@ -187,7 +183,8 @@
                         columns: [
                             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
 							{data: 'codigo', name: 'codigo'},
-                            {data: 'cod_tipoproducto_id', name: 'cod_tipoproducto_id'},
+                            {data: 'descripcion', name: 'descripcion'},
+                            {data: 'cod_tipo_producto_id', name: 'cod_tipo_producto_id'},
                             {data: 'cod_lineas_id', name: 'cod_lineas_id'},
                             {data: 'cod_sublineas_id', name: 'cod_sublineas_id'},
 							{data: 'cod_medidas_id', name: 'cod_medidas_id'},
@@ -238,12 +235,13 @@
                             $('#Codigomodal').modal('show');
                             $('#medida_id').val(data.id);
                             $('#codigo').val(data.codigo);
-							$('#tipoproductos_id').val(data.tipo_productos_id);
+							$('#descripcion').val(data.descripcion);
+							$('#tipoproducto_id').val(data.tipoproducto_id);
                             $('#lineas_id').val(data.lineas_id);
-                            $('#cod_sublineas_id').val(data.sublineas_id);
-							$('#cod_medida_id').val(data.medida_id);
-							$('#cod_caracteristica_id').val(data.caracteristica_id);
-                            $('#cod_material_id').val(data.material_id);
+                            $('#sublineas_id').val(data.sublineas_id);
+							$('#medida_id').val(data.medida_id);
+							$('#caracteristica_id').val(data.caracteristica_id);
+                            $('#material_id').val(data.material_id);
                             $('#coments').val(data.coments);
                         })
                     });
@@ -297,7 +295,17 @@
                     if ($.trim(tipoproducto_id) != ''){
                         $.get('getlineas',{tipoproducto_id: tipoproducto_id}, function(getlineas) {
                             $('#lineas_id').empty();
-                            $('#lineas_id').append("<option value=''>Seleccionar una Linea</option>");
+							$('#sublineas_id').empty();
+                            $('#caracteristica_id').empty();
+                            $('#material_id').empty();
+                            $('#medida_id').empty();
+
+                            $('#lineas_id').append("<option value=''>Seleccione una Linea...</option>");
+							$('#sublineas_id').append("<option value=''>Seleccione una Sublinea...</option>");
+                            $('#caracteristica_id').append("<option value=''>Seleccione una Caracteristica...</option>");
+                            $('#material_id').append("<option value=''>Seleccione un Material...</option>");
+                            $('#medida_id').append("<option value=''>Seleccione una Medida...</option>");
+
                             $.each(getlineas, function (index, value) {
                                 $('#lineas_id').append("<option value='" + index + "'>"+ value +"</option>");
                             })
@@ -306,8 +314,6 @@
                             $('#ctp-g').empty();
                             $.each(ctp, function (index, value) {
                                 document.getElementById("ctp-g").value=index;
-                               // document.getElementById("ctp-d").value=value;
-                               // $('#codigo')
                             })
                         });
                     }
@@ -319,7 +325,15 @@
                     if ($.trim(lineas_id) != ''){
                         $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
                             $('#sublineas_id').empty();
-                            $('#sublineas_id').append("<option value=''>Seleccionar una Sublinea</option>");
+                            $('#caracteristica_id').empty();
+                            $('#material_id').empty();
+                            $('#medida_id').empty();
+
+                            $('#sublineas_id').append("<option value=''>Seleccione una Sublinea...</option>");
+                            $('#caracteristica_id').append("<option value=''>Seleccione una Caracteristica...</option>");
+                            $('#material_id').append("<option value=''>Seleccione un Material...</option>");
+                            $('#medida_id').append("<option value=''>Seleccione una Medida...</option>");
+
                             $.each(getsublineas, function (index, value) {
                                 $('#sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
                             })
