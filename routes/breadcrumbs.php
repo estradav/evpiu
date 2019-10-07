@@ -180,3 +180,59 @@ Breadcrumbs::for('fact_electr_notas_cre', function($trail) {
     $trail->parent('fact_electr');
     $trail->push("Notas Credito", route('nc.index'));
 });
+
+
+
+// Productos ciev masestros
+Breadcrumbs::for('Prod_ciev', function($trail) {
+    $trail->parent('dashboard');
+    $trail->push("Productos CIEV");
+});
+
+Breadcrumbs::for('Prod_ciev_maestros', function($trail) {
+    $trail->parent('Prod_ciev');
+    $trail->push("Maestros", route('ProdCievMaestro.index'));
+});
+
+Breadcrumbs::for('Prod_ciev_maestros_tipos_producto', function($trail) {
+    $trail->parent('Prod_ciev_maestros');
+    $trail->push("Tipos de producto", route('ProdCievCodTipoProducto.index'));
+});
+
+Breadcrumbs::for('Prod_ciev_maestros_lineas', function($trail) {
+    $trail->parent('Prod_ciev_maestros');
+    $trail->push("Lineas", route('ProdCievCod.index'));
+});
+
+Breadcrumbs::for('Prod_ciev_maestros_sublineas', function($trail) {
+    $trail->parent('Prod_ciev_maestros');
+    $trail->push("Sublineas", route('ProdCievCodSublinea.index'));
+});
+
+
+Breadcrumbs::for('Prod_ciev_maestros_caracteristicas', function($trail) {
+    $trail->parent('Prod_ciev_maestros');
+    $trail->push("Caracteristicas", route('ProdCievCodCaracteristica.index'));
+});
+
+Breadcrumbs::for('Prod_ciev_maestros_materiales', function($trail) {
+    $trail->parent('Prod_ciev_maestros');
+    $trail->push("Materiales", route('ProdCievCodMaterial.index'));
+});
+
+Breadcrumbs::for('Prod_ciev_maestros_medidas', function($trail) {
+    $trail->parent('Prod_ciev_maestros');
+    $trail->push("Medidas", route('ProdCievCodMedida.index'));
+});
+
+
+Breadcrumbs::for('Prod_ciev_codigos', function($trail) {
+    $trail->parent('Prod_ciev');
+    $trail->push("Codigos");
+});
+
+Breadcrumbs::for('Prod_ciev_codigos_lista', function($trail) {
+    $trail->parent('Prod_ciev_codigos');
+    $trail->push("Lista de Codigos", route('ProdCievCodCodigo.index'));
+});
+

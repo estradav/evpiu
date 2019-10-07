@@ -2,16 +2,16 @@
 <root>
 	<documento>
 		<idnumeracion>2901</idnumeracion>
-		<numero>668758</numero>
+		<numero>668602</numero>
 		<idambiente>2</idambiente>
 		<idreporte>904</idreporte>
 		<idestadoenviocliente>3</idestadoenviocliente>
 		<idestadoenviodian>3</idestadoenviodian>
-		<fechadocumento>2019-09-09 07:22:29</fechadocumento>
-		<fechavencimiento>2019-11-08 00:00:00</fechavencimiento>
+		<fechadocumento>2019-09-05 06:35:48</fechadocumento>
+		<fechavencimiento>2019-11-04 00:00:00</fechavencimiento>
 		<tipofactura>01</tipofactura>
 		<tipooperacion>5</tipooperacion>
-		<notas>  </notas>
+		<notas>ORGANIZADO  </notas>
 		<fechaimpuestos></fechaimpuestos>
 		<moneda>COP</moneda>
 		<cufe></cufe>
@@ -26,37 +26,19 @@
 			<fechainicial></fechainicial>
 			<fechafinal></fechafinal>
 		</periodofacturacion>
-		<ordencompra>
-			<codigo></codigo>
-			<fechageneracion></fechageneracion>
-			<base64></base64>
-			<nombrearchivo> </nombrearchivo>
-		</ordencompra>
-		<constanciarecibido>
-			<codigo></codigo>
-			<fechageneracion></fechageneracion>
-			<base64></base64>
-			<nombrearchivo></nombrearchivo>
-		</constanciarecibido>
-		<ordendedespacho>
-			<codigo></codigo>
-			<fechageneracion></fechageneracion>
-			<base64></base64>
-			<nombrearchivo></nombrearchivo>
-		</ordendedespacho>
 		<adquiriente>
 			<idtipopersona></idtipopersona>
 			<responsableiva></responsableiva>
 			<idactividadeconomica></idactividadeconomica>
 			<nombrecomercial></nombrecomercial>
 			<idciudad>05001</idciudad>
-			<direccion>CL 12 CR 52 A 24 </direccion>
+			<direccion>CL 40 S 27 04 </direccion>
 			<codigopostal></codigopostal>
-			<nombres>STOP SAS</nombres>
+			<nombres>TENNIS SA EN REORGANIZACION</nombres>
 			<apellidos></apellidos>
 			<idtipodocumentoidentidad>31</idtipodocumentoidentidad>
-			<digitoverificacion>5</digitoverificacion>
-			<identificacion>890911898</identificacion>
+			<digitoverificacion>3</digitoverificacion>
+			<identificacion>890920043</identificacion>
 			<obligaciones></obligaciones>
 			<idtiporegimen></idtiporegimen>
 			<direccionfiscal>
@@ -65,9 +47,9 @@
 				<codigopostal></codigopostal>
 			</direccionfiscal>
 			<matriculamercantil></matriculamercantil>
-			<emailcontacto>emejia@stop.com.co</emailcontacto>
-			<emailentrega>facturastop@stop.com.co</emailentrega>
-			<telefono>6090202</telefono>
+			<emailcontacto>recepcionfacturas@tennis.com.co</emailcontacto>
+			<emailentrega>recepcionfacturas@tennis.com.co</emailentrega>
+			<telefono>3390000 EXT 1270</telefono>
 		</adquiriente>
 		<otroautorizado>
 			<idtipopersona></idtipopersona>
@@ -128,7 +110,7 @@
 		<formapago>
 			<idmetodopago>2</idmetodopago>
 			<idmediopago></idmediopago>
-			<fechavencimiento>2019-11-08 00:00:00</fechavencimiento>
+			<fechavencimiento>2019-11-04 00:00:00</fechavencimiento>
 			<identificador></identificador>
 			<dias>60</dias>
 		</formapago>
@@ -152,20 +134,20 @@
 		<impuestos>
 			<impuesto>
 				<idimpuesto>01</idimpuesto>
-				<base>433581.90</base>
+				<base>4620000.00</base>
 				<factor>19</factor>
 				<estarifaunitaria>0</estarifaunitaria>
-				<valor>82380.56</valor>
+				<valor>877800.00</valor>
 			</impuesto>
 		</impuestos>
 		<totales>
-			<totalbruto>498370.00</totalbruto>
-			<baseimponible>433581.90</baseimponible>
-			<totalbrutoconimpuestos>580751.00</totalbrutoconimpuestos>
-			<totaldescuento>64788.10</totaldescuento>
+			<totalbruto>4620000.00</totalbruto>
+			<baseimponible>4620000.00</baseimponible>
+			<totalbrutoconimpuestos>5497800.00</totalbrutoconimpuestos>
+			<totaldescuento>0.00</totaldescuento>
 			<totalcargos>0</totalcargos>
 			<totalanticipos></totalanticipos>
-			<totalapagar>515962.90</totalapagar>
+			<totalapagar>5497800.00</totalapagar>
 			<payableroundingamount></payableroundingamount>
 		</totales>
 		<items>
@@ -174,22 +156,22 @@
 					<estandar>
 						<idestandar>999</idestandar>
 						<nombreestandar></nombreestandar>
-						<codigo>31942Z470002100</codigo>
+						<codigo>31201Z040123200</codigo>
 					</estandar>
 				</codigos>
-				<descripcion>R PLANO Z6M C LISO EST</descripcion>
+				<descripcion>TBPL Z 31 MAR AR G/NE</descripcion>
 				<notas></notas>
-				<cantidad>5246</cantidad>
+				<cantidad>14000</cantidad>
 				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>95.00</preciounitario>
+				<preciounitario>330.00</preciounitario>
 				<unidaddemedida>94</unidaddemedida>
 				<marca></marca>
 				<modelo></modelo>
-				<codigovendedor>31942Z470002100</codigovendedor>
+				<codigovendedor>31201Z040123200</codigovendedor>
 				<subcodigovendedor></subcodigovendedor>
 				<idmandatario></idmandatario>
 				<regalo>0</regalo>
-				<totalitem>498370.00</totalitem>
+				<totalitem>4620000.00</totalitem>
 				<cargos>
 					<cargo>
 						<idconcepto></idconcepto>
@@ -203,10 +185,17 @@
 				<impuestos>
 					<impuesto>
 						<idimpuesto>01</idimpuesto>
-						<base>433581.90</base>
+						<base>4620000.00</base>
 						<factor>19</factor>
 						<estarifaunitaria>0</estarifaunitaria>
-						<valor>82380.56</valor>
+						<valor>877800.00</valor>
+					</impuesto>
+					<impuesto>
+						<idimpuesto></idimpuesto>
+						<base></base>
+						<factor>19</factor>
+						<estarifaunitaria>0</estarifaunitaria>
+						<valor>877800.00</valor>
 					</impuesto>
 				</impuestos>
 			</item>
@@ -215,18 +204,18 @@
 					<estandar>
 						<idestandar>999</idestandar>
 						<nombreestandar></nombreestandar>
-						<codigo>31906Z210003000</codigo>
+						<codigo>30100A040000000</codigo>
 					</estandar>
 				</codigos>
-				<descripcion>RLP Z 9.7M LISO GAL</descripcion>
+				<descripcion>PUNTILLA ALUM 03 LISA</descripcion>
 				<notas></notas>
-				<cantidad>5246</cantidad>
+				<cantidad>14000</cantidad>
 				<cantidadporempaque></cantidadporempaque>
 				<preciounitario>0.00</preciounitario>
 				<unidaddemedida>94</unidaddemedida>
 				<marca></marca>
 				<modelo></modelo>
-				<codigovendedor>31906Z210003000</codigovendedor>
+				<codigovendedor>30100A040000000</codigovendedor>
 				<subcodigovendedor></subcodigovendedor>
 				<idmandatario></idmandatario>
 				<regalo>1</regalo>
@@ -244,10 +233,17 @@
 				<impuestos>
 					<impuesto>
 						<idimpuesto>01</idimpuesto>
-						<base>0</base>
+						<base>0.00</base>
 						<factor>19</factor>
 						<estarifaunitaria>0</estarifaunitaria>
-						<valor>0</valor>
+						<valor>0.00</valor>
+					</impuesto>
+					<impuesto>
+						<idimpuesto></idimpuesto>
+						<base></base>
+						<factor>19</factor>
+						<estarifaunitaria>0</estarifaunitaria>
+						<valor>0.00</valor>
 					</impuesto>
 				</impuestos>
 			</item>

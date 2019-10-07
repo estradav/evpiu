@@ -26,19 +26,11 @@ class FeFacturasController extends Controller
 
         $facturas = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadas')
             ->leftJoin('CIEV_V_FE','CIEV_V_FacturasTotalizadas.numero','=','CIEV_V_FE.numero')
-            ->select('CIEV_V_FacturasTotalizadas.numero',
-                'CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
-                'CIEV_V_FacturasTotalizadas.fecha',
-                'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                'CIEV_V_FacturasTotalizadas.bruto',
-                'CIEV_V_FacturasTotalizadas.descuento',
-                'CIEV_V_FacturasTotalizadas.iva as valor_iva',
-                'CIEV_V_FacturasTotalizadas.nomvendedor',
-                'CIEV_V_FacturasTotalizadas.ov',
-                'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                'CIEV_V_FacturasTotalizadas.motivo',
-                'CIEV_V_FE.codigo_alterno',
-                'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
+            ->select('CIEV_V_FacturasTotalizadas.numero','CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
+                'CIEV_V_FacturasTotalizadas.fecha','CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
+                'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FacturasTotalizadas.descuento', 'CIEV_V_FacturasTotalizadas.iva as valor_iva',
+                'CIEV_V_FacturasTotalizadas.nomvendedor','CIEV_V_FacturasTotalizadas.ov', 'CIEV_V_FacturasTotalizadas.descplazo as plazo',
+                'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FE.codigo_alterno', 'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
             ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CU')
             ->whereBetween('CIEV_V_FacturasTotalizadas.fecha', [$f1 , $f2])
             ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')->get();
@@ -71,25 +63,13 @@ class FeFacturasController extends Controller
 
            $Encabezado = DB::connection('MAX')->table('CIEV_V_FE')
                ->leftJoin('CIEV_V_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FacturasTotalizadas.numero')
-               ->select('CIEV_V_FE.numero',
-                   'CIEV_V_FE.notas',
-                   'CIEV_V_FE.identificacion as nit_cliente',
-                   'CIEV_V_FE.apellidos',
-                   'CIEV_V_FE.emailcontacto',
-                   'CIEV_V_FE.direccion',
-                   'CIEV_V_FE.emailentrega',
-                   'CIEV_V_FE.digito_verificador',
-                   'CIEV_V_FE.telefono',
-                   'CIEV_V_FE.notas',
-                   'CIEV_V_FE.codciudad',
-                   'CIEV_V_FE.coddpto',
-                   'CIEV_V_FE.codigo_alterno',
-                   'CIEV_V_FacturasTotalizadas.bruto',
-                   'CIEV_V_FE.codigocliente','CIEV_V_FE.fechadocumento',
-                   'CIEV_V_FacturasTotalizadas.razonsocial as razon_social','CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FacturasTotalizadas.descuento',
-                   'CIEV_V_FacturasTotalizadas.subtotal', 'CIEV_V_FacturasTotalizadas.iva','CIEV_V_FacturasTotalizadas.fletes', 'CIEV_V_FacturasTotalizadas.seguros',
-                   'CIEV_V_FacturasTotalizadas.moneda','CIEV_V_FacturasTotalizadas.ov', 'CIEV_V_FacturasTotalizadas.dias',
-                   'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FacturasTotalizadas.descplazo as plazo', 'CIEV_V_FacturasTotalizadas.descmotivo',
+               ->select('CIEV_V_FE.numero', 'CIEV_V_FE.notas','CIEV_V_FE.identificacion as nit_cliente','CIEV_V_FE.apellidos',
+                   'CIEV_V_FE.emailcontacto','CIEV_V_FE.direccion','CIEV_V_FE.emailentrega','CIEV_V_FE.digito_verificador',
+                   'CIEV_V_FE.telefono','CIEV_V_FE.notas','CIEV_V_FE.codciudad','CIEV_V_FE.coddpto','CIEV_V_FE.codigo_alterno',
+                   'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FE.codigocliente','CIEV_V_FE.fechadocumento','CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
+                   'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FacturasTotalizadas.descuento', 'CIEV_V_FacturasTotalizadas.subtotal', 'CIEV_V_FacturasTotalizadas.iva',
+                   'CIEV_V_FacturasTotalizadas.fletes','CIEV_V_FacturasTotalizadas.seguros', 'CIEV_V_FacturasTotalizadas.moneda','CIEV_V_FacturasTotalizadas.ov',
+                   'CIEV_V_FacturasTotalizadas.dias','CIEV_V_FacturasTotalizadas.motivo','CIEV_V_FacturasTotalizadas.descplazo as plazo','CIEV_V_FacturasTotalizadas.descmotivo',
                    'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento')
                ->where('CIEV_V_FE.numero', '=', $num)->take(1)->get();
 
@@ -161,11 +141,6 @@ class FeFacturasController extends Controller
                $total_valor_iva = $enc->subtotal * 0.19;
                /// para  Rte Fuente
                $total_item_valor = $enc->subtotal + $total_valor_iva;
-
-
-
-
-
 
 
                ////////////////// FIN CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
@@ -252,7 +227,7 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
 
-               $objetoXML->startElement("ordencompra");
+    /*           $objetoXML->startElement("ordencompra");
                $objetoXML->startElement("codigo");
                $objetoXML->text('');
                $objetoXML->endElement();
@@ -280,9 +255,9 @@ class FeFacturasController extends Controller
                $objetoXML->startElement("nombrearchivo");
                $objetoXML->text('');
                $objetoXML->endElement();
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
-               $objetoXML->startElement("ordendedespacho");
+       /*        $objetoXML->startElement("ordendedespacho");
                $objetoXML->startElement("codigo");
                $objetoXML->text('');
                $objetoXML->endElement();
@@ -295,7 +270,7 @@ class FeFacturasController extends Controller
                $objetoXML->startElement("nombrearchivo");
                $objetoXML->text('');
                $objetoXML->endElement();
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
                /*$objetoXML->startElement("adjuntos");
                $objetoXML->startElement("adjunto");
@@ -540,7 +515,6 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
 
 
-
                $objetoXML->startElement("formapago");
                $objetoXML->startElement("idmetodopago");
                $objetoXML->text($metodo_pago);
@@ -618,27 +592,24 @@ class FeFacturasController extends Controller
 
 
                $objetoXML->startElement("impuestos");
-                   $objetoXML->startElement("impuesto");
-                       $objetoXML->startElement("idimpuesto");
-                       $objetoXML->text($id_total_impuesto_iva);
-                       $objetoXML->endElement();
-                       $objetoXML->startElement("base");
-                       $objetoXML->text(number_format($enc->subtotal,2,'.',''));
-                       $objetoXML->endElement();
-                       $objetoXML->startElement("factor");
-                       $objetoXML->text($factor_total);
-                       $objetoXML->endElement();
-                       $objetoXML->startElement("estarifaunitaria");
-                       $objetoXML->text($tarifa_unitaria_total);
-                       $objetoXML->endElement();
-                       $objetoXML->startElement("valor");
-                       $objetoXML->text(number_format($total_valor_iva,2,'.',''));
-                       $objetoXML->endElement();
-                   $objetoXML->endElement();
+               $objetoXML->startElement("impuesto");
+               $objetoXML->startElement("idimpuesto");
+               $objetoXML->text($id_total_impuesto_iva);
                $objetoXML->endElement();
-
-
-
+               $objetoXML->startElement("base");
+               $objetoXML->text(number_format($enc->subtotal,2,'.',''));
+               $objetoXML->endElement();
+               $objetoXML->startElement("factor");
+               $objetoXML->text($factor_total);
+               $objetoXML->endElement();
+               $objetoXML->startElement("estarifaunitaria");
+               $objetoXML->text($tarifa_unitaria_total);
+               $objetoXML->endElement();
+               $objetoXML->startElement("valor");
+               $objetoXML->text(number_format($total_valor_iva,2,'.',''));
+               $objetoXML->endElement();
+               $objetoXML->endElement();
+               $objetoXML->endElement();
 
 
                $objetoXML->startElement("totales");
@@ -802,7 +773,6 @@ class FeFacturasController extends Controller
                    $objetoXML->startElement("totalitem");
                    $objetoXML->text(number_format($valor_item,2,'.',''));
                    $objetoXML->endElement();
-
 
                    $objetoXML->startElement("cargos");
                    $objetoXML->startElement("cargo");
