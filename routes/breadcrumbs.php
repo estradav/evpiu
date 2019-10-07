@@ -1,6 +1,8 @@
 <?php
 
 // Dashboard
+use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
+
 Breadcrumbs::for('dashboard', function($trail) {
     $trail->push('Tablero', route('home'));
 });
@@ -156,4 +158,25 @@ Breadcrumbs::for('user_create', function($trail) {
 Breadcrumbs::for('user_edit', function($trail, $user) {
     $trail->parent('users');
     $trail->push("Modificar usuario ($user->name)", route('users.edit', $user));
+});
+
+
+
+//Fact
+
+Breadcrumbs::for('fact_electr', function($trail) {
+    $trail->parent('dashboard');
+    $trail->push("Facturacion Electronica", route('fe.index'));
+});
+
+Breadcrumbs::for('fact_electr_facturas', function($trail) {
+    $trail->parent('fact_electr');
+    $trail->push("Facturas", route('fe.index'));
+});
+
+
+// notas credito
+Breadcrumbs::for('fact_electr_notas_cre', function($trail) {
+    $trail->parent('fact_electr');
+    $trail->push("Notas Credito", route('nc.index'));
 });

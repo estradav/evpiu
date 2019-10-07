@@ -87,7 +87,6 @@
             </div>
         </div>
     </div>
-
     <script src="{{ asset('dashboard/scripts/app.js') }}"></script>
     <script src="{{ asset('dashboard/scripts/main.js') }}"></script>
     <script>

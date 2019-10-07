@@ -47,6 +47,106 @@ class MenuItemsTableSeeder extends Seeder
             ])->save();
         }
 
+
+        // Facturacion Electronica
+        $feMenuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Facturacion Electronica',
+            'url'     => '',
+        ]);
+        if (!$feMenuItem->exists) {
+            $feMenuItem->fill([
+                'target'     => '_self',
+                'icon_class' => 'fas fa-folder',
+                'parent_id'  => null,
+                'order'      => 3,
+            ])->save();
+        }
+
+        // Categorías - Crear categoría
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Facturas',
+            'url'     => '',
+            'route'   => 'fe.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $feMenuItem->id,
+                'order'      => 1,
+            ])->save();
+        }
+
+        // Categorías - Mostrar categorías
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Notas Credito',
+            'url'     => '',
+            'route'   => 'nc.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $feMenuItem->id,
+                'order'      => 2,
+            ])->save();
+        }
+
+
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Notas Debito',
+            'url'     => '',
+            'route'   => 'nd.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $feMenuItem->id,
+                'order'      => 3,
+            ])->save();
+        }
+
+
+        $menuItem = MenuItem::firstOrNew([
+            'menu_id' => 1,
+            'title'   => 'Configuracion',
+            'url'     => '',
+            'route'   => 'categories.index',
+        ]);
+        if (!$menuItem->exists) {
+            $menuItem->fill([
+                'target'     => '_self',
+                'parent_id'  => $feMenuItem->id,
+                'order'      => 4,
+            ])->save();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // Categorías
         $categoriesMenuItem = MenuItem::firstOrNew([
             'menu_id' => 1,
@@ -58,7 +158,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-folder',
                 'parent_id'  => null,
-                'order'      => 3,
+                'order'      => 4,
             ])->save();
         }
 
@@ -103,7 +203,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-tags',
                 'parent_id'  => null,
-                'order'      => 4,
+                'order'      => 5,
             ])->save();
         }
 
@@ -148,7 +248,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-key',
                 'parent_id'  => null,
-                'order'      => 5,
+                'order'      => 6,
             ])->save();
         }
 
@@ -223,7 +323,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-newspaper',
                 'parent_id'  => null,
-                'order'      => 6,
+                'order'      => 7,
             ])->save();
         }
 
@@ -268,7 +368,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-scroll',
                 'parent_id'  => null,
-                'order'      => 7,
+                'order'      => 8,
             ])->save();
         }
 
@@ -313,7 +413,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-users',
                 'parent_id'  => null,
-                'order'      => 8,
+                'order'      => 9,
             ])->save();
         }
 
@@ -343,7 +443,7 @@ class MenuItemsTableSeeder extends Seeder
                 'target'     => '_self',
                 'icon_class' => 'fas fa-tools',
                 'parent_id'  => null,
-                'order'      => 9,
+                'order'      => 10,
             ])->save();
         }
 

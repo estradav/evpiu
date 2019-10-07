@@ -191,11 +191,11 @@ class UserController extends Controller
         $user->save();
 
         return redirect()
-            ->route('users.edit', $user->id)
-            ->with([
-                'message'    => 'Usuario actualizado con éxito.',
-                'alert-type' => 'success'
-            ]);
+        ->route('users.edit', $user->id)
+        ->with([
+            'message'    => 'Usuario actualizado con éxito.',
+            'alert-type' => 'success'
+        ]);
     }
 
     /**
