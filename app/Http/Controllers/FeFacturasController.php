@@ -46,7 +46,7 @@ class FeFacturasController extends Controller
 
        // Estructura del XML
        $objetoXML = new    XMLWriter();
-       $objetoXML->openURI("xml/Facturacion_electronica_Facturas.xml");
+       $objetoXML->openURI("XML/Facturacion_electronica_Facturas.xml");
        $objetoXML->openMemory();
        $objetoXML->setIndent(true);
        $objetoXML->setIndentString("\t");
