@@ -200,6 +200,7 @@
             </div>
         </div>
     </div>
+    <iframe id="my_iframe" style="display:none;"></iframe>
 @stop
     {{Form::close()}}
 
@@ -369,12 +370,17 @@
                         url: 'fe/xml',
                          success: function () {
                            toastr.success("El Archivo XML se ha generado con Exito!.");
-                        }
+                          // preventDefault();  //stop the browser from following
+
+                           window.open('XML/Facturacion_electronica_Facturas.xml');
+
+                         }
                     });
                 } else
                   toastr.error("Debes seleccionar al menos una Factura.");
                 return false;
             });
+
         });
 
         $("#selectAll").click(function(){

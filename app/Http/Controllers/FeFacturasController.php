@@ -46,7 +46,7 @@ class FeFacturasController extends Controller
 
        // Estructura del XML
        $objetoXML = new    XMLWriter();
-       $objetoXML->openURI("xml/facturas.xml");
+       $objetoXML->openURI("xml/Facturacion_electronica_Facturas.xml");
        $objetoXML->openMemory();
        $objetoXML->setIndent(true);
        $objetoXML->setIndentString("\t");
@@ -875,11 +875,12 @@ class FeFacturasController extends Controller
        $objetoXML->endDocument();  // Final del documento
 
        $cadenaXML = $objetoXML->outputMemory();
-       file_put_contents('xml/facturas.xml', $cadenaXML);
+
+       file_put_contents('XML/Facturacion_electronica_Facturas.xml', $cadenaXML);
 
        return response()->json();
    }
-
+/*_'.date('d-m-Y').'*/
     public function editfactura ($numero)
     {
        $numero_de = $numero;
