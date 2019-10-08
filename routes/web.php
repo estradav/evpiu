@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function() {
     Route::post('fe/xml','FeFacturasController@CrearXml')->name('fe.xml');
     Route::get('fe/{fe}/edit','FeFacturasController@editfactura')->name('fe.edit');
     Route::put('/fe/{fe}', 'FeFacturasController@updatefactura')->name('fe.update');
+    Route::get('/fe/getDownload/{file}','FeFacturasController@getDownload');
+
 
 
     // Facturacion electronica Notas credito
