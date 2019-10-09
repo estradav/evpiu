@@ -90,7 +90,8 @@
                                     @if($fac->codigo_alterno == null)
                                     <?php $errors++; $colthr = 'text-danger'; $titulohtr = 'Debe tener un tipo de cliente' ?>
                                     @else
-                                      <?php $colthr = null; $titulotc = null; ?>
+                                      <?php $colthr = null; $titulohtr = null; ?>
+
                                     @endif
 
 
