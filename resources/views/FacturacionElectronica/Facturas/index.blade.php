@@ -87,12 +87,11 @@
                                 <?php $errors = 0; ?>
 
 
-                                @if($fac->codigo_alterno == null)
-								<?php $errors++; $colthr = 'text-danger'; $titulotc = 'Debe tener un tipo de cliente' ?>
-                                @else
-                                  <?php $colthr = null; $titulotc = null; ?>
-                                @endif
-
+                                    @if($fac->codigo_alterno == null)
+                                    <?php $errors++; $colthr = 'text-danger'; $titulohtr = 'Debe tener un tipo de cliente' ?>
+                                    @else
+                                      <?php $colthr = null; $titulotc = null; ?>
+                                    @endif
 
 
                                   {{--evalua que tenga un tipo de cliente --}}
@@ -176,7 +175,7 @@
                                       <td>
                                           <div class="btn-group ml-auto float-right">
                                               @can('fact.edit')
-                                                  <button class="btn btn-sm btn-light" disabled>
+                                                  <button class="btn btn-sm btn-light" title="<?php echo $titulohtr ?>" disabled>
                                                     <?php echo $errors  ?>
                                                   </button>
                                                   <a href="{{ route('fe.edit', $fac->numero) }}" class="btn btn-sm btn-outline-light" id="edit-fac" >
