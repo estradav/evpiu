@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\FeFacturas;
+
 use App\Http\Requests\FacFeFromRequest;
-use App\User;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use XMLWriter;
