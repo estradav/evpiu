@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use ConsoleTVs\Charts;
 class HomeController extends Controller
 {
     /**

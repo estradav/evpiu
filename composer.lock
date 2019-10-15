@@ -4,8 +4,97 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e3d63f3cf306df0440a6aa9276df270",
+    "content-hash": "e4977f1013fb56e557fd6a81118d1b16",
     "packages": [
+        {
+            "name": "balping/json-raw-encoder",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/balping/json-raw-encoder.git",
+                "reference": "c404b7fc0e04ddf5d298e53105c5fc306f523195"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/balping/json-raw-encoder/zipball/c404b7fc0e04ddf5d298e53105c5fc306f523195",
+                "reference": "c404b7fc0e04ddf5d298e53105c5fc306f523195",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Balping\\JsonRaw\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Balázs Dura-Kovács"
+                }
+            ],
+            "description": "Encode arrays to json with raw JS objects (eg. callbacks) in them",
+            "keywords": [
+                "callback",
+                "encode",
+                "json"
+            ],
+            "time": "2018-05-04T15:38:02+00:00"
+        },
+        {
+            "name": "consoletvs/charts",
+            "version": "6.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ConsoleTVs/Charts.git",
+                "reference": "a4a8a71c438a00b95ea74a080ce5bf8916c60918"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ConsoleTVs/Charts/zipball/a4a8a71c438a00b95ea74a080ce5bf8916c60918",
+                "reference": "a4a8a71c438a00b95ea74a080ce5bf8916c60918",
+                "shasum": ""
+            },
+            "require": {
+                "balping/json-raw-encoder": "^1.0",
+                "illuminate/console": "^5.0|^6.0",
+                "illuminate/support": "^5.0|^6.0",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ConsoleTVs\\Charts\\ChartsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ConsoleTVs\\Charts\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Èrik Campobadal Forés",
+                    "email": "soc@erik.cat"
+                }
+            ],
+            "description": "The laravel charting package",
+            "time": "2019-09-03T16:50:50+00:00"
+        },
         {
             "name": "davejamesmiller/laravel-breadcrumbs",
             "version": "5.3.0",
@@ -1129,6 +1218,47 @@
                 "php"
             ],
             "time": "2019-09-01T07:51:21+00:00"
+        },
+        {
+            "name": "nnnick/chartjs",
+            "version": "v2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chartjs/Chart.js.git",
+                "reference": "947d8a7ccfbfc76dd9d384ea75436fa4a7aeefb1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chartjs/Chart.js/zipball/947d8a7ccfbfc76dd9d384ea75436fa4a7aeefb1",
+                "reference": "947d8a7ccfbfc76dd9d384ea75436fa4a7aeefb1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "release/2.0": "v2.0-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "NICK DOWNIE",
+                    "email": "hello@nickdownie.com"
+                }
+            ],
+            "description": "Simple HTML5 charts using the canvas element.",
+            "homepage": "https://www.chartjs.org/",
+            "keywords": [
+                "JS",
+                "chart"
+            ],
+            "time": "2019-03-14T13:03:00+00:00"
         },
         {
             "name": "opis/closure",

@@ -99,6 +99,21 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/med','ProdCievCodCodigoController@med');
 
 
+    Route::get('/get-user-chart-data','ChartDataController@getMonthlyUserData');
+
+
+    Route::get('/get-invoice-chart-data','ChartDataController@getMonthlyInvoiceData');
+
+    Route::get('/get-invoice-chart-data-value','ChartDataController@getMonthlyInvoiceDataValue');
+
+    Route::get('/get-invoice-age-data-value','ChartDataController@getAgeInvoiceData');
+
+     Route::get('/get-invoice-day-data-value','ChartDataController@getDayInvoiceData');
+
+
 });
+
+
+
 
 
