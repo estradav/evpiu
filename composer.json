@@ -12,11 +12,13 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "ext-xmlwriter": "*",
+        "consoletvs/charts": "6.*",
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "5.8.*",
+        "nnnick/chartjs": "^2.8",
         "spatie/laravel-permission": "^2.32",
         "yajra/laravel-datatables-oracle": "^9.6"
     },
