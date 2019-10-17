@@ -18,14 +18,14 @@ class CreateCodMedidasTable extends Migration
             $table->bigIncrements('id');
             $table->string('cod');
             $table->string('name', 20);
-            $table->string('denominacion',10);
-            $table->string('exterior');
-            $table->string('interior');
-            $table->string('largo');
-            $table->string('lado_1');
-            $table->string('lado_2');
-            $table->string('coments', 250);
-            $table->string('usuario');
+            $table->string('denominacion',10)->nullable();
+            $table->string('exterior')->nullable();
+            $table->string('interior')->nullable();
+            $table->string('largo')->nullable();
+            $table->string('lado_1')->nullable();
+            $table->string('lado_2')->nullable();
+            $table->string('coments', 250)->nullable();
+            $table->string('usuario')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('med_lineas_id');

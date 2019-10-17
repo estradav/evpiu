@@ -18,8 +18,8 @@ class CreateCodTipoproducto extends Migration
             $table->bigIncrements('id');
             $table->string('cod');
             $table->string('name', 20);
-            $table->string('coments',250);
-            $table->string('usuario');
+            $table->string('coments',250)->nullable();
+            $table->string('usuario')->nullable();
             $table->timestamps();
         });
     }
