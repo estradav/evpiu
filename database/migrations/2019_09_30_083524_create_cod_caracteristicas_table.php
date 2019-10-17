@@ -23,7 +23,6 @@ class CreateCodCaracteristicasTable extends Migration
             $table->string('usuario');
             $table->timestamps();
 
-
             $table->unsignedBigInteger('car_lineas_id');
             $table->foreign('car_lineas_id')->references('id')->on('cod_lineas');
 

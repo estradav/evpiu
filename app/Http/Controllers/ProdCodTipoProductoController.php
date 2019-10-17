@@ -13,7 +13,6 @@ class ProdCodTipoProductoController extends Controller
         if ($request->ajax()) {
             $data = CodTipoProducto::latest()->get();
             return Datatables::of($data)
-                ->addIndexColumn()
                 ->addColumn('opciones', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editLinea" id="edit-btn">Editar</a>';
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteLinea">Eliminar</a>';

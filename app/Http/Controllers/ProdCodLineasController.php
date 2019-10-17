@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\CodLinea;
 use App\CodTipoProducto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ProdCodLineasController extends Controller
 {
     public function index(Request $request)
     {
-
     if ($request->ajax()) {
-        $data = CodLinea::latest()->get();
+        $data = DB::table('cod_lineas')
+            ->leftJoin('cod_tipo_productos','cod_lineas.tipoproducto_id','=','cod_tipo_productos.id')
+            ->select('cod_lineas.cod as cod','cod_lineas.name as name','cod_lineas.abreviatura as abrev','cod_lineas.coments as coment',
+                'cod_tipo_productos.name as tp','cod_lineas.id as id','cod_lineas.usuario as usr','cod_lineas.created_at as created','cod_lineas.updated_at as update')
+            ->get();
         return Datatables::of($data)
-            ->addIndexColumn()
             ->addColumn('opciones', function($row){
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editLinea" id="edit-btn">Editar</a>';
                 $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteLinea">Eliminar</a>';
@@ -24,9 +27,6 @@ class ProdCodLineasController extends Controller
             ->rawColumns(['opciones'])
             ->make(true);
     }
-
-
-
         return view('ProductosCIEV.Maestros.lineas_show');
     }
 
@@ -40,8 +40,6 @@ class ProdCodLineasController extends Controller
                 'abreviatura'       => $request->abreviatura,
                 'coments'           => $request->coments,
             ]);
-
-
         return response()->json(['success'=>'Linea Guardada Correctamente.']);
     }
 
@@ -54,9 +52,7 @@ class ProdCodLineasController extends Controller
     public function destroy($id)
     {
         CodLinea::find($id)->delete();
-
         return response()->json(['success'=>'Product deleted successfully.']);
     }
-
 
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\CodLinea;
 use App\CodSublinea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ProdCodSublineasController extends Controller
@@ -11,9 +13,12 @@ class ProdCodSublineasController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = CodSublinea::latest()->get();
+            $data =DB::table('cod_sublineas')
+                ->leftJoin('cod_tipo_productos','cod_sublineas.tipoproductos_id','=','cod_tipo_productos.id')
+                ->leftJoin('cod_lineas','cod_sublineas.lineas_id','=','cod_lineas.id')
+                ->select('cod_sublineas.cod as cod','cod_sublineas.name as name','cod_sublineas.abreviatura as abrev','cod_sublineas.coments as coment',
+                    'cod_lineas.name as linea','cod_tipo_productos.name as tp','cod_sublineas.id as id','cod_sublineas.usuario as usr','cod_sublineas.created_at as created','cod_sublineas.updated_at as update');
             return Datatables::of($data)
-                ->addIndexColumn()
                 ->addColumn('Opciones', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editsublinea" id="edit-btn">Editar</a>';
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletesubLinea">Eliminar</a>';
@@ -28,14 +33,14 @@ class ProdCodSublineasController extends Controller
     public function store(Request $request)
     {
         CodSublinea::updateOrCreate(['id' => $request->sublinea_id],
-            [   'cod'           => $request->cod,
-                'name'          => $request->name,
-                'lineas_id'     => $request->lineas_id,
-                'abreviatura'   => $request->abreviatura,
-                'coments'       => $request->coments,
+            [   'cod'               => $request->cod,
+                'name'              => $request->name,
+                'tipoproductos_id'  => $request->tipoproductos_id,
+                'lineas_id'         => $request->lineas_id,
+                'abreviatura'       => $request->abreviatura,
+                'coments'           => $request->coments,
             ]);
-
-        return response()->json(['success'=>'Linea Guardada Correctamente.']);
+        return response()->json();
     }
 
     public function edit($id)
@@ -47,9 +52,19 @@ class ProdCodSublineasController extends Controller
     public function destroy($id)
     {
         CodSublinea::find($id)->delete();
-
-        return response()->json(['success'=>'Product deleted successfully.']);
+        return response()->json();
     }
 
+
+    public function getlineasp(Request $request)
+    {
+        if ($request->ajax()){
+            $getlineas = CodLinea::where('tipoproducto_id', $request->tipoproductos_id)->get();
+            foreach ($getlineas as $linea){
+                $getlineasArray[$linea->id] = $linea->name;
+            }
+            return response()->json($getlineasArray);
+        }
+    }
 
 }

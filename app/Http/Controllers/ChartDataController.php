@@ -180,7 +180,7 @@ class ChartDataController extends Controller
         }
         return $age_array;
     }
-    
+
     public function getAgesInvoiceCount($year)
     {
         $age_invoice_count = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')

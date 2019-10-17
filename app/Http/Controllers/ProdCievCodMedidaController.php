@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CodMedida;
 use App\CodSublinea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ProdCievCodMedidaController extends Controller
@@ -13,9 +14,13 @@ class ProdCievCodMedidaController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = CodMedida::latest()->get();
+            $data = DB::table('cod_medidas')
+                ->leftJoin('cod_lineas','cod_medidas.med_lineas_id','=','cod_lineas.id')
+                ->leftJoin('cod_sublineas','cod_medidas.med_sublineas_id','=','cod_sublineas.id')
+                ->select('cod_medidas.cod as cod','cod_medidas.name as name','cod_medidas.denominacion as denm','cod_medidas.updated_at as upt',
+                    'cod_medidas.exterior as ext','cod_medidas.interior as int','cod_medidas.largo as larg','cod_medidas.lado_1 as ld1','cod_medidas.lado_2 as ld2',
+                    'cod_medidas.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_medidas.id as id')->get();
             return DataTables::of($data)
-                ->addIndexColumn()
                 ->addColumn('Opciones', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmedida" id="edit-btn">Editar</a>';
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletemedida">Eliminar</a>';
