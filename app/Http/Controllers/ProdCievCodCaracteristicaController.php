@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CodCaracteristica;
 use App\CodSublinea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ProdCievCodCaracteristicaController extends Controller
@@ -12,11 +13,12 @@ class ProdCievCodCaracteristicaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $getsublineas = CodSublinea::all('name','id');
-
-            $data = CodCaracteristica::latest()->get();
+            $data = DB::table('cod_caracteristicas')
+                ->leftJoin('cod_lineas','cod_caracteristicas.car_lineas_id','=','cod_lineas.id')
+                ->leftJoin('cod_sublineas','cod_caracteristicas.car_sublineas_id','=','cod_sublineas.id')
+                ->select('cod_caracteristicas.cod as cod','cod_caracteristicas.name as name','cod_caracteristicas.abreviatura as abrev','cod_caracteristicas.updated_at as upt',
+                    'cod_caracteristicas.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_caracteristicas.id as id')->get();
             return DataTables::of($data)
-                ->addIndexColumn()
                 ->addColumn('Opciones', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editcaracteristica" id="edit-btn">Editar</a>';
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletecaracteristica">Eliminar</a>';
@@ -38,8 +40,7 @@ class ProdCievCodCaracteristicaController extends Controller
                 'abreviatura'       => $request->abreviatura,
                 'coments'           => $request->coments,
             ]);
-
-        return response()->json(['success'=>'Linea Guardada Correctamente.']);
+        return response()->json();
     }
 
     public function edit($id)
@@ -51,7 +52,7 @@ class ProdCievCodCaracteristicaController extends Controller
     public function destroy($id)
     {
         CodCaracteristica::find($id)->delete();
-        return response()->json(['success'=>'deleted successfully.']);
+        return response()->json();
     }
 
 

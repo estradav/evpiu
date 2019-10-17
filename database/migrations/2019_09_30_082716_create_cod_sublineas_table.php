@@ -23,9 +23,11 @@ class CreateCodSublineasTable extends Migration
             $table->string('usuario');
             $table->timestamps();
 
-
             $table->unsignedBigInteger('lineas_id');
             $table->foreign('lineas_id')->references('id')->on('cod_lineas');
+
+            $table->unsignedBigInteger('tipoproductos_id');
+            $table->foreign('tipoproductos_id')->references('id')->on('cod_tipo_productos');
         });
     }
 

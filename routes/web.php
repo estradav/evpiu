@@ -50,19 +50,13 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/fe/{fe}', 'FeFacturasController@updatefactura')->name('fe.update');
     Route::get('/fe/getDownload/{file}','FeFacturasController@getDownload');
 
-
-
     // Facturacion electronica Notas credito
     Route::resource('nc','FeNotasCreditoController');
     Route::post('nc/xml','FeNotasCreditoController@DetalleFactura')->name('fe.nc.xml');
     Route::get('nc/{nc}/edit','FeNotasCreditoController@editfactura')->name('fe.nc.edit');
     Route::put('/nc/{nc}', 'FeNotasCreditoController@updatefactura')->name('fe.nc.update');
 
-
-
     Route::resource('ConfigFe','FeConfigController');
-
-
 
     // Productos CIEV --> Codificador
     Route::resource('ProdCievMaestro','ProdCievMaestroController');
@@ -100,15 +94,34 @@ Route::middleware(['auth'])->group(function() {
 
 
     Route::get('/get-user-chart-data','ChartDataController@getMonthlyUserData');
-
-
     Route::get('/get-invoice-chart-data','ChartDataController@getMonthlyInvoiceData');
-
     Route::get('/get-invoice-chart-data-value','ChartDataController@getMonthlyInvoiceDataValue');
-
     Route::get('/get-invoice-age-data-value','ChartDataController@getAgeInvoiceData');
+    Route::get('/get-invoice-day-data-value','ChartDataController@getDayInvoiceData');
 
-     Route::get('/get-invoice-day-data-value','ChartDataController@getDayInvoiceData');
+
+
+    Route::post('/TiposProductoPost','ProdCodTipoProductoController@store');
+    Route::get('/TiposProductoIndex','ProdCodTipoProductoController@index');
+
+    Route::post('/LineasPost','ProdCodLineasController@store');
+    Route::get('/LineasIndex','ProdCodLineasController@index');
+
+    Route::post('/SublineasPost','ProdCodSublineasController@store');
+    Route::get('/SublineasIndex','ProdCodSublineasController@index');
+    Route::get('/getlineasp','ProdCodSublineasController@getlineasp');
+
+    Route::post('/CaracteristicasPost','ProdCievCodCaracteristicaController@store');
+    Route::get('/CaracteristicasIndex','ProdCievCodCaracteristicaController@index');
+
+    Route::post('/MaterialesPost','ProdCievCodMaterialController@store');
+    Route::get('/MaterialesIndex','ProdCievCodMaterialController@index');
+
+    Route::post('/MedidasPost','ProdCievCodMedidaController@store');
+    Route::get('/MedidasIndex','ProdCievCodMedidaController@index');
+
+    Route::post('/CodigosPost','ProdCievCodCodigoController@store');
+    Route::get('/CodigosIndex','ProdCievCodCodigoController@index');
 
 
 });

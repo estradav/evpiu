@@ -9,7 +9,7 @@ class TipoProductos
     public function get()
     {
         $tipoproductos = CodTipoProducto::get();
-        $tipoproductosArray[''] = 'seleccione un tipo de producto';
+        $tipoproductosArray[''] = 'Seleccione un tipo de producto...';
         foreach ($tipoproductos as $TipoProducto){
             $tipoproductosArray[$TipoProducto->id] = $TipoProducto->name;
         }

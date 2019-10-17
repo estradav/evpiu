@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CodMaterial;
 use App\CodSublinea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ProdCievCodMaterialController extends Controller
@@ -13,9 +14,12 @@ class ProdCievCodMaterialController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = CodMaterial::latest()->get();
+            $data = DB::table('cod_materials')
+                ->leftJoin('cod_lineas','cod_materials.mat_lineas_id','=','cod_lineas.id')
+                ->leftJoin('cod_sublineas','cod_materials.mat_sublineas_id','=','cod_sublineas.id')
+                ->select('cod_materials.cod as cod','cod_materials.name as name','cod_materials.abreviatura as abrev','cod_materials.updated_at as upt',
+                    'cod_materials.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_materials.id as id')->get();
             return DataTables::of($data)
-                ->addIndexColumn()
                 ->addColumn('Opciones', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmaterial" id="edit-btn">Editar</a>';
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletematerial">Eliminar</a>';
@@ -37,7 +41,6 @@ class ProdCievCodMaterialController extends Controller
                 'abreviatura'       => $request->abreviatura,
                 'coments'           => $request->coments,
             ]);
-
         return response()->json(['success'=>'Linea Guardada Correctamente.']);
     }
 

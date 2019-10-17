@@ -1,10 +1,10 @@
 @extends('layouts.dashboard')
 
-@section('page_title', 'Maestros')
+@section('page_title', 'Maestros (Materiales)')
 
 @section('module_title', 'Materiales')
 
-@section('subtitle', 'Este modulo permite ver, crear y editar Materiales.')
+@section('subtitle', 'Definicion de los posibles elementos con los que se puede construir una pieza.')
 
 @section('breadcrumbs')
     {{ Breadcrumbs::render('Prod_ciev_maestros_materiales') }}
@@ -14,7 +14,7 @@
     @inject('Lineas','App\Services\Lineas')
     <div class="col-lg-4">
         <div class="form-group">
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearMaterial">Crear Nuevo Material</a>
+            <a class="btn btn-primary" href="javascript:void(0)" id="CrearMaterial">Nuevo</a>
         </div>
     </div>
     <div class="row">
@@ -24,15 +24,15 @@
                     <div class="table-responsive">
                         <table class="table table-striped first data-table">
                             <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Codigo de linea</th>
-                                <th>Codigo de Sublinea</th>
-                                <th>Codigo</th>
-                                <th>Nombre Material</th>
-                                <th>Comentarios</th>
-                                <th width="280px">Opciones</th>
-                            </tr>
+                                <tr>
+                                    <th>Linea</th>
+                                    <th>Sublinea</th>
+                                    <th>Codigo</th>
+                                    <th>Nombre</th>
+                                    <th>Comentarios</th>
+                                    <th>Ultima actualizacion</th>
+                                    <th>Opciones</th>
+                                </tr>
                             </thead>
                             <tbody>
                             </tbody>
@@ -107,143 +107,12 @@
         </div>
     </div>
 
-
     @push('javascript')
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $(function () {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    var table = $('.data-table').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        ajax: "{{ route('ProdCievCodMaterial.index') }}",
-                        columns: [
-                            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                            {data: 'mat_lineas_id', name: 'mat_lineas_id'},
-                            {data: 'mat_sublineas_id', name: 'mat_sublineas_id'},
-                            {data: 'cod', name: 'cod'},
-                            {data: 'name', name: 'name'},
-                            {data: 'coments', name: 'coments'},
-                            {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false},
-                        ],
-                        language: {
-                            // traduccion de datatables
-                            processing: "Procesando...",
-                            search: "Buscar&nbsp;:",
-                            lengthMenu: "Mostrar _MENU_ registros",
-                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                            infoPostFix: "",
-                            loadingRecords: "Cargando...",
-                            zeroRecords: "No se encontraron resultados",
-                            emptyTable: "Ningún registro disponible en esta tabla :C",
-                            paginate: {
-                                first: "Primero",
-                                previous: "Anterior",
-                                next: "Siguiente",
-                                last: "Ultimo"
-                            },
-                            aria: {
-                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                                sortDescending: ": Activar para ordenar la columna de manera descendente"
-                            }
-                        }
-                    });
-
-                    $('#CrearMaterial').click(function () {
-                        $('#saveBtn').val("create-material");
-                        $('#material_id').val('');
-                        $('#materialForm').trigger("reset");
-                        $('#modelHeading').html("Crear Nuevo Material");
-                        $('#materialmodal').modal('show');
-                    });
-
-                    $('body').on('click', '.editmaterial', function () {
-
-                        var material_id = $(this).data('id');
-                        $.get("{{ route('ProdCievCodMaterial.index') }}" +'/' + material_id +'/edit', function (data) {
-                            $('#modelHeading').html("Editar Material");
-                            $('#saveBtn').val("edit-Material");
-                            $('#materialmodal').modal('show');
-                            $('#material_id').val(data.id);
-                            $('#cod').val(data.cod);
-                            $('#mat_lineas_id').val(data.mat_lineas_id);
-                            $('#mat_sublineas_id').val(data.mat_sublineas_id);
-                            $('#name').val(data.name);
-                            $('#abreviatura').val(data.abreviatura);
-                            $('#coments').val(data.coments);
-                        })
-                    });
-
-
-                    $('#saveBtn').click(function (e) {
-                        e.preventDefault();
-                        //$(this).html('Guardando...');
-                        $.ajax({
-                            data: $('#materialForm').serialize(),
-                            url: "{{ route('ProdCievCodMaterial.store') }}",
-                            type: "POST",
-                            dataType: 'json',
-                            success: function (data) {
-
-                                $('#materialForm').trigger("reset");
-                                $('#materialmodal').modal('hide');
-                                table.draw();
-                                toastr.success("Registro Guardado con Exito!");
-                                //   $(this).html('Crear');
-                            },
-                            error: function (data) {
-                                console.log('Error:', data);
-                                $('#saveBtn').html('Guardar Cambios');
-                            }
-                        });
-                    });
-
-                    $('body').on('click', '.deletematerial', function () {
-
-                        var material_id = $(this).data("id");
-                        if(confirm("¿Esta seguro de Eliminar?")) {
-                            $.ajax({
-                                type: "DELETE",
-                                url: "{{ route('ProdCievCodMaterial.store') }}" + '/' + material_id,
-                                success: function (data) {
-                                    table.draw();
-                                    toastr.success("Registro eliminado con exito");
-                                },
-                                error: function (data) {
-                                    console.log('Error:', data);
-                                    toastr.danger("Error al eliminar el registro");
-                                }
-                            });
-                        }
-                    });
-                });
-
-                $('#mat_lineas_id').on('change', function () {
-                    var lineas_id = $(this).val();
-                    if ($.trim(lineas_id) != ''){
-                        $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
-                            $('#mat_sublineas_id').empty();
-                            $('#mat_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
-                            $.each(getsublineas, function (index, value) {
-                                $('#mat_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
-                            })
-                        });
-                    }
-                });
-            });
-        </script>
+        <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Materiales.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
     @endpush
 @endsection
