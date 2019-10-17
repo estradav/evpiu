@@ -18,14 +18,14 @@ class CreateCodCodigosTable extends Migration
             $table->bigIncrements('id');
             $table->string('codigo', 100);
             $table->string('coments');
-            $table->string('descripcion');
-            $table->string('usuario');
-            $table->string('usuario_aprobo', 100);
-            $table->string('arte');
-            $table->string('estado');
-            $table->string('area');
-            $table->string('costo_base');
-            $table->string('generico');
+            $table->string('descripcion')->nullable();
+            $table->string('usuario')->nullable();
+            $table->string('usuario_aprobo', 100)->nullable();
+            $table->string('arte')->nullable();
+            $table->string('estado')->nullable();
+            $table->string('area')->nullable();
+            $table->string('costo_base')->nullable();
+            $table->string('generico')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('cod_tipo_producto_id');

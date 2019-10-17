@@ -20,7 +20,7 @@ class CreateCodLineasTable extends Migration
             $table->string('name', 20);
             $table->string('abreviatura',10);
             $table->string('coments',250);
-            $table->string('usuario');
+            $table->string('usuario')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('tipoproducto_id');
