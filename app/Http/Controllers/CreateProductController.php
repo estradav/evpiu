@@ -18,16 +18,18 @@ class CreateProductController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = DB::connection('MAX')
+            $data = DB::connection('MAXP')
                 ->table('Part_Master')
-                ->select('Part_Master.PRTNUM_01 as id','Part_Master.PMDES1_01 as desc','Part_Master.CreationDate as creation','Part_Master.ModificationDate as update')
-                ->orderBy('creation','desc')->take(1000)
+                ->select('Part_Master.PRTNUM_01 as id',
+                    'Part_Master.PMDES1_01 as desc',
+                    'Part_Master.CreationDate as CreationDate',
+                    'Part_Master.ModificationDate as update',
+                    'Part_Master.CreatedBy as Creado')->orderBy('CreationDate','desc')->take(1200)
                 ->get();
 
             return Datatables::of($data)
                 ->addColumn('opciones', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editsublinea" id="edit-btn">Editar</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletesubLinea">Eliminar</a>';
                     return $btn;
                 })
                 ->rawColumns(['opciones'])
@@ -311,7 +313,7 @@ class CreateProductController extends Controller
                 $InsProd_Struc[] = [
                     'PARPRT_02'    => $Prod_dest,
                     'COMPRT_02'    => $Prod_Struc->COMPRT_02,
-                    'EFFDTE_02'    => $date,
+                    'EFFDTE_02'    => date('Ymd 00:00:00'),
                     'FILL01_02'    => $Prod_Struc->FILL01_02,
                     'QTYPER_02'    => $Prod_Struc->QTYPER_02,
                     'QTYCDE_02'    => $Prod_Struc->QTYCDE_02,
@@ -338,7 +340,7 @@ class CreateProductController extends Controller
                     'CreationDate' => $date,
                     'ModifiedBy'   => '',
                     'ModificationDate' => '',
-                    'ALTCDE_02'    => $date
+                    'ALTCDE_02'    => ''
                 ];
             }
             DB::connection('MAXP')->table('Product_Structure')->insert($InsProd_Struc);
@@ -492,6 +494,8 @@ class CreateProductController extends Controller
             DB::connection('MAXP')->table('Part_Sales')->insert($InsPart_Sal);
 
             DB::commit();
+
+            return response()->json(['Success' => 'Todo Ok']);
         }
 
 
