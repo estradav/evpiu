@@ -48,7 +48,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            'engine' => 'InnoDB',
         ],
 
 
@@ -62,6 +62,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            'engine' => 'InnoDB',
         ],
 
 
@@ -76,7 +77,23 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            'engine' => 'InnoDB',
         ],
+
+
+        'MAXP' => [
+            'driver' => 'sqlsrv',
+            'host' => env('MAXP_HOST'),
+            'port' => env('MAXP_PORT'),
+            'database' => env('MAXP_DATABASE'),
+            'username' => env('MAXP_USERNAME'),
+            'password' => env('MAXP_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'engine' => 'InnoDB',
+        ],
+
 
         'FE'  => [
             'driver' => 'sqlsrv',
@@ -88,6 +105,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            'engine' => 'InnoDB',
         ]
 
     ],
