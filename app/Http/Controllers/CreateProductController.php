@@ -35,7 +35,7 @@ class CreateProductController extends Controller
                 ->rawColumns(['opciones'])
                 ->make(true);
         }
-        return view('ProductosCIEV.Creador_Productos.index');
+        return view('ProductosCIEV.Creador_Productos.Index');
     }
 
 
