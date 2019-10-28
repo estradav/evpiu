@@ -43,10 +43,6 @@ class CreateProductController extends Controller
         $results = array();
 
         $queries = DB::connection('MAXP')->table('Part_Master')
-            ->leftJoin('Part_Routing','Part_Master.PRTNUM_01','=','Part_Routing.PRTNUM_12')
-            ->leftJoin('Product_Structure','Part_Master.PRTNUM_01','=','Product_Structure.PARPRT_02')
-            ->leftJoin('Part_Sales','Part_Master.PRTNUM_01','=','Part_Sales.PRTNUM_29')
-            ->leftJoin('Activity_Index','Part_Master.PRTNUM_01','=','Activity_Index.PRTNUM_03')
             ->where('Part_Master.PRTNUM_01', 'LIKE', '%'.$query.'%')
             ->orWhere('Part_Master.PMDES1_01', 'LIKE', '%'.$query.'%')->take(20)
             ->get();
@@ -306,6 +302,7 @@ class CreateProductController extends Controller
 
             $Producto = $request->ProductOrig;
             $Prod_dest = $request->Maestro_Cod;
+
             $InsProd_Struc = [];
             $Product_Structur = DB::connection('MAXP')->table('Product_Structure')
                 ->where('Product_Structure.PARPRT_02','=', $Producto)->get();
@@ -347,9 +344,152 @@ class CreateProductController extends Controller
             DB::connection('MAXP')->table('Product_Structure')->insert($InsProd_Struc);
 
 
-            DB::connection('MAXP')->table('Part_Routing')->insert([
-               'PRTNUM_12'
-            ]);
+
+
+            $InsPart_Rou = [];
+            $Part_Routing = DB::connection('MAXP')->table('Part_Routing')
+                ->where('Part_Routing.PRTNUM_12','=', $Producto)->get();
+
+
+            foreach ($Part_Routing as $Part_Rou ){
+                $InsPart_Rou[] = [
+                    'PRTNUM_12'     =>  $Prod_dest,
+                    'OPRSEQ_12'     =>  $Part_Rou->OPRSEQ_12,
+                    'OPRID_12'      =>  $Part_Rou->OPRID_12,
+                    'WRKCTR_12'     =>  $Part_Rou->WRKCTR_12,
+                    'OPRDES_12'     =>  $Part_Rou->OPRDES_12,
+                    'RUNTIM_12'     =>  $Part_Rou->RUNTIM_12,
+                    'SETTIM_12'     =>  $Part_Rou->SETTIM_12,
+                    'REVDTE_12'     =>  $date,
+                    'FILL01_12'     =>  $Part_Rou->FILL01_12,
+                    'OPRTYP_12'     =>  $Part_Rou->OPRTYP_12,
+                    'STDTYP_12'     =>  $Part_Rou->STDTYP_12,
+                    'QTYPER_12'     =>  $Part_Rou->QTYPER_12,
+                    'TOOL_12'       =>  $Part_Rou->TOOL_12,
+                    'SUBCST_12'     =>  $Part_Rou->SUBCST_12,
+                    'PSCRAP_12'     =>  $Part_Rou->PSCRAP_12,
+                    'ASCRAP_12'     =>  $Part_Rou->ASCRAP_12,
+                    'SETEXT_12'     =>  $Part_Rou->SETEXT_12,
+                    'SETINC_12'     =>  $Part_Rou->SETINC_12,
+                    'MOVDAY_12'     =>  $Part_Rou->MOVDAY_12,
+                    'APRDBY_12'     =>  $Part_Rou->APRDBY_12,
+                    'EFFDTE_12'     =>  $date,
+                    'MCOMP_12'      =>  $Part_Rou->MCOMP_12,
+                    'MSITE_12'      =>  $Part_Rou->MSITE_12,
+                    'UDFKEY_12'     =>  $Part_Rou->UDFKEY_12,
+                    'UDFREF_12'     =>  $Part_Rou->UDFREF_12,
+                    'SERVICEID_12'  =>  $Part_Rou->SERVICEID_12,
+                    'PRIVENID_12'   =>  $Part_Rou->PRIVENID_12,
+                    'RTGGRP_12'     =>  $Part_Rou->RTGGRP_12,
+                    'XDFINT_12'     =>  $Part_Rou->XDFINT_12,
+                    'XDFFLT_12'     =>  $Part_Rou->XDFFLT_12,
+                    'XDFBOL_12'     =>  $Part_Rou->XDFBOL_12,
+                    'XDFDTE_12'     =>  null,
+                    'XDFTXT_12'     =>  $Part_Rou->XDFTXT_12,
+                    'FILLER_12'     =>  $Part_Rou->FILLER_12,
+                    'CreatedBy'     =>  'Evpiu-'.Auth::user()->name,
+                    'CreationDate'  =>  $date,
+                    'ModifiedBy'    => '',
+                    'ModificationDate' => '',
+                    'ALTCDE_12'  => '',
+                ];
+            }
+            DB::connection('MAXP')->table('Part_Routing')->insert($InsPart_Rou);
+
+
+
+            $InsPart_Sal = [];
+            $Part_Sales = DB::connection('MAXP')->table('Part_Sales')
+                ->where('Part_Sales.PRTNUM_29','=', $Producto)->get();
+
+            foreach ($Part_Sales as $Part_Sale ) {
+                $InsPart_Sal[] = [
+                    'PRTNUM_29' => $Prod_dest,
+                    'SLSCAT_29' => '',
+                    'PMDES1_29' => $request->Maestro_desc,
+                    'PMDES2_29' => '',
+                    'STK_29'    => $request->Maestro_Al_Pref,
+                    'TAXABL_29' => $Part_Sale->TAXABL_29,
+                    'BOMUOM_29' => $request->Maestro_Umd_Ldm,
+                    'SLSUOM_29' => $Part_Sale->SLSUOM_29,    /*Hay que crear un input para este campo y poderlo editar desde el frontend*/
+                    'SLSCNV_29' => $Part_Sale->SLSCNV_29,   /*Hay que crear un input para este campo y poderlo editar desde el frontend*/
+                    'PRICE_29' => '0',
+                    'BREAK1_29' => '0',
+                    'DISC1_29' => '0',
+                    'PRICE1_29' => '0',
+                    'BREAK2_29' => '0',
+                    'DISC2_29' => '0',
+                    'PRICE2_29' => '0',
+                    'BREAK3_29' => '0',
+                    'DISC3_29' => '0',
+                    'PRICE3_29' => '0',
+                    'BREAK4_29' => '0',
+                    'DISC4_29' => '0',
+                    'PRICE4_29' => '0',
+                    'BREAK5_29' => '0',
+                    'DISC5_29' => '0',
+                    'PRICE5_29' => '0',
+                    'BREAK6_29' => '0',
+                    'DISC6_29' => '0',
+                    'PRICE6_29' => '0',
+                    'BREAK7_29' => '0',
+                    'DISC7_29' => '0',
+                    'PRICE7_29' => '0',
+                    'BREAK8_29' => '0',
+                    'DISC8_29' => '0',
+                    'PRICE8_29' => '0',
+                    'BREAK9_29' => '0',
+                    'DISC9_29' => '0',
+                    'PRICE9_29' => '0',
+                    'QTYMTD_29' => '0',
+                    'SLSMTD_29' => '0',
+                    'CSTMTD_29' => '0',
+                    'QTYYTD_29' => '0',
+                    'SLSYTD_29' => '0',
+                    'CSTYTD_29' => '0',
+                    'QTYLYR_29' => '0',
+                    'SLSLYR_29' => '0',
+                    'CSTLYR_29' => '0',
+                    'QTYCOM_29' => '0',
+                    'CRTLTO_29' => $request->Planificador_Tc_Crit,
+                    'AUTOMS_29' => $Part_Sale->AUTOMS_29,
+                    'APLDSC_29' => $Part_Sale->APLDSC_29,
+                    'PRDLIN_29' => $Part_Sale->PRDLIN_29,
+                    'HISFLG_29' => $Part_Sale->HISFLG_29,
+                    'WARFLG_29' => $Part_Sale->WARFLG_29,
+                    'LABWAR_29' => '0',
+                    'MATWAR_29' => '0',
+                    'RETMTD_29' => '0',
+                    'RETYTD_29' => '0',
+                    'UNWRPL_29' => '0',
+                    'UNWREP_29' => '0',
+                    'OUWRPL_29' => '0',
+                    'OUWREP_29' => '0',
+                    'COMMIS_29' => '0',
+                    'TAXCDE_29' => $Part_Sale->TAXCDE_29,
+                    'TAXCDE2_29' => '',
+                    'TAXCDE3_29' => '',
+                    'MCOMP_29' => '',
+                    'MSITE_29' => '',
+                    'UDFKEY_29' => '',
+                    'UDFREF_29' => '',
+                    'ALWBCK_29' => $Part_Sale->ALWBCK_29,
+                    'AUTOMF_29' => $Part_Sale->AUTOMF_29,
+                    'XDFINT_29' => '0',
+                    'XDFFLT_29' => '0',
+                    'XDFBOL_29' => '0',
+                    'XDFDTE_29' => $date,
+                    'XDFTXT_29' => '',
+                    'FILLER_29' => '',
+                    'CreatedBy' => 'Evpiu-' . Auth::user()->name,
+                    'CreationDate' => $date,
+                    'ModifiedBy' => '',
+                    'ModificationDate' => '',
+                    'MANPRC_29'    => $Part_Sale->MANPRC_29,
+                    'WARRES_29'    => $Part_Sale->WARRES_29
+                ];
+            }
+            DB::connection('MAXP')->table('Part_Sales')->insert($InsPart_Sal);
 
             DB::commit();
         }
