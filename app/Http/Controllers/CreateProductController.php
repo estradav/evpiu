@@ -18,7 +18,7 @@ class CreateProductController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = DB::connection('MAXP')
+            $data = DB::connection('MAX')
                 ->table('Part_Master')
                 ->select('Part_Master.PRTNUM_01 as id',
                     'Part_Master.PMDES1_01 as desc',
@@ -44,7 +44,7 @@ class CreateProductController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('MAXP')->table('Part_Master')
+        $queries = DB::connection('MAX')->table('Part_Master')
             ->where('Part_Master.PRTNUM_01', 'LIKE', '%'.$query.'%')
             ->orWhere('Part_Master.PMDES1_01', 'LIKE', '%'.$query.'%')->take(20)
             ->get();
@@ -172,7 +172,7 @@ class CreateProductController extends Controller
         DB::beginTransaction();
         try {
             $date = date('Ymd H:i:s');
-            DB::connection('MAXP')->table('Part_Master')->insert([
+            DB::connection('MAX')->table('Part_Master')->insert([
                 'Part_Master.PRTNUM_01' => $request->Maestro_Cod,
                 'Part_Master.TYPE_01'   => $request->Maestro_TP,
                 'Part_Master.CLSCDE_01' => $request->Maestro_Cod_Clase,
@@ -285,7 +285,7 @@ class CreateProductController extends Controller
                 'Part_Master.NCNR_01' => $request->Planificador_NcndVal, /*checkbox*/
             ]);
 
-            DB::connection('MAXP')->table('Activity_index')->insert([
+            DB::connection('MAX')->table('Activity_index')->insert([
                 'Activity_index.LLC_03'     => $request->Ingenieria_Cbn,
                 'Activity_index.PRTNUM_03'  => $request->Maestro_Cod,
                 'Activity_index.BOMFLG_03'  => 'N',
@@ -306,7 +306,7 @@ class CreateProductController extends Controller
             $Prod_dest = $request->Maestro_Cod;
 
             $InsProd_Struc = [];
-            $Product_Structur = DB::connection('MAXP')->table('Product_Structure')
+            $Product_Structur = DB::connection('MAX')->table('Product_Structure')
                 ->where('Product_Structure.PARPRT_02','=', $Producto)->get();
 
             foreach ($Product_Structur as $Prod_Struc){
@@ -343,13 +343,13 @@ class CreateProductController extends Controller
                     'ALTCDE_02'    => ''
                 ];
             }
-            DB::connection('MAXP')->table('Product_Structure')->insert($InsProd_Struc);
+            DB::connection('MAX')->table('Product_Structure')->insert($InsProd_Struc);
 
 
 
 
             $InsPart_Rou = [];
-            $Part_Routing = DB::connection('MAXP')->table('Part_Routing')
+            $Part_Routing = DB::connection('MAX')->table('Part_Routing')
                 ->where('Part_Routing.PRTNUM_12','=', $Producto)->get();
 
 
@@ -396,12 +396,12 @@ class CreateProductController extends Controller
                     'ALTCDE_12'  => '',
                 ];
             }
-            DB::connection('MAXP')->table('Part_Routing')->insert($InsPart_Rou);
+            DB::connection('MAX')->table('Part_Routing')->insert($InsPart_Rou);
 
 
 
             $InsPart_Sal = [];
-            $Part_Sales = DB::connection('MAXP')->table('Part_Sales')
+            $Part_Sales = DB::connection('MAX')->table('Part_Sales')
                 ->where('Part_Sales.PRTNUM_29','=', $Producto)->get();
 
             foreach ($Part_Sales as $Part_Sale ) {
@@ -491,7 +491,7 @@ class CreateProductController extends Controller
                     'WARRES_29'    => $Part_Sale->WARRES_29
                 ];
             }
-            DB::connection('MAXP')->table('Part_Sales')->insert($InsPart_Sal);
+            DB::connection('MAX')->table('Part_Sales')->insert($InsPart_Sal);
 
             DB::commit();
 
