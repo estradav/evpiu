@@ -124,6 +124,15 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/CodigosIndex','ProdCievCodCodigoController@index');
 
 
+    Route::resource('ProductCreation','CreateProductController');
+    Route::get('/ProductosIndex','CreateProductController@index');
+    Route::get('/SearchProducts', 'CreateProductController@SearchProducts');
+    Route::get('/SearchCodes', 'CreateProductController@SearchCodes');
+    Route::post('/SaveProducts','CreateProductController@SaveProducts');
+
+
+
+    Route::get('/test', 'CreateProductController@test');
 });
 
 
