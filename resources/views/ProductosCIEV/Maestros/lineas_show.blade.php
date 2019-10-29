@@ -70,7 +70,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
-                                <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter value" value="">
+                                <input type="text" class="form-control" id="cod" name="cod" placeholder="Enter value" value="">
                             </div>
                         </div>
                         <div class="form-group">
