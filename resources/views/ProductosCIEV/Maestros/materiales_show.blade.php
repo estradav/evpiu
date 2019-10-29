@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Linea:</label>
                             <div class="col-sm-12">
-                                <select class="custom-select" name="mat_lineas_id" id="mat_lineas_id">
+                                <select class="form-control" name="mat_lineas_id" id="mat_lineas_id">
                                     @foreach ( $Lineas->get() as $index => $Linea)
                                         <option value="{{ $index }}" {{ old('car_lineas_id') == $index ? 'selected' : ''}}>
                                             {{ $Linea }}
@@ -70,31 +70,31 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Sublinea:</label>
                             <div class="col-sm-12">
-                                <select class="custom-select" name="mat_sublineas_id" id="mat_sublineas_id"></select>
+                                <select class="form-control" name="mat_sublineas_id" id="mat_sublineas_id"></select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Codigo del Material:</label>
+                            <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="cod" name="cod" placeholder="Enter Name" value="" maxlength="2" required="required">
+                                <input type="text" class="form-control" id="cod" name="cod" value="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Nombre del Material:</label>
+                            <label for="name" class="col-sm-6 control-label">Nombre:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="name" name="name" value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="abreviatura" name="abreviatura" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="abreviatura" name="abreviatura"  value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Comentarios:</label>
                             <div class="col-sm-12">
-                                <textarea id="coments" name="coments" required="" placeholder="Enter Details" class="form-control"> </textarea>
+                                <textarea id="coments" name="coments" required="" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-offset-2 col-sm-10">

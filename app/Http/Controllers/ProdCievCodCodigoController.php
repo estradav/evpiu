@@ -11,6 +11,7 @@ use App\CodSublinea;
 use App\CodTipoProducto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
 use Yajra\DataTables\DataTables;
 
 class ProdCievCodCodigoController extends Controller
@@ -199,6 +200,26 @@ class ProdCievCodCodigoController extends Controller
             }
             return response()->json($Array);
         }
+    }
+
+
+
+    public function GetCodigos (Request $request)
+    {
+        if ($request->ajax()) {
+            $var = DB::table('cod_codigos')->select('codigo')->get();
+            foreach ($var as $v) {
+                $Array[] =  $v->codigo;
+            }
+            return response()->json($Array);
+        }
+
+
+        /*$var = DB::table('cod_codigos')->select('codigo')->get();
+        foreach ($var as $v){
+            $Array[] = $v->codigo;
+        }
+        return response()->json($Array);*/
     }
 
 }

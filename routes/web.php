@@ -132,7 +132,9 @@ Route::middleware(['auth'])->group(function() {
 
 
 
-    Route::get('/test', 'CreateProductController@test');
+    Route::get('/test', 'ProdCievCodCodigoController@GetCodigos');
+
+
 });
 
 

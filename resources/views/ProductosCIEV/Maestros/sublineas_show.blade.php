@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Tipo Producto:</label>
                             <div class="col-sm-12">
-                                <select class="custom-select" name="tipoproductos_id" id="tipoproductos_id">
+                                <select class="form-control" name="tipoproductos_id" id="tipoproductos_id">
                                     @foreach( $TipoProductos->get() as $index => $TipoProducto)
                                         <option value="{{ $index }}" {{ old('tipoproductos_id') == $index ? 'selected' : ''}}>
                                             {{ $TipoProducto }}
@@ -70,31 +70,31 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Linea:</label>
                             <div class="col-sm-12">
-                                <select class="custom-select" name="lineas_id" id="lineas_id"></select>
+                                <select class="form-control" name="lineas_id" id="lineas_id"></select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Codigo de Sublinea:</label>
+                            <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
-                                <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="number" class="form-control" id="cod" name="cod"  value="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Nombre de Sublinea:</label>
+                            <label for="name" class="col-sm-6 control-label">Nombre:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="name" name="name" value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="abreviatura" name="abreviatura" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="abreviatura" name="abreviatura" value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Comentarios:</label>
                             <div class="col-sm-12">
-                                <textarea id="coments" name="coments" required="" placeholder="Enter Details" class="form-control"> </textarea>
+                                <textarea id="coments" name="coments" required="" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-offset-2 col-sm-10">
@@ -106,7 +106,6 @@
             </div>
         </div>
     </div>
-
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Sublineas.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>

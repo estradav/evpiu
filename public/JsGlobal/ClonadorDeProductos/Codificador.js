@@ -6,46 +6,6 @@ $(document).ready(function(){
             }
         });
 
-        var table = $('.data-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "/CodigosIndex",
-            columns: [
-                {data: 'codigo', name: 'codigo'},
-                {data: 'desc', name: 'desc'},
-                {data: 'tp', name: 'tp'},
-                {data: 'lin', name: 'lin'},
-                {data: 'subl', name: 'subl'},
-                {data: 'med', name: 'med'},
-                {data: 'car', name: 'car'},
-                {data: 'mat', name: 'mat'},
-                {data: 'coment', name: 'coment'},
-                {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false},
-            ],
-            language: {
-                // traduccion de datatables
-                processing: "Procesando...",
-                search: "Buscar&nbsp;:",
-                lengthMenu: "Mostrar _MENU_ registros",
-                info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                infoPostFix: "",
-                loadingRecords: "Cargando...",
-                zeroRecords: "No se encontraron resultados",
-                emptyTable: "Ningún registro disponible en esta tabla :C",
-                paginate: {
-                    first: "Primero",
-                    previous: "Anterior",
-                    next: "Siguiente",
-                    last: "Ultimo"
-                },
-                aria: {
-                    sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sortDescending: ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        });
         jQuery.extend(jQuery.validator.messages, {
             required: "Este campo es obligatorio.",
             remote: "Por favor, rellena este campo.",
@@ -91,7 +51,6 @@ $(document).ready(function(){
                     success: function (data) {
                         $('#CodigoForm').trigger("reset");
                         $('#Codigomodal').modal('hide');
-                        table.draw();
                         toastr.success("Registro Guardado con Exito!");
                         $(this).html('Crear');
                     },
@@ -126,46 +85,6 @@ $(document).ready(function(){
             $('#CodigoForm').trigger("reset");
             $('#modelHeading').html("Crear Nuevo Codigo");
             $('#Codigomodal').modal('show');
-        });
-
-        $('body').on('click', '.editCodigo', function () {
-
-            var codigo_id = $(this).data('id');
-            $.get("/ProdCievCodCodigo" +'/' + codigo_id +'/edit', function (data) {
-                $('#modelHeading').html("Editar Codigo");
-                $('#saveBtn').val("edit-Medida");
-                $('#Codigomodal').modal('show');
-                $('#medida_id').val(data.id);
-                $('#codigo').val(data.codigo);
-                $('#descripcion').val(data.descripcion);
-                $('#tipoproducto_id').val(data.tipoproducto_id);
-                $('#lineas_id').val(data.lineas_id);
-                $('#sublineas_id').val(data.sublineas_id);
-                $('#medida_id').val(data.medida_id);
-                $('#caracteristica_id').val(data.caracteristica_id);
-                $('#material_id').val(data.material_id);
-                $('#coments').val(data.coments);
-            })
-        });
-
-
-        $('body').on('click', '.deleteCodigo', function () {
-
-            var codigo_id = $(this).data("id");
-            if(confirm("¿Esta seguro de Eliminar?")) {
-                $.ajax({
-                    type: "DELETE",
-                    url: "/ProdCievCodCodigo" + '/' + codigo_id,
-                    success: function (data) {
-                        table.draw();
-                        toastr.error("!Registro eliminado con exito¡");
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        toastr.error("Error al eliminar el registro");
-                    }
-                });
-            }
         });
     });
 
