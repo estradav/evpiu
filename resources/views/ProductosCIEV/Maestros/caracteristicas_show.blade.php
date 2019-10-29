@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Linea:</label>
                             <div class="col-sm-12">
-                                <select class="custom-select" name="car_lineas_id" id="car_lineas_id">
+                                <select class="form-control" name="car_lineas_id" id="car_lineas_id">
                                     @foreach ( $Lineas->get() as $index => $Linea)
                                         <option value="{{ $index }}" {{ old('car_lineas_id') == $index ? 'selected' : ''}}>
                                             {{ $Linea }}
@@ -70,31 +70,31 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Sublinea:</label>
                             <div class="col-sm-12">
-                                <select class="custom-select" name="car_sublineas_id" id="car_sublineas_id"></select>
+                                <select class="form-control" name="car_sublineas_id" id="car_sublineas_id"></select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Codigo de Caracteristica:</label>
+                            <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
-                                <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="cod" name="cod" value="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Nombre de Caracteristica:</label>
+                            <label for="name" class="col-sm-6 control-label">Nombre:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="name" name="name" value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="abreviatura" name="abreviatura" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                <input type="text" class="form-control" id="abreviatura" name="abreviatura" value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Comentarios:</label>
                             <div class="col-sm-12">
-                                <textarea id="coments" name="coments" required="" placeholder="Enter Details" class="form-control"> </textarea>
+                                <textarea id="coments" name="coments" placeholder="Enter Details" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-offset-2 col-sm-10">
@@ -115,6 +115,5 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
     @endpush
 @endsection

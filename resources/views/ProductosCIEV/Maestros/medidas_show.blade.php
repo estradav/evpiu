@@ -65,7 +65,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Linea:</label>
                                     <div class="col-sm-12">
-                                        <select class="custom-select" name="med_lineas_id" id="med_lineas_id">
+                                        <select class="form-control" name="med_lineas_id" id="med_lineas_id">
                                             @foreach ( $Lineas->get() as $index => $Linea)
                                                 <option value="{{ $index }}" {{ old('med_lineas_id') == $index ? 'selected' : ''}}>
                                                     {{ $Linea }}
@@ -79,7 +79,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-3 control-label">Sublinea:</label>
                                     <div class="col-sm-12">
-                                        <select class="custom-select" name="med_sublineas_id" id="med_sublineas_id"></select>
+                                        <select class="form-control" name="med_sublineas_id" id="med_sublineas_id"></select>
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Codigo de Medida:</label>
                                     <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="cod" name="cod" placeholder="Enter Name" value="" maxlength="50" required="required">
+                                        <input type="number" class="form-control" id="cod" name="cod" value="" maxlength="50">
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Nombre de la Medida:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Nombre de la medida" value="" maxlength="50" required="required">
+                                        <input type="text" class="form-control" id="name" name="name" value="" maxlength="50">
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Interior:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="interior" name="interior" placeholder="Medida interior" value="" maxlength="50" required>
+                                        <input type="text" class="form-control" id="interior" name="interior"  value="">
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Exterior:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="exterior" name="exterior" placeholder="Medida exterior" value="" maxlength="50" required>
+                                        <input type="text" class="form-control" id="exterior" name="exterior" value="">
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Lado 1:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="lado_1" name="lado_1" placeholder="Lado 1" value="" maxlength="50" required>
+                                        <input type="text" class="form-control" id="lado_1" name="lado_1" value="">
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Lado 2:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="lado_2" name="lado_2" placeholder="Lado 2" value="" maxlength="50" required="required">
+                                        <input type="text" class="form-control" id="lado_2" name="lado_2" value="">
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Largo:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" value="" maxlength="50" required="required">
+                                        <input type="text" class="form-control" id="largo" name="largo" value="">
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Denominacion:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="denominacion" name="denominacion" placeholder="Denominacion" value="" maxlength="50" required="required">
+                                        <input type="text" class="form-control" id="denominacion" name="denominacion" value="">
                                     </div>
                                 </div>
                             </div>
@@ -152,7 +152,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-12 control-label">Comentarios:</label>
                                     <div class="col-sm-12">
-                                        <textarea id="coments" name="coments" placeholder="Comentarios" class="form-control"> </textarea>
+                                        <textarea id="coments" name="coments" placeholder="Comentarios" class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
