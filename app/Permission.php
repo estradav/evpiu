@@ -7,11 +7,11 @@ use App\PermissionGroup;
 
 class Permission extends \Spatie\Permission\Models\Permission
 {
+
+    protected $dateFormat = 'M j Y h:i:s';
     /**
      * El grupo al que pertenece el permiso.
      */
-
-    protected $dateFormat = 'M j Y h:i:s';
     public function group()
     {
         return $this->belongsTo(PermissionGroup::class, 'group_id');
