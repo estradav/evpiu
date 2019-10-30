@@ -12,9 +12,12 @@
 
 @section('content')
     @inject('TipoProductos','App\Services\TipoProductos')
+    @can('maestro.sublinea.view')
     <div class="col-lg-4">
         <div class="form-group">
+            @can('sublinea.new')
             <a class="btn btn-primary" href="javascript:void(0)" id="CrearSubLineas">Nuevo</a>
+            @endcan
         </div>
     </div>
     <div class="row">
@@ -106,6 +109,11 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar las sublineas.
+        </div>
+    @endcan
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Sublineas.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>

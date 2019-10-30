@@ -11,9 +11,12 @@
 @stop
 @section('content')
     @inject('TipoProductos','App\Services\TipoProductos')
+    @can('codificador.view')
     <div class="col-lg-4">
         <div class="form-group">
+            @can('codificador.new')
             <a class="btn btn-primary" href="javascript:void(0)" id="CrearCodigo">Crear Codigo</a>
+            @endcan
         </div>
     </div>
     <div class="row">
@@ -45,6 +48,12 @@
         </div>
     </div>
     @extends('ProductosCIEV.Codificador.modal')
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar el Codificador.
+        </div>
+    @endcan
+
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Codificador.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>

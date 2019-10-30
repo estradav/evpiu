@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+    {{--<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
         <div class="card">
             <h5 class="card-header">Total de facturas por Mes</h5>
             <div class="card-body">
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--}}
 </div>
 
 @else

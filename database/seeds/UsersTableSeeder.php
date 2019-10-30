@@ -18,6 +18,7 @@ class UsersTableSeeder extends Seeder
             'name'           => 'Administrador',
             'email'          => 'admin@evpiu.com',
             'username'       => 'administrator',
+            'menu'           => 'administrator',
             'password'       => bcrypt('password'),
             'remember_token' => str_random(60),
         ]);
@@ -29,6 +30,7 @@ class UsersTableSeeder extends Seeder
             'name'           => 'Usuario',
             'email'          => 'user@evpiu.com',
             'username'       => 'user',
+            'menu'           => 'user',
             'password'       => bcrypt('password'),
             'remember_token' => str_random(60),
         ]);

@@ -52,8 +52,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
-                       {{-- {{ evpiu_menu('administrator','administrator'),'layouts.sidebar' }}--}}
-                        {{ evpiu_menu(Auth::user()->username, 'layouts.sidebar') }}
+                    {{ evpiu_menu(Auth::user()->menu, 'layouts.sidebar') }}
                     </div>
                 </nav>
             </div>
