@@ -125,28 +125,6 @@ class MenuItemsTableSeeder extends Seeder
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Categorías
         $categoriesMenuItem = MenuItem::firstOrNew([
             'menu_id' => 1,
