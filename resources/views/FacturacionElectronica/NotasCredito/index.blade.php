@@ -11,7 +11,7 @@
 @stop
 
 @section('content')
-
+@can('notascredito.view')
     <div class="col-12"><h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda.</h3></div>
     <br>
     {!! Form::open(array('url'=>'nc', 'method'=>'GET', 'autcomplete'=>'off', 'role'=>'search', 'id' => 'myform'))!!}
@@ -88,9 +88,11 @@
                                       <td>{{ $nc->motivo }}</td>
                                       <td>
                                           <div class="btn-group ml-auto float-right">
+                                              @can('nc.edit')
                                               <a href="#" class="btn btn-sm btn-outline-light" id="edit-fac" >
                                                   <i class="far fa-edit"> </i>
                                               </a>
+                                              @endcan
                                               <a href="#" class="btn btn-sm btn-outline-light" id="ver-fac">
                                                   <i class="fa fa-eye"> </i>
                                               </a>
@@ -105,8 +107,14 @@
             </div>
         </div>
     </div>
-@stop
+
     {{Form::close()}}
+@else
+    <div class="alert alert-danger" role="alert">
+        No tienes permisos para visualizar las Notas Credito.
+    </div>
+@endcan
+@stop
 @push('javascript')
     <script>
         $( function() {
