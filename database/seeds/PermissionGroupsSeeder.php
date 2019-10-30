@@ -11,6 +11,7 @@ class PermissionGroupsSeeder extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
         $generalGroup = PermissionGroup::create([
