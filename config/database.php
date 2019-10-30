@@ -40,12 +40,9 @@ return [
             'database' => env('EV_DATABASE'),
             'username' => env('EV_USERNAME'),
             'password' => env('EV_PASSWORD'),
-            'unix_socket' => env('EV_SOCKET'),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'strict' => true,
             'engine' => 'InnoDB',
         ],
 
