@@ -33,10 +33,8 @@ return [
 
     'connections' => [
 
-
-
         'evpiu' => [
-            'driver' => 'mysql',
+            'driver' => 'sqlsrv',
             'host' => env('EV_HOST'),
             'port' => env('EV_PORT'),
             'database' => env('EV_DATABASE'),
@@ -51,7 +49,6 @@ return [
             'engine' => 'InnoDB',
         ],
 
-
         'DMS' => [
             'driver' => 'sqlsrv',
             'host' => env('DMS_HOST'),
@@ -64,8 +61,6 @@ return [
             'prefix_indexes' => true,
             'engine' => 'InnoDB',
         ],
-
-
 
         'MAX' => [
             'driver' => 'sqlsrv',
@@ -80,7 +75,6 @@ return [
             'engine' => 'InnoDB',
         ],
 
-
         'MAXP' => [
             'driver' => 'sqlsrv',
             'host' => env('MAXP_HOST'),
@@ -94,7 +88,6 @@ return [
             'engine' => 'InnoDB',
         ],
 
-
         'FE'  => [
             'driver' => 'sqlsrv',
             'host' => env('FE_HOST'),
@@ -107,7 +100,6 @@ return [
             'prefix_indexes' => true,
             'engine' => 'InnoDB',
         ]
-
     ],
 
     /*
