@@ -8,7 +8,7 @@ use App\PermissionGroup;
 class Permission extends \Spatie\Permission\Models\Permission
 {
 
-    protected $dateFormat = 'M j Y h:i:s';
+    protected $dateFormat = 'd-m-Y H:i:s';
     /**
      * El grupo al que pertenece el permiso.
      */

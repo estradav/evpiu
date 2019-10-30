@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
-    protected $dateFormat = 'M j Y h:i:s';
+    protected $dateFormat = 'd-m-Y H:i:s';
     /**
      * protected $dateFormat = 'M j Y h:i:s';
      * El directorio donde se guardan las imágenes de
