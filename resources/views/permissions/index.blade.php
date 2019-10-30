@@ -48,8 +48,8 @@
                                     </td>
                                     <td>{{ $permission->description }}</td>
                                     <td>{{ $permission->guard_name }}</td>
-                                    <td>{{ $permission->created_at->format('d M Y h:ia') }}</td>
-                                    <td>{{ $permission->updated_at->format('d M Y h:ia') }}</td>
+                                    <td>{{ $permission->created_at->format('d M Y h:i:s') }}</td>
+                                    <td>{{ $permission->updated_at->format('d M Y h:i:s') }}</td>
                                     <td>
                                         <div class="btn-group ml-auto float-right">
                                             @can('permissions.list')
