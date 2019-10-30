@@ -7,7 +7,7 @@ use App\Permission;
 
 class PermissionGroup extends Model
 {
-    protected $dateFormat = 'd-m-Y H:i:s';
+    protected $dateFormat = 'Ymd H:i:s';
     /**
      * Los atributos que son asignables en masa.
      *
