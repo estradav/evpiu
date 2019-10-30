@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('ConfigFe','FeConfigController');
 
     // Productos CIEV --> Codificador
-    Route::resource('ProdCievMaestro','ProdCievMaestroController');
+    Route::resource('maestros','ProdCievMaestroController');
 
     Route::resource('ProdCievCodTipoProducto','ProdCodTipoProductoController');
 
@@ -77,7 +77,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/getsublineas','ProdCievCodMedidaController@getSublineas');
 
 
-    Route::resource('ProdCievCodCodigo','ProdCievCodCodigoController');
+    Route::resource('codificador','ProdCievCodCodigoController');
     Route::get('/getlineas','ProdCievCodCodigoController@getlineas');
     Route::get('/getsublineas','ProdCievCodCodigoController@getsublineas');
     Route::get('/getcaracteristica','ProdCievCodCodigoController@getcaracteristica');
@@ -124,7 +124,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/CodigosIndex','ProdCievCodCodigoController@index');
 
 
-    Route::resource('ProductCreation','CreateProductController');
+    Route::resource('clonador','CreateProductController');
     Route::get('/ProductosIndex','CreateProductController@index');
     Route::get('/SearchProducts', 'CreateProductController@SearchProducts');
     Route::get('/SearchCodes', 'CreateProductController@SearchCodes');

@@ -14,8 +14,8 @@ class ProdCodTipoProductoController extends Controller
             $data = CodTipoProducto::latest()->get();
             return Datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editLinea" id="edit-btn">Editar</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteLinea">Eliminar</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editTipoProducto" id="edit-btn">Editar</a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteTipoProducto">Eliminar</a>';
                     return $btn;
                 })
                 ->rawColumns(['opciones'])

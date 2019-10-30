@@ -48,15 +48,16 @@ $(document).ready(function(){
             $('#saveBtn').val("create-material");
             $('#material_id').val('');
             $('#materialForm').trigger("reset");
-            $('#modelHeading').html("Crear Nuevo Material");
+            $('#modelHeading').html("Nuevo");
             $('#materialmodal').modal('show');
+            document.getElementById("cod").readOnly = false;
         });
 
         $('body').on('click', '.editmaterial', function () {
 
             var material_id = $(this).data('id');
             $.get("/ProdCievCodMaterial" +'/' + material_id +'/edit', function (data) {
-                $('#modelHeading').html("Editar Material");
+                $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-Material");
                 $('#materialmodal').modal('show');
                 $('#material_id').val(data.id);
@@ -66,6 +67,7 @@ $(document).ready(function(){
                 $('#name').val(data.name);
                 $('#abreviatura').val(data.abreviatura);
                 $('#coments').val(data.coments);
+                document.getElementById("cod").readOnly = true;
             })
         });
 

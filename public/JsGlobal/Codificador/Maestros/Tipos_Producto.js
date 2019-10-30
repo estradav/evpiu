@@ -45,15 +45,17 @@ $(function () {
         $('#saveBtn').val("create-tipoproducto");
         $('#tipoproducto_id').val('');
         $('#tipoproductoForm').trigger("reset");
-        $('#modelHeading').html("Crear Nuevo");
+        $('#modelHeading').html("Nuevo");
         $('#tipoproductomodal').modal('show');
+        document.getElementById("cod").readOnly = false;
     });
 
-    $('body').on('click', '.editLinea', function () {
+    $('body').on('click', '.editTipoProducto', function () {
 
         var tipoproducto_id = $(this).data('id');
+        document.getElementById("cod").readOnly = true;
         $.get("/ProdCievCodTipoProducto" +'/' + tipoproducto_id +'/edit', function (data) {
-            $('#modelHeading').html("Editar Linea");
+            $('#modelHeading').html("Editar");
             $('#saveBtn').val("edit-tipoproducto");
             $('#tipoproductomodal').modal('show');
             $('#tipoproducto_id').val(data.id);

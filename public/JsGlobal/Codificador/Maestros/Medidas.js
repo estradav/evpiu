@@ -53,15 +53,16 @@ $(document).ready(function(){
             $('#saveBtn').val("create-medida");
             $('#medida_id').val('');
             $('#medidaForm').trigger("reset");
-            $('#modelHeading').html("Crear Nueva Medida");
+            $('#modelHeading').html("Nuevo");
             $('#medidamodal').modal('show');
+            document.getElementById("cod").readOnly = false;
         });
 
         $('body').on('click', '.editmedida', function () {
 
             var medida_id = $(this).data('id');
             $.get("/ProdCievCodMedida" +'/' + medida_id +'/edit', function (data) {
-                $('#modelHeading').html("Editar Medida");
+                $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-Medida");
                 $('#medidamodal').modal('show');
                 $('#medida_id').val(data.id);
@@ -76,6 +77,7 @@ $(document).ready(function(){
                 $('#med_sublineas_id').val(data.med_sublineas_id);
                 $('#name').val(data.name);
                 $('#coments').val(data.coments);
+                document.getElementById("cod").readOnly = true;
             })
         });
 
@@ -151,8 +153,6 @@ $(document).ready(function(){
                 });
             }
         });
-
-
 
         $('body').on('click', '.deletemedida', function () {
 
