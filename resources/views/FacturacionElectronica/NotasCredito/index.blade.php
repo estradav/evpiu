@@ -114,7 +114,6 @@
         No tienes permisos para visualizar las Notas Credito.
     </div>
 @endcan
-@stop
 @push('javascript')
     <script>
         $( function() {
@@ -300,3 +299,4 @@
     <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 @endpush
+@stop
