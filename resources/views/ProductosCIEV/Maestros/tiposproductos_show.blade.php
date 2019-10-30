@@ -11,9 +11,12 @@
 @stop
 
 @section('content')
+    @can('maestro.tipoproducto.view')
     <div class="col-lg-4">
         <div class="form-group">
+            @can('tipoproducto.new')
             <a class="btn btn-primary" href="javascript:void(0)" id="CrearLineas">Nuevo</a>
+            @endcan
         </div>
     </div>
     <div class="row">
@@ -79,6 +82,11 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar los tipo de productos.
+        </div>
+    @endcan
     @push('javascript')
         <script src="/JsGlobal/Codificador/Maestros/Tipos_Producto.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>

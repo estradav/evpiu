@@ -39,7 +39,7 @@ $(document).ready(function() {
         }
     });
 
-    $.ajax({
+   /* $.ajax({
         url: "/get-invoice-chart-data",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
@@ -195,7 +195,7 @@ $(document).ready(function() {
         }
     });
 
-    /* valores totales por año  */
+    /!* valores totales por año  *!/
 
     $.ajax({
         url: "/get-invoice-age-data-value",
@@ -281,7 +281,7 @@ $(document).ready(function() {
 
 
 
-    /*VALORES POR DIA (ULTIMOS 7 DIAS)*/
+    /!*VALORES POR DIA (ULTIMOS 7 DIAS)*!/
 
     $.ajax({
         url: "/get-invoice-day-data-value",
@@ -364,4 +364,4 @@ $(document).ready(function() {
             console.log(data);
         }
     });
-});
+*/});

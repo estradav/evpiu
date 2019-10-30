@@ -12,9 +12,12 @@
 
 @section('content')
     @inject('Lineas','App\Services\Lineas')
+    @can('maestro.material.view')
     <div class="col-lg-4">
         <div class="form-group">
+            @can('material.new')
             <a class="btn btn-primary" href="javascript:void(0)" id="CrearMaterial">Nuevo</a>
+            @endcan
         </div>
     </div>
     <div class="row">
@@ -106,6 +109,12 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar los materiales.
+        </div>
+    @endcan
+
 
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Materiales.js"></script>

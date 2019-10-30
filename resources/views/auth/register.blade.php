@@ -54,6 +54,7 @@
                 <div class="form-group pt-2">
                     <button class="btn btn-block btn-primary" type="submit">¡Registrarme!</button>
                 </div>
+                <input type="hidden" id="menu" name="menu" value="user" >
             </div>
             <div class="card-footer bg-white">
                 <p>¿Ya tenés una cuenta?, <a href="{{ route('login') }}" class="text-secondary">¡Entra aquí!</a></p>

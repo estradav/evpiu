@@ -17,22 +17,20 @@
     @inject('Comprador','App\Services\Comprador')
     @inject('TipoCuenta','App\Services\TipoCuenta')
     @inject('TipoProductos','App\Services\TipoProductos')
-{{--    <div class="col-lg-4">
-        <div class="form-group">
-            <div class="text-left">
-
-            </div>
-        </div>
-    </div>--}}
+@can('clonador.view')
     <div class="row">
         <div class="col-6">
             <div class="text-left">
+                @can('clonador.new')
                 <a class="btn btn-primary" href="javascript:void(0)" id="New">Crear ò Clonar</a>
+                @endcan
             </div>
         </div>
         <div class="col-6">
             <div class="text-right">
+                @can('codificador.new')
                 <a class="btn btn-primary" href="javascript:void(0)" id="CrearCodigo">Codificador</a>
+                @endcan
             </div>
         </div>
     </div>
@@ -65,15 +63,17 @@
     @extends('ProductosCIEV.Creador_Productos.Modal')
     @extends('ProductosCIEV.Codificador.modal')
     <style>
-        /*Este Style me permite crear un borde cuadradado en los campos fielfset */
         legend.scheduler-border {
-            width:inherit; /* Or auto */
-            padding:0 10px; /* To give a bit of padding on the left and right */
+            width:inherit;
+            padding:0 10px;
             border-bottom:none;
         }
-
-
     </style>
+@else
+    <div class="alert alert-danger" role="alert">
+        No tienes permisos para visualizar el Clonador.
+    </div>
+@endcan
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/ClonadorDeProductos/Codificador.js"></script>
         <script type="text/javascript" src="/JsGlobal/ClonadorDeProductos/Clonador-Creador.js"></script>

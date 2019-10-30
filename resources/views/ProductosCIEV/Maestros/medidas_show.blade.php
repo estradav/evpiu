@@ -12,9 +12,12 @@
 
 @section('content')
     @inject('Lineas','App\Services\Lineas')
+    @can('maestro.medida.view')
     <div class="col-lg-4">
         <div class="form-group">
+            @can('medida.new')
             <a class="btn btn-primary" href="javascript:void(0)" id="CrearMedida">Nuevo</a>
+            @endcan
         </div>
     </div>
     <div class="row">
@@ -166,6 +169,12 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar las medidas.
+        </div>
+    @endcan
+
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Medidas.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>

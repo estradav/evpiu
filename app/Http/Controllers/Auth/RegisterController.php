@@ -72,11 +72,12 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
+            'menu'     => $data['menu']
         ]);
 
         $user = $this->setDefaultRole($user);
-        $menu = $this->setDefaultMenuToNewUser($user);
-        $menuItem = $this->setDefaultMenuItemsToNewUser($menu);
+      /*  $menu = $this->setDefaultMenuToNewUser($user);
+        $menuItem = $this->setDefaultMenuItemsToNewUser($menu);*/
 
         return $user;
     }

@@ -12,9 +12,12 @@
 
 @section('content')
     @inject('Lineas','App\Services\Lineas')
+    @can('maestro.caracteristica.view')
     <div class="col-lg-4">
         <div class="form-group">
+            @can('caracteristica.new')
             <a class="btn btn-primary" href="javascript:void(0)" id="CrearCaracteristica">Nuevo</a>
+            @endcan
         </div>
     </div>
     <div class="row">
@@ -106,7 +109,11 @@
             </div>
         </div>
     </div>
-
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar las caracteristicas.
+        </div>
+    @endcan
 
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Caracteristicas.js"></script>

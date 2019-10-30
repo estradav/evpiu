@@ -12,9 +12,12 @@
 
 @section('content')
     @inject('TipoProductos','App\Services\TipoProductos')
+    @can('maestro.linea.view')
     <div class="col-lg-4">
         <div class="form-group">
+            @can('lineas.new')
             <a class="btn btn-primary" href="javascript:void(0)" id="CrearLineas">Nuevo</a>
+            @endcan
         </div>
     </div>
     <div class="row">
@@ -100,6 +103,11 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar las Lineas.
+        </div>
+    @endcan
 
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Lineas.js"></script>
