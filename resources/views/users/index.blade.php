@@ -35,8 +35,8 @@
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->username }}</td>
-                                    <td>{{ $user->created_at->format('d M Y h:ia') }}</td>
-                                    <td>{{ $user->updated_at->format('d M Y h:ia') }}</td>
+                                    <td>{{ $user->created_at->format('d M Y h:i:s') }}</td>
+                                    <td>{{ $user->updated_at->format('d M Y h:i:s') }}</td>
                                     <td>
                                         <div class="btn-group ml-auto float-right">
                                             @can('users.list')
