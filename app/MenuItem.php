@@ -11,6 +11,8 @@ class MenuItem extends Model
 
     protected $guarded = [];
 
+    protected $dateFormat = 'M j Y h:i:s';
+
     public function children()
     {
         return $this->hasMany(MenuItem::class, 'parent_id')

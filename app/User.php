@@ -19,6 +19,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'username','menu','password','created_at'
     ];
+    protected $dateFormat = 'M j Y h:i:s';
 
     /**
      * The attributes that should be hidden for arrays.
