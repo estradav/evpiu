@@ -67,7 +67,7 @@ $(document).ready(function() {
         $("#ProductForm").validate({
             ignore: "",
             rules: {
-                Maestro_Cod:{required: true, minlength: 10, maxlength: 10,digits: true},
+                Maestro_Cod:{required: true, minlength: 10, maxlength: 10,digits: false},
                 Maestro_desc: "required",
                 Maestro_TP:{selectcheck: true},
                 Maestro_Comprador: {selectcheck: true},
@@ -155,9 +155,10 @@ $(document).ready(function() {
         $('#saveBtn').val("CreateProduct");
         $('#linea_id').val('');
         $('#ProductForm').trigger("reset");
-
         $('#modelHeading').html("Crear ò Clonar Producto");
         $('#Modal').modal('show');
+        document.getElementById("Maestro_Cod").readOnly = true;
+        document.getElementById("Maestro_desc").readOnly = true;
     });
 
     $("#Planificador_PlnFirmVal").val('N');

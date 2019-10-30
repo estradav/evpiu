@@ -191,7 +191,7 @@ Breadcrumbs::for('Prod_ciev', function($trail) {
 
 Breadcrumbs::for('Prod_ciev_maestros', function($trail) {
     $trail->parent('Prod_ciev');
-    $trail->push("Maestros", route('ProdCievMaestro.index'));
+    $trail->push("Maestros", route('maestros.index'));
 });
 
 Breadcrumbs::for('Prod_ciev_maestros_tipos_producto', function($trail) {

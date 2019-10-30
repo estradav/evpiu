@@ -56,7 +56,7 @@
                     <form id="caracteristicaForm" name="caracteristicaForm" class="form-horizontal">
                         <input type="hidden" name="caracteristica_id" id="caracteristica_id">
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Linea:</label>
+                            <label for="car_lineas_id" class="col-sm-6 control-label">Linea:</label>
                             <div class="col-sm-12">
                                 <select class="form-control" name="car_lineas_id" id="car_lineas_id">
                                     @foreach ( $Lineas->get() as $index => $Linea)
@@ -94,7 +94,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Comentarios:</label>
                             <div class="col-sm-12">
-                                <textarea id="coments" name="coments" placeholder="Enter Details" class="form-control"></textarea>
+                                <textarea id="coments" name="coments"  class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-offset-2 col-sm-10">

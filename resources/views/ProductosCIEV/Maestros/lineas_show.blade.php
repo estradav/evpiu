@@ -56,7 +56,7 @@
                     <form id="lineaForm" name="lineaForm" class="form-horizontal">
                         <input type="hidden" name="linea_id" id="linea_id">
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Tipo de Producto:</label>
+                            <label for="tipoproducto_id" class="col-sm-6 control-label">Tipo de Producto:</label>
                             <div class="col-sm-12">
                                 <select class="form-control" name="tipoproducto_id" id="tipoproducto_id" >
                                 @foreach( $TipoProductos->get() as $index => $TipoProducto)
@@ -70,25 +70,25 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="cod" name="cod" placeholder="Enter value" value="">
+                                <input type="text" class="form-control" id="cod" name="cod"  value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">Nombre:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="">
+                                <input type="text" class="form-control" id="name" name="name"  value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="abreviatura" name="abreviatura" placeholder="Enter Name" value="">
+                                <input type="text" class="form-control" id="abreviatura" name="abreviatura"  value="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Comentarios:</label>
                             <div class="col-sm-12">
-                                <textarea id="coments" name="coments"  placeholder="Enter Details" class="form-control"></textarea>
+                                <textarea id="coments" name="coments"  class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-offset-2 col-sm-10">

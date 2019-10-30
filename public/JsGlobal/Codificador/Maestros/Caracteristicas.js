@@ -1,4 +1,3 @@
-
 $(function () {
     $.ajaxSetup({
         headers: {
@@ -46,15 +45,15 @@ $(function () {
         $('#saveBtn').val("create-caracteristica");
         $('#caracteristica_id').val('');
         $('#caracteristicaForm').trigger("reset");
-        $('#modelHeading').html("Crear Nueva Caracteristica");
+        $('#modelHeading').html("Nuevo");
         $('#caracteristicamodal').modal('show');
+        document.getElementById("cod").readOnly = false;
     });
 
     $('body').on('click', '.editcaracteristica', function () {
-
         var caracteristica_id = $(this).data('id');
         $.get("/ProdCievCodCaracteristica" +'/' + caracteristica_id +'/edit', function (data) {
-            $('#modelHeading').html("Editar Caracteristica");
+            $('#modelHeading').html("Editar");
             $('#saveBtn').val("edit-caracteristica");
             $('#caracteristicamodal').modal('show');
             $('#caracteristica_id').val(data.id);
@@ -64,6 +63,7 @@ $(function () {
             $('#name').val(data.name);
             $('#abreviatura').val(data.abreviatura);
             $('#coments').val(data.coments);
+            document.getElementById("cod").readOnly = true;
         })
     });
 

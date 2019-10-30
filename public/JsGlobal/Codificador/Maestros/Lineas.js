@@ -47,14 +47,16 @@ $(function () {
         $('#saveBtn').val("create-linea");
         $('#linea_id').val('');
         $('#lineaForm').trigger("reset");
-        $('#modelHeading').html("Crear Nueva Linea");
+        $('#modelHeading').html("Nuevo");
         $('#Lineamodal').modal('show');
+        document.getElementById("cod").readOnly = false;
     });
 
     $('body').on('click', '.editLinea', function () {
+        document.getElementById("cod").readOnly = true;
         var linea_id = $(this).data('id');
         $.get("/ProdCievCod" +'/' + linea_id +'/edit', function (data) {
-            $('#modelHeading').html("Editar Linea");
+            $('#modelHeading').html("Editar");
             $('#saveBtn').val("edit-linea");
             $('#Lineamodal').modal('show');
             $('#linea_id').val(data.id);

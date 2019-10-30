@@ -47,14 +47,15 @@ $(function () {
         $('#saveBtn').val("create-sublinea");
         $('#sublinea_id').val('');
         $('#sublineaForm').trigger("reset");
-        $('#modelHeading').html("Crear Nueva Sublinea");
+        $('#modelHeading').html("Nuevo");
         $('#sublineamodal').modal('show');
+        document.getElementById("cod").readOnly = false;
     });
 
     $('body').on('click', '.editsublinea', function () {
         var sublinea_id = $(this).data('id');
         $.get("/ProdCievCodSublinea" +'/' + sublinea_id +'/edit', function (data) {
-            $('#modelHeading').html("Editar Sublinea");
+            $('#modelHeading').html("Editar");
             $('#saveBtn').val("edit-sublinea");
             $('#sublineamodal').modal('show');
             $('#sublinea_id').val(data.id);
@@ -64,6 +65,7 @@ $(function () {
             $('#name').val(data.name);
             $('#abreviatura').val(data.abreviatura);
             $('#coments').val(data.coments);
+            document.getElementById("cod").readOnly = true;
         })
     });
 

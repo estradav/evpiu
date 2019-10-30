@@ -131,7 +131,7 @@ $(document).ready(function(){
         $('body').on('click', '.editCodigo', function () {
 
             var codigo_id = $(this).data('id');
-            $.get("/ProdCievCodCodigo" +'/' + codigo_id +'/edit', function (data) {
+            $.get("/codificador" +'/' + codigo_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar Codigo");
                 $('#saveBtn').val("edit-Medida");
                 $('#Codigomodal').modal('show');
@@ -155,7 +155,7 @@ $(document).ready(function(){
             if(confirm("¿Esta seguro de Eliminar?")) {
                 $.ajax({
                     type: "DELETE",
-                    url: "/ProdCievCodCodigo" + '/' + codigo_id,
+                    url: "/codificador" + '/' + codigo_id,
                     success: function (data) {
                         table.draw();
                         toastr.error("!Registro eliminado con exito¡");
