@@ -11,8 +11,7 @@
 @stop
 
 @section('content')
-
-
+    @can('facturacion.view')
     <div class="col-12"><h3> Por favor seleccione un rango de fechas para comenzar con la busqueda.</h3></div>
     <br>
     {!! Form::open(array('url'=>'fe', 'method'=>'GET', 'autcomplete'=>'off', 'role'=>'search', 'id' => 'myform'))!!}
@@ -69,12 +68,9 @@
                                     <th>IVA</th>
                                     <th>Motivo</th>
                                     <th>Opciones</th>
-
                                 </tr>
                             </thead>
                             <tbody>
-                            {{--Validacion de campos , aunque se valida desde el controlador, tambien tiene una validacion adicional
-                            en la vista --}}
 
                                 <?php
                                 use Carbon\Carbon;
@@ -186,17 +182,15 @@
                                       <td> {{ $fac->motivo }}</td>
                                       <td>
                                           <div class="btn-group ml-auto float-right">
+                                              <button class="btn btn-sm btn-light " id="BTN{{$fac->numero}}" data-toggle="tooltip" data-placement="top" title="<?php echo $errortex ?>">
+                                                <?php echo $errors  ?>
+                                              </button>
                                               @can('fact.edit')
-                                                  <button class="btn btn-sm btn-light " id="BTN{{$fac->numero}}" data-toggle="tooltip" data-placement="top" title="<?php echo $errortex ?>" >
-                                                    <?php echo $errors  ?>
-                                                  </button>
-
                                                   <a href="{{ route('fe.edit', $fac->numero) }}" class="btn btn-sm btn-outline-light" id="edit-fac" >
                                                       <i class="far fa-edit"></i>
                                                   </a>
-
                                               @endcan
-                                                  <input type="hidden" name="numero{{ $fac->numero }}" value="{{ $fac->numero }}" id="numero{{ $fac->numero }}"  >
+                                              <input type="hidden" name="numero{{ $fac->numero }}" value="{{ $fac->numero }}" id="numero{{ $fac->numero }}">
                                           </div>
                                       </td>
                                   </tr>
@@ -210,10 +204,12 @@
             </div>
         </div>
     </div>
-
-@stop
     {{Form::close()}}
-
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar las Facturas.
+        </div>
+    @endcan
 @push('javascript')
     <script>
 			$(document).ready(function() {
@@ -232,4 +228,4 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
     <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/css/dataTables.checkboxes.css" rel="stylesheet" />
 @endpush
-
+@stop
