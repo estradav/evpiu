@@ -15,7 +15,6 @@ class FeFacturasController extends Controller
 
     public function index(Request $request)
     {
-
         $f1 = date( 'Ymd 00:00:00');
         $f2 = date( 'Ymd 23:59:59');
 
@@ -120,8 +119,6 @@ class FeFacturasController extends Controller
 
                // Validacion de impuestos totales por factura
 
-
-
                $id_total_impuesto_iva = null;
                if ($enc->iva != null) {
                    $id_total_impuesto_iva = '01';
@@ -135,11 +132,9 @@ class FeFacturasController extends Controller
                    $tarifa_unitaria_total = '0';
                }
 
-
                $total_valor_iva = $enc->subtotal * 0.19;
                /// para  Rte Fuente
                $total_item_valor = $enc->subtotal + $total_valor_iva;
-
 
                ////////////////// FIN CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
 

@@ -1,7 +1,31 @@
-$( function() {
-    var from = $( "#fechaInicial" )
-            .datepicker({
-                dateFormat: "yymmdd 00:00:00",
+$(document).ready(function () {
+    $( function() {
+        var from = $( "#fechaInicial" )
+                .datepicker({
+                    dateFormat: "yymmdd 00:00:00",
+                    changeMonth: true,
+                    changeYear: false,
+                    closeText: 'Cerrar',
+                    prevText: 'Ant',
+                    nextText: 'Sig',
+                    currentText: 'Hoy',
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+                    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+                    weekHeader: 'Sm',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    showAnim: "drop"
+                })
+                .on( "change", function() {
+                    to.datepicker( "option", "minDate", getDate( this ) );
+                }),
+            to = $( "#fechaFinal" ).datepicker({
+                dateFormat: "yymmdd 23:59:59",
                 changeMonth: true,
                 changeYear: false,
                 closeText: 'Cerrar',
@@ -20,45 +44,21 @@ $( function() {
                 yearSuffix: '',
                 showAnim: "drop"
             })
-            .on( "change", function() {
-                to.datepicker( "option", "minDate", getDate( this ) );
-            }),
-        to = $( "#fechaFinal" ).datepicker({
-            dateFormat: "yymmdd 23:59:59",
-            changeMonth: true,
-            changeYear: false,
-            closeText: 'Cerrar',
-            prevText: 'Ant',
-            nextText: 'Sig',
-            currentText: 'Hoy',
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-            weekHeader: 'Sm',
-            firstDay: 1,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: '',
-            showAnim: "drop"
-        })
-            .on( "change", function() {
-                from.datepicker( "option", "maxDate", getDate( this ) );
-            });
-    function getDate( element ) {
-        var date;
-        var dateFormat = "yymmdd";
-        try {
-            date = $.datepicker.parseDate( dateFormat, element.value );
-        } catch( error ) {
-            date = null;
+                .on( "change", function() {
+                    from.datepicker( "option", "maxDate", getDate( this ) );
+                });
+        function getDate( element ) {
+            var date;
+            var dateFormat = "yymmdd";
+            try {
+                date = $.datepicker.parseDate( dateFormat, element.value );
+            } catch( error ) {
+                date = null;
+            }
+            return date;
         }
-        return date;
-    }
-});
+    });
 
-$(document).ready(function () {
     $("#tfac").DataTable({
         order: [],
         columns: [
@@ -113,9 +113,7 @@ $(document).ready(function () {
             }
         }
     });
-});
 
-$(document).ready(function () {
     $("#CrearXml").click(function () {
         var selected = [];
         $(".checkboxes").each(function () {
@@ -169,16 +167,36 @@ $(document).ready(function () {
         return false;
     });
 
-});
+    $("#selectAll").click(function(){
+        if($('.checkboxes').attr('disabled')){
+            $("input[type=checkbox]").prop('checked', $(this).prop('checked'))
+        }
+       /* else{
+            $("input[type=checkbox]").prop('checked', $(this).prop('null'));
+        }*/
 
-$("#selectAll").click(function(){
-    if($('.checkboxes').attr('disabled')){
-        $("input[type=checkbox]").prop('checked', $(this).prop('checked'))
+    });
+
+    function addColumn(tr, column, i) {
+        var row = obj[i],
+            prevRow = obj[i - 1],
+            td = $('<td>' + row[column] + '</td>');
+        if (prevRow && row[column] === prevRow[column]) {
+            td.hide();
+        } else {
+            var rowspan = 1;
+            for (var j = i; j < obj.length - 1; j++) {
+                if (obj[j][column] === obj[j + 1][column]) {
+                    rowspan++;
+                } else {
+                    break;
+                }
+            }
+            td.attr('rowspan', rowspan);
+        }
+
+        tr.append(td);
     }
-   /* else{
-        $("input[type=checkbox]").prop('checked', $(this).prop('null'));
-    }*/
 
 });
-
 

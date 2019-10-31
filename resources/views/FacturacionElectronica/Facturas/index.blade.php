@@ -73,7 +73,6 @@
                             <tbody>
 
                                 <?php
-                                use Carbon\Carbon;
                                 $registro = 1; $aux = 0;
                                 $tituloov = null; $titulotc = null; $titulomo = null; $titulobr = null;
                                 $titulode = null; $titulovd = null; $titulorz = null; $titulofe = null;
@@ -170,7 +169,7 @@
                                       <td><input type="checkbox" class="checkboxes" id="CHK{{ $fac->numero }}" name="CHK{{$fac->numero}}" <?php echo $checkbox ?> ></td >
                                       <td> {{ $fac->numero}}</td>
                                       <td> {{ $fac->ov }}</td>
-                                      <td> {{ Carbon::parse( $fac->fecha)->format('Y-m-d') }}</td>
+                                      <td> {{ $fac->fecha }}</td>
                                       <td> {{ $fac->plazo}}</td>
                                       <td> {{ $fac->razon_social}} </td>
                                       <td> {{ $fac->tipo_cliente }} </td>
