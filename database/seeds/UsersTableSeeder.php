@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Permission;
 
 class UsersTableSeeder extends Seeder
 {
+
     /**
      * Auto generated seed file.
      *
