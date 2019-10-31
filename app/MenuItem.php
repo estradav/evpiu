@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 
 class MenuItem extends Model
 {
-    protected $dateFormat = 'd-m-Y H:i:s';
 
     protected $table = 'menu_items';
 
