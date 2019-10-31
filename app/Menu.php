@@ -15,7 +15,6 @@ class Menu extends Model
 
     protected $guarded = [];
 
-    protected $dateFormat = 'd-m-Y H:i:s';
 
     public function items()
     {
