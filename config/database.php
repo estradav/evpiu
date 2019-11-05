@@ -32,9 +32,7 @@ return [
     */
 
     'connections' => [
-
-
-
+        
         'evpiu' => [
             'driver' => 'mysql',
             'host' => env('EV_HOST'),
