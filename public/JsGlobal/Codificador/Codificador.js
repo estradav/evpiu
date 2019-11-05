@@ -320,7 +320,6 @@ $(document).ready(function(){
 $(document).ready(function(){
     var datos;
     $('#tipoproducto_id').on('change', function () {
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -338,13 +337,11 @@ $(document).ready(function(){
     });
 
     $('#medida_id').on('change', function () {
-
         var incremental     = 0;
         var charStringRange = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         var vectorc         = [];
         var t1              = 0;
         var numerof         = 0;
-
         var OriginalProductCodes =  datos;
         var OriginalProductCodes2 = $('#CodNam').val();
 

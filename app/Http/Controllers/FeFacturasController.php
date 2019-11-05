@@ -2,38 +2,75 @@
 
 namespace App\Http\Controllers;
 
-
-
 use App\Http\Requests\FacFeFromRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use XMLWriter;
+use Yajra\DataTables\DataTables;
 
 
 class FeFacturasController extends Controller
 {
-
     public function index(Request $request)
     {
-
-        $f1 = date( 'Ymd 00:00:00');
-        $f2 = date( 'Ymd 23:59:59');
-
-        if (!is_null($request->fechaInicial) && !empty($request->fechaInicial) && !is_null($request->fechaFinal) || !empty($request->fechaFinal))
-        { $f1 = $request->fechaInicial;     $f2 = $request->fechaFinal; }
-
-        $facturas = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadas')
-            ->leftJoin('CIEV_V_FE','CIEV_V_FacturasTotalizadas.numero','=','CIEV_V_FE.numero')
-            ->select('CIEV_V_FacturasTotalizadas.numero','CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
-                'CIEV_V_FacturasTotalizadas.fecha','CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FacturasTotalizadas.descuento', 'CIEV_V_FacturasTotalizadas.iva as valor_iva',
-                'CIEV_V_FacturasTotalizadas.nomvendedor','CIEV_V_FacturasTotalizadas.ov', 'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FE.codigo_alterno', 'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
-            ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CU')
-            ->whereBetween('CIEV_V_FacturasTotalizadas.fecha', [$f1 , $f2])
-            ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')->get();
-
-        return view('FacturacionElectronica.Facturas.index', ["facturas" => $facturas,  "f1" => $f1, "f2" => $f2]);
+        if (request()->ajax()) {
+            if (!empty($request->from_date)) {
+                $data = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadas')
+                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
+                    ->select('CIEV_V_FacturasTotalizadas.numero as id',
+                        'CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
+                        'CIEV_V_FacturasTotalizadas.fecha as fecha',
+                        'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
+                        'CIEV_V_FacturasTotalizadas.bruto as bruto',
+                        'CIEV_V_FacturasTotalizadas.descuento as desc',
+                        'CIEV_V_FacturasTotalizadas.iva as valor_iva',
+                        'CIEV_V_FacturasTotalizadas.nomvendedor as vendedor',
+                        'CIEV_V_FacturasTotalizadas.ov as ov',
+                        'CIEV_V_FacturasTotalizadas.descplazo as plazo',
+                        'CIEV_V_FacturasTotalizadas.motivo as motivo',
+                        'CIEV_V_FE.codigo_alterno as cod_alter',
+                        'CIEV_V_FacturasTotalizadas.subtotal as subtotal',
+                        'CIEV_V_FE.emailentrega as email',
+                        'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
+                    ->where('CIEV_V_FacturasTotalizadas.tipodoc', '=', 'CU')
+                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')
+                    ->whereBetween('fecha', array($request->from_date, $request->to_date))
+                    ->get();
+            }else {
+                $data = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadas')
+                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
+                    ->select('CIEV_V_FacturasTotalizadas.numero as id',
+                        'CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
+                        'CIEV_V_FacturasTotalizadas.fecha as fecha',
+                        'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
+                        'CIEV_V_FacturasTotalizadas.bruto as bruto',
+                        'CIEV_V_FacturasTotalizadas.descuento as desc',
+                        'CIEV_V_FacturasTotalizadas.iva as valor_iva',
+                        'CIEV_V_FacturasTotalizadas.nomvendedor as vendedor',
+                        'CIEV_V_FacturasTotalizadas.ov as ov',
+                        'CIEV_V_FacturasTotalizadas.descplazo as plazo',
+                        'CIEV_V_FacturasTotalizadas.motivo as motivo',
+                        'CIEV_V_FE.codigo_alterno as cod_alter',
+                        'CIEV_V_FacturasTotalizadas.subtotal as subtotal',
+                        'CIEV_V_FE.emailentrega as email',
+                        'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
+                    ->where('CIEV_V_FacturasTotalizadas.tipodoc', '=', 'CU')
+                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')->take(100)
+                    ->get();
+            }
+            return datatables::of($data)
+                ->addColumn('opciones', function($row){
+                    $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/fe/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>';
+                    return $btn;
+                })
+                ->addColumn('selectAll', function($row){
+                    $btn = '<input type="checkbox" class="checkboxes test" id="'.$row->id.'" name="'.$row->id.'">';
+                    return $btn;
+                })
+                ->rawColumns(['opciones','selectAll'])
+                ->make(true);
+        }
+        return view('FacturacionElectronica.Facturas.index');
     }
 
     public function CrearXml (Request $request)
@@ -120,8 +157,6 @@ class FeFacturasController extends Controller
 
                // Validacion de impuestos totales por factura
 
-
-
                $id_total_impuesto_iva = null;
                if ($enc->iva != null) {
                    $id_total_impuesto_iva = '01';
@@ -135,11 +170,9 @@ class FeFacturasController extends Controller
                    $tarifa_unitaria_total = '0';
                }
 
-
                $total_valor_iva = $enc->subtotal * 0.19;
                /// para  Rte Fuente
                $total_item_valor = $enc->subtotal + $total_valor_iva;
-
 
                ////////////////// FIN CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
 
@@ -878,7 +911,7 @@ class FeFacturasController extends Controller
 
        return response()->json();
    }
-/*_'.date('d-m-Y').'*/
+
     public function editfactura ($numero)
     {
        $numero_de = $numero;
@@ -911,7 +944,5 @@ class FeFacturasController extends Controller
     {
         //
     }
-
-
 
 }

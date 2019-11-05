@@ -129,6 +129,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/SearchProducts', 'CreateProductController@SearchProducts');
     Route::get('/SearchCodes', 'CreateProductController@SearchCodes');
     Route::post('/SaveProducts','CreateProductController@SaveProducts');
+    Route::get('/FacturasIndex','FeFacturasController@index');
 
 
 
