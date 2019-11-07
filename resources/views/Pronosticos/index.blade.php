@@ -172,12 +172,22 @@
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="form-group" id="test" >
-
+                                            <div class="row" id="">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="name" class="control-label" ><b>Vendedor:&nbsp;&nbsp; </b></label>
+                                                        <label class="control-label" id="Vendedor"></label>
                                                     </div>
                                                 </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="name" class="control-label" ><b>Cliente:&nbsp;&nbsp; </b></label>
+                                                        <label class="control-label" id="Cliente"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" id="data">
+
                                             </div>
                                         </div>
                                     </div>
@@ -461,34 +471,60 @@
                     data: {Numero: value},
                     success: function (data) {
                     	console.log(data);
-                        $('#PronosticoTitle').html(value);
+                        $('#PronosticoTitle').html('Seguimiento pronostico: ' + value);
                         $('#DetallePronostico').modal('show');
+                        $('#Vendedor').html(data[0].vendedor);
+                        $('#Cliente').html(data[0].cliente);
+
                         var i = 0;
                         $(data).each(function () {
-                            $('#test').append('<label for="name" class="control-label" ><i>Vendedor:&nbsp;&nbsp; </i></label>'+'<label class="control-label" id="Vendedor">'+ data[i].cr +'</label> <br>' +
-                              ''  );
-                            console.log(i +' VALORES '+ data[i].cr);
+                            $('#data').append(' <div class="col-sm-4"><div class="form-group">' +
+                              '<label for="name" class="control-label"><b>Orden de Produccion:&nbsp;&nbsp;</b></label>' +
+                              '<label class="control-label" id="">'+ data[i].NumOrdProduct +'</label>' +
+                              '</div></div><div class="col-sm-4"><div class="form-group">' +
+                              '<label for="name" class="control-label"><b>Fecha de liberacion:&nbsp;&nbsp;</b></label>' +
+                              '<label class="control-label" id="">'+ data[i].fechaliberacion +'</label>' +
+                              '</div></div><div class="col-sm-4"><div class="form-group">' +
+                              '<label for="name" class="control-label" ><b>Producto:&nbsp;&nbsp;</b></label>' +
+                              '<label class="control-label" id="">'+ data[i].producto +'</label>' +
+                              '</div></div><div class="col-sm-4"><div class="form-group">' +
+                              '<label for="name" class="control-label" ><b>Estado de la Orden:&nbsp;&nbsp;</b></label>' +
+                              '<label class="control-label" id="Estado"></label>' +
+                              '</div></div><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">' +
+                              '<div class="card"><div class="card-body"><div class="table-responsive">' +
+                              '<table class="table table-responsive table-striped" id="">' +
+                              '<thead><tr>' +
+                              '<th>Operacion</th>' +
+                              '<th>Proceso</th>' +
+                              '<th>Cant. en Proceso</th>' +
+                              '<th>Completada</th>' +
+                              '<th>Desechada</th>' +
+                              '<th>Salida</th>' +
+                              '<th>Entrega/Max</th>' +
+                              '<th>Estado</th>' +
+                              '</tr></thead>' +
+                              '<tbody><tr>' +
+                              '<td>'+ data[i].operacion +'</td>' +
+                              '<td>'+ data[i].proceso +'</td>' +
+                              '<td>'+ data[i].cantProceso +'</td>' +
+                              '<td>'+ data[i].cantCompletada +'</td>' +
+                              '<td>'+ data[i].cantDesechada +'</td>' +
+                              '<td>'+ data[i].salida +'</td>' +
+                              '<td>'+ data[i].entrega +'</td>' +
+                              '<td>'+ data[i].estado +'</td>' +
+                              '</tr> </tbody>' +
+                              '</table></div>' +
+                              '</div></div></div>');
+
                             i++;
-
                         });
-
-
                         $('#Descripcion').html();
                         $('#CantDisp').html();
                         $('#Total').html();
                     }
                 });
             });
-
-
-
-
-
-
-
-
-
-
+              
                 $('#Inventario').on('show.bs.modal', function (event) {
                     document.getElementById('CantCompromet').style.display = "none";
                     document.getElementById('InvlotBod').style.display = "none";

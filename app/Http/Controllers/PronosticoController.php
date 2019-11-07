@@ -111,10 +111,23 @@ class PronosticoController extends Controller
         if ($request->ajax()) {
             if (!empty($request->Numero)) {
                 $var = DB::connection('MAX')->table('CIEV_V_EstadoOP')
-                    ->select('CIEV_V_EstadoOP.Ordnum_14 as ord','CIEV_V_EstadoOP.ov as ov',
-                        'CIEV_V_EstadoOP.creationdate as cr')
-                    ->where('CIEV_V_EstadoOP.ov','like',$request->Numero.'%')
-                    ->get();
+                    ->join('CIEV_V_OP_Pronosticos', 'CIEV_V_EstadoOP.ov', 'like', 'CIEV_V_OP_Pronosticos.pronostico')
+                    ->where('CIEV_V_EstadoOP.ov', 'like', $request->Numero . '%')
+                    ->select('CIEV_V_OP_Pronosticos.NombreVendedor as vendedor',
+                        'CIEV_V_OP_Pronosticos.RazonSocial as cliente',
+                        'CIEV_V_EstadoOP.ordnum_14 as NumOrdProduct',
+                        'CIEV_V_EstadoOP.rlsdte_14 as fechaliberacion',
+                        'CIEV_V_EstadoOP.pmdes1_01 as producto',
+                        'CIEV_V_EstadoOP.prtnum_14 as numproducto',
+                        'CIEV_V_EstadoOP.oprdes_14 as operacion',
+                        'CIEV_V_EstadoOP.wrkctr_14 as proceso',
+                        'CIEV_V_EstadoOP.qtyrem_14 as cantProceso',
+                        'CIEV_V_EstadoOP.qtycom_14 as cantCompletada',
+                        'CIEV_V_EstadoOP.movday_14 as cantDesechada',
+                        'CIEV_V_EstadoOP.movdte_14 as salida',
+                        'CIEV_V_EstadoOP.curcom_14 as entrega',
+                        'CIEV_V_EstadoOP.ctactual as estado'
+                    )->get();
             }
             return response()->json($var);
         }
