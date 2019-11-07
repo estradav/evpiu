@@ -150,7 +150,6 @@ $(document).ready(function(){
 
 
         $('body').on('click', '.deleteCodigo', function () {
-
             var codigo_id = $(this).data("id");
             if(confirm("¿Esta seguro de Eliminar?")) {
                 $.ajax({
@@ -178,7 +177,6 @@ $(document).ready(function(){
                 $('#caracteristica_id').empty();
                 $('#material_id').empty();
                 $('#medida_id').empty();
-
                 $('#lineas_id').append("<option value=''>Seleccione una Linea...</option>");
                 $('#sublineas_id').append("<option value=''>Seleccione una Sublinea...</option>");
                 $('#caracteristica_id').append("<option value=''>Seleccione una Caracteristica...</option>");

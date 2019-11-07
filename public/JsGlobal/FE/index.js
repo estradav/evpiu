@@ -209,10 +209,6 @@ $(document).ready(function () {
     } );
 
 
-
-
-
-
     $('body').on('click', '.btnError', function () {
         var value = $(this).data('id');
         var test = errors;

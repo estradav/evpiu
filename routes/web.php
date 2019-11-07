@@ -132,10 +132,14 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/FacturasIndex','FeFacturasController@index');
 
 
-
     Route::get('/test', 'ProdCievCodCodigoController@GetCodigos');
 
-
+    Route::resource('pronosticos','PronosticoController');
+    Route::get('/PronosticosIndex','PronosticoController@index');
+    Route::get('/PronosticosInventory','PronosticoController@Inventory');
+    Route::get('/PronosticosCantCompr','PronosticoController@CantCompro');
+    Route::get('/PronosticosDetailsLots','PronosticoController@DetailsLots');
+    Route::get('/PronosticosPronostics','PronosticoController@Pronostics');
 });
 
 
