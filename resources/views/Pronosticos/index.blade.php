@@ -191,6 +191,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @can('pronosticos.close')
+                                        <button class="btn btn-danger btn-sm" disabled>Cerrar Pronostico</button>
+                                    @endcan
                                 </div>
                             </div>
                         </form>
@@ -460,9 +463,6 @@
                     }
                 });
 
-
-
-
             $('body').on('click', '.btnNum', function () {
                 var value = $(this).val();
                 $.ajax({
@@ -524,7 +524,7 @@
                     }
                 });
             });
-              
+
                 $('#Inventario').on('show.bs.modal', function (event) {
                     document.getElementById('CantCompromet').style.display = "none";
                     document.getElementById('InvlotBod').style.display = "none";

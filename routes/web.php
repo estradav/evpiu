@@ -140,6 +140,14 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/PronosticosCantCompr','PronosticoController@CantCompro');
     Route::get('/PronosticosDetailsLots','PronosticoController@DetailsLots');
     Route::get('/PronosticosPronostics','PronosticoController@Pronostics');
+
+
+    Route::resource('pedidos','PedidoController');
+    Route::get('/PedidosIndex','PedidoController@index');
+    Route::get('/PedidosGetUsers','PedidoController@GetUsers');
+    Route::get('/SearchClients','PedidoController@SearchClients');
+    Route::get('/PedidosGetCondicion','PedidoController@GetCondicion');
+    Route::get('/PedidosSearchProductsMax','PedidoController@SearchProductsMax');
 });
 
 

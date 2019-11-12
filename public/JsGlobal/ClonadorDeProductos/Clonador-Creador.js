@@ -157,8 +157,8 @@ $(document).ready(function() {
         $('#ProductForm').trigger("reset");
         $('#modelHeading').html("Crear ò Clonar Producto");
         $('#Modal').modal('show');
-        document.getElementById("Maestro_Cod").readOnly = true;
-        document.getElementById("Maestro_desc").readOnly = true;
+        document.getElementById("Maestro_Cod").readOnly = false;
+        document.getElementById("Maestro_desc").readOnly = false;
     });
 
     $("#Planificador_PlnFirmVal").val('N');

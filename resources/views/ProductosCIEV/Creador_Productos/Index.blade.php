@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+ @extends('layouts.dashboard')
 
 @section('page_title', 'Creador de Productos')
 

@@ -111,6 +111,8 @@ class PronosticoController extends Controller
         if ($request->ajax()) {
             if (!empty($request->Numero)) {
                 $var = DB::connection('MAX')->table('CIEV_V_EstadoOP')
+                   /* ->join('CIEV_V_EstadoOP','CIEV_V_OP_Pronosticos.pronostico','like','CIEV_V_EstadoOP.ov')*/
+
                     ->join('CIEV_V_OP_Pronosticos', 'CIEV_V_EstadoOP.ov', 'like', 'CIEV_V_OP_Pronosticos.pronostico')
                     ->where('CIEV_V_EstadoOP.ov', 'like', $request->Numero . '%')
                     ->select('CIEV_V_OP_Pronosticos.NombreVendedor as vendedor',
