@@ -90,7 +90,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Codigo de Medida:</label>
                                     <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="cod" name="cod" value="" maxlength="50">
+                                        <input type="text" class="form-control" id="cod" name="cod" value="" maxlength="50">
                                     </div>
                                 </div>
                             </div>

@@ -35,8 +35,8 @@ class ProdCievCodCodigoController extends Controller
 
             return DataTables::of($data)
                 ->addColumn('Opciones', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editCodigo" id="edit-btn">Editar</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteCodigo">Eliminar</a>';
+                    $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editCodigo" id="edit-btn"><i class="far fa-edit"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteCodigo"><i class="fas fa-trash"></i></a>'.'</div>';
                     return $btn;
                 })
                 ->rawColumns(['Opciones'])
@@ -47,7 +47,7 @@ class ProdCievCodCodigoController extends Controller
 
     public function store(Request $request)
     {
-        CodCodigo::updateOrCreate(['id'     => $request->medida_id],
+        CodCodigo::updateOrCreate(['id'     => $request->codigo],
             [   'codigo'                    => $request->codigo,
                 'coments'                   => $request->coments,
                 'cod_tipo_producto_id'      => $request->tipoproducto_id,
@@ -73,8 +73,6 @@ class ProdCievCodCodigoController extends Controller
         return response()->json(['success'=>'deleted successfully.']);
     }
 
-
-
     public function getlineas(Request $request)
     {
         if ($request->ajax()){
@@ -85,7 +83,6 @@ class ProdCievCodCodigoController extends Controller
             return response()->json($getlineasArray);
         }
     }
-
 
     public function getsublineas(Request $request)
     {
@@ -98,7 +95,6 @@ class ProdCievCodCodigoController extends Controller
         }
     }
 
-
     public function getcaracteristica(Request $request)
     {
         if ($request->ajax()){
@@ -109,7 +105,6 @@ class ProdCievCodCodigoController extends Controller
             return response()->json($getCaracteristicaArray);
         }
     }
-
 
     public function getmaterial(Request $request)
     {
@@ -122,7 +117,6 @@ class ProdCievCodCodigoController extends Controller
         }
     }
 
-
     public function getmedida(Request $request)
     {
         if ($request->ajax()){
@@ -133,7 +127,6 @@ class ProdCievCodCodigoController extends Controller
             return response()->json($getMedidaArray);
         }
     }
-
 
     public function ctp(Request $request)
     {
@@ -156,7 +149,6 @@ class ProdCievCodCodigoController extends Controller
             return response()->json($Array1);
         }
     }
-
 
     public function sln (Request $request)
     {
@@ -202,14 +194,13 @@ class ProdCievCodCodigoController extends Controller
         }
     }
 
-
-
     public function GetCodigos (Request $request)
     {
         if ($request->ajax()) {
             $var = DB::table('cod_codigos')->select('codigo')->get();
+            $Array =[];
             foreach ($var as $v) {
-                $Array[] =  $v->codigo;
+                $Array [] =  $v->codigo;
             }
             return response()->json($Array);
         }
@@ -222,4 +213,12 @@ class ProdCievCodCodigoController extends Controller
         return response()->json($Array);*/
     }
 
+    public function UniqueCod(Request $request)
+    {
+        $UniqueCod = DB::table('cod_codigos')->where('codigo','=',$request->cod)->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
+    }
 }

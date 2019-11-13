@@ -20,8 +20,8 @@ class ProdCodLineasController extends Controller
             ->get();
         return Datatables::of($data)
             ->addColumn('opciones', function($row){
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editLinea" id="edit-btn">Editar</a>';
-                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteLinea">Eliminar</a>';
+                $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editLinea" id="edit-btn"><i class="far fa-edit"></i></a>';
+                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteLinea"><i class="fas fa-trash"></i></a>'.'</div>';
                 return $btn;
             })
             ->rawColumns(['opciones'])
@@ -53,6 +53,15 @@ class ProdCodLineasController extends Controller
     {
         CodLinea::find($id)->delete();
         return response()->json(['success'=>'Product deleted successfully.']);
+    }
+
+    public function UniqueCod(Request $request)
+    {
+        $UniqueCod = DB::table('cod_lineas')->where('cod','=',$request->cod)->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
     }
 
 }

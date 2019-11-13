@@ -70,8 +70,14 @@ $(document).ready(function(){
         $("#CodigoForm").validate({
             ignore: "",
             rules: {
-                /*codigo: "required",
-                descripcion: "required",*/
+                codigo:{
+                    required: true,
+                    remote: {
+                        url: '/GetUniqueCode',
+                        type: 'POST',
+                        async: false,
+                    }
+                },
                 tipoproducto_id: { selectcheck: true },
                 lineas_id: { selectcheck: true },
                 sublineas_id: { selectcheck: true },
@@ -313,16 +319,9 @@ $(document).ready(function(){
         Dfinal=DLinea+' '+DSublinea+' '+Dcaracteristica+' '+Dmaterial+' '+Dmedida;
         document.getElementById('descripcion').value=Dfinal;
     });
-});
 
-$(document).ready(function(){
     var datos;
     $('#tipoproducto_id').on('change', function () {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
 
         jQuery.ajax({
             url: "/test",
@@ -330,6 +329,7 @@ $(document).ready(function(){
             dataType: 'json',
             success: function (data) {
                 datos = [data][0];
+                console.log(datos)
             },
         });
     });
@@ -375,5 +375,11 @@ $(document).ready(function(){
         }
         text = text.split('').reverse().join('');
         $('#codigo').val(final + text);
+    });
+
+    $('#Codigomodal').on('show.bs.modal', function (event) {
+        $('#saveBtn').html('Guardar');
+        $('.form-control').removeClass('is-invalid');
+        $('.error').remove();
     });
 });

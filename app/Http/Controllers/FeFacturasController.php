@@ -60,7 +60,7 @@ class FeFacturasController extends Controller
             }
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/fe/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>';
+                    $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/fe/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>'.'</div>';
                     return $btn;
                 })
                 ->addColumn('selectAll', function($row){

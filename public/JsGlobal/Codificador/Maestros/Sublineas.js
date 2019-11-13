@@ -10,7 +10,6 @@ $(function () {
         serverSide: true,
         ajax: "/SublineasIndex",
         columns: [
-            {data: 'tp', name: 'tp'},
             {data: 'linea', name: 'linea'},
             {data: 'cod', name: 'cod'},
             {data: 'name', name: 'name',orderable: false, searchable: false},
@@ -50,6 +49,9 @@ $(function () {
         $('#modelHeading').html("Nuevo");
         $('#sublineamodal').modal('show');
         document.getElementById("cod").readOnly = false;
+
+
+
     });
 
     $('body').on('click', '.editsublinea', function () {
@@ -71,7 +73,7 @@ $(function () {
 
     jQuery.extend(jQuery.validator.messages, {
         required: "Este campo es obligatorio.",
-        remote: "Por favor, rellena este campo.",
+        remote: "Este codigo ya existe.",
         email: "Por favor, escribe una dirección de correo válida",
         url: "Por favor, escribe una URL válida.",
         date: "Por favor, escribe una fecha válida.",
@@ -97,13 +99,15 @@ $(function () {
     $("#sublineaForm").validate({
         ignore: "",
         rules: {
-            tipoproductos_id: {
-                selectcheck: true
-            },
             lineas_id : {
                 selectcheck: true
             },
             cod: {
+                remote: {
+                    url: '/GetUniqueCodSubLines',
+                    type: 'POST',
+                    async: false,
+                },
                 required: true,
                 maxlength: 2,
                 minlength: 2
@@ -140,8 +144,6 @@ $(function () {
         }
     });
 
-
-
     $('body').on('click', '.deletesubLinea', function () {
         var sublinea_id = $(this).data("id");
         if(confirm("¿Esta seguro de Eliminar?")) {
@@ -160,18 +162,6 @@ $(function () {
         }
     });
 
-    $('#tipoproductos_id').on('change', function () {
-        var tipoproductos_id = $(this).val();
-        if ($.trim(tipoproductos_id) != ''){
-            $.get('getlineasp',{tipoproductos_id: tipoproductos_id}, function(getlineasp) {
-                $('#lineas_id').empty();
-                $('#lineas_id').append("<option value=''>Seleccione una Linea...</option>");
-                $.each(getlineasp, function (index, value) {
-                    $('#lineas_id').append("<option value='" + index + "'>"+ value +"</option>");
-                })
-            });
-        }
-    });
 
     $('#sublineamodal').on('show.bs.modal', function (event) {
         $('#saveBtn').html('Guardar');

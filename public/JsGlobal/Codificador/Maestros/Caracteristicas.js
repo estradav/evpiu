@@ -69,7 +69,7 @@ $(function () {
 
     jQuery.extend(jQuery.validator.messages, {
         required: "Este campo es obligatorio.",
-        remote: "Por favor, rellena este campo.",
+        remote: "Este codigo ya existe.",
         email: "Por favor, escribe una dirección de correo válida",
         url: "Por favor, escribe una URL válida.",
         date: "Por favor, escribe una fecha válida.",
@@ -102,6 +102,11 @@ $(function () {
                 selectcheck: true
             },
             cod: {
+                remote: {
+                    url: '/GetUniqueCodCaracteristics',
+                    type: 'POST',
+                    async: false,
+                },
                 required: true,
                 maxlength: 2,
                 minlength: 2

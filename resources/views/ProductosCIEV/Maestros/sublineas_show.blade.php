@@ -11,7 +11,7 @@
 @stop
 
 @section('content')
-    @inject('TipoProductos','App\Services\TipoProductos')
+    @inject('Lineas','App\Services\Lineas')
     @can('maestro.sublinea.view')
     <div class="col-lg-4">
         <div class="form-group">
@@ -28,7 +28,6 @@
                         <table class="table table-striped first data-table">
                             <thead>
                                 <tr>
-                                    <th>Tipo de Producto</th>
                                     <th>Linea</th>
                                     <th>Codigo</th>
                                     <th>Nombre Sublinea</th>
@@ -59,21 +58,15 @@
                     <form id="sublineaForm" name="sublineaForm" class="form-horizontal">
                         <input type="hidden" name="sublinea_id" id="sublinea_id">
                         <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Tipo Producto:</label>
+                            <label for="lineas_id" class="col-sm-6 control-label">Linea:</label>
                             <div class="col-sm-12">
-                                <select class="form-control" name="tipoproductos_id" id="tipoproductos_id">
-                                    @foreach( $TipoProductos->get() as $index => $TipoProducto)
-                                        <option value="{{ $index }}" {{ old('tipoproductos_id') == $index ? 'selected' : ''}}>
-                                            {{ $TipoProducto }}
+                                <select class="form-control" name="lineas_id" id="lineas_id">
+                                    @foreach( $Lineas->get() as $index => $Lineas)
+                                        <option value="{{ $index }}" {{ old('lineas_id') == $index ? 'selected' : ''}}>
+                                            {{ $Lineas }}
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Linea:</label>
-                            <div class="col-sm-12">
-                                <select class="form-control" name="lineas_id" id="lineas_id"></select>
                             </div>
                         </div>
                         <div class="form-group">
