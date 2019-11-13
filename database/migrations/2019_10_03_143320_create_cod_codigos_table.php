@@ -34,18 +34,14 @@ class CreateCodCodigosTable extends Migration
             $table->unsignedBigInteger('cod_lineas_id');
             $table->foreign('cod_lineas_id')->references('id')->on('cod_lineas');
 
-
             $table->unsignedBigInteger('cod_sublineas_id');
             $table->foreign('cod_sublineas_id')->references('id')->on('cod_sublineas');
-
 
             $table->unsignedBigInteger('cod_medidas_id');
             $table->foreign('cod_medidas_id')->references('id')->on('cod_medidas');
 
-
             $table->unsignedBigInteger('cod_caracteristicas_id');
             $table->foreign('cod_caracteristicas_id')->references('id')->on('cod_caracteristicas');
-
 
             $table->unsignedBigInteger('cod_materials_id');
             $table->foreign('cod_materials_id')->references('id')->on('cod_materials');

@@ -11,7 +11,7 @@
 @stop--}}
 
 @section('content')
-    @can('pronosticos.view')
+    @can('pedidos.view')
         <div class="col-lg-12">
             <div class="form-group">
                 <span><input type="button" class="btn btn-primary btn-sm NewPed" id="NewPed" value="Crear Pedido"></span>
@@ -22,7 +22,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-responsive table-striped dataTable" id="table">
+                            <table class="table table-responsive table-striped dataTableP" id="table">
                                 <thead>
                                     <tr>
                                         <th>Pedido</th>
@@ -57,13 +57,13 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form action="" class="form-horizontal">
+                    <form action="" class="form-horizontal" id="FormPrincipal">
+                        <div class="modal-body">
                             <div class="row" >
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Vendedor:&nbsp;&nbsp; </b></label>
-                                        <select name="" id="SelectVendedor" class="custom-select">
+                                        <select name="SelectVendedor" id="SelectVendedor" class="custom-select">
                                         </select>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Orden de Compra:&nbsp;&nbsp;</b></label>
-                                        <input type="text" class="form-control" value="">
+                                        <input type="text" class="form-control" value="" id="OrdComp" name="OrdComp">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -88,19 +88,19 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Direccion:&nbsp;&nbsp;</b></label>
-                                        <input type="text" class="form-control" value="" id="address">
+                                        <input type="text" class="form-control" value="" id="address" name="address">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Ciudad:&nbsp;&nbsp;</b></label>
-                                        <input type="text" class="form-control" value="" id="city">
+                                        <input type="text" class="form-control" value="" id="city" name="city">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Telefono:&nbsp;&nbsp;</b></label>
-                                        <input type="text" class="form-control" value="" id="phone">
+                                        <input type="text" class="form-control" value="" id="phone" name="phone">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -121,8 +121,8 @@
                                         <label for="name" class="control-label" ><b>IVA:&nbsp;&nbsp;</b></label>
                                         <select name="SelectIva" id="SelectIva" class="form-control">
                                             <option value="" selected>Seleccione...</option>
-                                            <option value="1">Si</option>
-                                            <option value="0">No</option>
+                                            <option value="Y">Si</option>
+                                            <option value="N">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -131,31 +131,33 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Producto</th>
-                                    <th>Notas</th>
-                                    <th>Unidad</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
-                                    <th>Total</th>
+                                    <th style="width: 30%">Producto</th>
+                                    <th style="width: 10%">Stock</th>
+                                    <th style="width: 15%">Notas</th>
+                                    <th style="width: 10%">Unidad</th>
+                                    <th style="width: 10%">Precio</th>
+                                    <th style="width: 10%">Cantidad</th>
+                                    <th style="width: 15%">Total</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><input type="text" id="ProductoMax" name="ProductoMax" class="form-control"></td>
-                                    <td><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
-                                    <td>
-                                        <select name="AddUnidad" id="AddUnidad" class="form-control">
-                                            <option value="Unidad">Unidad</option>
-                                            <option value="Kilos">Kilos</option>
-                                            <option value="Millar">Millar</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
-                                    <td><input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="0"></td>
-                                    <td><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
-                                    <td><button type="button" class="btn btn-success" id="AddItem"><i class="fa fa-plus" ></i></button></td>
-                                </tr>
+                                    <tr>
+                                        <td style="width: 30%"><input type="text" id="ProductoMax" name="ProductoMax" class="form-control"></td>
+                                        <td style="width: 10%"><input type="number" id="StockItem" name="StockItem" class="form-control" readonly="readonly"></td>
+                                        <td style="width: 15%"><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
+                                        <td style="width: 10%">
+                                            <select name="AddUnidad" id="AddUnidad" class="form-control">
+                                                <option value="Unidad" selected >Unidad</option>
+                                                <option value="Kilos">Kilos</option>
+                                                <option value="Millar">Millar</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 10%"><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
+                                        <td style="width: 10%"><input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="1"></td>
+                                        <td style="width: 15%"><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
+                                        <td><button type="button" class="btn btn-success" id="AddItem" disabled><i class="fa fa-plus"></i></button></td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <br>
@@ -163,10 +165,10 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped first" id="ItemsTable">
+                                        <table class="table table-bordered ItemsTable" id="ItemsTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Producto</th>
+                                                    <th>Productos</th>
                                                     <th>Notas</th>
                                                     <th>Unidad</th>
                                                     <th>Precio</th>
@@ -208,12 +210,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Crear Pedido</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="SavePed">Crear Pedido</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -221,21 +223,29 @@
     @push('javascript')
         <script>
             $(document).ready(function(){
+            	var table;
                 var CodVenUsuario1 =  @json( Auth::user()->codvendedor );
+                var NombreVendedor = @json( Auth::user()->name );
                 console.log(CodVenUsuario1);
                 LoadTable();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 function LoadTable(CodVenUsuario = CodVenUsuario1, Estado = '') {
 
-                    $('#table').DataTable({
+                     table = $('.dataTableP').DataTable({
                         processing: true,
                         serverSide: false,
                         searching: true,
                         paginate: true,
-                        bInfo: false,
+                        bInfo: true,
                         ajax: {
                             url:'/PedidosIndex',
                             data:{CodVenUsuario: CodVenUsuario, Estado:Estado}
-
                         },
                         columns: [
                             {data: 'id', name: 'id', orderable: false, searchable: false},
@@ -250,7 +260,7 @@
                             {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false},
                             {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
                             {data: 'Estado', name: 'Estado', orderable: false, searchable: false},
-                            {data: 'Created_at', name: 'Created_at', orderable: false, searchable: false},
+                            {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
 
                         ],
                         language: {
@@ -276,7 +286,12 @@
                                 sortDescending: ": Activar para ordenar la columna de manera descendente"
                             },
                         },
-                    })
+                        rowCallback: function (row, data, index) {
+                             if (data.Estado == 1) {
+                                $(row).find('td:eq(11)').html('<label class="alert-success">Borrador</label>');
+                             }
+                        }
+                     })
                 }
 
                 function getUsers(){
@@ -309,7 +324,10 @@
                 }
 
                 $('body').on('click', '.NewPed', function () {
-                    $('#NewPedido').modal('show');
+                    $('#NewPedido').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
                     $('#NewPedidoTitle').html('Nuevo pedido');
                     getUsers();
                     getCondicion();
@@ -336,11 +354,13 @@
                     },
                     focus: function (event, ui) {
                         $('#AddPrice').val([ui.item.PriceItem]);
+                        $('#StockItem').val([ui.item.Stock]);
                     	return true;
                     },
                     select: function (event, ui) {
                         $('#AddPrice').val([ui.item.PriceItem]);
-                        $('#AddItem').removeClass('disabled');
+                        $('#AddItem').prop("disabled", false);
+                        $('#StockItem').val([ui.item.Stock]);
                     },
                     minlength: 2
                 });
@@ -381,12 +401,9 @@
                         $('#city').val([ui.item.Ciudad]);
                         $('#phone').val([ui.item.Telefono]);
                         $('#CondicionPago').val([ui.item.Plazo]);
-                        $('#descuento').val([ui.item.descuento]);
-
-
+                        $('#descuento').val([ui.item.descuento])
                     },
                     minlength: 2
-
                 });
 
                 function Calcular(){
@@ -412,10 +429,11 @@
                 function LimpiarCampos(){
                     $('#ProductoMax').val('');
                     $('#AddNotes').val('');
-                    $('#AddUnidad').val('');
-                    $('#AddPrice').val('');
-                    $('#AddQuantity').val('');
+                    $('#AddUnidad').val('Unidad');
+                    $('#AddPrice').val(0);
+                    $('#AddQuantity').val(1);
                     $('#TotalItem').val('');
+                    $('#StockItem').val('')
                 }
 
                 function SumarItems(){
@@ -463,51 +481,168 @@
                 });
 
                 $('#AddItem').click(function(){
-                	var producto = $('#ProductoMax').val();
-                	var notas   = $('#AddNotes').val();
-                	var unidad  = $('#AddUnidad').val();
-                	var precio  = $('#AddPrice').val();
-                	var cantidad = $('#AddQuantity').val();
-                	var total   = $('#TotalItem').val();
+                	var producto    = $('#ProductoMax').val();
+                	var notas       = $('#AddNotes').val();
+                	var unidad      = $('#AddUnidad').val();
+                	var precio      = $('#AddPrice').val();
+                	var cantidad    = $('#AddQuantity').val();
+                	var total       = $('#TotalItem').val();
 
-                	$('#ProductosAdd').append('<tr><td>'+ producto +'</td> ' +
-                      '<td>'+ notas  +'</td> ' +
-                      '<td>'+ unidad +'</td>' +
-                      '<td>'+ precio +'</td> ' +
-                      '<td class="rowDataSd">'+ cantidad +'</td> ' +
-                      '<td class="rowDataSd">'+ total +'</td>' +
-                      '<td><button class="btn btn-danger btn-sm BorrarItem" type="button"><i class="fa fa-trash" id="'+producto+'"></i></button></td> </tr> ');
+                	$('#ProductosAdd').append('<tr><td class="iproducto">'+ producto +'</td> ' +
+                      '<td class="inotas">'+ notas  +'</td>' +
+                      '<td class="iunidad">'+ unidad +'</td>' +
+                      '<td class="iprecio">'+ precio +'</td>' +
+                      '<td class="rowDataSd icantidad">'+ cantidad +'</td>' +
+                      '<td class="rowDataSd itotal">'+ total +'</td>' +
+                      '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td></tr> ');
                     LimpiarCampos();
                     SumarItems();
                     CalcularDescuento();
                     CalcularSubtotal();
                     CalcularIva();
                     Totalpedido();
+                    $('#AddItem').prop("disabled", true);
                 });
 
 
-                $(".BorrarItem").click(function () {
+                $('body').on('click', '.BorrarItem', function () {
                     id = $(this).parents("tr").find("td").eq(0).html();
                     respuesta = confirm("Desea eliminar Item: " + id);
                     if (respuesta) {
                         $(this).parents("tr").fadeOut("normal", function () {
                             $(this).remove();
-                            alert("Item " + id + " eliminado")
-                            /*
-                             aqui puedes enviar un conjunto de datos por ajax
-                             $.post("eliminar.php", {ide_usu: id})
-                             */
+                            SumarItems();
+                            CalcularDescuento();
+                            CalcularSubtotal();
+                            CalcularIva();
+                            Totalpedido();
                         })
                     }
                 });
+                jQuery.extend(jQuery.validator.messages, {
+                    required: "Este campo es obligatorio.",
+                    remote: "Por favor, rellena este campo.",
+                    email: "Por favor, escribe una dirección de correo válida",
+                    url: "Por favor, escribe una URL válida.",
+                    date: "Por favor, escribe una fecha válida.",
+                    dateISO: "Por favor, escribe una fecha (ISO) válida.",
+                    number: "Por favor, escribe un número entero válido.",
+                    digits: "Por favor, escribe sólo dígitos.",
+                    creditcard: "Por favor, escribe un número de tarjeta válido.",
+                    equalTo: "Por favor, escribe el mismo valor de nuevo.",
+                    accept: "Por favor, escribe un valor con una extensión aceptada.",
+                    maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+                    minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+                    rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+                    range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+                    max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+                    min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
+                    selectcheck: "Por favor seleccione una opcion!"
+                });
+
+                jQuery.validator.addMethod("selectcheck", function(value){
+                    return (value != '');
+                }, "Por favor, seleciona una opcion.");
 
 
+                $("#FormPrincipal").validate({
+                    ignore: "",
+                    rules: {
+                        NombreCliente: "required",
+                        CodCliente: "required",
+                        address: "required",
+                        city: "required",
+                        phone: "required",
+                        CondicionPago: {selectcheck: true},
+                        SelectIva: {selectcheck: true},
+                    },
+                    highlight: function (element) {
+                        // Only validation controls
+                        $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+                        //$('#saveBtn').html('Reintentar');
+                    },
+                    unhighlight: function (element) {
+                        // Only validation controls
+                        $(element).closest('.form-control').removeClass('is-invalid');
+                    },
+
+                    submitHandler: function (form) {
+                    	var encabezado = [];
+                        let Items = [];
+                        var Inputs = {
+                            NombreVendedor: NombreVendedor,
+                        	CodVendedor: CodVenUsuario1,
+                        	NombreCliente: $('#NombreCliente').val(),
+                            OrdComp: $('#OrdComp').val(),
+                            CodCliente: $('#CodCliente').val(),
+                            address: $('#address').val(),
+                            city: $('#city').val(),
+                            phone: $('#phone').val(),
+                            CondicionPago: $('#CondicionPago').val(),
+                            descuento: $('#descuento').val(),
+                            SelectIva: $('#SelectIva').val(),
+                        };
+                        encabezado.push(Inputs);
 
 
+                        document.querySelectorAll('.ItemsTable tbody tr').forEach(function(e){
+                            let fila = {
+                                producto: e.querySelector('.iproducto').innerText,
+                                notas: e.querySelector('.inotas').innerText,
+                                unidad: e.querySelector('.iunidad').innerText,
+                                precio: e.querySelector('.iprecio').innerText,
+                                cantidad: e.querySelector('.icantidad').innerText,
+                                total: e.querySelector('.itotal').innerText
+                            };
+                            Items.push(fila);
+                            console.log(Items);
+                        });
 
+                        $.ajax({
+                            data:{Items,encabezado},
+                            url: "/SavePedido",
+                            type: "POST",
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.hasOwnProperty('error')) {
+                                    toastr.error('SQLSTATE[' + data.error.code + ']: ¡El Producto ya existe!');
+                                    $('#saveBtn').html('Reintentar');
+                                    console.log(encabezado);
+                                }
+                                else {
+                                    $('#ProductForm').trigger("reset");
+                                    $('#NewPedido').modal('hide');
+                                    $('.dataTableP').DataTable().destroy();
+                                    LoadTable();
+                                    toastr.success("Registro Guardado con Exito!");
+                                    $('#saveBtn').html('Guardar');
+                                }
+                            },
+                        });
+                        return false; // required to block normal submit since you used ajax
+                    }
+                });
 
-
-
+                $('#NewPedido').on('show.bs.modal', function (event) {
+                    $('.form-control').removeClass('is-invalid');
+                    $('#AddItem').prop("disabled", true);
+                    $('.error').remove();
+                    $('#NombreCliente').val('');
+                    $('#OrdComp').val('');
+                    $('#CodCliente').val('');
+                    $('#address').val('');
+                    $('#city').val('');
+                    $('#phone').val('');
+                    $('#CondicionPago').val('');
+                    $('#descuento').val(0);
+                    $('#SelectIva').val('');
+                    $('#ProductoMax').val('');
+                    $('#AddNotes').val('');
+                    $('#AddUnidad').val('Unidad');
+                    $('#AddPrice').val(0);
+                    $('#AddQuantity').val(1);
+                    $('#ProductosAdd').html('');
+                });
             });
         </script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>

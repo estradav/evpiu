@@ -38,8 +38,7 @@ class CreateProductController extends Controller
         return view('ProductosCIEV.Creador_Productos.Index');
     }
 
-
-    public  function SearchProducts (Request $request)
+    public  function SearchProducts(Request $request)
     {
         $query = $request->get('query');
         $results = array();
@@ -145,7 +144,6 @@ class CreateProductController extends Controller
         return response()->json($results);
     }
 
-
     public function SearchCodes(Request $request)
     {
         $query = $request->get('query');
@@ -167,7 +165,7 @@ class CreateProductController extends Controller
         return response()->json($results);
     }
 
-    public function SaveProducts (Request $request)
+    public function SavePedido(Request $request)
     {
         DB::beginTransaction();
         try {
@@ -345,13 +343,9 @@ class CreateProductController extends Controller
             }
             DB::connection('MAX')->table('Product_Structure')->insert($InsProd_Struc);
 
-
-
-
             $InsPart_Rou = [];
             $Part_Routing = DB::connection('MAX')->table('Part_Routing')
                 ->where('Part_Routing.PRTNUM_12','=', $Producto)->get();
-
 
             foreach ($Part_Routing as $Part_Rou ){
                 $InsPart_Rou[] = [
@@ -397,8 +391,6 @@ class CreateProductController extends Controller
                 ];
             }
             DB::connection('MAX')->table('Part_Routing')->insert($InsPart_Rou);
-
-
 
             $InsPart_Sal = [];
             $Part_Sales = DB::connection('MAX')->table('Part_Sales')
@@ -497,7 +489,6 @@ class CreateProductController extends Controller
 
             return response()->json(['Success' => 'Todo Ok']);
         }
-
 
         catch (\Exception $e){
             DB::rollback();

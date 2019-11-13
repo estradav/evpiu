@@ -22,8 +22,8 @@ class ProdCievCodMedidaController extends Controller
                     'cod_medidas.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_medidas.id as id')->get();
             return DataTables::of($data)
                 ->addColumn('Opciones', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmedida" id="edit-btn">Editar</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletemedida">Eliminar</a>';
+                    $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmedida" id="edit-btn"><i class="far fa-edit"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletemedida"><i class="fas fa-trash"></i></a>'.'</div>';
                     return $btn;
                 })
                 ->rawColumns(['Opciones'])
@@ -63,7 +63,6 @@ class ProdCievCodMedidaController extends Controller
         return response()->json(['success'=>'deleted successfully.']);
     }
 
-
     public function getSublineas(Request $request)
     {
         if ($request->ajax()){
@@ -73,5 +72,14 @@ class ProdCievCodMedidaController extends Controller
             }
             return response()->json($getsublineasArray);
         }
+    }
+
+    public function UniqueCod(Request $request)
+    {
+        $UniqueCod = DB::table('cod_medidas')->where('cod','=',$request->cod)->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
     }
 }

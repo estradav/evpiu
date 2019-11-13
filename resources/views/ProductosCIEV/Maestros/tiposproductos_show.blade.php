@@ -30,6 +30,7 @@
                                     <th>Codigo</th>
                                     <th>Nombre</th>
                                     <th>Comentarios</th>
+                                    <th>Fecha de Creacion</th>
                                     <th>Ultima Actualizacion</th>
                                     <th>Opciones</th>
                                 </tr>

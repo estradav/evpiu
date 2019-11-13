@@ -20,8 +20,8 @@ class ProdCievCodCaracteristicaController extends Controller
                     'cod_caracteristicas.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_caracteristicas.id as id')->get();
             return DataTables::of($data)
                 ->addColumn('Opciones', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editcaracteristica" id="edit-btn">Editar</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletecaracteristica">Eliminar</a>';
+                    $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editcaracteristica" id="edit-btn"><i class="far fa-edit"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletecaracteristica"><i class="fas fa-trash"></i></a>'.'</div>';
                     return $btn;
                 })
                 ->rawColumns(['Opciones'])
@@ -55,7 +55,6 @@ class ProdCievCodCaracteristicaController extends Controller
         return response()->json();
     }
 
-
     public function getSublineas(Request $request)
     {
         if ($request->ajax()){
@@ -65,5 +64,14 @@ class ProdCievCodCaracteristicaController extends Controller
             }
             return response()->json($getsublineasArray);
         }
+    }
+
+    public function UniqueCod(Request $request)
+    {
+        $UniqueCod = DB::table('cod_caracteristicas')->where('cod','=',$request->cod)->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
     }
 }

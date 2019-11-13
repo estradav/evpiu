@@ -21,8 +21,8 @@ class ProdCievCodMaterialController extends Controller
                     'cod_materials.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_materials.id as id')->get();
             return DataTables::of($data)
                 ->addColumn('Opciones', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmaterial" id="edit-btn">Editar</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletematerial">Eliminar</a>';
+                    $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmaterial" id="edit-btn"><i class="far fa-edit"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletematerial"><i class="fas fa-trash"></i></a>'.'</div>';
                     return $btn;
                 })
                 ->rawColumns(['Opciones'])
@@ -56,7 +56,6 @@ class ProdCievCodMaterialController extends Controller
         return response()->json(['success'=>'deleted successfully.']);
     }
 
-
     public function getSublineas(Request $request)
     {
         if ($request->ajax()){
@@ -68,4 +67,12 @@ class ProdCievCodMaterialController extends Controller
         }
     }
 
+    public function UniqueCod(Request $request)
+    {
+        $UniqueCod = DB::table('cod_materials')->where('cod','=',$request->cod)->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
+    }
 }

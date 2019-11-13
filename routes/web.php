@@ -148,6 +148,21 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/SearchClients','PedidoController@SearchClients');
     Route::get('/PedidosGetCondicion','PedidoController@GetCondicion');
     Route::get('/PedidosSearchProductsMax','PedidoController@SearchProductsMax');
+    Route::post('/SavePedido','PedidoController@SavePedido');
+
+    Route::post('/GetUniqueCod','ProdCodTipoProductoController@UniqueCod');
+    Route::post('/GetUniqueCodLines','ProdCodLineasController@UniqueCod');
+    Route::post('/GetUniqueCodSubLines','ProdCodSublineasController@UniqueCod');
+    Route::post('/GetUniqueCodCaracteristics','ProdCievCodCaracteristicaController@UniqueCod');
+    Route::post('/GetUniqueCodMaterials','ProdCievCodMaterialController@UniqueCod');
+    Route::post('/GetUniqueCodMed','ProdCievCodMedidaController@UniqueCod');
+    Route::post('/GetUniqueCode','ProdCievCodCodigoController@UniqueCod');
+
+
+
+
+
+
 });
 
 

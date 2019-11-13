@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\CodTipoProducto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class ProdCodTipoProductoController extends Controller
 {
@@ -14,8 +16,8 @@ class ProdCodTipoProductoController extends Controller
             $data = CodTipoProducto::latest()->get();
             return Datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn =  '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editTipoProducto" id="edit-btn">Editar</a>';
-                    $btn = $btn.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteTipoProducto">Eliminar</a>';
+                    $btn =  '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editTipoProducto" id="edit-btn"><i class="far fa-edit"></i></a>';
+                    $btn = $btn.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteTipoProducto"><i class="fas fa-trash"></i></a>'.'</div>';
                     return $btn;
                 })
                 ->rawColumns(['opciones'])
@@ -32,6 +34,8 @@ class ProdCodTipoProductoController extends Controller
             [   'cod'           => $request->cod,
                 'name'          => $request->name,
                 'coments'       => $request->coments,
+                'usuario'       => $request->NameUser,
+
             ]);
 
         return response()->json(['success'=>'Linea Guardada Correctamente.']);
@@ -48,6 +52,21 @@ class ProdCodTipoProductoController extends Controller
         CodTipoProducto::find($id)->delete();
 
         return response()->json(['success'=>'Product deleted successfully.']);
+    }
+
+    public function UniqueCod(Request $request)
+    {
+        $UniqueCod = DB::table('cod_tipo_productos')->where('cod','=',$request->cod)->count();
+
+        if($UniqueCod == 0)
+        {
+            echo "true";  //good to register
+        }
+        else
+        {
+            echo "false"; //already registered
+        }
+
     }
 
 }

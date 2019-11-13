@@ -83,7 +83,7 @@ $(document).ready(function(){
 
         jQuery.extend(jQuery.validator.messages, {
             required: "Este campo es obligatorio.",
-            remote: "Por favor, rellena este campo.",
+            remote: "Este codigo ya existe.",
             email: "Por favor, escribe una dirección de correo válida",
             url: "Por favor, escribe una URL válida.",
             date: "Por favor, escribe una fecha válida.",
@@ -115,7 +115,16 @@ $(document).ready(function(){
                 med_sublineas_id:{
                     selectcheck: true
                 },
-                cod: "required",
+                cod: {
+                    remote: {
+                        url: '/GetUniqueCodMed',
+                        type: 'POST',
+                        async: false,
+                    },
+                    minlength: 2,
+                    maxlength: 2,
+                    required: true
+                },
                 name: "required",
                 interior: "required",
                 exterior: "required",

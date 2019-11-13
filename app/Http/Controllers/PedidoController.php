@@ -15,15 +15,15 @@ class PedidoController extends Controller
         if ($request->ajax()) {
             if (!empty($request->CodVenUsuario != 999)) {
                 $data = DB::table('encabezado_pedidos')
-                    ->select('id', 'OrdenCompra', 'CodCliente','CodCliente','DireccionCliente','Ciudad','Telefono',
-                        'CodVendedor','NombreVendedor','CondicionPago','Descuento','Iva','Estado')
+                    ->select('id', 'OrdenCompra','NombreCliente', 'CodCliente','CodCliente','DireccionCliente','Ciudad','Telefono',
+                        'CodVendedor','NombreVendedor','CondicionPago','Descuento','Iva','Estado','created_at')
                     ->where('CodVendedor', '=', $request->CodVenUsuario)
                     ->where('estado', '=', $request->Estado)
                     ->get();
             } else {
                 $data = DB::table('encabezado_pedidos')
-                    ->select('id', 'OrdenCompra', 'CodCliente','CodCliente','DireccionCliente','Ciudad','Telefono',
-                        'CodVendedor','NombreVendedor','CondicionPago','Descuento','Iva','Estado')
+                    ->select('id', 'OrdenCompra', 'CodCliente','CodCliente','NombreCliente','DireccionCliente','Ciudad','Telefono',
+                        'CodVendedor','NombreVendedor','CondicionPago','Descuento','Iva','Estado','created_at')
                     ->get();
             }
 
@@ -81,18 +81,72 @@ class PedidoController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('MAX')->table('CIEV_V_Clientes')
-            ->where('CIEV_V_Clientes.NAME_23', 'LIKE', '%'.$query.'%')
-            ->orWhere('CIEV_V_Clientes.CUSTID_23', 'LIKE', '%'.$query.'%')->take(20)
+        $queries = DB::connection('MAX')->table('CIEV_V_ProductosVentaStock')
+            ->where('CIEV_V_ProductosVentaStock.Descripcion1', 'LIKE', '%'.$query.'%')
+            ->orWhere('CIEV_V_ProductosVentaStock.Producto', 'LIKE', '%'.$query.'%')->take(10)
             ->get();
 
         foreach ($queries as $q) {
             $results[] = [
-                'value'     => trim($q->NAME_23),
-                'PriceItem' => trim($q->CUSTID_23),
-                'Stock'     => trim($q->d)
+                'value'     => trim($q->Producto).' - '.trim($q->Descripcion1),
+                'PriceItem' => trim('0'),
+                'Stock'     => trim($q->Inventario)
             ];
         }
         return response()->json($results);
+    }
+
+    public function SavePedido(Request $request)
+    {
+        $date = date('Y-m-d H:i:s');
+
+         DB::beginTransaction();
+        try {
+            $invoice = DB::table('encabezado_pedidos')->insertGetId([
+                'OrdenCompra'       => $request->encabezado[0]['OrdComp'],
+                'CodCliente'        => $request->encabezado[0]['CodCliente'],
+                'NombreCliente'     => $request->encabezado[0]['NombreCliente'],
+                'DireccionCliente'  => $request->encabezado[0]['address'],
+                'Ciudad'            => $request->encabezado[0]['city'],
+                'Telefono'          => $request->encabezado[0]['phone'],
+                'CodVendedor'       => $request->encabezado[0]['CodVendedor'],
+                'NombreVendedor'    => $request->encabezado[0]['NombreVendedor'],
+                'CondicionPago'     => $request->encabezado[0]['CondicionPago'],
+                'Descuento'         => $request->encabezado[0]['descuento'],
+                'Iva'               => $request->encabezado[0]['SelectIva'],
+                'Estado'            => '1',
+                'created_at'        => $date,
+            ]);
+
+
+            $data = $request->Items;
+            foreach ($data as $d){
+                DB::table('detalle_pedido')->insert([
+                    'idPedido'         => $invoice,
+                    'CodigoProducto'   => $d['producto'],
+                    'Descripcion'      => $d['producto'],
+                    'Notas'            => $d['notas'],
+                    'Unidad'           => $d['unidad'],
+                    'Cantidad'         => $d['cantidad'],
+                    'Precio'           => $d['precio'],
+                    'Total'            => $d['total'],
+                    'created_at'       => $date,
+                ]);
+            }
+            DB::commit();
+            return response()->json(['Success' => 'Todo Ok']);
+        }
+
+        catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                ),
+            ));
+
+            return response()->json(['Error' => 'Fallo']);
+        }
     }
 }
