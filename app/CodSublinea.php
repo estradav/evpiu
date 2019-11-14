@@ -29,4 +29,8 @@ class CodSublinea extends Model
     {
         return $this->hasMany(CodCaracteristica::class); // tiene muchas caracteristicas
     }
+
+    public function UnidadesMedida(){
+        return $this->belongsToMany('\App\UnidadesMedida','medidas_to_sublineas','sub_id','med_id');
+    }
 }

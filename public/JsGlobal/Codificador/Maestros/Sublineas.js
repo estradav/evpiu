@@ -168,4 +168,6 @@ $(function () {
         $('.form-control').removeClass('is-invalid');
         $('.error').remove();
     });
+
+    $('.js-example-basic-multiple').select2();
 });

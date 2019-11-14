@@ -12,6 +12,8 @@
 
 @section('content')
     @inject('Lineas','App\Services\Lineas')
+    @inject('UnidadesMedidas','App\Services\UnidadesMedidas')
+
     @can('maestro.sublinea.view')
     <div class="col-lg-4">
         <div class="form-group">
@@ -56,48 +58,86 @@
                 </div>
                 <div class="modal-body">
                     <form id="sublineaForm" name="sublineaForm" class="form-horizontal">
-                        <input type="hidden" name="sublinea_id" id="sublinea_id">
-                        <div class="form-group">
-                            <label for="lineas_id" class="col-sm-6 control-label">Linea:</label>
+                        <div class="row">
+                            <input type="hidden" name="sublinea_id" id="sublinea_id">
                             <div class="col-sm-12">
-                                <select class="form-control" name="lineas_id" id="lineas_id">
-                                    @foreach( $Lineas->get() as $index => $Lineas)
-                                        <option value="{{ $index }}" {{ old('lineas_id') == $index ? 'selected' : ''}}>
-                                            {{ $Lineas }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="form-group">
+                                    <label for="lineas_id" class="col-sm-6 control-label">Linea:</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control" name="lineas_id" id="lineas_id">
+                                            @foreach( $Lineas->get() as $index => $Lineas)
+                                                <option value="{{ $index }}" {{ old('lineas_id') == $index ? 'selected' : ''}}> {{ trim($Lineas) }} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Codigo:</label>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Codigo:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="cod" name="cod"  value="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Hijo:</label>
+                                    <div class="col-sm-12">
+                                        <select name="hijo" id="hijo" class="form-control">
+                                            <option value="Y">Si</option>
+                                            <option value="N">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="cod" name="cod"  value="">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Unidad Medida:</label>
+                                    <div class="col-sm-12">
+                                        <select class="js-example-basic-multiple form-control" name="states[]" multiple="multiple" style="width: 100%">
+                                            @foreach( $UnidadesMedidas->get() as $index => $UnidadesMedidas)
+                                                <option value="{{ $index }}" {{ old('um_id') == $index ? 'selected' : ''}}> {{ trim($UnidadesMedidas) }} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Nombre:</label>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Nombre:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="name" name="name" value="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="abreviatura" name="abreviatura" value="">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" value="">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Comentarios:</label>
+                                    <div class="col-sm-12">
+                                        <textarea id="coments" name="coments" required="" class="form-control"></textarea>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="abreviatura" name="abreviatura" value="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Comentarios:</label>
-                            <div class="col-sm-12">
-                                <textarea id="coments" name="coments" required="" class="form-control"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </div>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -114,5 +154,7 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
     @endpush
 @endsection
