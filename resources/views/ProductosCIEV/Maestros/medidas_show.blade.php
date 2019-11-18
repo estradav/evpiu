@@ -88,17 +88,17 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Codigo de Medida:</label>
+                                    <label for="name" class="col-sm-6 control-label">Codigo:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="cod" name="cod" value="" maxlength="50">
+                                        <input type="text" class="form-control" id="cod" name="cod" value=""  onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Nombre de la Medida:</label>
+                                    <label for="name" class="col-sm-6 control-label">Nombre:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="name" name="name" value="" maxlength="50">
+                                        <input type="text" class="form-control" id="name" name="name" value="" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Interior:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="interior" name="interior"  value="">
+                                        <input type="text" class="form-control" id="interior" name="interior"  value="" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Exterior:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="exterior" name="exterior" value="">
+                                        <input type="text" class="form-control" id="exterior" name="exterior" value="" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Lado 1:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="lado_1" name="lado_1" value="">
+                                        <input type="text" class="form-control" id="lado_1" name="lado_1" value="" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Lado 2:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="lado_2" name="lado_2" value="">
+                                        <input type="text" class="form-control" id="lado_2" name="lado_2" value="" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Largo:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="largo" name="largo" value="">
+                                        <input type="text" class="form-control" id="largo" name="largo" value="" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Denominacion:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="denominacion" name="denominacion" value="">
+                                        <input type="text" class="form-control" id="denominacion" name="denominacion" value="" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
@@ -182,5 +182,8 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     @endpush
 @endsection

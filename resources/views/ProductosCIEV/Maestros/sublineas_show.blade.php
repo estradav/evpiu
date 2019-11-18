@@ -27,13 +27,15 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped first data-table">
+                        <table class="table table-striped first data-table" id="Subtable">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Linea</th>
                                     <th>Codigo</th>
                                     <th>Nombre Sublinea</th>
                                     <th>Comentarios</th>
+                                    <th>Unidades de Medida</th>
                                     <th>Ultima Actualizacion</th>
                                     <th>Opciones</th>
                                 </tr>
@@ -46,7 +48,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="sublineamodal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -56,89 +57,83 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form id="sublineaForm" name="sublineaForm" class="form-horizontal">
                 <div class="modal-body">
-                    <form id="sublineaForm" name="sublineaForm" class="form-horizontal">
-                        <div class="row">
-                            <input type="hidden" name="sublinea_id" id="sublinea_id">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="lineas_id" class="col-sm-6 control-label">Linea:</label>
-                                    <div class="col-sm-12">
-                                        <select class="form-control" name="lineas_id" id="lineas_id">
-                                            @foreach( $Lineas->get() as $index => $Lineas)
-                                                <option value="{{ $index }}" {{ old('lineas_id') == $index ? 'selected' : ''}}> {{ trim($Lineas) }} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Codigo:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="cod" name="cod"  value="">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Hijo:</label>
-                                    <div class="col-sm-12">
-                                        <select name="hijo" id="hijo" class="form-control">
-                                            <option value="Y">Si</option>
-                                            <option value="N">No</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Unidad Medida:</label>
-                                    <div class="col-sm-12">
-                                        <select class="js-example-basic-multiple form-control" name="states[]" multiple="multiple" style="width: 100%">
-                                            @foreach( $UnidadesMedidas->get() as $index => $UnidadesMedidas)
-                                                <option value="{{ $index }}" {{ old('um_id') == $index ? 'selected' : ''}}> {{ trim($UnidadesMedidas) }} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Nombre:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="name" name="name" value="">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="abreviatura" name="abreviatura" value="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Comentarios:</label>
-                                    <div class="col-sm-12">
-                                        <textarea id="coments" name="coments" required="" class="form-control"></textarea>
-                                    </div>
+                    <div class="row">
+                        <input type="hidden" name="sublinea_id" id="sublinea_id">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="lineas_id" class="col-sm-6 control-label">Linea:</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control" name="lineas_id" id="lineas_id">
+                                        @foreach( $Lineas->get() as $index => $Lineas)
+                                            <option value="{{ $index }}" {{ old('lineas_id') == $index ? 'selected' : ''}}> {{ trim($Lineas) }} </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-6 control-label">Codigo:</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control code" id="cod" name="cod"  value="" maxlength="2" minlength="2" onkeyup="this.value=this.value.toUpperCase();" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-6 control-label">Hijo:</label>
+                                <div class="col-sm-12">
+                                    <select name="hijo" id="hijo" class="form-control">
+                                        <option value="Y">Si</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-6 control-label">Unidad Medida:</label>
+                                <div class="col-sm-12">
+                                    <select class="js-example-basic-multiple form-control" name="um_id" id="um_id" multiple="multiple" style="width: 100%">
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-6 control-label">Nombre:</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="name" name="name" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" id="abreviatura" name="abreviatura" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Comentarios:</label>
+                                <div class="col-sm-12">
+                                    <textarea id="coments" name="coments" required="" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -147,6 +142,18 @@
             No tienes permisos para visualizar las sublineas.
         </div>
     @endcan
+    <style>
+        .red {
+            background-color: red !important;
+        }
+        td.details-control {
+            background: url('/img/medida.png') no-repeat center center;
+            cursor: pointer;
+        }
+        tr.details td.details-control {
+            background: url('/img/x.png') no-repeat center center;
+        }
+    </style>
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Sublineas.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
@@ -156,5 +163,9 @@
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
     @endpush
 @endsection

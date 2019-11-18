@@ -79,19 +79,19 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="cod" name="cod" value="">
+                                <input type="text" class="form-control" id="cod" name="cod" value="" onkeyup="this.value=this.value.toUpperCase();">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Nombre:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" value="">
+                                <input type="text" class="form-control" id="name" name="name" value="" onkeyup="this.value=this.value.toUpperCase();">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="abreviatura" name="abreviatura"  value="">
+                                <input type="text" class="form-control" id="abreviatura" name="abreviatura"  value="" onkeyup="this.value=this.value.toUpperCase();">
                             </div>
                         </div>
                         <div class="form-group">
@@ -123,5 +123,8 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     @endpush
 @endsection

@@ -119,7 +119,6 @@ $(document).ready(function(){
                 abreviatura: "required",
                 coments: "required"
             },
-
             highlight: function (element) {
                 // Only validation controls
                 $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
@@ -151,25 +150,50 @@ $(document).ready(function(){
             }
         });
 
-
         $('body').on('click', '.deletematerial', function () {
-
             var material_id = $(this).data("id");
-            if(confirm("¿Esta seguro de Eliminar?")) {
-                $.ajax({
-                    type: "DELETE",
-                    url: "/ProdCievCodMaterial" + '/' + material_id,
-                    success: function (data) {
-                        table.draw();
-                        toastr.success("Registro eliminado con exito");
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        toastr.danger("Error al eliminar el registro");
-                    }
-                });
-            }
-        });
+            Swal.fire({
+                title: '¿Esta seguro de Eliminar?',
+                text: "¡Esta accion no se puede revertir!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/ProdCievCodMaterial" + '/' + material_id,
+                        success: function (data) {
+                            Swal.fire({
+                                title: 'Eliminado!',
+                                text: "El registro ha sido eliminado.",
+                                icon: 'success',
+                            });
+                            table.draw();
+                        },
+                        error: function (data) {
+                            Swal.fire(
+                                'Error al eliminar!',
+                                'Hubo un error al eliminar. Verifique que este registro no tenga Sublineas relacionadas, si el problema persiste contacte con el area de sistemas',
+                                'error'
+                            )
+                        }
+                    });
+                }else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'Cancelado',
+                        'El registro NO fue eliminado :)',
+                        'error'
+                    )
+                }
+            })
+        })
     });
 
     $('#mat_lineas_id').on('change', function () {

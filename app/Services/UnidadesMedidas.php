@@ -12,7 +12,7 @@ class UnidadesMedidas
 
         $UnidadesMedidaArray =[];
         foreach ($UnidadesMedidas as $UnidadesMedida){
-            $UnidadesMedidaArray[$UnidadesMedida->name] = $UnidadesMedida->descripcion;
+            $UnidadesMedidaArray[$UnidadesMedida->id] = $UnidadesMedida->descripcion;
         }
         return $UnidadesMedidaArray;
 
