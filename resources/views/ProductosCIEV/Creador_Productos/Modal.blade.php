@@ -209,7 +209,7 @@
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">Nivel Rev:</label>
                                         <div class="col-sm-12">
-                                            <input type="number" class="form-control" id="Maestro_Niv_Rev" name="Maestro_Niv_Rev" placeholder="" value="" maxlength="5" required>
+                                            <input type="number" class="form-control" id="Maestro_Niv_Rev" name="Maestro_Niv_Rev" placeholder="" value="" maxlength="5" >
                                         </div>
                                     </div>
                                 </div>

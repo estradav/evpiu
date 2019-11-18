@@ -19,6 +19,7 @@ class CreateCodSublineasTable extends Migration
             $table->string('cod');
             $table->string('name',20);
             $table->string('abreviatura',10);
+            $table->string('hijo',1);
             $table->string('coments', 250)->nullable();
             $table->string('usuario')->nullable();
             $table->timestamps();

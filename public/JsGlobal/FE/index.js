@@ -199,22 +199,16 @@ $(document).ready(function () {
                 detailRows.push( tr.attr('id') );
             }
         }
-    } );
+    });
 
     // On each draw, loop over the `detailRows` array and show any child rows
     table.on( 'draw', function () {
         $.each( detailRows, function ( i, id ) {
             $('#'+id+' td.details-control').trigger( 'click' );
         } );
-    } );
-
-
-    $('body').on('click', '.btnError', function () {
-        var value = $(this).data('id');
-        var test = errors;
-        $('#titleModal').html('Factura: '+value);
-        $('#Modal').modal('show');
     });
+
+
 
     $('#filter').click(function(){
         var from_date = $('#from_date').val();

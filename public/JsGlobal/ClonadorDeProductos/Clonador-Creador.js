@@ -78,8 +78,8 @@ $(document).ready(function() {
                 Maestro_Cod_Clase:{selectcheck: true},
                 Maestro_Cod_Com:{selectcheck: true},
                 Maestro_cos_und:"required",
-                Maestro_Zona:"required",
-                Maestro_Niv_Rev:"required",
+               /* Maestro_Zona:"required",
+                Maestro_Niv_Rev:"required",*/
                 Maestro_Rend:{required: true, minlength: 0, maxlength: 100, digits: true},
                 Ingenieria_desec:{required: true, minlength: 0, maxlength: 100, digits: true},
                 Ingenieria_Est_Ing:{selectcheck: true},
@@ -106,7 +106,7 @@ $(document).ready(function() {
                 Inventario_Re_Cod:{selectcheck: true },
                 Inventario_ToleMoney:"required",
                 Inventario_TolePorc:{required: true, minlength: 0, maxlength: 100, digits: true},
-                Ingenieria_NumPln: "required"
+                /*Ingenieria_NumPln: "required"*/
             },
 
 
@@ -157,8 +157,8 @@ $(document).ready(function() {
         $('#ProductForm').trigger("reset");
         $('#modelHeading').html("Crear ò Clonar Producto");
         $('#Modal').modal('show');
-        document.getElementById("Maestro_Cod").readOnly = false;
-        document.getElementById("Maestro_desc").readOnly = false;
+        document.getElementById("Maestro_Cod").readOnly = true;
+        document.getElementById("Maestro_desc").readOnly = true;
     });
 
     $("#Planificador_PlnFirmVal").val('N');

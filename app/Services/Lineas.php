@@ -13,6 +13,15 @@ class Lineas
         foreach ($lineas as $Linea){
             $lineasArray[$Linea->id] = $Linea->name;
         }
+
+       /* $sub = CodSublinea::find(1);
+       /* foreach ($sub->UnidadesMedida as $um) {
+            //obteniendo los datos de un menu específico
+            echo $um->name;
+            //obteniendo datos de la tabla pivot por menu
+            echo $um->pivot->sub_id;
+        }*/
+
         return $lineasArray;
     }
 }

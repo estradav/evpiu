@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CodTipoProducto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,11 +32,11 @@ class ProdCodTipoProductoController extends Controller
     {
         CodTipoProducto::updateOrCreate(
             ['id' => $request->tipoproducto_id],
-            [   'cod'           => $request->cod,
+            [
+                'usuario'       => $request->usuario,
+                'cod'           => $request->cod,
                 'name'          => $request->name,
                 'coments'       => $request->coments,
-                'usuario'       => $request->NameUser,
-
             ]);
 
         return response()->json(['success'=>'Linea Guardada Correctamente.']);

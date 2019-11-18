@@ -15,6 +15,7 @@ $(document).ready(function(){
                 {data: 'cod', name: 'cod'},
                 {data: 'name', name: 'name'},
                 {data: 'coments', name: 'coments'},
+                {data: 'created_at', name: 'updated_at'},
                 {data: 'updated_at', name: 'updated_at'},
                 {data: 'usuario', name: 'usuario'},
                 {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
@@ -92,8 +93,6 @@ $(document).ready(function(){
             return (value != '');
         }, "Por favor, seleciona una opcion.");
 
-
-
         $("#tipoproductoForm").validate({
             ignore: "",
             rules: {
@@ -148,7 +147,68 @@ $(document).ready(function(){
 
         $('body').on('click', '.deleteTipoProducto', function () {
             var tipoproducto_id = $(this).data("id");
-            if(confirm("¿Esta seguro de Eliminar?")) {
+
+            Swal.fire({
+                title: '¿Esta seguro de Eliminar?',
+                text: "¡Esta accion no se puede revertir!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "ProdCievCodTipoProducto" + '/' + tipoproducto_id,
+                        success: function (data) {
+                            table.draw();
+                            Swal.fire({
+                                title: 'Eliminado!',
+                                text: "El registro ha sido eliminado.",
+                                icon: 'success',
+
+                            })
+                        },
+                        error: function (data) {
+                            Swal.fire(
+                                'Error al eliminar!',
+                                'Hubo un error al eliminar. Verifique que este registro no tenga lineas relacionadas, si el problema persiste contacte con el area de sistemas',
+                                'error'
+                            )
+                        }
+                    });
+                }else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'Cancelado',
+                        'El registro NO fue eliminado :)',
+                        'error'
+                    )
+                }
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*if(confirm("¿Esta seguro de Eliminar?")) {
                 $.ajax({
                     type: "DELETE",
                     url: "ProdCievCodTipoProducto" + '/' + tipoproducto_id,
@@ -161,7 +221,7 @@ $(document).ready(function(){
                         toastr.error("Error al eliminar el registro");
                     }
                 });
-            }
+            }*/
         });
         $('#tipoproductomodal').on('show.bs.modal', function (event) {
             $('#saveBtn').html('Guardar');
