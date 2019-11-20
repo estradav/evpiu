@@ -48,7 +48,7 @@
                         <table class="table table-responsive table-striped" id="tfac">
                             <thead>
                                 <tr>
-                                    <th><input type="checkbox" id="selectAll" name="selectAll"></th>
+                                    <th><input type="checkbox" id="selectAll" name="selectAll" class="selectAll"></th>
                                     <th>&nbsp; &nbsp;</th>
                                     <th>Numero</th>
                                     <th>OV</th>

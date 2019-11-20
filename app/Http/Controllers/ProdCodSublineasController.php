@@ -31,12 +31,18 @@ class ProdCodSublineasController extends Controller
                     $btn1 = '<div class="btn-group" style="text-align: center">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="showMed" class="btn btn-light btn-sm showMed" id="'.$row->id.'">Mostrar</a>'.'</div>';
                     return $btn1;
                 })
+
+                ->addColumn('Car_Medidas', function($row){
+                    $btn1 = '<div class="btn-group" style="text-align: center">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="showCarMed" class="btn btn-light btn-sm showCarMed" id="'.$row->id.'">Mostrar</a>'.'</div>';
+                    return $btn1;
+                })
+
                 ->addColumn('Opciones', function($row){
                     $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editsublinea" id="edit-btn"><i class="far fa-edit"></i></a>';
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletesubLinea"><i class="fas fa-trash"></i></a>'.'</div>';
                     return $btn;
                 })
-                ->rawColumns(['Opciones','Medidas'])
+                ->rawColumns(['Opciones','Medidas','Car_Medidas'])
                 ->make(true);
 
         }
@@ -55,7 +61,7 @@ class ProdCodSublineasController extends Controller
     public function destroy($id)
     {
         DB::table('medidas_to_sublineas')->where('sub_id','=',$id)->delete();
-
+        DB::table('caracteristicasmedidas_to_sublineas')->where('sub_id','=',$id)->delete();
         CodSublinea::find($id)->delete();
 
         return response()->json();
@@ -88,9 +94,22 @@ class ProdCodSublineasController extends Controller
             $UnidadesMedidaArray = [];
 
             foreach ($sub->UnidadesMedida as $UnidadesMedid) {
-                $UnidadesMedidaArray[] = $UnidadesMedid->descripcion;
+                $UnidadesMedidaArray[$UnidadesMedid->name] = $UnidadesMedid->descripcion;
             }
             return response()->json($UnidadesMedidaArray);
+        }
+    }
+
+    public function getCarUnidadMedidas(Request $request)
+    {
+        if ($request->ajax()){
+            $sub = CodSublinea::find($request->Sub_id);
+            $CarUnidadesMedidaArray = [];
+
+            foreach ($sub->CaracteristicasUnidadesMedida as $CarUnidadesMedida) {
+                $CarUnidadesMedidaArray[] = $CarUnidadesMedida->descripcion;
+            }
+            return response()->json($CarUnidadesMedidaArray);
         }
     }
 
@@ -115,6 +134,27 @@ class ProdCodSublineasController extends Controller
         return response()->json($formatted_tags);
     }
 
+    public function getALLCaracteristicasUnidadMedidas(Request $request)
+    {
+        $term = trim($request->q);
+        if (empty($term)) {
+            $tags = DB::table('caracteristicas_unidades_medidas')->get();
+            $formatted_tags = [];
+            foreach ($tags as $tag) {
+                $formatted_tags[] = ['id' => $tag->id, 'text' => $tag->descripcion];
+            }
+            return response()->json($formatted_tags);
+        }
+
+        $tags = DB::table('caracteristicas_unidades_medidas')->where('descripcion','like',$term)
+            ->orWhere('name','like',$term)->get();
+        $formatted_tags = [];
+        foreach ($tags as $tag) {
+            $formatted_tags[] = ['id' => $tag->id, 'text' => $tag->descripcion];
+        }
+        return response()->json($formatted_tags);
+    }
+
     public function SaveSublinea(Request $request)
     {
         if ($request->encabezado[0]['id'] == null) {
@@ -130,17 +170,24 @@ class ProdCodSublineasController extends Controller
                     'coments' => $request->encabezado[0]['coments'],
                 ]);
 
-                $data = $request->data;
-                foreach ($data as $d) {
+                $umedidas = $request->umedidas;
+                foreach ($umedidas as $d) {
                     DB::table('medidas_to_sublineas')->insert([
                         'sub_id' => $sb,
                         'med_id' => $d,
                     ]);
                 }
 
+                $carmedidas = $request->carmedidas;
+                foreach ($carmedidas as $d) {
+                    DB::table('caracteristicasmedidas_to_sublineas')->insert([
+                        'sub_id' => $sb,
+                        'car_med_id' => $d,
+                    ]);
+                }
                 DB::commit();
-
                 return response()->json(['Success' => 'Todo Ok']);
+
             } catch (\Exception $e) {
                 DB::rollback();
                 echo json_encode(array(
@@ -149,7 +196,6 @@ class ProdCodSublineasController extends Controller
                         'code' => $e->getCode(),
                     ),
                 ));
-
                 return response()->json(['Error' => 'Fallo']);
             }
         }
@@ -169,12 +215,21 @@ class ProdCodSublineasController extends Controller
                     ]);
 
                 DB::table('medidas_to_sublineas')->where('sub_id','=',$request->encabezado[0]['id'])->delete();
+                DB::table('caracteristicasmedidas_to_sublineas')->where('sub_id','=',$request->encabezado[0]['id'])->delete();
 
-                $data = $request->data;
-                foreach ($data as $d) {
+                $umedidas = $request->umedidas;
+                foreach ($umedidas as $d) {
                     DB::table('medidas_to_sublineas')->insert([
                         'sub_id' => $request->encabezado[0]['id'],
                         'med_id' => $d,
+                    ]);
+                }
+
+                $carmedidas = $request->carmedidas;
+                foreach ($carmedidas as $d) {
+                    DB::table('caracteristicasmedidas_to_sublineas')->insert([
+                        'sub_id' => $request->encabezado[0]['id'],
+                        'car_med_id' => $d,
                     ]);
                 }
 

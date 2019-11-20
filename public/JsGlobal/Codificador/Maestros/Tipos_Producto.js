@@ -17,7 +17,6 @@ $(document).ready(function(){
                 {data: 'coments', name: 'coments'},
                 {data: 'created_at', name: 'updated_at'},
                 {data: 'updated_at', name: 'updated_at'},
-                {data: 'usuario', name: 'usuario'},
                 {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
             ],
             language: {
@@ -108,7 +107,6 @@ $(document).ready(function(){
                     digits: false
                 },
                 name: "required",
-                coments: "required"
             },
 
             highlight: function (element) {
@@ -191,37 +189,6 @@ $(document).ready(function(){
                 }
             })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            /*if(confirm("¿Esta seguro de Eliminar?")) {
-                $.ajax({
-                    type: "DELETE",
-                    url: "ProdCievCodTipoProducto" + '/' + tipoproducto_id,
-                    success: function (data) {
-                        table.draw();
-                        toastr.error("Registro Eliminado con exito");
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        toastr.error("Error al eliminar el registro");
-                    }
-                });
-            }*/
         });
         $('#tipoproductomodal').on('show.bs.modal', function (event) {
             $('#saveBtn').html('Guardar');

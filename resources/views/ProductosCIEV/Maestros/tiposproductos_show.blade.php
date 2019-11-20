@@ -32,7 +32,6 @@
                                     <th>Comentarios</th>
                                     <th>Fecha de Creacion</th>
                                     <th>Ultima Actualizacion</th>
-                                    <th>Creado por</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>

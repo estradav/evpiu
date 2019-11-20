@@ -59,8 +59,6 @@ $(document).ready(function () {
     }
     load_data();
 
-
-
     var table;
 
     function load_data(from_date = '', to_date = '')
@@ -71,6 +69,7 @@ $(document).ready(function () {
         table =  $('#tfac').DataTable({
             processing: true,
             serverSide: true,
+            responsive: true,
             ajax: {
                 url:'/FacturasIndex',
                 data:{from_date:from_date, to_date:to_date}
@@ -115,7 +114,6 @@ $(document).ready(function () {
                     sortDescending: ": Activar para ordenar la columna de manera descendente"
                 }
             },
-
             rowCallback: function( row, data, index ) {
                 if ( data.fecha == null ) {
                     $(row).find('td:eq(3)').css('color', 'red');
@@ -208,8 +206,6 @@ $(document).ready(function () {
         } );
     });
 
-
-
     $('#filter').click(function(){
         var from_date = $('#from_date').val();
         var to_date = $('#to_date').val();
@@ -264,10 +260,24 @@ $(document).ready(function () {
                 dataType: 'json', // importante para que
                 data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
                 url: 'fe/xml',
-                success: function () {
+                success: function ( data) {
                     toastr.success("El Archivo XML se ha generado con Exito!.");
                     // preventDefault();  //stop the browser from following
-                    window.open('XML/Facturacion_electronica_Facturas.xml');
+                    var req = new XMLHttpRequest();
+                    req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
+                    req.responseType = "blob";
+
+                    req.onload = function (event) {
+                        var blob = req.response;
+                        console.log(blob.size);
+                        var link=document.createElement('a');
+                        link.href=window.URL.createObjectURL(blob);
+                        let current_datetime = new Date();
+                        let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
+                        link.download="Factura_Electronica_" + formatted_date + "_.xml";
+                        link.click();
+                    };
+                    req.send();
                 }
             });
         } else
@@ -275,9 +285,16 @@ $(document).ready(function () {
         return false;
     });
 
-    $("#selectAll").click(function(){
-        if($('.checkboxes').attr('disabled')){
-            $("input[type=checkbox]").prop('checked', $(this).prop('checked'))
+    $("#selectAll").on("click", function() {
+        $(".test").prop("checked", this.checked);
+    });
+
+// if all checkbox are selected, check the selectall checkbox and viceversa
+    $(".test").on("click", function() {
+        if ($(".test").length == $(".test:checked").length) {
+            $("#selectAll").prop("checked", true);
+        } else {
+            $("#selectAll").prop("checked", false);
         }
     });
 

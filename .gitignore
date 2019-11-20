@@ -13,3 +13,4 @@ yarn-error.log
 public/XML/Facturacion_electronica_Facturas.xml
 *.xml
 .env
+.env

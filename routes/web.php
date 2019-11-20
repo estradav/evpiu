@@ -70,11 +70,15 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('ProdCievCodCaracteristica','ProdCievCodCaracteristicaController');
     Route::get('/getsublineas','ProdCievCodCaracteristicaController@getSublineas');
 
+
+
     Route::resource('ProdCievCodMaterial','ProdCievCodMaterialController');
     Route::get('/getsublineas','ProdCievCodMaterialController@getSublineas');
 
     Route::resource('ProdCievCodMedida','ProdCievCodMedidaController');
     Route::get('/getsublineas','ProdCievCodMedidaController@getSublineas');
+    Route::get('/getCaractUnidadMedidas','ProdCievCodMedidaController@getCaractUnidadMedidas');
+
 
 
     Route::resource('codificador','ProdCievCodCodigoController');
@@ -111,6 +115,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/SublineasIndex','ProdCodSublineasController@index');
     Route::get('/getlineasp','ProdCodSublineasController@getlineasp');
     Route::get('/getUnidadMedidas','ProdCodSublineasController@getUnidadMedidas');
+    Route::get('/getCarUnidadMedidas','ProdCodSublineasController@getCarUnidadMedidas');
+
 
     Route::post('/CaracteristicasPost','ProdCievCodCaracteristicaController@store');
     Route::get('/CaracteristicasIndex','ProdCievCodCaracteristicaController@index');
@@ -158,8 +164,12 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/GetUniqueCodMaterials','ProdCievCodMaterialController@UniqueCod');
     Route::post('/GetUniqueCodMed','ProdCievCodMedidaController@UniqueCod');
     Route::post('/GetUniqueCode','ProdCievCodCodigoController@UniqueCod');
+    Route::post('/GetUniqueDescription','ProdCievCodCodigoController@UniqueDescription');
+
 
     Route::get('/getALLUnidadMedidas','ProdCodSublineasController@getALLUnidadMedidas');
+    Route::get('/getALLCaracteristicasUnidadMedidas','ProdCodSublineasController@getALLCaracteristicasUnidadMedidas');
+
 
 
 
