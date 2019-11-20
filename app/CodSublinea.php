@@ -33,4 +33,9 @@ class CodSublinea extends Model
     public function UnidadesMedida(){
         return $this->belongsToMany('\App\UnidadesMedida','medidas_to_sublineas','sub_id','med_id');
     }
+
+    public function CaracteristicasUnidadesMedida(){
+        return $this->belongsToMany('\App\CaracteristicasUnidadesMedida','caracteristicasmedidas_to_sublineas','sub_id','car_med_id');
+    }
+
 }

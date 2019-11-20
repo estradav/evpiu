@@ -31,14 +31,15 @@
                                     <th>Linea</th>
                                     <th>Sublinea</th>
                                     <th>Codigo</th>
-                                    <th>Medida</th>
                                     <th>Denominacion</th>
-                                    <th>Interior</th>
-                                    <th>Exterior</th>
-                                    <th>Lado 1</th>
-                                    <th>Lado 2</th>
+                                    <th>Diametro</th>
+                                    <th>Largo</th>
+                                    <th>Espesor</th>
+                                    <th>Base</th>
+                                    <th>Altura</th>
+                                    <th>Perforacion</th>
+                                    <th>Milimetros²</th>
                                     <th>Comentarios</th>
-                                    <th>Ultima Actualizacion</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -60,8 +61,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form id="medidaForm" name="medidaForm" class="form-horizontal">
+                <form id="medidaForm" name="medidaForm" class="form-horizontal">
+                    <div class="modal-body">
                         <input type="hidden" name="medida_id" id="medida_id">
                         <div class="row">
                             <div class="col-sm-6">
@@ -96,61 +97,35 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Nombre:</label>
+                                    <label for="mm2" class="col-sm-6 control-label">Milimetros²:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="name" name="name" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                        <input type="number" class="form-control" id="mm2" name="mm2" value="" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Interior:</label>
+                                    <label for="denominacion" class="col-sm-6 control-label">Denominacion:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="interior" name="interior"  value="" onkeyup="this.value=this.value.toUpperCase();">
+                                        <input type="text" class="form-control" id="denominacion" name="denominacion" value="">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Exterior:</label>
+                                    <label for="denominacion" class="col-sm-12 control-label">Unidad Medida:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="exterior" name="exterior" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                        <select name="UndMedida" id="UndMedida" class="form-control UndMedida">
+
+                                        </select>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Lado 1:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="lado_1" name="lado_1" value="" onkeyup="this.value=this.value.toUpperCase();">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Lado 2:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="lado_2" name="lado_2" value="" onkeyup="this.value=this.value.toUpperCase();">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Largo:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="largo" name="largo" value="" onkeyup="this.value=this.value.toUpperCase();">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Denominacion:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="denominacion" name="denominacion" value="" onkeyup="this.value=this.value.toUpperCase();">
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="row" id="campos" name="campos">
+                        </div>
+                        <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label class="col-sm-12 control-label">Comentarios:</label>
@@ -159,13 +134,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

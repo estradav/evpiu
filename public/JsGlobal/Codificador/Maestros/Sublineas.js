@@ -17,7 +17,7 @@ $(document).ready(function(){
                 {data: 'name', name: 'name',orderable: false, searchable: false},
                 {data: 'coment', name: 'coment',orderable: false, searchable: false},
                 {data: 'Medidas', name: 'Medidas',orderable: false, searchable: false},
-                {data: 'update', name: 'update'},
+                {data: 'Car_Medidas', name: 'Car_Medidas',orderable: false, searchable: false},
                 {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false},
             ],
             language: {
@@ -58,7 +58,6 @@ $(document).ready(function(){
             var sublinea_id = $(this).data('id');
             $("#sublineaForm").validate().resetForm();
             $('#saveBtn').attr('formnovalidate','');
-
             $.get("/ProdCievCodSublinea" +'/' + sublinea_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-sublinea");
@@ -127,7 +126,8 @@ $(document).ready(function(){
                 $(element).closest('.form-control').removeClass('is-invalid');
             },
             submitHandler: function (form) {
-                var data = $("#um_id").val();
+                var umedidas = $("#um_id").val();
+                var carmedidas = $("#car_um_id").val();
 
                 var encabezado = [];
                 var Inputs = {
@@ -143,7 +143,7 @@ $(document).ready(function(){
 
                 $.ajax({
                     data: {
-                        encabezado, data
+                        encabezado, umedidas, carmedidas
                     },
                     url: "/SublineasPost",
                     type: "POST",
@@ -196,7 +196,6 @@ $(document).ready(function(){
                         }
                     });
                 }else if (
-                    /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
                     Swal.fire(
@@ -211,13 +210,35 @@ $(document).ready(function(){
         $('#sublineamodal').on('show.bs.modal', function (event) {
             $('#saveBtn').html('Guardar');
             $('.form-control').removeClass('is-invalid');
+            $("#sublineaForm").validate().resetForm();
+            $('#saveBtn').removeAttr('formnovalidate','');
             $('.error').remove();
         });
 
-        $('.js-example-basic-multiple').select2({
+        $('.um_idSelect').select2({
             placeholder: "Seleccione...",
             ajax: {
                 url: 'getALLUnidadMedidas',
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        q: $.trim(params.term)
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            required: true
+        });
+
+        $('.car_um_idSelect').select2({
+            placeholder: "Seleccione...",
+            ajax: {
+                url: 'getALLCaracteristicasUnidadMedidas',
                 dataType: 'json',
                 data: function (params) {
                     return {
@@ -244,7 +265,7 @@ $(document).ready(function(){
                 },
                 success: function (data) {
                     Swal.fire({
-                        title: 'Medidas',
+                        title: 'Unidades de Medida',
                         text: data,
                         icon: 'info',
                         confirmButtonText: 'Aceptar',
@@ -256,7 +277,33 @@ $(document).ready(function(){
                             popup: 'animated zoomOut'
                         }
                     })
+                }
+            });
+        });
+
+        $('tbody').on( 'click', '.showCarMed', function () {
+            var id =  this.id;
+            $.ajax({
+                url: "/getCarUnidadMedidas",
+                type: "get",
+                data: {
+                    Sub_id: id
                 },
+                success: function (data) {
+                    Swal.fire({
+                        title: 'Caracteristicas de Medidas',
+                        text: data,
+                        icon: 'info',
+                        confirmButtonText: 'Aceptar',
+                        timer: 10000,
+                        showClass: {
+                            popup: 'animated bounceIn'
+                        },
+                        hideClass: {
+                            popup: 'animated zoomOut'
+                        }
+                    })
+                }
             });
         });
 

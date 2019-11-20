@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CodMedida extends Model
 {
-    protected $fillable = ['cod','name','denominacion','interior','exterior',
-        'largo','lado_1','lado_2','coments','abreviatura','med_lineas_id','med_sublineas_id'
+    protected $fillable = ['cod','denominacion','largo','espesor','diametro','undmedida',
+        'base','altura','perforacion','coments','mm2','med_lineas_id','med_sublineas_id'
     ];
 
     public function Codlineas ()

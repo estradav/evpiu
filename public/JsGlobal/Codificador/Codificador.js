@@ -1,194 +1,211 @@
 $(document).ready(function(){
-    $(function () {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var table = $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "/CodigosIndex",
+        columns: [
+            {data: 'codigo', name: 'codigo'},
+            {data: 'desc', name: 'desc'},
+            {data: 'tp', name: 'tp'},
+            {data: 'lin', name: 'lin'},
+            {data: 'subl', name: 'subl'},
+            {data: 'med', name: 'med'},
+            {data: 'car', name: 'car'},
+            {data: 'mat', name: 'mat'},
+            {data: 'coment', name: 'coment'},
+            {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false},
+        ],
+        language: {
+            // traduccion de datatables
+            processing: "Procesando...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+            infoFiltered: "(filtrado de un total de _MAX_ registros)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontraron resultados",
+            emptyTable: "Ningún registro disponible en esta tabla :C",
+            paginate: {
+                first: "Primero",
+                previous: "Anterior",
+                next: "Siguiente",
+                last: "Ultimo"
+            },
+            aria: {
+                sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                sortDescending: ": Activar para ordenar la columna de manera descendente"
             }
-        });
+        }
+    });
 
-        var table = $('.data-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "/CodigosIndex",
-            columns: [
-                {data: 'codigo', name: 'codigo'},
-                {data: 'desc', name: 'desc'},
-                {data: 'tp', name: 'tp'},
-                {data: 'lin', name: 'lin'},
-                {data: 'subl', name: 'subl'},
-                {data: 'med', name: 'med'},
-                {data: 'car', name: 'car'},
-                {data: 'mat', name: 'mat'},
-                {data: 'coment', name: 'coment'},
-                {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false},
-            ],
-            language: {
-                // traduccion de datatables
-                processing: "Procesando...",
-                search: "Buscar&nbsp;:",
-                lengthMenu: "Mostrar _MENU_ registros",
-                info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                infoPostFix: "",
-                loadingRecords: "Cargando...",
-                zeroRecords: "No se encontraron resultados",
-                emptyTable: "Ningún registro disponible en esta tabla :C",
-                paginate: {
-                    first: "Primero",
-                    previous: "Anterior",
-                    next: "Siguiente",
-                    last: "Ultimo"
+    jQuery.extend(jQuery.validator.messages, {
+        required: "Este campo es obligatorio.",
+        remote: "Este Codigo ya existe...",
+        email: "Por favor, escribe una dirección de correo válida",
+        url: "Por favor, escribe una URL válida.",
+        date: "Por favor, escribe una fecha válida.",
+        dateISO: "Por favor, escribe una fecha (ISO) válida.",
+        number: "Por favor, escribe un número entero válido.",
+        digits: "Por favor, escribe sólo dígitos.",
+        creditcard: "Por favor, escribe un número de tarjeta válido.",
+        equalTo: "Por favor, escribe el mismo valor de nuevo.",
+        accept: "Por favor, escribe un valor con una extensión aceptada.",
+        maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+        minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+        rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+        range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+        max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+        min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
+        selectcheck: "Por favor seleccione una opcion!"
+    });
+    jQuery.validator.addMethod("selectcheck", function(value){
+        return (value != '');
+    }, "Por favor, seleciona una opcion.");
+    $("#CodigoForm").validate({
+        ignore: "",
+        rules: {
+            codigo:{
+                required: true,
+                remote: {
+                    url: '/GetUniqueCode',
+                    type: 'POST',
+                    async: true,
                 },
-                aria: {
-                    sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sortDescending: ": Activar para ordenar la columna de manera descendente"
+                minlength: 10,
+                maxlength: 10,
+            },
+            descripcion:{
+                required: true,
+                remote: {
+                    url: '/GetUniqueDescription',
+                    type: 'POST',
+                    async: true,
                 }
-            }
-        });
-        jQuery.extend(jQuery.validator.messages, {
-            required: "Este campo es obligatorio.",
-            remote: "Por favor, rellena este campo.",
-            email: "Por favor, escribe una dirección de correo válida",
-            url: "Por favor, escribe una URL válida.",
-            date: "Por favor, escribe una fecha válida.",
-            dateISO: "Por favor, escribe una fecha (ISO) válida.",
-            number: "Por favor, escribe un número entero válido.",
-            digits: "Por favor, escribe sólo dígitos.",
-            creditcard: "Por favor, escribe un número de tarjeta válido.",
-            equalTo: "Por favor, escribe el mismo valor de nuevo.",
-            accept: "Por favor, escribe un valor con una extensión aceptada.",
-            maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
-            minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
-            rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
-            range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
-            max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
-            min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
-            selectcheck: "Por favor seleccione una opcion!"
-        });
+            },
+            tipoproducto_id: { selectcheck: true },
+            lineas_id: { selectcheck: true },
+            sublineas_id: { selectcheck: true },
+            caracteristica_id: { selectcheck: true },
+            material_id: { selectcheck: true },
+            medida_id: { selectcheck: true },
 
-        $("#CodigoForm").validate({
-            ignore: "",
-            rules: {
-                codigo:{
-                    required: true,
-                    remote: {
-                        url: '/GetUniqueCode',
-                        type: 'POST',
-                        async: false,
-                    }
+        },
+        submitHandler: function (form) {
+            $('#saveBtn').html('Guardando...');
+            $.ajax({
+                data: $('#CodigoForm').serialize(),
+                url: "/CodigosPost",
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#CodigoForm').trigger("reset");
+                    $('#Codigomodal').modal('hide');
+                    table.draw();
+                    toastr.success("Registro Guardado con Exito!");
+                    $(this).html('Crear');
                 },
-                tipoproducto_id: { selectcheck: true },
-                lineas_id: { selectcheck: true },
-                sublineas_id: { selectcheck: true },
-                caracteristica_id: { selectcheck: true },
-                material_id: { selectcheck: true },
-                medida_id: { selectcheck: true },
-                coments:"required",
+                error: function (data) {
+                    console.log('Error:', data);
+                    $('#saveBtn').html('Guardar Cambios');
+                }
+            });
+            return false; // required to block normal submit since you used ajax
+        },
+        highlight: function (element) {
+            $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function (element) {
+            $(element).closest('.form-control').removeClass('is-invalid');
+        },
+    });
 
-            },
-            submitHandler: function (form) {
-                $('#saveBtn').html('Guardando...');
-                $.ajax({
-                    data: $('#CodigoForm').serialize(),
-                    url: "/CodigosPost",
-                    type: "POST",
-                    dataType: 'json',
-                    success: function (data) {
-                        $('#CodigoForm').trigger("reset");
-                        $('#Codigomodal').modal('hide');
-                        table.draw();
-                        toastr.success("Registro Guardado con Exito!");
-                        $(this).html('Crear');
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        $('#saveBtn').html('Guardar Cambios');
-                    }
-                });
-                return false; // required to block normal submit since you used ajax
-            },
+    $('#CrearCodigo').click(function () {
+        $('#saveBtn').val("create-codigo");
+        $('#Codigo_id').val('');
+        $('#CodigoForm').trigger("reset");
+        $('#modelHeading').html("Crear Nuevo Codigo");
+        $('#Codigomodal').modal('show');
+    });
 
-            highlight: function (element) {
-                // Only validation controls
-                $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
-                //$('#saveBtn').html('Reintentar');
-            },
-            unhighlight: function (element) {
-                // Only validation controls
-                $(element).closest('.form-control').removeClass('is-invalid');
-            },
-        });
-
-
-        jQuery.validator.addMethod("selectcheck", function(value){
-            return (value != '');
-        }, "Por favor, seleciona una opcion.");
-
-
-        $('#CrearCodigo').click(function () {
-            $('#saveBtn').val("create-codigo");
-            $('#Codigo_id').val('');
-            $('#CodigoForm').trigger("reset");
-            $('#modelHeading').html("Crear Nuevo Codigo");
+    $('body').on('click', '.editCodigo', function () {
+        var codigo_id = $(this).data('id');
+        $.get("/codificador" +'/' + codigo_id +'/edit', function (data) {
+            $('#modelHeading').html("Editar Codigo");
+            $('#saveBtn').val("edit-Medida");
             $('#Codigomodal').modal('show');
-        });
+            $('#medida_id').val(data.id);
+            $('#codigo').val(data.codigo);
+            $('#descripcion').val(data.descripcion);
+            $('#tipoproducto_id').val(data.tipoproducto_id);
+            $('#lineas_id').val(data.lineas_id);
+            $('#sublineas_id').val(data.sublineas_id);
+            $('#medida_id').val(data.medida_id);
+            $('#caracteristica_id').val(data.caracteristica_id);
+            $('#material_id').val(data.material_id);
+            $('#coments').val(data.coments);
+        })
+    });
 
-        $('body').on('click', '.editCodigo', function () {
-
-            var codigo_id = $(this).data('id');
-            $.get("/codificador" +'/' + codigo_id +'/edit', function (data) {
-                $('#modelHeading').html("Editar Codigo");
-                $('#saveBtn').val("edit-Medida");
-                $('#Codigomodal').modal('show');
-                $('#medida_id').val(data.id);
-                $('#codigo').val(data.codigo);
-                $('#descripcion').val(data.descripcion);
-                $('#tipoproducto_id').val(data.tipoproducto_id);
-                $('#lineas_id').val(data.lineas_id);
-                $('#sublineas_id').val(data.sublineas_id);
-                $('#medida_id').val(data.medida_id);
-                $('#caracteristica_id').val(data.caracteristica_id);
-                $('#material_id').val(data.material_id);
-                $('#coments').val(data.coments);
-            })
-        });
-
-
-        $('body').on('click', '.deleteCodigo', function () {
-            var codigo_id = $(this).data("id");
-            if(confirm("¿Esta seguro de Eliminar?")) {
+    $('body').on('click', '.deleteCodigo', function () {
+        var codigo_id = $(this).data("id");
+        Swal.fire({
+            title: '¿Esta seguro de Eliminar?',
+            text: "¡Esta accion no se puede revertir!",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.value) {
                 $.ajax({
                     type: "DELETE",
                     url: "/codificador" + '/' + codigo_id,
                     success: function (data) {
                         table.draw();
-                        toastr.error("!Registro eliminado con exito¡");
+                        Swal.fire({
+                            title: 'Eliminado!',
+                            text: "El registro ha sido eliminado.",
+                            icon: 'success',
+
+                        })
                     },
                     error: function (data) {
-                        console.log('Error:', data);
-                        toastr.error("Error al eliminar el registro");
+                        Swal.fire(
+                            'Error al eliminar!',
+                            'Hubo un error al eliminar. Verifique que este registro no tenga lineas relacionadas, si el problema persiste contacte con el area de sistemas',
+                            'error'
+                        )
                     }
                 });
+            }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                Swal.fire(
+                    'Cancelado',
+                    'El registro NO fue eliminado :)',
+                    'error'
+                )
             }
-        });
+        })
     });
+
 
     $('#tipoproducto_id').on('change', function () {
         var tipoproducto_id = $(this).val();
         if ($.trim(tipoproducto_id) != ''){
             $.get('getlineas',{tipoproducto_id: tipoproducto_id}, function(getlineas) {
                 $('#lineas_id').empty();
-                $('#sublineas_id').empty();
-                $('#caracteristica_id').empty();
-                $('#material_id').empty();
-                $('#medida_id').empty();
                 $('#lineas_id').append("<option value=''>Seleccione una Linea...</option>");
-                $('#sublineas_id').append("<option value=''>Seleccione una Sublinea...</option>");
-                $('#caracteristica_id').append("<option value=''>Seleccione una Caracteristica...</option>");
-                $('#material_id').append("<option value=''>Seleccione un Material...</option>");
-                $('#medida_id').append("<option value=''>Seleccione una Medida...</option>");
-
                 $.each(getlineas, function (index, value) {
                     $('#lineas_id').append("<option value='" + index + "'>"+ value +"</option>");
                 })
@@ -200,6 +217,7 @@ $(document).ready(function(){
                 })
             });
         }
+        ObtenerDatos();
     });
 
     $('#lineas_id').on('change', function () {
@@ -207,13 +225,7 @@ $(document).ready(function(){
         if ($.trim(lineas_id) != ''){
             $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
                 $('#sublineas_id').empty();
-                $('#caracteristica_id').empty();
-                $('#material_id').empty();
-                $('#medida_id').empty();
                 $('#sublineas_id').append("<option value=''>Seleccione una Sublinea...</option>");
-                $('#caracteristica_id').append("<option value=''>Seleccione una Caracteristica...</option>");
-                $('#material_id').append("<option value=''>Seleccione un Material...</option>");
-                $('#medida_id').append("<option value=''>Seleccione una Medida...</option>");
                 $.each(getsublineas, function (index, value) {
                     $('#sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
                 })
@@ -226,6 +238,7 @@ $(document).ready(function(){
                 })
             });
         }
+        ObtenerDatos();
     });
 
     $('#sublineas_id').on('change', function () {
@@ -261,25 +274,10 @@ $(document).ready(function(){
                 })
             });
         }
-        $.get('sln',{sublineas_id: med_sublineas_id}, function(sln) {
-            $('#sln-g').empty();
-            $.each(sln, function (index, value) {
-                document.getElementById("sln-g").value=index;
-                document.getElementById("sln-d").value=value;
-            })
-        });
+        ObtenerDatos();
+    });
 
-        var material_id = $(this).val();
-        if ($.trim(material_id) != '') {
-            $.get('mat', {material_id: material_id}, function (mat) {
-                $('#mat-g').empty();
-                $.each(mat, function (index, value) {
-                    document.getElementById("mat-g").value = index;
-                    document.getElementById("mat-d").value = value;
-                })
-            });
-        }
-
+    $('#caracteristica_id').on('change', function () {
         var caracteristica_id = $(this).val();
         if ($.trim(caracteristica_id) != '') {
             $.get('car', {caracteristica_id: caracteristica_id}, function (car) {
@@ -290,6 +288,33 @@ $(document).ready(function(){
                 })
             });
         }
+        ObtenerDatos();
+    });
+
+    $('#material_id').on('change', function () {
+        var material_id = $(this).val();
+        if ($.trim(material_id) != '') {
+            $.get('mat', {material_id: material_id}, function (mat) {
+                $('#mat-g').empty();
+                $.each(mat, function (index, value) {
+                    document.getElementById("mat-g").value = index;
+                    document.getElementById("mat-d").value = value;
+                })
+            });
+        }
+        ObtenerDatos();
+    });
+
+    $('#sublineas_id').on('change', function () {
+        var med_sublineas_id = $(this).val();
+        $.get('sln',{sublineas_id: med_sublineas_id}, function(sln) {
+            $('#sln-g').empty();
+            $.each(sln, function (index, value) {
+                document.getElementById("sln-g").value=index;
+                document.getElementById("sln-d").value=value;
+            })
+        });
+        ObtenerDatos();
     });
 
     $('#medida_id').on('change', function () {
@@ -302,7 +327,23 @@ $(document).ready(function(){
                 })
             });
         }
+        ObtenerDatos();
+    });
 
+    var datos;
+    function ObtenerDatos(){
+        jQuery.ajax({
+            url: "/test",
+            type: "get",
+            dataType: 'json',
+            success: function (data) {
+                datos = [data][0];
+                Description();
+            },
+        });
+    }
+
+    function Description(){
         tipoProducto=document.getElementById('ctp-g').value;
         Linea=document.getElementById('lin-g').value;
         Sublinea=document.getElementById('sln-g').value;
@@ -318,23 +359,10 @@ $(document).ready(function(){
 
         Dfinal=DLinea+' '+DSublinea+' '+Dcaracteristica+' '+Dmaterial+' '+Dmedida;
         document.getElementById('descripcion').value=Dfinal;
-    });
+        OriginalValue();
+    }
 
-    var datos;
-    $('#tipoproducto_id').on('change', function () {
-
-        jQuery.ajax({
-            url: "/test",
-            type: "get",
-            dataType: 'json',
-            success: function (data) {
-                datos = [data][0];
-                console.log(datos)
-            },
-        });
-    });
-
-    $('#medida_id').on('change', function () {
+    function OriginalValue(){
         var incremental     = 0;
         var charStringRange = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         var vectorc         = [];
@@ -375,7 +403,7 @@ $(document).ready(function(){
         }
         text = text.split('').reverse().join('');
         $('#codigo').val(final + text);
-    });
+    }
 
     $('#Codigomodal').on('show.bs.modal', function (event) {
         $('#saveBtn').html('Guardar');

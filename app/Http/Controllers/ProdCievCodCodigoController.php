@@ -29,7 +29,7 @@ class ProdCievCodCodigoController extends Controller
                 ->leftJoin('cod_caracteristicas','cod_codigos.cod_caracteristicas_id','=','cod_caracteristicas.id')
                 ->select('cod_codigos.codigo as codigo','cod_codigos.coments as coment','cod_codigos.descripcion as desc','cod_codigos.usuario','cod_codigos.usuario_aprobo',
                     'cod_codigos.arte','cod_codigos.estado','cod_codigos.area','cod_codigos.costo_base','cod_codigos.generico','cod_codigos.created_at',
-                    'cod_codigos.updated_at','cod_tipo_productos.name as tp','cod_lineas.name as lin','cod_sublineas.name as subl','cod_medidas.name as med','cod_materials.name as mat',
+                    'cod_codigos.updated_at','cod_tipo_productos.name as tp','cod_lineas.name as lin','cod_sublineas.name as subl','cod_medidas.denominacion as med','cod_materials.name as mat',
                     'cod_caracteristicas.name as car','cod_codigos.id as id')
                 ->get();
 
@@ -99,6 +99,7 @@ class ProdCievCodCodigoController extends Controller
     {
         if ($request->ajax()){
             $getcaracteristicas = CodCaracteristica::where('car_sublineas_id', $request->car_sublineas_id)->get();
+            $getCaracteristicaArray = [];
             foreach ($getcaracteristicas as $caracteristica){
                 $getCaracteristicaArray[$caracteristica->id] = $caracteristica->name;
             }
@@ -110,6 +111,7 @@ class ProdCievCodCodigoController extends Controller
     {
         if ($request->ajax()){
             $getmaterial= CodMaterial::where('mat_sublineas_id', $request->mat_sublineas_id)->get();
+            $getMaterialArray = [];
             foreach ($getmaterial as $material){
                 $getMaterialArray[$material->id] = $material->name;
             }
@@ -121,8 +123,9 @@ class ProdCievCodCodigoController extends Controller
     {
         if ($request->ajax()){
             $getmedida= CodMedida::where('med_sublineas_id', $request->med_sublineas_id)->get();
+            $getMedidaArray = [];
             foreach ($getmedida as $medida){
-                $getMedidaArray[$medida->id] = $medida->name;
+                $getMedidaArray[$medida->id] = $medida->denominacion;
             }
             return response()->json($getMedidaArray);
         }
@@ -165,6 +168,7 @@ class ProdCievCodCodigoController extends Controller
     {
         if ($request->ajax()){
             $var1 = CodMaterial::where('id', $request->material_id)->get();
+            $Array=[];
             foreach ($var1 as $v1){
                 $Array[$v1->cod] = $v1->abreviatura;
             }
@@ -176,6 +180,7 @@ class ProdCievCodCodigoController extends Controller
     {
         if ($request->ajax()){
             $var1 = CodCaracteristica::where('id', $request->caracteristica_id)->get();
+            $Array=[];
             foreach ($var1 as $v1){
                 $Array[$v1->cod] = $v1->abreviatura;
             }
@@ -187,6 +192,7 @@ class ProdCievCodCodigoController extends Controller
     {
         if ($request->ajax()){
             $var1 = CodMedida::where('id', $request->medida_id)->get();
+            $Array=[];
             foreach ($var1 as $v1){
                 $Array[$v1->id] = $v1->denominacion;
             }
@@ -200,22 +206,24 @@ class ProdCievCodCodigoController extends Controller
             $var = DB::table('cod_codigos')->select('codigo')->get();
             $Array =[];
             foreach ($var as $v) {
-                $Array [] =  $v->codigo;
+                $Array[] = $v->codigo;
             }
             return response()->json($Array);
         }
-
-
-        /*$var = DB::table('cod_codigos')->select('codigo')->get();
-        foreach ($var as $v){
-            $Array[] = $v->codigo;
-        }
-        return response()->json($Array);*/
     }
 
     public function UniqueCod(Request $request)
     {
-        $UniqueCod = DB::table('cod_codigos')->where('codigo','=',$request->cod)->count();
+        $UniqueCod = DB::table('cod_codigos')->where('codigo','=',$request->codigo)->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
+    }
+
+    public function UniqueDescription(Request $request)
+    {
+        $UniqueCod = DB::table('cod_codigos')->where('descripcion','=',$request->descripcion)->count();
         if($UniqueCod == 0)
         {echo "true";}
         else

@@ -17,8 +17,9 @@ class ProdCievCodMedidaController extends Controller
             $data = DB::table('cod_medidas')
                 ->leftJoin('cod_lineas','cod_medidas.med_lineas_id','=','cod_lineas.id')
                 ->leftJoin('cod_sublineas','cod_medidas.med_sublineas_id','=','cod_sublineas.id')
-                ->select('cod_medidas.cod as cod','cod_medidas.name as name','cod_medidas.denominacion as denm','cod_medidas.updated_at as upt',
-                    'cod_medidas.exterior as ext','cod_medidas.interior as int','cod_medidas.largo as larg','cod_medidas.lado_1 as ld1','cod_medidas.lado_2 as ld2',
+                ->select('cod_medidas.cod as cod','cod_medidas.denominacion as denm','cod_medidas.updated_at as upt',
+                    'cod_medidas.diametro as diametro','cod_medidas.largo as largo','cod_medidas.espesor as espesor',
+                    'cod_medidas.base as base','cod_medidas.mm2 as mm2','cod_medidas.perforacion as perforacion','cod_medidas.altura as altura',
                     'cod_medidas.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_medidas.id as id')->get();
             return DataTables::of($data)
                 ->addColumn('Opciones', function($row){
@@ -36,16 +37,17 @@ class ProdCievCodMedidaController extends Controller
     {
         CodMedida::updateOrCreate(['id' => $request->medida_id],
             [   'cod'               => $request->cod,
-                'name'              => $request->name,
                 'denominacion'      => $request->denominacion,
-                'interior'          => $request->interior,
-                'exterior'          => $request->exterior,
-                'largo'             => $request->largo,
-                'lado_1'            => $request->lado_1,
-                'lado_2'            => $request->lado_2,
+                'diametro'          => $request->Diametro,
+                'largo'             => $request->Largo,
+                'espesor'           => $request->Espesor,
+                'base'              => $request->Base,
+                'altura'            => $request->Altura,
+                'perforacion'       => $request->Perforacion,
                 'coments'           => $request->coments,
                 'med_lineas_id'     => $request->med_lineas_id,
                 'med_sublineas_id'  => $request->med_sublineas_id,
+                'mm2'               => $request->mm2
             ]);
 
         return response()->json(['success'=>'Medida Guardada Correctamente.']);
@@ -81,5 +83,18 @@ class ProdCievCodMedidaController extends Controller
         {echo "true";}
         else
         {echo "false";}
+    }
+
+    public function getCaractUnidadMedidas(Request $request)
+    {
+        if ($request->ajax()){
+            $sub = CodSublinea::find($request->sublineas_id);
+            $CarUnidadesMedidaArray = [];
+
+            foreach ($sub->CaracteristicasUnidadesMedida as $CarUnidadesMedida) {
+                $CarUnidadesMedidaArray[] = $CarUnidadesMedida->descripcion;
+            }
+            return response()->json($CarUnidadesMedidaArray);
+        }
     }
 }

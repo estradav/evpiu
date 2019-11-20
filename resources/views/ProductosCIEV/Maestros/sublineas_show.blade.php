@@ -36,7 +36,7 @@
                                     <th>Nombre Sublinea</th>
                                     <th>Comentarios</th>
                                     <th>Unidades de Medida</th>
-                                    <th>Ultima Actualizacion</th>
+                                    <th>Caracteristicas U.Medida</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -95,10 +95,18 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label for="name" class="col-sm-6 control-label">Unidad Medida:</label>
+                                <label for="um_id" class="col-sm-6 control-label">Unidad Medida:</label>
                                 <div class="col-sm-12">
-                                    <select class="js-example-basic-multiple form-control" name="um_id" id="um_id" multiple="multiple" style="width: 100%">
-
+                                    <select class="js-example-basic-multiple form-control um_idSelect" name="um_id" id="um_id" multiple="multiple" style="width: 100%">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="car_um_id" class="col-sm-12 control-label">Caracteristica Unidad Medida:</label>
+                                <div class="col-sm-12">
+                                    <select class="js-example-basic-multiple form-control car_um_idSelect" name="car_um_id" id="car_um_id" multiple="multiple" style="width: 100%">
                                     </select>
                                 </div>
                             </div>
