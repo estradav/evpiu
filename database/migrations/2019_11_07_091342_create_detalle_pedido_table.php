@@ -13,7 +13,7 @@ class CreateDetallePedidoTable extends Migration
      */
     public function up()
     {
-        Schema::create('detalle_pedido', function (Blueprint $table) {
+        Schema::create('detalle_pedidos', function (Blueprint $table) {
             $table->unsignedBigInteger('idPedido');
             $table->string('CodigoProducto');
             $table->string('Descripcion');
@@ -24,8 +24,10 @@ class CreateDetallePedidoTable extends Migration
             $table->string('Total');
             $table->string('Estado');
             $table->timestamps();
+        });
 
-            $table->foreign('idPedido')->references('id')->on('encabezado_pedido');
+        Schema::table('detalle_pedidos', function($table) {
+            $table->foreign('idPedido')->references('id')->on('encabezado_pedidos');
         });
     }
 

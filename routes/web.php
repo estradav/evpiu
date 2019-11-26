@@ -70,16 +70,12 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('ProdCievCodCaracteristica','ProdCievCodCaracteristicaController');
     Route::get('/getsublineas','ProdCievCodCaracteristicaController@getSublineas');
 
-
-
     Route::resource('ProdCievCodMaterial','ProdCievCodMaterialController');
     Route::get('/getsublineas','ProdCievCodMaterialController@getSublineas');
 
     Route::resource('ProdCievCodMedida','ProdCievCodMedidaController');
     Route::get('/getsublineas','ProdCievCodMedidaController@getSublineas');
     Route::get('/getCaractUnidadMedidas','ProdCievCodMedidaController@getCaractUnidadMedidas');
-
-
 
     Route::resource('codificador','ProdCievCodCodigoController');
     Route::get('/getlineas','ProdCievCodCodigoController@getlineas');
@@ -88,7 +84,6 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/getmaterial','ProdCievCodCodigoController@getmaterial');
     Route::get('/getmedida','ProdCievCodCodigoController@getmedida');
 
-
     Route::get('/ctp','ProdCievCodCodigoController@ctp');
     Route::get('/lns','ProdCievCodCodigoController@lns');
     Route::get('/sln','ProdCievCodCodigoController@sln');
@@ -96,14 +91,11 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/car','ProdCievCodCodigoController@car');
     Route::get('/med','ProdCievCodCodigoController@med');
 
-
     Route::get('/get-user-chart-data','ChartDataController@getMonthlyUserData');
     Route::get('/get-invoice-chart-data','ChartDataController@getMonthlyInvoiceData');
     Route::get('/get-invoice-chart-data-value','ChartDataController@getMonthlyInvoiceDataValue');
     Route::get('/get-invoice-age-data-value','ChartDataController@getAgeInvoiceData');
     Route::get('/get-invoice-day-data-value','ChartDataController@getDayInvoiceData');
-
-
 
     Route::post('/TiposProductoPost','ProdCodTipoProductoController@store');
     Route::get('/TiposProductoIndex','ProdCodTipoProductoController@index');
@@ -117,7 +109,6 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/getUnidadMedidas','ProdCodSublineasController@getUnidadMedidas');
     Route::get('/getCarUnidadMedidas','ProdCodSublineasController@getCarUnidadMedidas');
 
-
     Route::post('/CaracteristicasPost','ProdCievCodCaracteristicaController@store');
     Route::get('/CaracteristicasIndex','ProdCievCodCaracteristicaController@index');
 
@@ -130,14 +121,12 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/CodigosPost','ProdCievCodCodigoController@store');
     Route::get('/CodigosIndex','ProdCievCodCodigoController@index');
 
-
     Route::resource('clonador','CreateProductController');
     Route::get('/ProductosIndex','CreateProductController@index');
     Route::get('/SearchProducts', 'CreateProductController@SearchProducts');
     Route::get('/SearchCodes', 'CreateProductController@SearchCodes');
     Route::post('/SaveProducts','CreateProductController@SaveProducts');
     Route::get('/FacturasIndex','FeFacturasController@index');
-
 
     Route::get('/test', 'ProdCievCodCodigoController@GetCodigos');
 
@@ -147,7 +136,6 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/PronosticosCantCompr','PronosticoController@CantCompro');
     Route::get('/PronosticosDetailsLots','PronosticoController@DetailsLots');
     Route::get('/PronosticosPronostics','PronosticoController@Pronostics');
-
 
     Route::resource('pedidos','PedidoController');
     Route::get('/PedidosIndex','PedidoController@index');
@@ -166,14 +154,32 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/GetUniqueCode','ProdCievCodCodigoController@UniqueCod');
     Route::post('/GetUniqueDescription','ProdCievCodCodigoController@UniqueDescription');
 
-
     Route::get('/getALLUnidadMedidas','ProdCodSublineasController@getALLUnidadMedidas');
     Route::get('/getALLCaracteristicasUnidadMedidas','ProdCodSublineasController@getALLCaracteristicasUnidadMedidas');
 
+    Route::post('/PedidoPromoverCartera','PedidoController@PedidoPromoverCartera');
+    Route::get('/Estadopedido','PedidoController@Estadopedido');
+    Route::post('/PedidoReabrir','PedidoController@PedidoReabrir');
+    Route::post('/PedidoAnular','PedidoController@PedidoAnular');
+    Route::get('/ImprimirPedidoPdf','PedidoController@imprimir');
+    Route::get('/getStep','PedidoController@getStep');
 
 
+    Route::resource('PedidoCartera','PedidoCarteraController');
+    Route::get('/PedidosCarteraIndex','PedidoCarteraController@index');
+    Route::post('/PedidosCarteraUpdate','PedidoCarteraController@PedidosCarteraUpdate');
 
+    Route::resource('PedidoCostos','PedidoCostosController');
+    Route::get('/PedidoCostosIndex','PedidoCostosController@index');
+    Route::post('/PedidoCostosUpdate','PedidoCostosController@PedidoCostosUpdate');
 
+    Route::resource('PedidoProduccion','PedidoProduccionController');
+    Route::get('/PedidoProduccionIndex','PedidoProduccionController@index');
+    Route::post('/PedidoProduccionUpdate','PedidoProduccionController@PedidoProduccionUpdate');
+
+    Route::resource('PedidoBodega','PedidoBodegaController');
+    Route::get('/PedidoBodegaIndex','PedidoBodegaController@index');
+    Route::post('/PedidoBodegaUpdate','PedidoBodegaController@PedidoBodegaUpdate');
 
 
 

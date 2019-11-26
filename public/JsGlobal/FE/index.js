@@ -70,6 +70,12 @@ $(document).ready(function () {
             processing: true,
             serverSide: true,
             responsive: true,
+            autoWidth: true,
+            scrollY: false,
+            scrollX: false,
+            scrollCollapse: true,
+            paging: true,
+            fixedColumns: true,
             ajax: {
                 url:'/FacturasIndex',
                 data:{from_date:from_date, to_date:to_date}
