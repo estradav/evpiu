@@ -191,7 +191,7 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
 
                $objetoXML->startElement("idreporte");
-               $objetoXML->text('904'); // sumistrado por fenalco para version grafica
+               $objetoXML->text('2032'); // sumistrado por fenalco para version grafica
                $objetoXML->endElement();
 
                $objetoXML->startElement("idestadoenviocliente");
@@ -214,7 +214,7 @@ class FeFacturasController extends Controller
                $objetoXML->text($tipo_fac_en);
                $objetoXML->endElement();
 
-               $objetoXML->startElement("tipooperacion"); // si se omite sera una  factura de venta generica
+               $objetoXML->startElement("idtipooperacion"); // si se omite sera una  factura de venta generica
                $objetoXML->text($tipo_operacion);
                $objetoXML->endElement();
 

@@ -17,12 +17,14 @@ class CreateDetallePedidoTable extends Migration
             $table->unsignedBigInteger('idPedido');
             $table->string('CodigoProducto');
             $table->string('Descripcion');
-            $table->string('Notas');
+            $table->string('Arte')->nullable();
+            $table->string('Notas')->nullable();
             $table->string('Unidad');
             $table->string('Cantidad');
             $table->string('Precio');
             $table->string('Total');
-            $table->string('Estado');
+            $table->string('Destino');
+            $table->string('Estado')->nullable();
             $table->timestamps();
         });
 

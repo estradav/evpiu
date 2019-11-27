@@ -8,6 +8,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Null_;
 use Yajra\DataTables\DataTables;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -113,67 +114,249 @@ class PedidoController extends Controller
 
     public function SavePedido(Request $request)
     {
-        $date = date('Y-m-d H:i:s');
+         $destino = $request->Items;
+         $produccion = [];
+         $bodega = [];
+         $date = date('Y-m-d H:i:s');
+         foreach($destino as $dest){
+             if ($dest['destino'] == 1){
+                 $produccion[] = $dest;
+             }
+             else{
+                 $bodega[] = $dest;
+             }
+         }
 
-         DB::beginTransaction();
-        try {
-            $invoice = DB::table('encabezado_pedidos')->insertGetId([
-                'OrdenCompra'       => $request->encabezado[0]['OrdComp'],
-                'CodCliente'        => $request->encabezado[0]['CodCliente'],
-                'NombreCliente'     => $request->encabezado[0]['NombreCliente'],
-                'DireccionCliente'  => $request->encabezado[0]['address'],
-                'Ciudad'            => $request->encabezado[0]['city'],
-                'Telefono'          => $request->encabezado[0]['phone'],
-                'CodVendedor'       => $request->encabezado[0]['CodVendedor'],
-                'NombreVendedor'    => $request->encabezado[0]['NombreVendedor'],
-                'CondicionPago'     => $request->encabezado[0]['CondicionPago'],
-                'Descuento'         => $request->encabezado[0]['descuento'],
-                'Iva'               => $request->encabezado[0]['SelectIva'],
-                'Estado'            => '1',
-                'Bruto'             => $request->encabezado[0]['TotalItemsBruto'],
-                'TotalDescuento'    => $request->encabezado[0]['TotalItemsDiscount'],
-                'TotalSubtotal'     => $request->encabezado[0]['TotalItemsSubtotal'],
-                'TotalIVA'          => $request->encabezado[0]['TotalItemsIva'],
-                'TotalPedido'       => $request->encabezado[0]['TotalItemsPrice'],
-                'Notas'             => $request->encabezado[0]['GeneralNotes'],
-                'created_at'        => $date,
-            ]);
+         if($produccion == null && $bodega != null){
+             DB::beginTransaction();
+             try{
+                 $invoice = DB::table('encabezado_pedidos')->insertGetId([
+                     'OrdenCompra'       => $request->encabezado[0]['OrdComp'],
+                     'CodCliente'        => $request->encabezado[0]['CodCliente'],
+                     'NombreCliente'     => $request->encabezado[0]['NombreCliente'],
+                     'DireccionCliente'  => $request->encabezado[0]['address'],
+                     'Ciudad'            => $request->encabezado[0]['city'],
+                     'Telefono'          => $request->encabezado[0]['phone'],
+                     'CodVendedor'       => $request->encabezado[0]['CodVendedor'],
+                     'NombreVendedor'    => $request->encabezado[0]['NombreVendedor'],
+                     'CondicionPago'     => $request->encabezado[0]['CondicionPago'],
+                     'Descuento'         => $request->encabezado[0]['descuento'],
+                     'Iva'               => $request->encabezado[0]['SelectIva'],
+                     'Estado'            => '1',
+                     'Bruto'             => $request->encabezado[0]['TotalItemsBruto'],
+                     'TotalDescuento'    => $request->encabezado[0]['TotalItemsDiscount'],
+                     'TotalSubtotal'     => $request->encabezado[0]['TotalItemsSubtotal'],
+                     'TotalIVA'          => $request->encabezado[0]['TotalItemsIva'],
+                     'TotalPedido'       => $request->encabezado[0]['TotalItemsPrice'],
+                     'Notas'             => $request->encabezado[0]['GeneralNotes'],
+                     'Destino'           => '2',
+                     'created_at'        => $date,
+                 ]);
+
+                 foreach ($bodega as $d){
+                     DB::table('detalle_pedidos')->insert([
+                         'idPedido'         => $invoice,
+                         'CodigoProducto'   => $d['codproducto'],
+                         'Descripcion'      => $d['producto'],
+                         'Arte'             => $d['arte'],
+                         'Notas'            => $d['notas'],
+                         'Unidad'           => $d['unidad'],
+                         'Cantidad'         => $d['cantidad'],
+                         'Precio'           => $d['precio'],
+                         'Total'            => $d['total'],
+                         'Destino'          => $d['destino'],
+                         'created_at'       => $date,
+                     ]);
+                 }
+
+                 DB::table('pedidos_detalles_area')->insert([
+                     'idPedido'  =>  $invoice,
+                 ]);
 
 
-            $data = $request->Items;
-            foreach ($data as $d){
-                DB::table('detalle_pedidos')->insert([
-                    'idPedido'         => $invoice,
-                    'CodigoProducto'   => $d['codproducto'],
-                    'Descripcion'      => $d['producto'],
-                    'Notas'            => $d['notas'],
-                    'Unidad'           => $d['unidad'],
-                    'Cantidad'         => $d['cantidad'],
-                    'Precio'           => $d['precio'],
-                    'Total'            => $d['total'],
-                    'created_at'       => $date,
+                 DB::commit();
+                 return response()->json(['Success' => 'Todo Ok']);
+
+             }catch (\Exception $e){
+                 DB::rollback();
+                 echo json_encode(array(
+                     'error' => array(
+                         'msg' => $e->getMessage(),
+                         'code' => $e->getCode(),
+                         'code2' =>$e->getLine(),
+                     ),
+                 ));
+             }
+         }
+
+         if($produccion != null && $bodega == null){
+            DB::beginTransaction();
+            try {
+                $invoice = DB::table('encabezado_pedidos')->insertGetId([
+                    'OrdenCompra'       => $request->encabezado[0]['OrdComp'],
+                    'CodCliente'        => $request->encabezado[0]['CodCliente'],
+                    'NombreCliente'     => $request->encabezado[0]['NombreCliente'],
+                    'DireccionCliente'  => $request->encabezado[0]['address'],
+                    'Ciudad'            => $request->encabezado[0]['city'],
+                    'Telefono'          => $request->encabezado[0]['phone'],
+                    'CodVendedor'       => $request->encabezado[0]['CodVendedor'],
+                    'NombreVendedor'    => $request->encabezado[0]['NombreVendedor'],
+                    'CondicionPago'     => $request->encabezado[0]['CondicionPago'],
+                    'Descuento'         => $request->encabezado[0]['descuento'],
+                    'Iva'               => $request->encabezado[0]['SelectIva'],
+                    'Estado'            => '1',
+                    'Bruto'             => $request->encabezado[0]['TotalItemsBruto'],
+                    'TotalDescuento'    => $request->encabezado[0]['TotalItemsDiscount'],
+                    'TotalSubtotal'     => $request->encabezado[0]['TotalItemsSubtotal'],
+                    'TotalIVA'          => $request->encabezado[0]['TotalItemsIva'],
+                    'TotalPedido'       => $request->encabezado[0]['TotalItemsPrice'],
+                    'Notas'             => $request->encabezado[0]['GeneralNotes'],
+                    'Destino'           => '1',
+                    'created_at'        => $date,
                 ]);
+
+                foreach ($produccion as $d){
+                    DB::table('detalle_pedidos')->insert([
+                        'idPedido'         => $invoice,
+                        'CodigoProducto'   => $d['codproducto'],
+                        'Descripcion'      => $d['producto'],
+                        'Arte'             => $d['arte'],
+                        'Notas'            => $d['notas'],
+                        'Unidad'           => $d['unidad'],
+                        'Cantidad'         => $d['cantidad'],
+                        'Precio'           => $d['precio'],
+                        'Total'            => $d['total'],
+                        'Destino'          => $d['destino'],
+                        'created_at'       => $date,
+                    ]);
+                }
+
+                DB::table('pedidos_detalles_area')->insert([
+                    'idPedido'  =>  $invoice,
+                ]);
+
+
+                DB::commit();
+                return response()->json(['Success' => 'Todo Ok']);
+
+
+
+            } catch (\Exception $e){
+                DB::rollback();
+                echo json_encode(array(
+                    'error' => array(
+                        'msg' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                        'code2' =>$e->getLine(),
+                    ),
+                ));
             }
+         }
 
-            DB::table('pedidos_detalles_area')->insert([
-                'idPedido'  =>  $invoice,
-            ]);
+         if ($produccion != null && $bodega != null){
+             DB::beginTransaction();
+             try{
+                 $invoice = DB::table('encabezado_pedidos')->insertGetId([
+                     'OrdenCompra'       => $request->encabezado[0]['OrdComp'],
+                     'CodCliente'        => $request->encabezado[0]['CodCliente'],
+                     'NombreCliente'     => $request->encabezado[0]['NombreCliente'],
+                     'DireccionCliente'  => $request->encabezado[0]['address'],
+                     'Ciudad'            => $request->encabezado[0]['city'],
+                     'Telefono'          => $request->encabezado[0]['phone'],
+                     'CodVendedor'       => $request->encabezado[0]['CodVendedor'],
+                     'NombreVendedor'    => $request->encabezado[0]['NombreVendedor'],
+                     'CondicionPago'     => $request->encabezado[0]['CondicionPago'],
+                     'Descuento'         => $request->encabezado[0]['descuento'],
+                     'Iva'               => $request->encabezado[0]['SelectIva'],
+                     'Estado'            => '1',
+                     'Bruto'             => $request->encabezado[0]['TotalItemsBruto'],
+                     'TotalDescuento'    => $request->encabezado[0]['TotalItemsDiscount'],
+                     'TotalSubtotal'     => $request->encabezado[0]['TotalItemsSubtotal'],
+                     'TotalIVA'          => $request->encabezado[0]['TotalItemsIva'],
+                     'TotalPedido'       => $request->encabezado[0]['TotalItemsPrice'],
+                     'Notas'             => $request->encabezado[0]['GeneralNotes'],
+                     'Destino'           => '2',
+                     'created_at'        => $date,
+                 ]);
+
+                 foreach ($bodega as $d){
+                     DB::table('detalle_pedidos')->insert([
+                         'idPedido'         => $invoice,
+                         'CodigoProducto'   => $d['codproducto'],
+                         'Descripcion'      => $d['producto'],
+                         'Arte'             => $d['arte'],
+                         'Notas'            => $d['notas'],
+                         'Unidad'           => $d['unidad'],
+                         'Cantidad'         => $d['cantidad'],
+                         'Precio'           => $d['precio'],
+                         'Total'            => $d['total'],
+                         'Destino'          => $d['destino'],
+                         'created_at'       => $date,
+                     ]);
+                 }
+
+                 DB::table('pedidos_detalles_area')->insert([
+                     'idPedido'  =>  $invoice,
+                 ]);
 
 
-            DB::commit();
-            return response()->json(['Success' => 'Todo Ok']);
-        }
+                 $invoice = DB::table('encabezado_pedidos')->insertGetId([
+                     'OrdenCompra'       => $request->encabezado[0]['OrdComp'],
+                     'CodCliente'        => $request->encabezado[0]['CodCliente'],
+                     'NombreCliente'     => $request->encabezado[0]['NombreCliente'],
+                     'DireccionCliente'  => $request->encabezado[0]['address'],
+                     'Ciudad'            => $request->encabezado[0]['city'],
+                     'Telefono'          => $request->encabezado[0]['phone'],
+                     'CodVendedor'       => $request->encabezado[0]['CodVendedor'],
+                     'NombreVendedor'    => $request->encabezado[0]['NombreVendedor'],
+                     'CondicionPago'     => $request->encabezado[0]['CondicionPago'],
+                     'Descuento'         => $request->encabezado[0]['descuento'],
+                     'Iva'               => $request->encabezado[0]['SelectIva'],
+                     'Estado'            => '1',
+                     'Bruto'             => $request->encabezado[0]['TotalItemsBruto'],
+                     'TotalDescuento'    => $request->encabezado[0]['TotalItemsDiscount'],
+                     'TotalSubtotal'     => $request->encabezado[0]['TotalItemsSubtotal'],
+                     'TotalIVA'          => $request->encabezado[0]['TotalItemsIva'],
+                     'TotalPedido'       => $request->encabezado[0]['TotalItemsPrice'],
+                     'Notas'             => $request->encabezado[0]['GeneralNotes'],
+                     'Destino'           => '1',
+                     'created_at'        => $date,
+                 ]);
 
-        catch (\Exception $e){
-            DB::rollback();
-            echo json_encode(array(
-                'error' => array(
-                    'msg' => $e->getMessage(),
-                    'code' => $e->getCode(),
-                    'code2' =>$e->getLine(),
-                ),
-            ));
-        }
+                 foreach ($produccion as $d){
+                     DB::table('detalle_pedidos')->insert([
+                         'idPedido'         => $invoice,
+                         'CodigoProducto'   => $d['codproducto'],
+                         'Descripcion'      => $d['producto'],
+                         'Arte'             => $d['arte'],
+                         'Notas'            => $d['notas'],
+                         'Unidad'           => $d['unidad'],
+                         'Cantidad'         => $d['cantidad'],
+                         'Precio'           => $d['precio'],
+                         'Total'            => $d['total'],
+                         'Destino'          => $d['destino'],
+                         'created_at'       => $date,
+                     ]);
+                 }
+
+                 DB::table('pedidos_detalles_area')->insert([
+                     'idPedido'  =>  $invoice,
+                 ]);
+
+                 DB::commit();
+                 return response()->json(['Success' => 'Todo Ok']);
+
+             }catch (\Exception $e){
+                 DB::rollback();
+                 echo json_encode(array(
+                     'error' => array(
+                         'msg' => $e->getMessage(),
+                         'code' => $e->getCode(),
+                         'code2' =>$e->getLine(),
+                     ),
+                 ));
+             }
+         }
     }
 
     public function PedidoPromoverCartera(Request $request)
@@ -244,5 +427,23 @@ class PedidoController extends Controller
         }else{
             return response()->json(['Error' => 'Error']);
         }
+    }
+
+    public function SearchArts(Request $request)
+    {
+        $query = $request->get('query');
+        $results = array();
+
+        $queries = DB::connection('EVPIUM')->table('V_Artes')
+            ->where('CodigoArte', 'LIKE', '%'.$query.'%')
+            ->take(10)
+            ->get();
+
+        foreach ($queries as $q) {
+            $results[] = [
+                'value' =>  trim($q->CodigoArte)
+            ];
+        }
+        return response()->json($results);
     }
 }

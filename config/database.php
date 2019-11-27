@@ -32,7 +32,6 @@ return [
     */
 
     'connections' => [
-
         'evpiu' => [
             'driver' => 'mysql',
             'host' => env('EV_HOST'),
@@ -49,7 +48,6 @@ return [
             'engine' => 'InnoDB',
         ],
 
-
         'DMS' => [
             'driver' => 'sqlsrv',
             'host' => env('DMS_HOST'),
@@ -62,8 +60,6 @@ return [
             'prefix_indexes' => true,
             'engine' => 'InnoDB',
         ],
-
-
 
         'MAX' => [
             'driver' => 'sqlsrv',
@@ -78,6 +74,18 @@ return [
             'engine' => 'InnoDB',
         ],
 
+        'EVPIUM' => [
+            'driver' => 'sqlsrv',
+            'host' => env('EVPIUM_HOST'),
+            'port' => env('EVPIUM_PORT'),
+            'database' => env('EVPIUM_DATABASE'),
+            'username' => env('EVPIUM_USERNAME'),
+            'password' => env('EVPIUM_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'engine' => 'InnoDB',
+        ],
 
         'MAXP' => [
             'driver' => 'sqlsrv',
@@ -91,7 +99,6 @@ return [
             'prefix_indexes' => true,
             'engine' => 'InnoDB',
         ],
-
 
         'FE'  => [
             'driver' => 'sqlsrv',

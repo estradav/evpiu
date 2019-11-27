@@ -143,6 +143,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/SearchClients','PedidoController@SearchClients');
     Route::get('/PedidosGetCondicion','PedidoController@GetCondicion');
     Route::get('/PedidosSearchProductsMax','PedidoController@SearchProductsMax');
+    Route::get('/SearchArts','PedidoController@SearchArts');
     Route::post('/SavePedido','PedidoController@SavePedido');
 
     Route::post('/GetUniqueCod','ProdCodTipoProductoController@UniqueCod');

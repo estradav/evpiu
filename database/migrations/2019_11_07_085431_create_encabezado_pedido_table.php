@@ -33,6 +33,7 @@ class CreateEncabezadoPedidoTable extends Migration
             $table->string('TotalIVA');
             $table->string('TotalPedido');
             $table->string('Notas');
+            $table->string('Destino');
             $table->timestamps();
         });
     }

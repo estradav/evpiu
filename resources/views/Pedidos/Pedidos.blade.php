@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="modal fade bd-example-modal-xl" id="NewPedido" tabindex="-1" role="dialog" aria-labelledby="NewPedido" aria-hidden="true">
+        <div class="modal fade bd-example-modal-xl" id="NewPedido" tabindex="-1" role="dialog" aria-labelledby="NewPedido" aria-hidden="true" style="overflow-y: scroll;">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -136,13 +136,14 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="width: 30%">Producto</th>
+                                    <th style="width: 25%">Producto</th>
                                     <th style="width: 10%">Stock</th>
-                                    <th style="width: 15%">Notas</th>
+                                    <th style="width: 12%">Arte</th>
+                                    <th style="width: 10%">Notas</th>
                                     <th style="width: 10%">Unidad</th>
-                                    <th style="width: 10%">Precio</th>
+                                    <th style="width: 8%">Precio</th>
                                     <th style="width: 10%">Cantidad</th>
-                                    <th style="width: 15%">Total</th>
+                                    <th style="width: 17%">Total</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -150,9 +151,11 @@
                                     <tr>
                                         <input type="hidden" value="" id="CodigoProductoMax" name="CodigoProductoMax">
                                         <input type="hidden" value="" id="DescripcionProductoMax" name="DescripcionProductoMax">
-                                        <td style="width: 30%"><input type="text" id="ProductoMax" name="ProductoMax" class="form-control"></td>
+
+                                        <td style="width: 25% !important; "><input type="text" id="ProductoMax" name="ProductoMax" class="form-control"></td>
                                         <td style="width: 10%"><input type="number" id="StockItem" name="StockItem" class="form-control" readonly="readonly"></td>
-                                        <td style="width: 15%"><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
+                                        <td style="width: 12%"><input type="text" id="AddArt" name="AddArt" class="form-control"></td>
+                                        <td style="width: 10%"><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
                                         <td style="width: 10%">
                                             <select name="AddUnidad" id="AddUnidad" class="form-control">
                                                 <option value="Unidad" selected >Unidad</option>
@@ -160,10 +163,10 @@
                                                 <option value="Millar">Millar</option>
                                             </select>
                                         </td>
-                                        <td style="width: 10%"><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
+                                        <td style="width: 8%"><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
                                         <td style="width: 10%"><input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="1"></td>
-                                        <td style="width: 15%"><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
-                                        <td><button type="button" class="btn btn-success" id="AddItem" disabled><i class="fa fa-plus"></i></button></td>
+                                        <td style="width: 17%"><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
+                                        <td><button type="button" class="btn btn-success btn-sm" id="AddItem" disabled><i class="fa fa-plus"></i></button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -177,12 +180,14 @@
                                                 <tr>
                                                     <th>Codigo</th>
                                                     <th>Descripcion</th>
+                                                    <th>Arte</th>
                                                     <th>Notas</th>
                                                     <th>Unidad</th>
                                                     <th>Precio</th>
                                                     <th>Cantidad</th>
-                                                    <th>Total por Item</th>
+                                                    <th>Total</th>
                                                     <th></th>
+                                                    <th style="display: none !important;"></th>
                                                 </tr>
                                             </thead>
                                             <tbody id="ProductosAdd">
@@ -228,7 +233,7 @@
             </div>
         </div>
 
-        <div class="modal fade bd-example-modal-xl" id="PdfView" tabindex="-1" role="dialog" aria-labelledby="PdfView" aria-hidden="true">
+        <div class="modal fade bd-example-modal-xl" id="PdfView" tabindex="-1" role="dialog" aria-labelledby="PdfView" aria-hidden="true" style="overflow-y: scroll;">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -295,6 +300,7 @@
                                             <tr>
                                                 <th style="text-align: center">Codigo</th>
                                                 <th style="text-align: center">Descripcion</th>
+                                                <th style="text-align: center">Arte</th>
                                                 <th style="text-align: center">Notas</th>
                                                 <th style="text-align: center">Unidad</th>
                                                 <th style="text-align: center">Cantidad</th>
@@ -344,6 +350,25 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary ImprimirPdf" id="ImprimirPdf">Imprimir</button>
                         <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bd-example-modal-lg" id="ViewArtModal" tabindex="-1" role="dialog" aria-labelledby="ViewArtModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ViewArtTitle"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="">
+                        <div id="ViewArtPdf" style="height:750px;" ></div>
+                    </div>
+                    <div class="modal-footer" style="text-align: center !important;">
+                        <button class="btn btn-primary" data-dismiss="modal" id="CloseViewArt">Aceptar</button>
                     </div>
                 </div>
             </div>
@@ -419,7 +444,7 @@
                 });
 
                 function LoadTable(CodVenUsuario = CodVenUsuario1, Estado = '') {
-                     table = $('.dataTableP').DataTable({
+                    table = $('.dataTableP').DataTable({
                         processing: true,
                         serverSide: false,
                         searching: true,
@@ -441,7 +466,6 @@
                             {data: 'Estado', name: 'Estado', orderable: false, searchable: false},
                             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
                             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
-
                         ],
                         language: {
                             // traduccion de datatables
@@ -628,6 +652,27 @@
                     minlength: 2
                 });
 
+                $("#AddArt").autocomplete({
+                    appendTo: "#NewPedido",
+                    source: function (request, response) {
+                        var Product = $("#AddArt").val();
+                        $.ajax({
+                            url: "/SearchArts",
+                            method: "get",
+                            data: {
+                                query: Product,
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                var resp = $.map(data, function (obj) {
+                                    return obj
+                                });
+                                response(resp);
+                            }
+                        })
+                    },
+                });
+
                 function Calcular(){
                     var Cantidad = $('#AddQuantity').val();
                     var Precio = $('#AddPrice').val();
@@ -656,7 +701,9 @@
                     $('#AddPrice').val(0);
                     $('#AddQuantity').val(1);
                     $('#TotalItem').val('');
-                    $('#StockItem').val('')
+                    $('#StockItem').val('');
+                    $('#AddArt').val('');
+                    $('#TotalItem').val(0)
                 }
 
                 function SumarItems(){
@@ -706,21 +753,32 @@
                 $('#AddItem').click(function(){
                 	var producto    = $('#DescripcionProductoMax').val();
                 	var codigo      = $('#CodigoProductoMax').val();
+                	var arte        = $('#AddArt').val();
                 	var notas       = $('#AddNotes').val();
                 	var unidad      = $('#AddUnidad').val();
                 	var precio      = $('#AddPrice').val();
                 	var cantidad    = $('#AddQuantity').val();
                 	var total       = $('#TotalItem').val();
+                	var stock       = $('#StockItem').val();
+                	var destino     = 0;
+                	 if(stock != 0,0 || stock != 0.0 || stock != 0){
+                	 	destino =  2
+                     }else{
+                        destino = 1
+                     }
 
                 	$('#ProductosAdd').append('<tr>' +
                       '<td class="ipcodproducto">'+ codigo +'</td>' +
                       '<td class="iproducto">'+ producto +'</td>' +
+                      '<td class="iarte">'+ '<a href="javascript:void(0);" id="'+arte+'" class="ViewArt">' + arte +'</a>' + '</td>' +
                       '<td class="inotas">'+ notas  +'</td>' +
                       '<td class="iunidad">'+ unidad +'</td>' +
                       '<td class="iprecio">'+ precio +'</td>' +
                       '<td class="rowDataSd icantidad">'+ cantidad +'</td>' +
                       '<td class="rowDataSd itotal">'+ total +'</td>' +
-                      '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td></tr> ');
+                      '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td>' +
+                      '<td class="rowDataSd idestino" style="display: none !important;">'+ destino +'</td>' +
+                      '</tr> ');
                     LimpiarCampos();
                     SumarItems();
                     CalcularDescuento();
@@ -828,16 +886,17 @@
                         };
                         encabezado.push(Inputs);
 
-
                         document.querySelectorAll('.ItemsTable tbody tr').forEach(function(e){
                             let fila = {
                                 codproducto: e.querySelector('.ipcodproducto').innerText,
                                 producto: e.querySelector('.iproducto').innerText,
+                                arte: e.querySelector('.iarte').innerText,
                                 notas: e.querySelector('.inotas').innerText,
                                 unidad: e.querySelector('.iunidad').innerText,
                                 precio: e.querySelector('.iprecio').innerText,
                                 cantidad: e.querySelector('.icantidad').innerText,
-                                total: e.querySelector('.itotal').innerText
+                                total: e.querySelector('.itotal').innerText,
+                                destino: e.querySelector('.idestino').innerText
                             };
                             Items.push(fila);
                             console.log(Items);
@@ -1267,6 +1326,7 @@
                                     $('#ItemsInvoice').append('<tr>' +
                                         '<td style="text-align: center">'+ data[1][i].CodigoProducto +'</td>' +
                                         '<td style="text-align: center">'+ data[1][i].Descripcion +'</td>' +
+                                        '<td style="text-align: center">'+ '<a href="javascript:void(0);" class="ViewArt" id="'+ data[1][i].Arte +'">'+ data[1][i].Arte +'</a>' + '</td>' +
                                         '<td style="text-align: center">'+ data[1][i].Notas +'</td>' +
                                         '<td style="text-align: center">'+ data[1][i].Unidad +'</td>' +
                                         '<td style="text-align: right">'+ data[1][i].Cantidad +'</td>' +
@@ -1664,6 +1724,13 @@
                         }
                     })
                 });
+
+                $('body').on('click', '.ViewArt', function() {
+                    var Art = $(this).attr("id");
+                    $('#ViewArtTitle').html('Arte #'+ Art);
+                    PDFObject.embed('//192.168.1.12/intranet_ci/assets/Artes/'+Art+'.pdf', '#ViewArtPdf');
+                    $('#ViewArtModal').modal('show');
+                });
             })
         </script>
 
@@ -1678,8 +1745,8 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.js"></script>
 
     @endpush
 @stop

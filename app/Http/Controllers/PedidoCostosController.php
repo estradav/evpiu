@@ -86,30 +86,64 @@ class PedidoCostosController extends Controller
             }
 
             if ($request->EstadoPedido == 6){
-                DB::beginTransaction();
-                try {
-                    DB::table('encabezado_pedidos')->where('id', '=', $request->id)->update([
-                        'Estado' => $request->EstadoPedido
-                    ]);
+                $destino = DB::table('encabezado_pedidos')->where('id','=',$request->id)->select('Destino')->get();
 
-                    DB::table('pedidos_detalles_area')->where('idPedido', '=', $request->id)->update([
-                        'Costos' => $request->EstadoPedido,
-                        'DetalleCostos' => $request->DescripccionPedido,
-                        'AproboCostos' => $request->User,
-                        'Produccion' => $request->EstadoPedido,
-                    ]);
-                    DB::commit();
-                    return response()->json(['Success' => 'Todo Ok']);
+                if ($destino[0]->Destino == 1){
+                    DB::beginTransaction();
+                    try {
+                        DB::table('encabezado_pedidos')->where('id', '=', $request->id)->update([
+                            'Estado' => $request->EstadoPedido
+                        ]);
+
+                        DB::table('pedidos_detalles_area')->where('idPedido', '=', $request->id)->update([
+                            'Costos' => $request->EstadoPedido,
+                            'DetalleCostos' => $request->DescripccionPedido,
+                            'AproboCostos' => $request->User,
+                            'Produccion' => $request->EstadoPedido,
+                        ]);
+                        DB::commit();
+                        return response()->json(['Success' => 'Todo Ok']);
+                    }
+                    catch (\Exception $e){
+                        DB::rollback();
+                        echo json_encode(array(
+                            'error' => array(
+                                'msg' => $e->getMessage(),
+                                'code' => $e->getCode(),
+                                'code2' =>$e->getLine(),
+                            ),
+                        ));
+                    }
                 }
-                catch (\Exception $e){
-                    DB::rollback();
-                    echo json_encode(array(
-                        'error' => array(
-                            'msg' => $e->getMessage(),
-                            'code' => $e->getCode(),
-                            'code2' =>$e->getLine(),
-                        ),
-                    ));
+                if($destino[0]->Destino == 2){
+                    DB::beginTransaction();
+                    try {
+                        DB::table('encabezado_pedidos')->where('id', '=', $request->id)->update([
+                            'Estado' => '8'
+                        ]);
+
+                        DB::table('pedidos_detalles_area')->where('idPedido', '=', $request->id)->update([
+                            'Costos' => '6',
+                            'DetalleCostos' => $request->DescripccionPedido,
+                            'AproboCostos' => $request->User,
+                            'Produccion' => '8',
+                            'DetalleProduccion' => 'Este pedido es de bodega',
+                            'AproboProduccion'  => $request->User,
+                            'Bodega' => '8'
+                        ]);
+                        DB::commit();
+                        return response()->json(['Success' => 'Todo Ok']);
+                    }
+                    catch (\Exception $e){
+                        DB::rollback();
+                        echo json_encode(array(
+                            'error' => array(
+                                'msg' => $e->getMessage(),
+                                'code' => $e->getCode(),
+                                'code2' =>$e->getLine(),
+                            ),
+                        ));
+                    }
                 }
             }
         }
