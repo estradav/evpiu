@@ -21,6 +21,7 @@ class ProdCievCodMedidaController extends Controller
                     'cod_medidas.diametro as diametro','cod_medidas.largo as largo','cod_medidas.espesor as espesor',
                     'cod_medidas.base as base','cod_medidas.mm2 as mm2','cod_medidas.perforacion as perforacion','cod_medidas.altura as altura',
                     'cod_medidas.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_medidas.id as id')->get();
+
             return DataTables::of($data)
                 ->addColumn('Opciones', function($row){
                     $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmedida" id="edit-btn"><i class="far fa-edit"></i></a>';

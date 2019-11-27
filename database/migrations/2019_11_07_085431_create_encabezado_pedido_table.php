@@ -13,7 +13,7 @@ class CreateEncabezadoPedidoTable extends Migration
      */
     public function up()
     {
-        Schema::create('encabezado_pedido', function (Blueprint $table) {
+        Schema::create('encabezado_pedidos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('OrdenCompra');
             $table->string('CodCliente');
@@ -27,6 +27,13 @@ class CreateEncabezadoPedidoTable extends Migration
             $table->string('Descuento');
             $table->string('Iva');
             $table->string('Estado');
+            $table->string('Bruto');
+            $table->string('TotalDescuento');
+            $table->string('TotalSubtotal');
+            $table->string('TotalIVA');
+            $table->string('TotalPedido');
+            $table->string('Notas');
+            $table->string('Destino');
             $table->timestamps();
         });
     }
