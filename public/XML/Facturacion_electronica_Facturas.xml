@@ -2,12 +2,10 @@
 <root>
 	<documento>
 		<idnumeracion>2901</idnumeracion>
-		<numero>656960</numero>
+		<numero>656962</numero>
 		<idambiente>2</idambiente>
-		<idreporte>904</idreporte>
-		<idestadoenviocliente>3</idestadoenviocliente>
-		<idestadoenviodian>3</idestadoenviodian>
-		<fechadocumento>2019-01-02 06:22:30</fechadocumento>
+		<idreporte>2031</idreporte>
+		<fechadocumento>2019-01-02 06:42:23</fechadocumento>
 		<fechavencimiento>2019-02-16 00:00:00</fechavencimiento>
 		<tipofactura>01</tipofactura>
 		<tipooperacion>5</tipooperacion>
@@ -28,17 +26,16 @@
 		</periodofacturacion>
 		<adquiriente>
 			<idtipopersona></idtipopersona>
-			<responsableiva></responsableiva>
 			<idactividadeconomica></idactividadeconomica>
 			<nombrecomercial></nombrecomercial>
-			<idciudad>05088</idciudad>
-			<direccion>CARRERA 50 33 -38  PISO 3 </direccion>
+			<idciudad>05001</idciudad>
+			<direccion>CR 51 10 B S 51 </direccion>
 			<codigopostal></codigopostal>
-			<nombres>CREAJEANS SAS</nombres>
+			<nombres>CONFECCIONES INDUSTRIALES PARA EXPORTACION SA</nombres>
 			<apellidos></apellidos>
 			<idtipodocumentoidentidad>31</idtipodocumentoidentidad>
-			<digitoverificacion>2</digitoverificacion>
-			<identificacion>811045990</identificacion>
+			<digitoverificacion>9</digitoverificacion>
+			<identificacion>800219510</identificacion>
 			<obligaciones></obligaciones>
 			<idtiporegimen></idtiporegimen>
 			<direccionfiscal>
@@ -47,13 +44,12 @@
 				<codigopostal></codigopostal>
 			</direccionfiscal>
 			<matriculamercantil></matriculamercantil>
-			<emailcontacto>creajeans@une.net.co</emailcontacto>
-			<emailentrega>creajeans@une.net.co</emailentrega>
-			<telefono>4514472</telefono>
+			<emailcontacto>compras.insumos@polito.com</emailcontacto>
+			<emailentrega>compras.insumos@polito.com</emailentrega>
+			<telefono>4035820</telefono>
 		</adquiriente>
 		<otroautorizado>
 			<idtipopersona></idtipopersona>
-			<ressponsableiva></ressponsableiva>
 			<idactividadeconomica></idactividadeconomica>
 			<nombrecomercial></nombrecomercial>
 			<idciudad></idciudad>
@@ -107,13 +103,15 @@
 				<telefono></telefono>
 			</mandante>
 		</mandantes>
-		<formapago>
-			<idmetodopago>2</idmetodopago>
-			<idmediopago></idmediopago>
-			<fechavencimiento>2019-02-16 00:00:00</fechavencimiento>
-			<identificador></identificador>
-			<dias>45</dias>
-		</formapago>
+		<formaspago>
+			<formapago>
+				<idmetodopago>2</idmetodopago>
+				<idmediopago></idmediopago>
+				<fechavencimiento>2019-02-16 00:00:00</fechavencimiento>
+				<identificador></identificador>
+				<dias>45</dias>
+			</formapago>
+		</formaspago>
 		<anticipos>
 			<anticipo>
 				<identificador></identificador>
@@ -134,20 +132,20 @@
 		<impuestos>
 			<impuesto>
 				<idimpuesto>01</idimpuesto>
-				<base>1211639.00</base>
+				<base>491904.00</base>
 				<factor>19</factor>
 				<estarifaunitaria>0</estarifaunitaria>
-				<valor>230211.41</valor>
+				<valor>93461.76</valor>
 			</impuesto>
 		</impuestos>
 		<totales>
-			<totalbruto>1211639.00</totalbruto>
-			<baseimponible>1211639.00</baseimponible>
-			<totalbrutoconimpuestos>1441850.00</totalbrutoconimpuestos>
-			<totaldescuento>0.00</totaldescuento>
+			<totalbruto>546560.00</totalbruto>
+			<baseimponible>491904.00</baseimponible>
+			<totalbrutoconimpuestos>640022.00</totalbrutoconimpuestos>
+			<totaldescuento>54656.00</totaldescuento>
 			<totalcargos>0</totalcargos>
 			<totalanticipos></totalanticipos>
-			<totalapagar>1441850.00</totalapagar>
+			<totalapagar>585366.00</totalapagar>
 			<payableroundingamount></payableroundingamount>
 		</totales>
 		<items>
@@ -156,22 +154,22 @@
 					<estandar>
 						<idestandar>999</idestandar>
 						<nombreestandar></nombreestandar>
-						<codigo>33101L040121300</codigo>
+						<codigo>30630Z7D0111700</codigo>
 					</estandar>
 				</codigos>
-				<descripcion>TBPA L 31 MAR AR L/E</descripcion>
+				<descripcion>HALADERA LLAVE Z 21*9.8mm MAR BR C/E</descripcion>
 				<notas></notas>
-				<cantidad>4229</cantidad>
+				<cantidad>4270</cantidad>
 				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>143.00</preciounitario>
+				<preciounitario>128.00</preciounitario>
 				<unidaddemedida>94</unidaddemedida>
 				<marca></marca>
 				<modelo></modelo>
-				<codigovendedor>33101L040121300</codigovendedor>
+				<codigovendedor>30630Z7D0111700</codigovendedor>
 				<subcodigovendedor></subcodigovendedor>
-				<idmandatario></idmandatario>
+				<idmandante></idmandante>
 				<regalo>0</regalo>
-				<totalitem>604747.00</totalitem>
+				<totalitem>546560.00</totalitem>
 				<cargos>
 					<cargo>
 						<idconcepto></idconcepto>
@@ -185,113 +183,10 @@
 				<impuestos>
 					<impuesto>
 						<idimpuesto>01</idimpuesto>
-						<base>604747.00</base>
+						<base>491904.00</base>
 						<factor>19</factor>
 						<estarifaunitaria>0</estarifaunitaria>
-						<valor>114901.93</valor>
-					</impuesto>
-					<impuesto>
-						<idimpuesto></idimpuesto>
-						<base></base>
-						<factor>19</factor>
-						<estarifaunitaria>0</estarifaunitaria>
-						<valor>114901.93</valor>
-					</impuesto>
-				</impuestos>
-			</item>
-			<item>
-				<codigos>
-					<estandar>
-						<idestandar>999</idestandar>
-						<nombreestandar></nombreestandar>
-						<codigo>33101L040121400</codigo>
-					</estandar>
-				</codigos>
-				<descripcion>TBPA L 31 MAR AR L/P</descripcion>
-				<notas></notas>
-				<cantidad>4244</cantidad>
-				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>143.00</preciounitario>
-				<unidaddemedida>94</unidaddemedida>
-				<marca></marca>
-				<modelo></modelo>
-				<codigovendedor>33101L040121400</codigovendedor>
-				<subcodigovendedor></subcodigovendedor>
-				<idmandatario></idmandatario>
-				<regalo>0</regalo>
-				<totalitem>606892.00</totalitem>
-				<cargos>
-					<cargo>
-						<idconcepto></idconcepto>
-						<escargo></escargo>
-						<descripcion></descripcion>
-						<porcentaje></porcentaje>
-						<base></base>
-						<valor></valor>
-					</cargo>
-				</cargos>
-				<impuestos>
-					<impuesto>
-						<idimpuesto>01</idimpuesto>
-						<base>606892.00</base>
-						<factor>19</factor>
-						<estarifaunitaria>0</estarifaunitaria>
-						<valor>115309.48</valor>
-					</impuesto>
-					<impuesto>
-						<idimpuesto></idimpuesto>
-						<base></base>
-						<factor>19</factor>
-						<estarifaunitaria>0</estarifaunitaria>
-						<valor>115309.48</valor>
-					</impuesto>
-				</impuestos>
-			</item>
-			<item>
-				<codigos>
-					<estandar>
-						<idestandar>999</idestandar>
-						<nombreestandar></nombreestandar>
-						<codigo>30100A040000000</codigo>
-					</estandar>
-				</codigos>
-				<descripcion>PUNTILLA ALUM 03 LISA</descripcion>
-				<notas></notas>
-				<cantidad>8473</cantidad>
-				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>0.00</preciounitario>
-				<unidaddemedida>94</unidaddemedida>
-				<marca></marca>
-				<modelo></modelo>
-				<codigovendedor>30100A040000000</codigovendedor>
-				<subcodigovendedor></subcodigovendedor>
-				<idmandatario></idmandatario>
-				<regalo>1</regalo>
-				<totalitem>0.00</totalitem>
-				<cargos>
-					<cargo>
-						<idconcepto></idconcepto>
-						<escargo></escargo>
-						<descripcion></descripcion>
-						<porcentaje></porcentaje>
-						<base></base>
-						<valor></valor>
-					</cargo>
-				</cargos>
-				<impuestos>
-					<impuesto>
-						<idimpuesto>01</idimpuesto>
-						<base>0.00</base>
-						<factor>19</factor>
-						<estarifaunitaria>0</estarifaunitaria>
-						<valor>0.00</valor>
-					</impuesto>
-					<impuesto>
-						<idimpuesto></idimpuesto>
-						<base></base>
-						<factor>19</factor>
-						<estarifaunitaria>0</estarifaunitaria>
-						<valor>0.00</valor>
+						<valor>93461.76</valor>
 					</impuesto>
 				</impuestos>
 			</item>

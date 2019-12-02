@@ -254,6 +254,10 @@
                 background-color: #55b776;
             }
         </style>
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar Pedidos.
+        </div>
     @endcan
     @push('javascript')
         <script>

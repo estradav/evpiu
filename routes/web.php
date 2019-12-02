@@ -49,10 +49,14 @@ Route::middleware(['auth'])->group(function() {
     Route::get('fe/{fe}/edit','FeFacturasController@editfactura')->name('fe.edit');
     Route::put('/fe/{fe}', 'FeFacturasController@updatefactura')->name('fe.update');
     Route::get('/fe/getDownload/{file}','FeFacturasController@getDownload');
+    Route::get('/fe_configs','FeFacturasController@config');
+    Route::post('/savefeConfigs','FeFacturasController@savefeConfigs');
+    Route::post('/savefeConfigsNc','FeFacturasController@savefeConfigsNc');
+
 
     // Facturacion electronica Notas credito
     Route::resource('nc','FeNotasCreditoController');
-    Route::post('nc/xml','FeNotasCreditoController@DetalleFactura')->name('fe.nc.xml');
+    Route::post('nc/xml','FeNotasCreditoController@CrearXmlnc')->name('fe.nc.xml');
     Route::get('nc/{nc}/edit','FeNotasCreditoController@editfactura')->name('fe.nc.edit');
     Route::put('/nc/{nc}', 'FeNotasCreditoController@updatefactura')->name('fe.nc.update');
 
@@ -181,6 +185,15 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('PedidoBodega','PedidoBodegaController');
     Route::get('/PedidoBodegaIndex','PedidoBodegaController@index');
     Route::post('/PedidoBodegaUpdate','PedidoBodegaController@PedidoBodegaUpdate');
+
+    Route::resource('Requerimientos','RequerimientosController');
+    Route::get('/RequerimientosIndex','RequerimientosController@index');
+    Route::get('/SearchMarcas','RequerimientosController@SearchMarcas');
+    Route::get('/RequerimientosSearchProductsMax','RequerimientosController@SearchProductsMax');
+    Route::get('/Requerimientosgetlineas','RequerimientosController@getlineas');
+    Route::get('/GetDescription','RequerimientosController@GetDescription');
+    Route::post('RequerimientoSaveFile','RequerimientosController@RequerimientoSaveFile');
+    Route::post('/NewRequerimiento','RequerimientosController@NewRequerimiento');
 
 
 

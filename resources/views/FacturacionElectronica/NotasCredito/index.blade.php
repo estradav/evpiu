@@ -274,7 +274,7 @@
                         type: 'post',
                         dataType: 'json', // importante para que
                         data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
-                        url: 'fe/xml',
+                        url: 'nc/xml',
                         success: function () {
                             toastr.success("El Archivo XML se ha generado con Exito!.");
                         }

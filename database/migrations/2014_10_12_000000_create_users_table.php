@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('menu', 200);
             $table->string('CodVendedor', 200);
+            $table->string('diseñador',10);
             $table->rememberToken();
             $table->timestamps();
         });

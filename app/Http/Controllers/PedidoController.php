@@ -94,18 +94,18 @@ class PedidoController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('MAX')->table('CIEV_V_ProductosVentaStock')
-            ->where('CIEV_V_ProductosVentaStock.Descripcion1', 'LIKE', '%'.$query.'%')
-            ->orWhere('CIEV_V_ProductosVentaStock.Producto', 'LIKE', '%'.$query.'%')->take(10)
+        $queries = DB::connection('MAX')->table('CIEV_V_Inventario')
+            ->where('Descripcion', 'LIKE', '%'.$query.'%')
+            ->orWhere('Pieza', 'LIKE', '%'.$query.'%')->take(10)
             ->get();
 
         foreach ($queries as $q) {
             $results[] = [
-                'value'         => trim($q->Producto).' - '.trim($q->Descripcion1),
+                'value'         => trim($q->Pieza).' - '.trim($q->Descripcion),
                 'PriceItem'     => trim('0'),
-                'Stock'         => trim($q->Inventario),
-                'Code'          => trim($q->Producto),
-                'Descripcion'   => trim($q->Descripcion1)
+                'Stock'         => trim($q->CantLiquidable),
+                'Code'          => trim($q->Pieza),
+                'Descripcion'   => trim($q->Descripcion)
 
             ];
         }

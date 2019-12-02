@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FacFeFromRequest;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use XMLWriter;
@@ -116,6 +117,8 @@ class FeFacturasController extends Controller
                    'CIEV_V_FacturasDetalladas.descuento','CIEV_V_FacturasDetalladas.UM','CIEV_V_FacturasDetalladas.base')
                ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
 
+           $Config = DB::table('fe_configs')->take(1)->get();
+
 
            foreach ($Encabezado as $enc) {
                ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
@@ -177,30 +180,32 @@ class FeFacturasController extends Controller
                ////////////////// FIN CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
 
                //Construimos el xlm
+
                $objetoXML->startElement("documento");    // Se inicia un elemento para cada factura.
                $objetoXML->startElement("idnumeracion");
-               $objetoXML->text('2901'); // depende del tipo de documento
+               $objetoXML->text($Config[0]->fac_idnumeracion); // depende del tipo de documento
                $objetoXML->endElement();
+
 
                $objetoXML->startElement("numero");
                $objetoXML->text($enc->numero);
                $objetoXML->endElement();
 
                $objetoXML->startElement("idambiente");
-               $objetoXML->text(2);
+               $objetoXML->text($Config[0]->fac_idambiente);
                $objetoXML->endElement();
 
                $objetoXML->startElement("idreporte");
-               $objetoXML->text('2032'); // sumistrado por fenalco para version grafica
+               $objetoXML->text($Config[0]->fac_idreporte); // sumistrado por fenalco para version grafica
                $objetoXML->endElement();
 
-               $objetoXML->startElement("idestadoenviocliente");
+              /* $objetoXML->startElement("idestadoenviocliente");
                $objetoXML->text('3');
                $objetoXML->endElement();
 
                $objetoXML->startElement("idestadoenviodian");
                $objetoXML->text('3');
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
                $objetoXML->startElement("fechadocumento");
                $objetoXML->text($enc->fechadocumento);
@@ -214,7 +219,7 @@ class FeFacturasController extends Controller
                $objetoXML->text($tipo_fac_en);
                $objetoXML->endElement();
 
-               $objetoXML->startElement("idtipooperacion"); // si se omite sera una  factura de venta generica
+               $objetoXML->startElement("tipooperacion"); // si se omite sera una  factura de venta generica
                $objetoXML->text($tipo_operacion);
                $objetoXML->endElement();
 
@@ -257,7 +262,6 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->endElement();
-
     /*           $objetoXML->startElement("ordencompra");
                $objetoXML->startElement("codigo");
                $objetoXML->text('');
@@ -287,7 +291,6 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->endElement();*/
-
        /*        $objetoXML->startElement("ordendedespacho");
                $objetoXML->startElement("codigo");
                $objetoXML->text('');
@@ -302,7 +305,6 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->endElement();*/
-
                /*$objetoXML->startElement("adjuntos");
                $objetoXML->startElement("adjunto");
                $objetoXML->startElement("codigo");
@@ -325,13 +327,8 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
                $objetoXML->endElement();*/
-
-
                $objetoXML->startElement("adquiriente"); // falta
                $objetoXML->startElement("idtipopersona"); // falta
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("responsableiva");
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->startElement("idactividadeconomica");
@@ -400,9 +397,9 @@ class FeFacturasController extends Controller
                $objetoXML->startElement("idtipopersona");
                $objetoXML->text('');
                $objetoXML->endElement();
-               $objetoXML->startElement("ressponsableiva");
+             /*  $objetoXML->startElement("ressponsableiva");
                $objetoXML->text('');
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
                $objetoXML->startElement("idactividadeconomica");
                $objetoXML->text('');
                $objetoXML->endElement();
@@ -545,7 +542,7 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
 
-
+               $objetoXML->startElement("formaspago");
                $objetoXML->startElement("formapago");
                $objetoXML->startElement("idmetodopago");
                $objetoXML->text($metodo_pago);
@@ -561,6 +558,7 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->startElement("dias");
                $objetoXML->text($enc->dias);
+               $objetoXML->endElement();
                $objetoXML->endElement();
                $objetoXML->endElement();
 
@@ -793,7 +791,7 @@ class FeFacturasController extends Controller
                    $objetoXML->text('');
                    $objetoXML->endElement();
 
-                   $objetoXML->startElement("idmandatario");
+                   $objetoXML->startElement("idmandante");
                    $objetoXML->text('');
                    $objetoXML->endElement();
 
@@ -858,7 +856,7 @@ class FeFacturasController extends Controller
                            $objetoXML->endElement();
                        $objetoXML->endElement();
                        // RETEFUENTE
-                       $objetoXML->startElement("impuesto");
+                       /*$objetoXML->startElement("impuesto");
                            $objetoXML->startElement("idimpuesto");
                            $objetoXML->text('');
                            $objetoXML->endElement();
@@ -878,9 +876,8 @@ class FeFacturasController extends Controller
                            $objetoXML->startElement("valor");
                            $objetoXML->text(number_format($total_valor_item_iva,2,'.',''));
                            $objetoXML->endElement();
-                       $objetoXML->endElement();
+                       $objetoXML->endElement();*/
                    $objetoXML->endElement();
-
 
                   /* $objetoXML->startElement("datosextra");
                    $objetoXML->startElement("datoextra");
@@ -895,7 +892,6 @@ class FeFacturasController extends Controller
 
                    $objetoXML->endElement();
                    $objetoXML->endElement();*/
-
                    $objetoXML->endElement(); // cierra item
                }
                $objetoXML->endElement(); // cierra items
@@ -943,6 +939,39 @@ class FeFacturasController extends Controller
     public function updatefactura (FacFeFromRequest $request)
     {
         //
+    }
+
+    public function config (Request $request)
+    {
+        if ($request->ajax()){
+            $Configs = DB::table('fe_configs')->get();
+                return response()->json($Configs);
+        }
+
+
+        return view('FacturacionElectronica.Configuracion.index');
+    }
+
+    public function savefeConfigs(Request $request)
+    {
+        DB::table('fe_configs')->where('id','=','1')->update([
+            'fac_idnumeracion'  => $request->fac_idnumeracion,
+            'fac_idambiente'    => $request->fac_idambiente,
+            'fac_idreporte'     => $request->fac_idreporte
+        ]);
+
+        return response()->json(['ok']);
+    }
+
+    public function savefeConfigsNc(Request $request)
+    {
+        DB::table('fe_configs')->where('id','=','1')->update([
+            'nc_idnumeracion'  => $request->nc_idnumeracion,
+            'nc_idambiente'    => $request->nc_idambiente,
+            'nc_idreporte'     => $request->nc_idreporte
+        ]);
+
+        return response()->json(['ok']);
     }
 
 }

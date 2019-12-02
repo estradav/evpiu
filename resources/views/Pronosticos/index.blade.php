@@ -201,9 +201,6 @@
                 </div>
             </div>
         </div>
-
-
-
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar los pronosticos.
@@ -524,7 +521,6 @@
                     }
                 });
             });
-
                 $('#Inventario').on('show.bs.modal', function (event) {
                     document.getElementById('CantCompromet').style.display = "none";
                     document.getElementById('InvlotBod').style.display = "none";
