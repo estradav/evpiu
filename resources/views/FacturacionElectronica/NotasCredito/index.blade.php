@@ -14,35 +14,26 @@
 @can('notascredito.view')
     <div class="col-12"><h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda.</h3></div>
     <br>
-    {!! Form::open(array('url'=>'nc', 'method'=>'GET', 'autcomplete'=>'off', 'role'=>'search', 'id' => 'myform'))!!}
     <div class="form-group">
         <div class="input-group">
-            <div class="col-lg-2 col-sm-2 col-md-2 col-12 ">
-                <div class="form-group">
-                    <label class="control-label" for="date">Fecha inicial:</label>
-                    <input class="form-control " id="fechaInicial" name="fechaInicial"  placeholder="YYYY-MM-DD" value="{{$fe1}}" type="text" autocomplete="off" required readonly ="readonly" />
+            <div class="row input-daterange">
+                <div class="col-md-4">
+                    <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
                 </div>
-            </div>
-            <div class="col-lg-2 col-sm-2 col-md-2 col-12">
-                <div class="form-group">
-                    <label class="control-label" for="date">Fecha final:</label>
-                    <input class="form-control" id="fechaFinal" name="fechaFinal" placeholder="YYYY-MM-DD" value="{{$fe2}}" type="text" autocomplete="off" required readonly ="readonly" />
+                <div class="col-md-4">
+                    <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
                 </div>
-            </div>
-            <div class="col-lg-7 col-sm-2 col-md-2 col-12">
-                <br>
-                <div class="form-group">
-                    <span><button type="submit" class="btn btn-primary" id="buscar">Buscar Notas Credito</button></span>
+                <div class="col-md-4">
+                    <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm">Buscar</button>
                 </div>
             </div>
         </div>
     </div>
-    {{Form::close()}}
 
-    {!! Form::open(array('url'=>'nc/xml', 'method'=>'POST', 'autcomplete'=>'off', 'id' => 'myform1'))!!}
+    <br>
     <div class="col-lg-4">
         <div class="form-group">
-            <span><input type="button" class="btn btn-primary" id="CrearXml" value="Crear XML"></span>
+            <span><input type="button" class="btn btn-primary btn-sm" id="CrearXml" value="Crear XML"></span>
         </div>
     </div>
 
@@ -55,6 +46,7 @@
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" id="selectAll" name="selectAll"></th>
+                                    <th>&nbsp; &nbsp;</th>
                                     <th>Numero</th>
                                     <th>Factura Ref</th>
                                     <th>Fecha</th>
@@ -63,43 +55,12 @@
                                     <th>Vendedor</th>
                                     <th>Valor bruto</th>
                                     <th>Descuento</th>
-                                    <th>%</th>
                                     <th>IVA</th>
                                     <th>Motivo</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-                            @foreach( $Notas_credito as $nc)
-                              <?php $pordesc = ($nc->descuento / $nc->bruto) * 100; ?>
-                                  <tr>
-                                      <td><input type="checkbox" class="checkboxes" id="CHK{{ $nc->numero }}" name="CHK{{ $nc->numero}}"/></td>
-                                      <td>{{ $nc->numero }}</td>
-                                      <td>{{ $nc->OC }}</td>
-                                      <td>{{ $nc->fecha }}</td>
-                                      <td>{{ $nc->razon_social }} </td>
-                                      <td>{{ $nc->tipo_cliente }} </td>
-                                      <td>{{ $nc->nomvendedor }}</td>
-                                      <td>{{ number_format($nc->bruto,0,',','.') }}</td>
-                                      <td>{{ number_format($nc->descuento,0,',','.') }}</td>
-                                      <td>{{ $pordesc }}</td>
-                                      <td>{{ number_format($nc->valor_iva,0,',','.') }}</td>
-                                      <td>{{ $nc->motivo }}</td>
-                                      <td>
-                                          <div class="btn-group ml-auto float-right">
-                                              @can('nc.edit')
-                                              <a href="#" class="btn btn-sm btn-outline-light" id="edit-fac" >
-                                                  <i class="far fa-edit"> </i>
-                                              </a>
-                                              @endcan
-                                              <a href="#" class="btn btn-sm btn-outline-light" id="ver-fac">
-                                                  <i class="fa fa-eye"> </i>
-                                              </a>
-                                          </div>
-                                      </td>
-                                  </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -107,8 +68,19 @@
             </div>
         </div>
     </div>
+    <style>
+        .red {
+            background-color: red !important;
+        }
 
-    {{Form::close()}}
+        td.details-control {
+            background: url('/img/informacion.png') no-repeat center center;
+            cursor: pointer;
+        }
+        tr.details td.details-control {
+            background: url('/img/x.png') no-repeat center center;
+        }
+    </style>
 @else
     <div class="alert alert-danger" role="alert">
         No tienes permisos para visualizar las Notas Credito.
@@ -116,57 +88,58 @@
 @endcan
 @push('javascript')
     <script>
-        $( function() {
-            var from = $( "#fechaInicial" )
-                .datepicker({
-                    dateFormat: "yymmdd 00:00:00",
-                    changeMonth: true,
-                    changeYear: false,
-                    closeText: 'Cerrar',
-                    prevText: 'Ant',
-                    nextText: 'Sig',
-                    currentText: 'Hoy',
-                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                    monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-                    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-                    weekHeader: 'Sm',
-                    firstDay: 1,
-                    isRTL: false,
-                    showMonthAfterYear: false,
-                    yearSuffix: '',
-                    showAnim: "drop"
-                })
-                .on( "change", function() {
-                    to.datepicker( "option", "minDate", getDate( this ) );
-                }),
-                to = $( "#fechaFinal" ).datepicker({
-                    dateFormat: "yymmdd 23:59:59",
-                    changeMonth: true,
-                    changeYear: false,
-                    closeText: 'Cerrar',
-                    prevText: 'Ant',
-                    nextText: 'Sig',
-                    currentText: 'Hoy',
-                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                    monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-                    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-                    weekHeader: 'Sm',
-                    firstDay: 1,
-                    isRTL: false,
-                    showMonthAfterYear: false,
-                    yearSuffix: '',
-                    showAnim: "drop"
-                })
-                    .on( "change", function() {
-                        from.datepicker( "option", "maxDate", getDate( this ) );
-                    });
+        $(document).ready(function () {
+            var from = $( "#from_date" )
+            .datepicker({
+                dateFormat: "yy-mm-dd 00:00:00",
+                changeMonth: true,
+                changeYear: false,
+                closeText: 'Cerrar',
+                prevText: 'Ant',
+                nextText: 'Sig',
+                currentText: 'Hoy',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+                dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+                weekHeader: 'Sm',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                showAnim: "drop"
+            })
+            .on( "change", function() {
+                to.datepicker( "option", "minDate", getDate( this ) );
+            }),
+            to = $( "#to_date" ).datepicker({
+                dateFormat: "yy-mm-dd 23:59:59",
+                changeMonth: true,
+                changeYear: false,
+                closeText: 'Cerrar',
+                prevText: 'Ant',
+                nextText: 'Sig',
+                currentText: 'Hoy',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+                dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+                weekHeader: 'Sm',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                showAnim: "drop"
+            })
+            .on( "change", function() {
+                from.datepicker( "option", "maxDate", getDate( this ) );
+            });
+
             function getDate( element ) {
                 var date;
-                var dateFormat = "yymmdd";
+                var dateFormat = "yy-mm-dd";
                 try {
                     date = $.datepicker.parseDate( dateFormat, element.value );
                 } catch( error ) {
@@ -174,74 +147,184 @@
                 }
                 return date;
             }
-        });
-  {{--- fin de datepicker --}}
+            load_data();
 
+            var table;
 
-  {{--Inicio datatables--}}
-        $(document).ready(function () {
-            $("#tfac").DataTable({
-                order: [],
-                columns: [
-                    {"orderable": false, "searchable": false},
-                    {"orderable": true, "searchable": true},
-                    {"orderable": false, "searchable": true},
-                    {"orderable": false, "searchable": false},
-                    {"orderable": true, "searchable": true},
-                    {"orderable": true, "searchable": true},
-                    {"orderable": true, "searchable": false},
-                    {"orderable": true, "searchable": true},
-                    {"orderable": false, "searchable": false},
-                    {"orderable": false, "searchable": false},
-                    {"orderable": false, "searchable": false},
-                    {"orderable": false, "searchable": false},
-                    {"orderable": false, "searchable": false},
-                ],
-
-                columnDefs: [
-                    {
-                        targets: 0,
-                    }
-                ],
-
-                select: {
-                    style: 'multi'
-                },
-
-                language: {
-                    // traduccion de datatables
-                    processing: "Procesando...",
-                    search: "Buscar&nbsp;:",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                    infoPostFix: "",
-                    loadingRecords: "Cargando...",
-                    zeroRecords: "No se encontraron resultados",
-                    emptyTable: "Ningún registro disponible en esta tabla :C",
-                    paginate: {
-                        first: "Primero",
-                        previous: "Anterior",
-                        next: "Siguiente",
-                        last: "Ultimo"
+            function load_data(from_date = '', to_date = '') {
+                var errors = [];
+                var count = 0;
+                var id = $(this).data('id');
+                table = $('#tfac').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    autoWidth: true,
+                    scrollY: false,
+                    scrollX: false,
+                    scrollCollapse: true,
+                    paging: true,
+                    fixedColumns: true,
+                    ajax: {
+                        url: '/NotasCreditoIndex',
+                        data: {from_date: from_date, to_date: to_date}
                     },
-                    aria: {
-                        sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                        sortDescending: ": Activar para ordenar la columna de manera descendente"
+                    columns: [
+                        {data: 'selectAll', name: 'selectAll', orderable: false, searchable: false },
+                        {class: "details-control", orderable:false, data: null, defaultContent: ""},
+                        {data: 'id', name: 'id', orderable: false, searchable: true},
+                        {data: 'OC', name: 'OC', orderable: false, searchable: true},
+                        {data: 'fecha', name: 'fecha', orderable: false, searchable: false},
+                        {data: 'razon_social', name: 'razon_social'},
+                        {data: 'tipo_cliente', name: 'tipo_cliente', orderable: false, searchable: true},
+                        {data: 'vendedor', name: 'vendedor'},
+                        {data: 'bruto', name:'bruto', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
+                        {data: 'desc', name: 'desc', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
+                        {data: 'valor_iva', name: 'valor_iva', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
+                        {data: 'motivo', name: 'motivo', orderable: false, searchable: true},
+                        {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+                    ],
+
+                    columnDefs: [
+                        {
+                            targets: 0,
+                        }
+                    ],
+
+                    select: {
+                        style: 'multi'
+                    },
+
+                    language: {
+                        // traduccion de datatables
+                        processing: "Procesando...",
+                        search: "Buscar&nbsp;:",
+                        lengthMenu: "Mostrar _MENU_ registros",
+                        info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                        infoPostFix: "",
+                        loadingRecords: "Cargando...",
+                        zeroRecords: "No se encontraron resultados",
+                        emptyTable: "Ningún registro disponible en esta tabla :C",
+                        paginate: {
+                            first: "Primero",
+                            previous: "Anterior",
+                            next: "Siguiente",
+                            last: "Ultimo"
+                        },
+                        aria: {
+                            sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                            sortDescending: ": Activar para ordenar la columna de manera descendente"
+                        }
+                    },
+                    rowCallback: function (row, data, index) {
+                        if (data.fecha == null) {
+                            $(row).find('td:eq(3)').css('color', 'red');
+                        }
+
+                        if (data.plazo == null) {
+                            $(row).find('td:eq(4)').css('color', 'red');
+                        }
+
+                        if (data.razon_social == null) {
+                            $(row).find('td:eq(5)').css('color', 'red');
+                        }
+
+                        if (data.tipo_cliente == null) {
+                            $(row).find('td:eq(6)').css('color', 'red');
+                        }
+
+                        if (data.vendedor == null) {
+                            $(row).find('td:eq(7)').css('color', 'red');
+                        }
+
+                        if (data.bruto == null) {
+                            $(row).find('td:eq(9)').css('color', 'red');
+                        }
+
+
+                        if (data.bruto <= 3000) {
+                            $(row).find('td:eq(9)').css('color', 'red');
+                        }
+
+                        if (data.bruto >= 20000000) {
+                            $(row).find('td:eq(9)').css('color', 'red');
+                        }
+
+                        if ((data.desc / data.bruto) * 100 >= 20) {
+                            $(row).find('td:eq(9)').css('color', 'red');
+                        }
+
+                        var porc_iva = (data.valor_iva / data.subtotal) * 100;
+                        if (data.motivo != 27 && porc_iva <= 18.95 || porc_iva >= 19.05) {
+                            $(row).find('td:eq(10)').css('color', 'red');
+                        }
+
+                        if (data.cod_alter == null) {
+                            $('td', row).css('color', 'red');
+                        }
+
+                        if (data.motivo == null) {
+                            $(row).find('td:eq(11)').css('color', 'red');
+                        }
+
+                        if (data.email == null) {
+                            $('td', row).css('color', 'red');
+                        }
+                    }
+                });
+            }
+
+            var detailRows = [];
+
+            $('#tfac tbody').on('click', 'tr td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+                var idx = $.inArray(tr.attr('id'), detailRows);
+
+                if (row.child.isShown()) {
+                    tr.removeClass('details');
+                    row.child.hide();
+
+                    // Remove from the 'open' array
+                    detailRows.splice(idx, 1);
+                } else {
+                    tr.addClass('details');
+                    row.child(format(row.data())).show();
+
+                    // Add to the 'open' array
+                    if (idx === -1) {
+                        detailRows.push(tr.attr('id'));
                     }
                 }
             });
-        });
 
-        $(document).ready(function () {
+            table.on('draw', function () {
+                $.each(detailRows, function (i, id) {
+                    $('#' + id + ' td.details-control').trigger('click');
+                });
+            });
+
+            $('#filter').click(function () {
+                var from_date = $('#from_date').val();
+                var to_date = $('#to_date').val();
+                if (from_date != '' && to_date != '') {
+                    $('#tfac').DataTable().destroy();
+                    load_data(from_date, to_date);
+                } else {
+                    toastr.error("Ambas fechas son requeridas para poder filtrar.");
+                }
+            });
+
+
             $("#CrearXml").click(function () {
                 var selected = [];
                 $(".checkboxes").each(function () {
                     if (this.checked) {
-                        var numero = this.id.substring(3,9);
-                        var factura ={
-                            "numero":numero,
+                        var numero = this.id;
+                        var factura = {
+                            "numero": numero,
                         };
                         selected.push(factura);
                     }
@@ -252,7 +335,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    toastr.info('Un momento por favor...','Generando XML.',{
+                    toastr.info('Un momento por favor...', 'Generando XML.', {
                         "closeButton": false,
                         "debug": false,
                         "newestOnTop": false,
@@ -275,18 +358,128 @@
                         dataType: 'json', // importante para que
                         data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
                         url: 'nc/xml',
-                        success: function () {
+                        success: function (data) {
                             toastr.success("El Archivo XML se ha generado con Exito!.");
+                            // preventDefault();  //stop the browser from following
+                            var req = new XMLHttpRequest();
+                            req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
+                            req.responseType = "blob";
+
+                            req.onload = function (event) {
+                                var blob = req.response;
+                                console.log(blob.size);
+                                var link = document.createElement('a');
+                                link.href = window.URL.createObjectURL(blob);
+                                let current_datetime = new Date();
+                                let formatted_date = 'Fecha: ' + current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear() + " Hora:" + current_datetime.getHours() + ':' + current_datetime.getMinutes() + ':' + current_datetime.getSeconds();
+                                link.download = "Notas_Credito_" + formatted_date + "_.xml";
+                                link.click();
+                            };
+                            req.send();
                         }
                     });
                 } else
-                    toastr.error("Debes seleccionar al menos una Nota Credito.");
+                    toastr.error("Debes seleccionar al menos una Factura.");
                 return false;
             });
-        });
 
-        $("#selectAll").click(function(){
-            $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
+            $("#selectAll").on("click", function () {
+                $(".test").prop("checked", this.checked);
+            });
+
+            // if all checkbox are selected, check the selectall checkbox and viceversa
+            $(".test").on("click", function () {
+                if ($(".test").length == $(".test:checked").length) {
+                    $("#selectAll").prop("checked", true);
+                } else {
+                    $("#selectAll").prop("checked", false);
+                }
+            });
+
+            var resultado;
+            function format ( d ) {
+                console.log(d);
+                var porc_iva = (d.valor_iva / d.subtotal) * 100;
+                var count = 0;
+                resultado = [];
+
+                if ( d.fecha == null ) {
+                    resultado.push('<label class="alert-danger">La factura no tiene fecha</label> <br>');
+                    count = 1;
+                }
+
+                if (d.plazo == null) {
+                    resultado.push('<label class="alert-danger">La factura no tiene plazo</label> <br>');
+                    count = 1;
+                }
+
+                if (d.razon_social == null) {
+                    resultado.push('<label class="alert-danger">La factura no tiene razon social</label> <br>');
+                    count = 1;
+                }
+
+                if (d.tipo_cliente == null) {
+                    resultado.push('<label class="alert-danger">La factura no tiene tipo de cliente</label> <br>');
+                    count = 1;
+                }
+
+                if (d.vendedor == null) {
+                    resultado.push('<label class="alert-danger">La factura no tiene vendedor</label> <br>');
+                    count = 1;
+                }
+
+                if (d.cod_alter == null) {
+                    resultado.push('<label class="alert-danger">Cliente no exite en Dms </label> <br>');
+                    count = 1;
+                }
+
+                if ((d.desc / d.bruto) * 100 >= 20) {
+                    resultado.push('<label class="alert-danger">El descuento es demasiado alto </label> <br>');
+                    count = 1;
+                }
+
+                if (d.email == null) {
+                    resultado.push('<label class="alert-danger">El cliene no tiene email para el envio de facturas</label> <br> ');
+                    count = 1;
+                }
+
+                if (d.motivo != 27 && porc_iva <= 18.95 || porc_iva >= 19.05 ) {
+                    resultado.push('<label class="alert-danger">Porcentaje de iva es mayor o menor a 19% </label> <br>');
+                    count = 1;
+                }
+
+                if (d.motivo == null) {
+                    resultado.push('<label class="alert-danger">la factura debe llevar motivo </label><br>');
+                    count = 1;
+                }
+
+                if (d.bruto == null) {
+                    resultado.push('<label class="alert-danger">Valor bruto Vacio</label><br>');
+                    count = 1;
+                }
+
+                if (d.bruto >= 20000000) {
+                    resultado.push('<label class="alert-danger">Valor bruto demasiado Alto!</label><br>');
+                    count = 1;
+                }
+
+                if (d.bruto <= 3000) {
+                    resultado.push('<label class="alert-danger">Valor bruto demasiado Bajo!</label><br>');
+                    count = 1;
+                }
+
+                if (d.motivo == null) {
+                    resultado.push('<label class="alert-danger">la factura debe llevar motivo </label><br>');
+                    count = 1;
+                }
+
+                if (count == 0) {
+                    resultado = '<label class="alert-success">Factura OK</label><br>';
+                }
+
+                return  'Detalle de Factura : '+d.id+' <br>'+ resultado ;
+            }
+
         });
     </script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

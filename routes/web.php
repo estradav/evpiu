@@ -131,6 +131,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/SearchCodes', 'CreateProductController@SearchCodes');
     Route::post('/SaveProducts','CreateProductController@SaveProducts');
     Route::get('/FacturasIndex','FeFacturasController@index');
+    Route::get('/NotasCreditoIndex','FeNotasCreditoController@index');
 
     Route::get('/test', 'ProdCievCodCodigoController@GetCodigos');
 

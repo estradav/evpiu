@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Mockery\Matcher\Not;
 use XMLWriter;
+use Yajra\DataTables\DataTables;
 
 
 class FeNotasCreditoController extends Controller
 {
     public function index(Request $request)
     {
-        $fe1 = date( 'Ymd 00:00:00');
+       /* $fe1 = date( 'Ymd 00:00:00');
         $fe2 = date( 'Ymd 23:59:59');
 
         if (!is_null($request->fechaInicial) && !empty($request->fechaInicial) && !is_null($request->fechaFinal) || !empty($request->fechaFinal))
@@ -28,7 +29,48 @@ class FeNotasCreditoController extends Controller
             ->whereBetween('CIEV_V_FacturasTotalizadas.fecha', [$fe1 , $fe2])
             ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')->get();
 
-        return view('FacturacionElectronica.NotasCredito.index', ["Notas_credito" => $Notas_credito, "fe1" => $fe1, "fe2" => $fe2]);
+        return view('FacturacionElectronica.NotasCredito.index', ["Notas_credito" => $Notas_credito, "fe1" => $fe1, "fe2" => $fe2]);*/
+        if (request()->ajax()) {
+            if (!empty($request->from_date)) {
+                $data = DB::connection('MAX')
+                    ->table('CIEV_V_FacturasTotalizadas')
+                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
+                    ->select('CIEV_V_FacturasTotalizadas.numero as id','CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
+                        'CIEV_V_FacturasTotalizadas.fecha', 'CIEV_V_FacturasTotalizadas.razonsocial as razon_social','CIEV_V_FE.emailentrega as email',
+                        'CIEV_V_FacturasTotalizadas.bruto', 'CIEV_V_FacturasTotalizadas.descuento as desc', 'CIEV_V_FacturasTotalizadas.iva as valor_iva',
+                        'CIEV_V_FacturasTotalizadas.nomvendedor as vendedor', 'CIEV_V_FacturasTotalizadas.OC as OC', 'CIEV_V_FacturasTotalizadas.descplazo as plazo',
+                        'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.codigo_alterno as cod_alter')
+                    ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CR')
+                    ->whereBetween('fecha', array($request->from_date, $request->to_date))
+                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')
+                    ->get();
+            }else {
+                $data = DB::connection('MAX')
+                    ->table('CIEV_V_FacturasTotalizadas')
+                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
+                    ->select('CIEV_V_FacturasTotalizadas.numero as id','CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
+                        'CIEV_V_FacturasTotalizadas.fecha', 'CIEV_V_FacturasTotalizadas.razonsocial as razon_social','CIEV_V_FE.emailentrega as email',
+                        'CIEV_V_FacturasTotalizadas.bruto', 'CIEV_V_FacturasTotalizadas.descuento as desc', 'CIEV_V_FacturasTotalizadas.iva as valor_iva',
+                        'CIEV_V_FacturasTotalizadas.nomvendedor as vendedor', 'CIEV_V_FacturasTotalizadas.OC', 'CIEV_V_FacturasTotalizadas.descplazo as plazo',
+                        'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.codigo_alterno as cod_alter')
+                    ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CR')
+                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')
+                    ->take(50)
+                    ->get();
+            }
+            return datatables::of($data)
+                ->addColumn('opciones', function($row){
+                    $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/nc/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>'.'</div>';
+                    return $btn;
+                })
+                ->addColumn('selectAll', function($row){
+                    $btn = '<input type="checkbox" class="checkboxes test" id="'.$row->id.'" name="'.$row->id.'">';
+                    return $btn;
+                })
+                ->rawColumns(['opciones','selectAll'])
+                ->make(true);
+        }
+        return view('FacturacionElectronica.NotasCredito.index');
     }
 
     public function CrearXmlnc (Request $request)
@@ -112,7 +154,7 @@ class FeNotasCreditoController extends Controller
                 //Construimos el xlm
                 $objetoXML->startElement("documento");    // Se inicia un elemento para cada factura.
                 $objetoXML->startElement("idnumeracion");
-                $objetoXML->text($Config->nc_idnumeracion); // depende del tipo de documento
+                $objetoXML->text($Config[0]->nc_idnumeracion); // depende del tipo de documento
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("numero");
@@ -120,11 +162,11 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("idambiente");
-                $objetoXML->text($Config->nc_idambiente);
+                $objetoXML->text($Config[0]->nc_idambiente);
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("idreporte");
-                $objetoXML->text($Config->nc_idreporte); // sumistrado por fenalco para version grafica PENDIENTE
+                $objetoXML->text($Config[0]->nc_idreporte); // sumistrado por fenalco para version grafica PENDIENTE
                 $objetoXML->endElement();
 /*
                 $objetoXML->startElement("idestadoenviocliente");
@@ -175,7 +217,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->startElement("referencias"); // 0..1 Obligatorio cuando se trata de una nota debito o credito. La DIAN ya no permite notas sin referencia a una factura
                 $objetoXML->startElement("referencia"); // La DIAN solo acepta referencias a documentos electrónicos, por tanto la referencia debe existir previamente en el sistema
                 $objetoXML->startElement("idnumeracion"); // Ya no se acepta referencia a la numeracion por su prefijo
-                $objetoXML->text($Config->fac_idnumeracion); // numeracion de facturas se debe cambiar por el que corresponde a notas credito
+                $objetoXML->text($Config[0]->fac_idnumeracion); // numeracion de facturas se debe cambiar por el que corresponde a notas credito
                 $objetoXML->endElement();
                 $objetoXML->startElement("numero");
                 $objetoXML->text(trim(substr($enc->OC,2))); // numero de factura a la que hace referencia la nota credito
