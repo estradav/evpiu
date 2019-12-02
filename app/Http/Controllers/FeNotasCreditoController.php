@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Mockery\Matcher\Not;
+use XMLWriter;
+
 
 class FeNotasCreditoController extends Controller
 {
@@ -65,6 +67,7 @@ class FeNotasCreditoController extends Controller
                     'CIEV_V_FacturasDetalladas.totalitem','CIEV_V_FacturasDetalladas.iva as iva_item','CIEV_V_FacturasDetalladas.valormercancia','CIEV_V_FacturasDetalladas.descuento')
                 ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
 
+            $Config = DB::table('fe_configs')->take(1)->get();
 
             foreach ($EncabezadoNc as $enc) {
                 ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
@@ -109,7 +112,7 @@ class FeNotasCreditoController extends Controller
                 //Construimos el xlm
                 $objetoXML->startElement("documento");    // Se inicia un elemento para cada factura.
                 $objetoXML->startElement("idnumeracion");
-                $objetoXML->text('1616'); // depende del tipo de documento
+                $objetoXML->text($Config->nc_idnumeracion); // depende del tipo de documento
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("numero");
@@ -117,20 +120,20 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("idambiente");
-                $objetoXML->text(2);
+                $objetoXML->text($Config->nc_idambiente);
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("idreporte");
-                $objetoXML->text('1020'); // sumistrado por fenalco para version grafica PENDIENTE
+                $objetoXML->text($Config->nc_idreporte); // sumistrado por fenalco para version grafica PENDIENTE
                 $objetoXML->endElement();
-
+/*
                 $objetoXML->startElement("idestadoenviocliente");
                 $objetoXML->text('3');
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("idestadoenviodian");
                 $objetoXML->text('3');
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
                 $objetoXML->startElement("fechadocumento");
                 $objetoXML->text($enc->fechadocumento);
@@ -164,17 +167,18 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
 
+                $conceptonota = substr($enc->motivo,1);
                 $objetoXML->startElement("idconceptonota"); // Tabla 7. Códigos Conceptos Notas Crédito. y Tabla 8. Códigos Conceptos Notas Débito. Solo es obligatorio si <idnumeracion> corresponde a una nota debito o credito
-                $objetoXML->text('');
+                $objetoXML->text($conceptonota);
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("referencias"); // 0..1 Obligatorio cuando se trata de una nota debito o credito. La DIAN ya no permite notas sin referencia a una factura
                 $objetoXML->startElement("referencia"); // La DIAN solo acepta referencias a documentos electrónicos, por tanto la referencia debe existir previamente en el sistema
                 $objetoXML->startElement("idnumeracion"); // Ya no se acepta referencia a la numeracion por su prefijo
-                $objetoXML->text('904'); // numeracion de facturas se debe cambiar por el que corresponde a notas credito
+                $objetoXML->text($Config->fac_idnumeracion); // numeracion de facturas se debe cambiar por el que corresponde a notas credito
                 $objetoXML->endElement();
                 $objetoXML->startElement("numero");
-                $objetoXML->text($enc->oc); // numero de afactura a la que hace referencia la nota credito
+                $objetoXML->text(trim(substr($enc->OC,2))); // numero de factura a la que hace referencia la nota credito
                 $objetoXML->endElement();
                 $objetoXML->endElement();
                 $objetoXML->endElement();
@@ -253,9 +257,9 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->startElement("idtipopersona"); // falta
                 $objetoXML->text('');
                 $objetoXML->endElement();
-                $objetoXML->startElement("responsableiva");
+                /*$objetoXML->startElement("responsableiva");
                 $objetoXML->text('');
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
                 $objetoXML->startElement("idactividadeconomica");
                 $objetoXML->text('');
                 $objetoXML->endElement();
@@ -725,7 +729,7 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->text($nombre_estandar);
                     $objetoXML->endElement();
                     $objetoXML->startElement("codigo");
-                    $objetoXML->text($dNc->codigoproducto);
+                    $objetoXML->text(trim($dNc->codigoproducto));
                     $objetoXML->endElement();
                     $objetoXML->endElement();
                     $objetoXML->endElement();
@@ -866,7 +870,7 @@ class FeNotasCreditoController extends Controller
         $objetoXML->endDocument();  // Final del documento
 
         $cadenaXML = $objetoXML->outputMemory();
-        file_put_contents('xml/NotasCredito.xml', $cadenaXML);
+        file_put_contents('XML/NotasCredito.xml', $cadenaXML);
 
         return response()->json();
     }

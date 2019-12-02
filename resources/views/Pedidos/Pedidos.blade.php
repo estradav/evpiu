@@ -81,31 +81,31 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Codigo Cliente:&nbsp;&nbsp;</b></label>
-                                        <input type="text" class="form-control" value="" id="CodCliente" name="CodCliente">
+                                        <input type="text" class="form-control" value="" id="CodCliente" name="CodCliente" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Direccion:&nbsp;&nbsp;</b></label>
-                                        <input type="text" class="form-control" value="" id="address" name="address">
+                                        <input type="text" class="form-control" value="" id="address" name="address" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Ciudad:&nbsp;&nbsp;</b></label>
-                                        <input type="text" class="form-control" value="" id="city" name="city">
+                                        <input type="text" class="form-control" value="" id="city" name="city" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="control-label" ><b>Telefono:&nbsp;&nbsp;</b></label>
-                                        <input type="text" class="form-control" value="" id="phone" name="phone">
+                                        <input type="text" class="form-control" value="" id="phone" name="phone" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="CondicionPago" class="control-label" ><b>Condicion de pago:&nbsp;&nbsp;</b></label>
-                                        <select name="CondicionPago" id="CondicionPago" class="form-control">
+                                        <select name="CondicionPago" id="CondicionPago" class="form-control" disabled>
                                         </select>
                                     </div>
                                 </div>
@@ -427,6 +427,10 @@
                 background-color: #55b776;
             }
         </style>
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar Pedidos.
+        </div>
     @endcan
     @push('javascript')
         <script>
