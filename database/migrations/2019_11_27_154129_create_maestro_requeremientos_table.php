@@ -13,14 +13,23 @@ class CreateMaestroRequeremientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('maestro_requeremientos', function (Blueprint $table) {
+        Schema::create('maestro_requerimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('descripcion');
+            $table->string('producto');
             $table->string('informacion');
+            $table->string('marca');
+            $table->unsignedBigInteger('vendedor_id');
             $table->string('usuario');
-            $table->string('diseñador');
+            $table->unsignedBigInteger('diseñador_id');
             $table->string('estado');
+            $table->string('render');
+
             $table->timestamps();
+        });
+
+        Schema::table('maestro_requerimientos', function($table) {
+            $table->foreign('vendedor_id')->references('cod_vendedor')->on('users');
+            $table->foreign('diseñador_id')->references('diseñador')->on('users');
         });
     }
 

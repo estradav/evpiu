@@ -519,10 +519,19 @@ class RequerimientosController extends Controller
     public function NewRequerimiento(Request $request)
     {
         dd($request);
+        DB::table('maestro_requerimientos')->insertGetId([
+            'descripcion'   => $request->Producto,
+            'informacion'   => $request->Informacion,
+            'vendedor'      => $request->Vendedor,
+            'diseñador'     => $request->Diseñador,
+            'marca'         => $request->Marca,
+            'render'        => $request->Render
+        ]);
     }
 
     public function RequerimientoSaveFile(Request $request)
     {
+        dd($request);
         /*File::makeDirectory('/path/to/directory');*/
         $imageName = $request->file->getClientOriginalName();
         $request->file->move(public_path('upload'), $imageName);

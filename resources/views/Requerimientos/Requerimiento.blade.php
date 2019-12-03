@@ -156,7 +156,7 @@
                                         </div>
                                         <div class="col-sm-12">
                                             <div class="input-group">
-                                                <select name="" id="" class="form-control"></select>
+                                                <select name="NewRequirementVendedor" id="NewRequirementVendedor" class="form-control"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -479,13 +479,29 @@
                     $(this).parents('#nav').find('.active').removeClass('active').end().end().addClass('active');
                 });
 
+                function getUsers(){
+                    $.ajax({
+                        type: "get",
+                        url: '/PedidosGetUsers',
+                        success: function (data) {
+                            var i = 0;
+                            $(data).each(function () {
+                                $('#NewRequirementVendedor').append('<option value="'+data[i].codvendedor +'">'+data[i].name+' - '+ data[i].codvendedor +'</option>');
+                                i++;
+                            });
+                        }
+                    })
+                }
+
                 $('#NewRequerimiento').on('click', function () {
-                	$('#NewRequerimientoTitle').html('Nuevo Requerimiento');
+                    $('#NewRequerimientoTitle').html('Nuevo Requerimiento');
                     $('#NewRequerimientoModal').modal({
                         backdrop: 'static',
                         keyboard: false,
                     });
+                    getUsers();
                 });
+
                 var render = 1;
                 $("[name='my-checkbox']").bootstrapSwitch({
                     animate: true,
@@ -730,27 +746,30 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         });
-                        $.ajax({
 
+                        $.ajax({
                             data: {
                             	Cliente: cliente,
                                 Marca: marca,
                                 Producto: producto,
                                 Vendedor: vendedor,
                                 Informacion: informacion,
-                                Render: render
-
+                                Render: render,
                             },
                             url: "/NewRequerimiento",
                             type: "POST",
                             dataType: 'json',
                             success: function (data) {
-                                $('#NewRequerimientoSave').trigger("reset");
+                            	if (data == 'ok'){
+                                    $('.fileinput-upload-button').click();
+                                }
+
+                                /*$('#NewRequerimientoSave').trigger("reset");
                                 $('#NewRequerimientoModal').modal('hide');
                                 table.draw();
                                 toastr.success("Registro Guardado con Exito!");
-                                $(this).html('Crear');
-                                $('.fileinput-upload-button').click();
+                                $(this).html('Crear');*/
+
                             },
                             error: function (data) {
                                 console.log('Error:', data);
@@ -766,6 +785,7 @@
                         $(element).closest('.form-control').removeClass('is-invalid');
                     },
                 });
+
 
                 var fileinput = $("#file-loader");
                  fileinput.fileinput({

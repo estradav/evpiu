@@ -121,8 +121,8 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
                         <div class="row" id="campos" name="campos">
                         </div>
                         <div class="row">
@@ -146,7 +146,7 @@
     </div>
     @else
         <div class="alert alert-danger" role="alert">
-            No tienes permisos para visualizar las medidas.
+            No tienes permiso para visualizar las medidas.
         </div>
     @endcan
 
@@ -157,7 +157,6 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     @endpush

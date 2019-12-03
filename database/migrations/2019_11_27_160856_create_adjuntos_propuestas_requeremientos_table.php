@@ -13,15 +13,15 @@ class CreateAdjuntosPropuestasRequeremientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('adjuntos_propuestas_requeremientos', function (Blueprint $table) {
+        Schema::create('adjuntos_propuestas_requerimientos', function (Blueprint $table) {
             $table->unsignedBigInteger('idRequerimiento');
             $table->string('archivo');
             $table->string('usuario');
             $table->timestamps();
         });
 
-        Schema::table('adjuntos_propuestas_requeremientos', function($table) {
-            $table->foreign('idRequerimiento')->references('id')->on('maestro_requeremientos');
+        Schema::table('adjuntos_propuestas_requerimientos', function($table) {
+            $table->foreign('idRequerimiento')->references('id')->on('maestro_requerimientos');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateAdjuntosPropuestasRequeremientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('adjuntos_propuestas_requeremientos');
+        Schema::dropIfExists('adjuntos_propuestas_requerimientos');
     }
 }

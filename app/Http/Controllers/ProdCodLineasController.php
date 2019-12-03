@@ -34,7 +34,7 @@ class ProdCodLineasController extends Controller
     {
         CodLinea::updateOrCreate(
             ['id' => $request->linea_id],
-            [   'cod'               => $request->cod,
+            [   'cod'               => $request->codigo,
                 'tipoproducto_id'   => $request->tipoproducto_id,
                 'name'              => $request->name,
                 'abreviatura'       => $request->abreviatura,
@@ -57,11 +57,15 @@ class ProdCodLineasController extends Controller
 
     public function UniqueCod(Request $request)
     {
-        $UniqueCod = DB::table('cod_lineas')->where('cod','=',$request->cod)->count();
+        $UniqueCod = DB::table('cod_lineas')->where('cod','=',$request->codigo)->count();
+
         if($UniqueCod == 0)
-        {echo "true";}
-        else
-        {echo "false";}
+        {
+            return response()->json(true);
+        }
+        else {
+            return response()->json(false);
+        }
     }
 
 }

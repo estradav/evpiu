@@ -13,23 +13,6 @@ class FeNotasCreditoController extends Controller
 {
     public function index(Request $request)
     {
-       /* $fe1 = date( 'Ymd 00:00:00');
-        $fe2 = date( 'Ymd 23:59:59');
-
-        if (!is_null($request->fechaInicial) && !empty($request->fechaInicial) && !is_null($request->fechaFinal) || !empty($request->fechaFinal))
-        { $fe1 = $request->fechaInicial;     $fe2 = $request->fechaFinal; }
-
-        $Notas_credito = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadas')
-            ->select('CIEV_V_FacturasTotalizadas.numero','CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
-                'CIEV_V_FacturasTotalizadas.fecha', 'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                'CIEV_V_FacturasTotalizadas.bruto', 'CIEV_V_FacturasTotalizadas.descuento', 'CIEV_V_FacturasTotalizadas.iva as valor_iva',
-                'CIEV_V_FacturasTotalizadas.nomvendedor', 'CIEV_V_FacturasTotalizadas.OC', 'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
-            ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CR')
-            ->whereBetween('CIEV_V_FacturasTotalizadas.fecha', [$fe1 , $fe2])
-            ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')->get();
-
-        return view('FacturacionElectronica.NotasCredito.index', ["Notas_credito" => $Notas_credito, "fe1" => $fe1, "fe2" => $fe2]);*/
         if (request()->ajax()) {
             if (!empty($request->from_date)) {
                 $data = DB::connection('MAX')
@@ -80,7 +63,7 @@ class FeNotasCreditoController extends Controller
         $Notas_credito = json_decode($Notas_credito);
 
         $objetoXML = new    XMLWriter();
-        $objetoXML->openURI("xml/NotasCredito.xml");
+        $objetoXML->openURI("XML/NotasCredito.xml");
         $objetoXML->openMemory();
         $objetoXML->setIndent(true);
         $objetoXML->setIndentString("\t");

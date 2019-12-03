@@ -77,14 +77,12 @@ $(document).ready(function(){
             $('#medidaForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#medidamodal').modal('show');
-            document.getElementById("cod").readOnly = false;
-            document.getElementById("mm2").readOnly = false;
-            document.getElementById("denominacion").readOnly = false;
-
+            document.getElementById("cod").readOnly = true;
+            document.getElementById("mm2").readOnly = true;
+            document.getElementById("denominacion").readOnly = true;
         });
 
         $('body').on('click', '.editmedida', function () {
-
             var medida_id = $(this).data('id');
             $.get("/ProdCievCodMedida" +'/' + medida_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar");
@@ -182,10 +180,10 @@ $(document).ready(function(){
                 })
             });
 
-            $.get('getUnidadMedidas',{Sub_id: sublineas_id}, function(getUnidadMedidas) {
+            $.get('getUnidadMedidasMed',{Sub_id: sublineas_id}, function(getUnidadMedidasMed) {
                 $('#UndMedida').empty();
                 $('#UndMedida').append("<option value=''>Seleccionar una Medida...</option>");
-                $.each(getUnidadMedidas, function (index, value) {
+                $.each(getUnidadMedidasMed, function (index, value) {
                   $('#UndMedida').append("<option value='" + index + "'>"+ value +"</option>")
 
                 })
@@ -250,7 +248,6 @@ $(document).ready(function(){
             $(element).closest('.form-control').removeClass('is-invalid');
         },
         submitHandler: function (form) {
-            alert('test');
             $.ajax({
                 data: $('#medidaForm').serialize(),
                 url: "/MedidasPost",
@@ -263,7 +260,6 @@ $(document).ready(function(){
                     toastr.success("Registro Guardado con Exito!");
                 },
                 error: function (data) {
-                    console.log('Error:', data);
                     $('#saveBtn').html('Guardar Cambios');
                 }
             });
@@ -291,7 +287,6 @@ $(document).ready(function(){
 
         if (diametro != null && Umedida == 'mm'){
             resultado =  Math.floor(diametro * diametro);
-            console.log(resultado);
             sub = resultado.toString().substr(-2);
             totalMayor = (resultado - sub) + 100;
             totalMenor = resultado - sub;
@@ -489,12 +484,11 @@ $(document).ready(function(){
             $('#denominacion').val(D);
         }
 
-
-
         if (Diametro == null && Base != null && Altura != null){
             B = 'B:'+Base+'A:'+Altura+medida;
             $('#denominacion').val(B);
         }
+
         if (Diametro == null && Base != null && Altura != null && Espesor != null){
             B = 'B:'+Base+'A:'+Altura+'E:'+Espesor+medida;
             $('#denominacion').val(B);
@@ -504,11 +498,13 @@ $(document).ready(function(){
             B = 'B:'+Base+'A:'+Altura+'E:'+Espesor+'PS:'+Pestaña+medida;
             $('#denominacion').val(B);
         }
+
         if (Diametro == null && Base != null && Altura != null && Espesor == null && Pestaña != null){
             B = 'B:'+Base+'A:'+Altura+'PS:'+Pestaña+medida;
             $('#denominacion').val(B);
         }
     }
+
 
     $('body').on("keyup",'.Base', function(){
         calcular();
@@ -531,7 +527,82 @@ $(document).ready(function(){
     });
 
     $('body').on("change",'.UndMedida', function(){
+        ObtenerCodid();
         denominacion();
         calcular();
+
+
     });
+
+    var datos;
+    function ObtenerDatos(){
+        jQuery.ajax({
+            url: "/sublineasUltimoId",
+            type: "get",
+            dataType: 'json',
+            success: function (data) {
+                datos = [data][0];
+                OriginalValue();
+            },
+        });
+    }
+
+    var codID;
+    function ObtenerCodid(){
+        jQuery.ajax({
+            url: "/UltimoCodId",
+            type: "get",
+            dataType: 'json',
+            success: function (data) {
+                codID = [data][0];
+                ObtenerDatos();
+            },
+        });
+    }
+
+
+    function OriginalValue(){
+        var incremental     = 0;
+        var charStringRange = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var vectorc         = [];
+        var t1              = 0;
+        var numerof         = 0;
+        var OriginalProductCodes =  datos;
+        var OriginalProductCodes2 = codID;
+
+        for (var f = 0; f < OriginalProductCodes.length; f++) {
+
+            if (OriginalProductCodes2  == OriginalProductCodes[f] && OriginalProductCodes[f]){
+                var cadena = OriginalProductCodes[f];
+
+                var text2  = cadena.split('').reverse().join('');
+                text2      = text2.split('');
+
+                for (var v2 = 0; v2 < 2; v2++) {
+                    for (var i = 0; i < 36; i++) {
+                        if (text2[v2] == charStringRange[i]) {
+                            break;
+                        }
+                    }
+                    numerof += i*Math.pow(36,v2);
+                }
+                vectorc[t1] = numerof;
+                t1++;
+                numerof = 0;
+            }
+        }
+
+        maxvector = Math.max.apply(Math,vectorc); //saca el valor maximo de un arreglo
+        if (maxvector >= 0) {
+            incremental = maxvector + 1;
+        }
+        var text = '';
+        var incretemp = incremental;
+        for (var i = 0; i < 2; i++){
+            incretemp = Math.floor(incretemp)/36;
+            text += charStringRange.charAt(Math.round((incretemp - Math.floor(incretemp))*36));
+        }
+        text = text.split('').reverse().join('');
+        $('#cod').val(text);
+    }
 });
