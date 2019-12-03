@@ -133,9 +133,9 @@ class FeFacturasController extends Controller
 
                 // determina si el tipo de operacion
                 $tipo_operacion = null;
-                if ($tipo_fac_en == 02) {$tipo_operacion = 04;}
-                if ($tipo_fac_en == 01) {$tipo_operacion = 05;}
-                if($enc->iva == 0)      {$tipo_operacion =03;}
+                if ($tipo_fac_en == 02) {$tipo_operacion = '04';}
+                if ($tipo_fac_en == 01) {$tipo_operacion = '05';}
+                if($enc->iva == 0)      {$tipo_operacion = '03';}
 
                 //Determina si la factura es a contado o a credito
                $metodo_pago = null;

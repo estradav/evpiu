@@ -98,4 +98,42 @@ class ProdCievCodMedidaController extends Controller
             return response()->json($CarUnidadesMedidaArray);
         }
     }
+
+    public function getUnidadMedidasMed (Request $request)
+    {
+        if ($request->ajax()){
+            $sub = CodSublinea::find($request->Sub_id);
+            $UnidadesMedidaArray = [];
+
+            foreach ($sub->UnidadesMedida as $UnidadesMedid) {
+                $UnidadesMedidaArray[$UnidadesMedid->name] = $UnidadesMedid->descripcion;
+            }
+            return response()->json($UnidadesMedidaArray);
+        }
+    }
+
+    public function ultimoId( Request $request)
+    {
+        if ($request->ajax()) {
+            $var = DB::table('cod_medidas')->select('cod')->get();
+            $Array =[];
+            foreach ($var as $v) {
+                $Array[] = $v->cod;
+            }
+            return response()->json($Array);
+        }
+    }
+
+    public function UltimoCodId(Request $request)
+    {
+        $value1 = DB::table('cod_medidas')->max('id');
+
+        $value = DB::table('cod_medidas')->where('id','=',$value1)->select('cod')->get();
+        $Array =[];
+        foreach ($value as $v) {
+            $Array[] = $v->cod;
+        }
+
+        return response()->json($Array);
+    }
 }

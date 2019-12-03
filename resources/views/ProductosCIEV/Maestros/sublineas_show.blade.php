@@ -58,85 +58,84 @@
                     </button>
                 </div>
                 <form id="sublineaForm" name="sublineaForm" class="form-horizontal">
-                <div class="modal-body">
-
-                    <div class="row">
-                        <input type="hidden" name="sublinea_id" id="sublinea_id">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="lineas_id" class="col-sm-6 control-label">Linea:</label>
-                                <div class="col-sm-12">
-                                    <select class="form-control" name="lineas_id" id="lineas_id">
-                                        @foreach( $Lineas->get() as $index => $Lineas)
-                                            <option value="{{ $index }}" {{ old('lineas_id') == $index ? 'selected' : ''}}> {{ trim($Lineas) }} </option>
-                                        @endforeach
-                                    </select>
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" name="sublinea_id" id="sublinea_id">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="lineas_id" class="col-sm-6 control-label">Linea:</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control" name="lineas_id" id="lineas_id">
+                                            @foreach( $Lineas->get() as $index => $Lineas)
+                                                <option value="{{ $index }}" {{ old('lineas_id') == $index ? 'selected' : ''}}> {{ trim($Lineas) }} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="name" class="col-sm-6 control-label">Codigo:</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control code" id="cod" name="cod"  value="" maxlength="2" minlength="2" onkeyup="this.value=this.value.toUpperCase();" >
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Codigo:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control code" id="cod" name="cod"  value="" maxlength="2" minlength="2" onkeyup="this.value=this.value.toUpperCase();" >
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="name" class="col-sm-6 control-label">Hijo:</label>
-                                <div class="col-sm-12">
-                                    <select name="hijo" id="hijo" class="form-control">
-                                        <option value="Y">Si</option>
-                                        <option value="N">No</option>
-                                    </select>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Hijo:</label>
+                                    <div class="col-sm-12">
+                                        <select name="hijo" id="hijo" class="form-control">
+                                            <option value="Y">Si</option>
+                                            <option value="N">No</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="um_id" class="col-sm-6 control-label">Unidad Medida:</label>
-                                <div class="col-sm-12">
-                                    <select class="js-example-basic-multiple form-control um_idSelect" name="um_id" id="um_id" multiple="multiple" style="width: 100%">
-                                    </select>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="um_id" class="col-sm-6 control-label">Unidad Medida:</label>
+                                    <div class="col-sm-12">
+                                        <select class="js-example-basic-multiple form-control um_idSelect" name="um_id" id="um_id" multiple="multiple" style="width: 100%">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="car_um_id" class="col-sm-12 control-label">Caracteristica Unidad Medida:</label>
-                                <div class="col-sm-12">
-                                    <select class="js-example-basic-multiple form-control car_um_idSelect" name="car_um_id" id="car_um_id" multiple="multiple" style="width: 100%">
-                                    </select>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="car_um_id" class="col-sm-12 control-label">Caracteristica Unidad Medida:</label>
+                                    <div class="col-sm-12">
+                                        <select class="js-example-basic-multiple form-control car_um_idSelect" name="car_um_id" id="car_um_id" multiple="multiple" style="width: 100%">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="name" class="col-sm-6 control-label">Nombre:</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="name" name="name" value="" onkeyup="this.value=this.value.toUpperCase();">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Nombre:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="name" name="name" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="abreviatura" name="abreviatura" value="" onkeyup="this.value=this.value.toUpperCase();">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="abreviatura" name="abreviatura" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Comentarios:</label>
-                                <div class="col-sm-12">
-                                    <textarea id="coments" name="coments" required="" class="form-control"></textarea>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Comentarios:</label>
+                                    <div class="col-sm-12">
+                                        <textarea id="coments" name="coments" required="" class="form-control"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

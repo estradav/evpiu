@@ -55,7 +55,19 @@ class ProdCodSublineasController extends Controller
     public function edit($id)
     {
         $codsublinea = CodSublinea::find($id);
-        return response()->json($codsublinea);
+        $UnidadesMedidaArray = [];
+
+        foreach ($codsublinea->UnidadesMedida as $UnidadesMedid) {
+            $UnidadesMedidaArray[$UnidadesMedid->id] = $UnidadesMedid->descripcion;
+        }
+
+        foreach ($codsublinea->CaracteristicasUnidadesMedida as $CarUnidadesMedida) {
+            $CarUnidadesMedidaArray[$CarUnidadesMedida->id] = $CarUnidadesMedida->descripcion;
+        }
+
+
+        return response()->json(['sublinea' => $codsublinea,'medida' => $UnidadesMedidaArray, 'carmedida' => $CarUnidadesMedidaArray]);
+
     }
 
     public function destroy($id)
@@ -94,7 +106,7 @@ class ProdCodSublineasController extends Controller
             $UnidadesMedidaArray = [];
 
             foreach ($sub->UnidadesMedida as $UnidadesMedid) {
-                $UnidadesMedidaArray[$UnidadesMedid->name] = $UnidadesMedid->descripcion;
+                $UnidadesMedidaArray[] = $UnidadesMedid->descripcion;
             }
             return response()->json($UnidadesMedidaArray);
         }

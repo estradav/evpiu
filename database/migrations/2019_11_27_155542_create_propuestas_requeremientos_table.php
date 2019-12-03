@@ -13,7 +13,7 @@ class CreatePropuestasRequeremientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('propuestas_requeremientos', function (Blueprint $table) {
+        Schema::create('propuestas_requerimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('idRequerimiento');
             $table->string('articulo');
@@ -26,7 +26,7 @@ class CreatePropuestasRequeremientosTable extends Migration
             $table->string('estado');
             $table->timestamps();
         });
-        Schema::table('propuestas_requeremientos', function($table) {
+        Schema::table('propuestas_requerimientos', function($table) {
             $table->foreign('idRequerimiento')->references('id')->on('maestro_requeremientos');
         });
     }

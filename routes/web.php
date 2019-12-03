@@ -80,6 +80,8 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('ProdCievCodMedida','ProdCievCodMedidaController');
     Route::get('/getsublineas','ProdCievCodMedidaController@getSublineas');
     Route::get('/getCaractUnidadMedidas','ProdCievCodMedidaController@getCaractUnidadMedidas');
+    Route::get('/sublineasUltimoId','ProdCievCodMedidaController@ultimoId');
+    Route::get('/UltimoCodId','ProdCievCodMedidaController@UltimoCodId');
 
     Route::resource('codificador','ProdCievCodCodigoController');
     Route::get('/getlineas','ProdCievCodCodigoController@getlineas');
@@ -195,7 +197,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/GetDescription','RequerimientosController@GetDescription');
     Route::post('RequerimientoSaveFile','RequerimientosController@RequerimientoSaveFile');
     Route::post('/NewRequerimiento','RequerimientosController@NewRequerimiento');
-
+    Route::get('/getUnidadMedidasMed','ProdCievCodMedidaController@getUnidadMedidasMed');
 
 
 });

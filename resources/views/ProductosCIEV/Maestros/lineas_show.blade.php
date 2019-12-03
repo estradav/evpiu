@@ -16,7 +16,7 @@
     <div class="col-lg-4">
         <div class="form-group">
             @can('lineas.new')
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearLineas">Nuevo</a>
+            <a class="btn btn-primary CrearLineas" href="javascript:void(0)" id="CrearLineas">Nuevo</a>
             @endcan
         </div>
     </div>
@@ -73,7 +73,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="cod" name="cod"  value="" onkeyup="this.value=this.value.toUpperCase();">
+                                <input type="text" class="form-control" id="codigo" name="codigo"  value="" onkeyup="this.value=this.value.toUpperCase();">
                             </div>
                         </div>
                         <div class="form-group">

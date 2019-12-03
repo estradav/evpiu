@@ -127,7 +127,7 @@ $(document).ready(function(){
                     url: "/TiposProductoPost",
                     type: "POST",
                     dataType: 'json',
-                    success: function (data) {
+                    success: function () {
                         $('#tipoproductoForm').trigger("reset");
                         $('#tipoproductomodal').modal('hide');
                         table.draw();

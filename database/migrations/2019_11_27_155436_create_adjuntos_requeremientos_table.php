@@ -13,13 +13,13 @@ class CreateAdjuntosRequeremientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('adjuntos_requeremientos', function (Blueprint $table) {
+        Schema::create('adjuntos_requerimientos', function (Blueprint $table) {
             $table->unsignedBigInteger('idRequerimiento');
             $table->string('archivo');
             $table->string('usuario');
             $table->timestamps();
         });
-        Schema::table('adjuntos_requeremientos', function($table) {
+        Schema::table('adjuntos_requerimientos', function($table) {
             $table->foreign('idRequerimiento')->references('id')->on('maestro_requeremientos');
         });
     }

@@ -44,105 +44,182 @@ $(document).ready(function() {
             }
         });
 
-        $('#CrearLineas').click(function () {
+        $('body').on('click','.CrearLineas', function () {
+            $('#lineaForm').trigger("reset");
             $('#saveBtn').val("create-linea");
             $('#linea_id').val('');
-            $('#lineaForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#Lineamodal').modal('show');
-            document.getElementById("cod").readOnly = false;
+            document.getElementById("codigo").readOnly = false;
+
+            jQuery.extend(jQuery.validator.messages, {
+                required: "Este campo es obligatorio.",
+                remote: "Este codigo ya existe.",
+                email: "Por favor, escribe una dirección de correo válida",
+                url: "Por favor, escribe una URL válida.",
+                date: "Por favor, escribe una fecha válida.",
+                dateISO: "Por favor, escribe una fecha (ISO) válida.",
+                number: "Por favor, escribe un número entero válido.",
+                digits: "Por favor, escribe sólo dígitos.",
+                creditcard: "Por favor, escribe un número de tarjeta válido.",
+                equalTo: "Por favor, escribe el mismo valor de nuevo.",
+                accept: "Por favor, escribe un valor con una extensión aceptada.",
+                maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+                minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+                rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+                range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+                max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+                min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
+                selectcheck: "Por favor seleccione una opcion!"
+            });
+
+            jQuery.validator.addMethod("selectcheck", function (value) {
+                return (value != '');
+            }, "Por favor, seleciona una opcion.");
+
+            $("#lineaForm").validate({
+                ignore: "",
+                rules: {
+                    tipoproducto_id: {
+                        selectcheck: true
+                    },
+                    codigo: {
+                        remote: {
+                            url: '/GetUniqueCodLines',
+                            type: 'POST',
+                            data: {
+                                'codigo': function () {
+                                    return $('#codigo').val();
+                                }
+                            },
+                            dataType: 'json',
+                            async: false,
+                        },
+                        required: true,
+                        minlength: 1,
+                        maxlength: 2,
+                    },
+                    name: "required",
+                    abreviatura: "required",
+                    coments: "required"
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-invalid');
+                },
+                submitHandler: function (form) {
+                    $(this).html('Guardando...');
+                    $.ajax({
+                        data: $('#lineaForm').serialize(),
+                        url: "/LineasPost",
+                        type: "POST",
+                        dataType: 'json',
+                        success: function () {
+                            $('#lineaForm').trigger("reset");
+                            $('#Lineamodal').modal('hide');
+                            table.draw();
+                            swal.fire({
+                                title: 'Guardado!',
+                                text: "¡Registro guardado con exito!",
+                                icon: 'success',
+                            })
+                        },
+                        error: function (data) {
+                            console.log('Error:', data);
+                            $('#saveBtn').html('Guardar Cambios');
+                        }
+                    });
+                }
+            });
         });
 
         $('body').on('click', '.editLinea', function () {
-            document.getElementById("cod").readOnly = true;
+            document.getElementById("codigo").readOnly = true;
+            $('#lineaForm').trigger("reset");
             var linea_id = $(this).data('id');
             $.get("/ProdCievCod" + '/' + linea_id + '/edit', function (data) {
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-linea");
                 $('#Lineamodal').modal('show');
                 $('#linea_id').val(data.id);
-                $('#cod').val(data.cod);
+                $('#codigo').val(data.cod);
                 $('#tipoproducto_id').val(data.tipoproducto_id);
                 $('#name').val(data.name);
                 $('#abreviatura').val(data.abreviatura);
                 $('#coments').val(data.coments);
-            })
-        });
+            });
+            jQuery.extend(jQuery.validator.messages, {
+                required: "Este campo es obligatorio.",
+                remote: "Este codigo ya existe.",
+                email: "Por favor, escribe una dirección de correo válida",
+                url: "Por favor, escribe una URL válida.",
+                date: "Por favor, escribe una fecha válida.",
+                dateISO: "Por favor, escribe una fecha (ISO) válida.",
+                number: "Por favor, escribe un número entero válido.",
+                digits: "Por favor, escribe sólo dígitos.",
+                creditcard: "Por favor, escribe un número de tarjeta válido.",
+                equalTo: "Por favor, escribe el mismo valor de nuevo.",
+                accept: "Por favor, escribe un valor con una extensión aceptada.",
+                maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+                minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+                rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+                range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+                max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+                min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
+                selectcheck: "Por favor seleccione una opcion!"
+            });
 
-        jQuery.extend(jQuery.validator.messages, {
-            required: "Este campo es obligatorio.",
-            remote: "Este codigo ya existe.",
-            email: "Por favor, escribe una dirección de correo válida",
-            url: "Por favor, escribe una URL válida.",
-            date: "Por favor, escribe una fecha válida.",
-            dateISO: "Por favor, escribe una fecha (ISO) válida.",
-            number: "Por favor, escribe un número entero válido.",
-            digits: "Por favor, escribe sólo dígitos.",
-            creditcard: "Por favor, escribe un número de tarjeta válido.",
-            equalTo: "Por favor, escribe el mismo valor de nuevo.",
-            accept: "Por favor, escribe un valor con una extensión aceptada.",
-            maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
-            minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
-            rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
-            range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
-            max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
-            min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
-            selectcheck: "Por favor seleccione una opcion!"
-        });
+            jQuery.validator.addMethod("selectcheck", function (value) {
+                return (value != '');
+            }, "Por favor, seleciona una opcion.");
 
-        jQuery.validator.addMethod("selectcheck", function (value) {
-            return (value != '');
-        }, "Por favor, seleciona una opcion.");
-
-        $("#lineaForm").validate({
-            ignore: "",
-            rules: {
-                tipoproducto_id: {
-                    selectcheck: true
-                },
-                cod: {
-                    remote: {
-                        url: '/GetUniqueCodLines',
-                        type: 'POST',
-                        async: false,
+            $("#lineaForm").validate({
+                ignore: "",
+                rules: {
+                    tipoproducto_id: {
+                        selectcheck: true
                     },
-                    required: true,
-                    minlength: 1,
-                    maxlength: 2,
-                },
-                name: "required",
-                abreviatura: "required",
-                coments: "required"
-            },
-            highlight: function (element) {
-                // Only validation controls
-                $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
-            },
-            unhighlight: function (element) {
-                // Only validation controls
-                $(element).closest('.form-control').removeClass('is-invalid');
-            },
-            submitHandler: function (form) {
-                $(this).html('Guardando...');
-                $.ajax({
-                    data: $('#lineaForm').serialize(),
-                    url: "/LineasPost",
-                    type: "POST",
-                    dataType: 'json',
-                    success: function (data) {
-
-                        $('#lineaForm').trigger("reset");
-                        $('#Lineamodal').modal('hide');
-                        table.draw();
-                        toastr.success("Registro Guardado con Exito!");
-                        //   $(this).html('Crear');
+                    codigo: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 2,
                     },
-                    error: function (data) {
-                        console.log('Error:', data);
-                        $('#saveBtn').html('Guardar Cambios');
-                    }
-                });
-            }
+                    name: "required",
+                    abreviatura: "required",
+                    coments: "required"
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-invalid');
+                },
+                submitHandler: function (form) {
+                    $(this).html('Guardando...');
+                    $.ajax({
+                        data: $('#lineaForm').serialize(),
+                        url: "/LineasPost",
+                        type: "POST",
+                        dataType: 'json',
+                        success: function () {
+                            $('#lineaForm').trigger("reset");
+                            $('#Lineamodal').modal('hide');
+                            table.draw();
+                            swal.fire({
+                                title: 'Guardado!',
+                                text: "¡Registro guardado con exito!",
+                                icon: 'success',
+                            })
+                        },
+                        error: function (data) {
+                            console.log('Error:', data);
+                            $('#saveBtn').html('Guardar Cambios');
+                        }
+                    });
+                }
+            });
         });
 
         $('body').on('click', '.deleteLinea', function () {
@@ -166,7 +243,6 @@ $(document).ready(function() {
                                 title: 'Eliminado!',
                                 text: "El registro ha sido eliminado.",
                                 icon: 'success',
-
                             });
                             table.draw();
                         },
@@ -179,7 +255,6 @@ $(document).ready(function() {
                         }
                     });
                 } else if (
-                    /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
                     Swal.fire(
@@ -195,6 +270,9 @@ $(document).ready(function() {
             $('#saveBtn').html('Guardar');
             $('.form-control').removeClass('is-invalid');
             $('.error').remove();
+            $('#lineaForm').trigger("reset");
         });
+
+
     });
 });

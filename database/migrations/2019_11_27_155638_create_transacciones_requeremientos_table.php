@@ -13,7 +13,7 @@ class CreateTransaccionesRequeremientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('transacciones_requeremientos', function (Blueprint $table) {
+        Schema::create('transacciones_requerimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateTransaccionesRequeremientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transacciones_requeremientos');
+        Schema::dropIfExists('transacciones_requerimientos');
     }
 }
