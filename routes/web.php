@@ -199,6 +199,9 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/NewRequerimiento','RequerimientosController@NewRequerimiento');
     Route::get('/getUnidadMedidasMed','ProdCievCodMedidaController@getUnidadMedidasMed');
 
+    Route::get('/DatosxFactura','FeFacturasController@DatosxFactura');
+    Route::get('/VerCondicionesPago','FeFacturasController@VerCondicionesPago');
+
 
 });
 

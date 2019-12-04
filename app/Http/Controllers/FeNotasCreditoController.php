@@ -80,7 +80,7 @@ class FeNotasCreditoController extends Controller
                     'CIEV_V_FE.direccion','CIEV_V_FE.emailentrega','CIEV_V_FE.digito_verificador','CIEV_V_FE.telefono','CIEV_V_FE.notas','CIEV_V_FE.coddpto',
                     'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FE.codigocliente','CIEV_V_FE.fechadocumento','CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
                     'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FacturasTotalizadas.descuento','CIEV_V_FacturasTotalizadas.subtotal', 'CIEV_V_FacturasTotalizadas.iva',
-                    'CIEV_V_FacturasTotalizadas.fletes','CIEV_V_FacturasTotalizadas.seguros','CIEV_V_FacturasTotalizadas.moneda','CIEV_V_FacturasTotalizadas.OC',
+                    'CIEV_V_FacturasTotalizadas.fletes','CIEV_V_FacturasTotalizadas.seguros','CIEV_V_FacturasTotalizadas.moneda','CIEV_V_FacturasTotalizadas.OC','CIEV_V_FE.codciudad',
                     'CIEV_V_FacturasTotalizadas.dias','CIEV_V_FacturasTotalizadas.motivo','CIEV_V_FacturasTotalizadas.descplazo as plazo','CIEV_V_FacturasTotalizadas.descmotivo',
                     'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento')
                 ->where('CIEV_V_FE.numero', '=', $num)->take(1)->get();
@@ -88,7 +88,7 @@ class FeNotasCreditoController extends Controller
             // esta consulta muestra el detalle de los items de cada factura
             $DetalleNc = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
                 ->select('CIEV_V_FacturasDetalladas.factura','CIEV_V_FacturasDetalladas.codigoproducto','CIEV_V_FacturasDetalladas.descripcionproducto',
-                    'CIEV_V_FacturasDetalladas.OC','CIEV_V_FacturasDetalladas.item','CIEV_V_FacturasDetalladas.cantidad','CIEV_V_FacturasDetalladas.precio',
+                    'CIEV_V_FacturasDetalladas.OC','CIEV_V_FacturasDetalladas.item','CIEV_V_FacturasDetalladas.cantidad','CIEV_V_FacturasDetalladas.precio','CIEV_V_FacturasDetalladas.UM',
                     'CIEV_V_FacturasDetalladas.totalitem','CIEV_V_FacturasDetalladas.iva as iva_item','CIEV_V_FacturasDetalladas.valormercancia','CIEV_V_FacturasDetalladas.descuento')
                 ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
 
@@ -132,6 +132,23 @@ class FeNotasCreditoController extends Controller
 
                 // valida el estado de envio a la dian
 
+
+                $id_total_impuesto_iva = null;
+                if ($enc->iva != null) {
+                    $id_total_impuesto_iva = '01';
+                }
+                $factor_total = null;
+                if ($id_total_impuesto_iva == '01'){
+                    $factor_total = '19';
+                }
+                $tarifa_unitaria_total  = null;
+                if ($id_total_impuesto_iva == '01'){
+                    $tarifa_unitaria_total = '0';
+                }
+
+                $total_valor_iva = $enc->subtotal * 0.19;
+                /// para  Rte Fuente
+                $total_item_valor = $enc->subtotal + $total_valor_iva;
                 ////////////////// FIN CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
 
                 //Construimos el xlm
@@ -224,7 +241,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
 
-                $objetoXML->startElement("constanciarecibido");
+                /*$objetoXML->startElement("constanciarecibido");
                 $objetoXML->startElement("codigo");
                 $objetoXML->text('');
                 $objetoXML->endElement();
@@ -275,7 +292,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
 
                 $objetoXML->startElement("adquiriente"); // falta
@@ -292,7 +309,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->startElement("idciudad"); // codigo de ciudad
-                $objetoXML->text( $enc->coddpto);
+                $objetoXML->text( $enc->coddpto.$enc->codciudad);
                 $objetoXML->endElement();
                 $objetoXML->startElement("direccion");
                 $objetoXML->text($enc->direccion);
@@ -347,7 +364,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
 
 
-                $objetoXML->startElement("otroautorizado");
+                /*$objetoXML->startElement("otroautorizado");
                 $objetoXML->startElement("idtipopersona");
                 $objetoXML->text('');
                 $objetoXML->endElement();
@@ -413,9 +430,9 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->startElement("telefono");
                 $objetoXML->text('');
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
-
+/*
                 $objetoXML->startElement("mandato");
                 $objetoXML->startElement("identificador");
                 $objetoXML->text('');
@@ -423,10 +440,10 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->startElement("fechacontrato");
                 $objetoXML->text('');
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
 
-                $objetoXML->startElement("mandantes");
+                /*$objetoXML->startElement("mandantes");
                 $objetoXML->startElement("mandante");
                 $objetoXML->startElement("idtipopersona");
                 $objetoXML->text('');
@@ -494,10 +511,10 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
 
-                $objetoXML->startElement("entrega");
+                /*$objetoXML->startElement("entrega");
                 $objetoXML->startElement("fecha");
                 $objetoXML->text('');
                 $objetoXML->endElement();
@@ -583,7 +600,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->startElement("condicionesdeentrega");
                 $objetoXML->text('');
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
 
                 $objetoXML->startElement("formapago");
@@ -605,7 +622,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
 
 
-                $objetoXML->startElement("tasasdecambio");
+               /* $objetoXML->startElement("tasasdecambio");
                 $objetoXML->startElement("tasadecambio");
                 $objetoXML->startElement("fecha");
                 $objetoXML->text($enc->fechadocumento);
@@ -620,10 +637,10 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
 
-                $objetoXML->startElement("anticipos");
+               /* $objetoXML->startElement("anticipos");
                 $objetoXML->startElement("anticipo");
                 $objetoXML->startElement("identificador");
                 $objetoXML->text('');
@@ -635,7 +652,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
 
                 $objetoXML->startElement("cargos");
@@ -665,19 +682,19 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->startElement("impuestos");
                 $objetoXML->startElement("impuesto");
                 $objetoXML->startElement("idimpuesto");
-                $objetoXML->text('');
+                $objetoXML->text($id_total_impuesto_iva);
                 $objetoXML->endElement();
                 $objetoXML->startElement("base");
-                $objetoXML->text('');
+                $objetoXML->text(number_format($enc->subtotal,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("factor");
-                $objetoXML->text('');
+                $objetoXML->text($factor_total);
                 $objetoXML->endElement();
                 $objetoXML->startElement("estarifaunitaria");
-                $objetoXML->text('');
+                $objetoXML->text($tarifa_unitaria_total);
                 $objetoXML->endElement();
                 $objetoXML->startElement("valor");
-                $objetoXML->text('');
+                $objetoXML->text(number_format($total_valor_iva,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->endElement();
                 $objetoXML->endElement();
@@ -685,16 +702,16 @@ class FeNotasCreditoController extends Controller
 
                 $objetoXML->startElement("totales");
                 $objetoXML->startElement("totalbruto");
-                $objetoXML->text(number_format($enc->bruto,2,',',''));
+                $objetoXML->text(number_format($enc->bruto,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("baseimponible");
-                $objetoXML->text(number_format($enc->subtotal,2,',',''));
+                $objetoXML->text(number_format($enc->subtotal,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("totalbrutoconimpuestos");
-                $objetoXML->text(number_format($brutomasiva,2,',',''));
+                $objetoXML->text(number_format($brutomasiva,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("totaldescuento");
-                $objetoXML->text(number_format($enc->descuento,2,',',''));
+                $objetoXML->text(number_format($enc->descuento,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("totalcargos");
                 $objetoXML->text($total_cargos);
@@ -703,18 +720,18 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->startElement("totalpagar");
-                $objetoXML->text(number_format($totalpagar,2,',',''));
+                $objetoXML->text(number_format($totalpagar,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("payableroundingamount");
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();
-
+/*
                 $objetoXML->startElement("correoscopia");
                 $objetoXML->startElement("correocopia");
                 $objetoXML->text('');
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
                 $objetoXML->startElement("items");
 
@@ -740,6 +757,41 @@ class FeNotasCreditoController extends Controller
                     if ($id_estandar <> 999)
                     { $nombre_estandar = null;}
                     else { $nombre_estandar = 'EAN13'; }
+                    $id_impuesto = null;
+                    if ( $dNc->iva_item != 0 ){
+                        $id_impuesto = '01';
+                    }
+
+                    // porcentaje de impuesto
+                    $factor = null;
+                    if ( $id_impuesto == '01'){
+                        $factor = '19';
+                    }
+
+                    $umed = null;
+                    if ($dNc->UM == 'UN'){
+                        $umed = '94';
+                    }else{
+                        $umed = 'KGM';
+                    }
+
+                    ////
+                    $id_item_iva = null;
+                    if ($dNc->iva_item != null) {
+                        $id_item_iva = '01';
+                    }
+                    $factor_total_item = null;
+                    if ($id_item_iva == '01'){
+                        $factor_total_item = '19';
+                    }
+                    $tarifa_item_unitaria  = null;
+                    if ($id_item_iva == '01'){
+                        $tarifa_item_unitaria = '0';
+                    }
+
+                    $subtotal_item = $dNc->totalitem - $dNc->descuento;
+                    $total_valor_item_iva = $subtotal_item * 0.19;
+
 
 
 
@@ -845,45 +897,63 @@ class FeNotasCreditoController extends Controller
 
                     $objetoXML->startElement("impuestos");
                     $objetoXML->startElement("impuesto");
-
                     $objetoXML->startElement("idimpuesto");
-                    $objetoXML->text('');
+                    $objetoXML->text($id_item_iva);
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("base");
-                    $objetoXML->text('');
+                    $objetoXML->text(number_format($subtotal_item,2,'.',''));
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("factor");
-                    $objetoXML->text('');
+                    $objetoXML->text($factor_total_item);
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("estarifaunitaria");
-                    $objetoXML->text('');
+                    $objetoXML->text($tarifa_item_unitaria);
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("valor");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
-
+                    $objetoXML->text(number_format($total_valor_item_iva,2,'.',''));
                     $objetoXML->endElement();
                     $objetoXML->endElement();
+                    // RETEFUENTE
+                    /*$objetoXML->startElement("impuesto");
+                        $objetoXML->startElement("idimpuesto");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
 
+                        $objetoXML->startElement("base");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("datosextra");
-                    $objetoXML->startElement("datoextra");
+                        $objetoXML->startElement("factor");
+                        $objetoXML->text($factor_total_item);
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("clave");
-                    $objetoXML->text('');
+                        $objetoXML->startElement("estarifaunitaria");
+                        $objetoXML->text($tarifa_item_unitaria);
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text(number_format($total_valor_item_iva,2,'.',''));
+                        $objetoXML->endElement();
+                    $objetoXML->endElement();*/
                     $objetoXML->endElement();
 
-                    $objetoXML->startElement("valor");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
+                    /* $objetoXML->startElement("datosextra");
+                     $objetoXML->startElement("datoextra");
 
-                    $objetoXML->endElement();
-                    $objetoXML->endElement();
+                     $objetoXML->startElement("clave");
+                     $objetoXML->text('');
+                     $objetoXML->endElement();
 
+                     $objetoXML->startElement("valor");
+                     $objetoXML->text('');
+                     $objetoXML->endElement();
+
+                     $objetoXML->endElement();
+                     $objetoXML->endElement();*/
                     $objetoXML->endElement(); // cierra item
                 }
 

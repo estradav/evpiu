@@ -2,11 +2,11 @@
 <root>
 	<documento>
 		<idnumeracion>2901</idnumeracion>
-		<numero>656963</numero>
+		<numero>673268</numero>
 		<idambiente>2</idambiente>
 		<idreporte>2031</idreporte>
-		<fechadocumento>2019-01-02 06:45:35</fechadocumento>
-		<fechavencimiento>2019-02-16 00:00:00</fechavencimiento>
+		<fechadocumento>2019-11-27 07:24:42</fechadocumento>
+		<fechavencimiento>2019-12-27 00:00:00</fechavencimiento>
 		<tipofactura>01</tipofactura>
 		<tipooperacion>05</tipooperacion>
 		<notas>  </notas>
@@ -29,13 +29,13 @@
 			<idactividadeconomica></idactividadeconomica>
 			<nombrecomercial></nombrecomercial>
 			<idciudad>05001</idciudad>
-			<direccion>TRV 49 B 59 14 LC 301 </direccion>
+			<direccion>CL48 57 87 INT 504 ED ESTACION COMERCIALIZADORA INTERNACIONAL</direccion>
 			<codigopostal></codigopostal>
-			<nombres>LOS PUNTOS DE LA MODA SAS</nombres>
+			<nombres>SOCIEDAD DISTRIBUIDORA DE MODA Y CONFECCION INTERNACIONA SAS</nombres>
 			<apellidos></apellidos>
 			<idtipodocumentoidentidad>31</idtipodocumentoidentidad>
-			<digitoverificacion>1</digitoverificacion>
-			<identificacion>900531112</identificacion>
+			<digitoverificacion>3</digitoverificacion>
+			<identificacion>811030174</identificacion>
 			<obligaciones></obligaciones>
 			<idtiporegimen></idtiporegimen>
 			<direccionfiscal>
@@ -44,9 +44,9 @@
 				<codigopostal></codigopostal>
 			</direccionfiscal>
 			<matriculamercantil></matriculamercantil>
-			<emailcontacto>lospuntosdelamoda@hotmail.com</emailcontacto>
-			<emailentrega>lospuntosdelamoda@hotmail.com</emailentrega>
-			<telefono>5117057</telefono>
+			<emailcontacto>contacto@sodimco.com</emailcontacto>
+			<emailentrega>contacto@sodimco.com</emailentrega>
+			<telefono>4488575</telefono>
 		</adquiriente>
 		<otroautorizado>
 			<idtipopersona></idtipopersona>
@@ -107,9 +107,9 @@
 			<formapago>
 				<idmetodopago>2</idmetodopago>
 				<idmediopago></idmediopago>
-				<fechavencimiento>2019-02-16 00:00:00</fechavencimiento>
+				<fechavencimiento>2019-12-27 00:00:00</fechavencimiento>
 				<identificador></identificador>
-				<dias>45</dias>
+				<dias>30</dias>
 			</formapago>
 		</formaspago>
 		<anticipos>
@@ -132,20 +132,20 @@
 		<impuestos>
 			<impuesto>
 				<idimpuesto>01</idimpuesto>
-				<base>62920.00</base>
+				<base>728000.00</base>
 				<factor>19</factor>
 				<estarifaunitaria>0</estarifaunitaria>
-				<valor>11954.80</valor>
+				<valor>138320.00</valor>
 			</impuesto>
 		</impuestos>
 		<totales>
-			<totalbruto>62920.00</totalbruto>
-			<baseimponible>62920.00</baseimponible>
-			<totalbrutoconimpuestos>74875.00</totalbrutoconimpuestos>
+			<totalbruto>728000.00</totalbruto>
+			<baseimponible>728000.00</baseimponible>
+			<totalbrutoconimpuestos>866320.00</totalbrutoconimpuestos>
 			<totaldescuento>0.00</totaldescuento>
 			<totalcargos>0</totalcargos>
 			<totalanticipos></totalanticipos>
-			<totalapagar>74875.00</totalapagar>
+			<totalapagar>866320.00</totalapagar>
 			<payableroundingamount></payableroundingamount>
 		</totales>
 		<items>
@@ -154,22 +154,22 @@
 					<estandar>
 						<idestandar>999</idestandar>
 						<nombreestandar></nombreestandar>
-						<codigo>35005L040000039</codigo>
+						<codigo>31201L030001900</codigo>
 					</estandar>
 				</codigos>
-				<descripcion>TBA PER L 31 LISO METALIZADO</descripcion>
+				<descripcion>TBPL L 27 LISO C/P</descripcion>
 				<notas></notas>
-				<cantidad>153</cantidad>
+				<cantidad>4000</cantidad>
 				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>250.00</preciounitario>
+				<preciounitario>182.00</preciounitario>
 				<unidaddemedida>94</unidaddemedida>
 				<marca></marca>
 				<modelo></modelo>
-				<codigovendedor>35005L040000039</codigovendedor>
+				<codigovendedor>31201L030001900</codigovendedor>
 				<subcodigovendedor></subcodigovendedor>
 				<idmandante></idmandante>
 				<regalo>0</regalo>
-				<totalitem>38250.00</totalitem>
+				<totalitem>728000.00</totalitem>
 				<cargos>
 					<cargo>
 						<idconcepto></idconcepto>
@@ -183,10 +183,10 @@
 				<impuestos>
 					<impuesto>
 						<idimpuesto>01</idimpuesto>
-						<base>38250.00</base>
+						<base>728000.00</base>
 						<factor>19</factor>
 						<estarifaunitaria>0</estarifaunitaria>
-						<valor>7267.50</valor>
+						<valor>138320.00</valor>
 					</impuesto>
 				</impuestos>
 			</item>
@@ -195,18 +195,18 @@
 					<estandar>
 						<idestandar>999</idestandar>
 						<nombreestandar></nombreestandar>
-						<codigo>30100A010000000</codigo>
+						<codigo>30100A040000000</codigo>
 					</estandar>
 				</codigos>
-				<descripcion>PUNTILLA ALUM 01 LISA</descripcion>
+				<descripcion>PUNTILLA ALUM 03 LISA</descripcion>
 				<notas></notas>
-				<cantidad>257</cantidad>
+				<cantidad>4000</cantidad>
 				<cantidadporempaque></cantidadporempaque>
 				<preciounitario>0.00</preciounitario>
 				<unidaddemedida>94</unidaddemedida>
 				<marca></marca>
 				<modelo></modelo>
-				<codigovendedor>30100A010000000</codigovendedor>
+				<codigovendedor>30100A040000000</codigovendedor>
 				<subcodigovendedor></subcodigovendedor>
 				<idmandante></idmandante>
 				<regalo>1</regalo>
@@ -228,88 +228,6 @@
 						<factor>19</factor>
 						<estarifaunitaria>0</estarifaunitaria>
 						<valor>0.00</valor>
-					</impuesto>
-				</impuestos>
-			</item>
-			<item>
-				<codigos>
-					<estandar>
-						<idestandar>999</idestandar>
-						<nombreestandar></nombreestandar>
-						<codigo>35005L030120039</codigo>
-					</estandar>
-				</codigos>
-				<descripcion>TBA PER L 27 MAR AR METALIZADO</descripcion>
-				<notas></notas>
-				<cantidad>70</cantidad>
-				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>231.00</preciounitario>
-				<unidaddemedida>94</unidaddemedida>
-				<marca></marca>
-				<modelo></modelo>
-				<codigovendedor>35005L030120039</codigovendedor>
-				<subcodigovendedor></subcodigovendedor>
-				<idmandante></idmandante>
-				<regalo>0</regalo>
-				<totalitem>16170.00</totalitem>
-				<cargos>
-					<cargo>
-						<idconcepto></idconcepto>
-						<escargo></escargo>
-						<descripcion></descripcion>
-						<porcentaje></porcentaje>
-						<base></base>
-						<valor></valor>
-					</cargo>
-				</cargos>
-				<impuestos>
-					<impuesto>
-						<idimpuesto>01</idimpuesto>
-						<base>16170.00</base>
-						<factor>19</factor>
-						<estarifaunitaria>0</estarifaunitaria>
-						<valor>3072.30</valor>
-					</impuesto>
-				</impuestos>
-			</item>
-			<item>
-				<codigos>
-					<estandar>
-						<idestandar>999</idestandar>
-						<nombreestandar></nombreestandar>
-						<codigo>35005L040120039</codigo>
-					</estandar>
-				</codigos>
-				<descripcion>TBA PER L 31 MAR AR METALIZADO</descripcion>
-				<notas></notas>
-				<cantidad>34</cantidad>
-				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>250.00</preciounitario>
-				<unidaddemedida>94</unidaddemedida>
-				<marca></marca>
-				<modelo></modelo>
-				<codigovendedor>35005L040120039</codigovendedor>
-				<subcodigovendedor></subcodigovendedor>
-				<idmandante></idmandante>
-				<regalo>0</regalo>
-				<totalitem>8500.00</totalitem>
-				<cargos>
-					<cargo>
-						<idconcepto></idconcepto>
-						<escargo></escargo>
-						<descripcion></descripcion>
-						<porcentaje></porcentaje>
-						<base></base>
-						<valor></valor>
-					</cargo>
-				</cargos>
-				<impuestos>
-					<impuesto>
-						<idimpuesto>01</idimpuesto>
-						<base>8500.00</base>
-						<factor>19</factor>
-						<estarifaunitaria>0</estarifaunitaria>
-						<valor>1615.00</valor>
 					</impuesto>
 				</impuestos>
 			</item>
