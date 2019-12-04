@@ -362,7 +362,7 @@
                             toastr.success("El Archivo XML se ha generado con Exito!.");
                             // preventDefault();  //stop the browser from following
                             var req = new XMLHttpRequest();
-                            req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
+                            req.open("GET", "XML/NotasCredito.xml", true);
                             req.responseType = "blob";
 
                             req.onload = function (event) {

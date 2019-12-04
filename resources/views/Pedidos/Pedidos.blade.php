@@ -561,8 +561,8 @@
                             var i = 0;
                             $('#CondicionPago').append('<option value="" >Seleccione...</option>');
                             $(data).each(function (){
-                              $('#CondicionPago').append('<option value="'+ data[i].DESC_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
-                              i++
+                               $('#CondicionPago').append('<option value="'+ data[i].DESC_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
+                               i++
                             });
                         }
                     })
