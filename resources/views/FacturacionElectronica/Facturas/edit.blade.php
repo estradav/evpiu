@@ -12,7 +12,6 @@
 @section('content')
     @can('facturacion.edit')
     <div class="col-12"><h3> Factura #: {{ $var }} </h3></div>
-    <form action="" method="POST">
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -22,37 +21,37 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Razon social:</label>
-                                    <input type="text" class="form-control" id="razon_social" name="razon_social">
+                                    <input type="text" class="form-control" id="razon_social" name="razon_social" readonly="readonly">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Direccion:</label>
-                                    <input type="text" class="form-control" id="direccion" name="direccion" >
+                                    <input type="text" class="form-control" id="direccion" name="direccion" readonly="readonly">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Tipo de Cliente:</label>
-                                    <input type="text" class="form-control" id="tipo_cliente" name="tipo_cliente">
+                                    <input type="text" class="form-control" id="tipo_cliente" name="tipo_cliente" readonly="readonly">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Telefono:</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono">
+                                    <input type="text" class="form-control" id="telefono" name="telefono" readonly="readonly">
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Ciudad, Estado, Pais:</label>
-                                    <input type="text" class="form-control" id="ciudad_est_pais" name="ciudad_est_pais">
+                                    <input type="text" class="form-control" id="ciudad_est_pais" name="ciudad_est_pais" readonly="readonly">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Contacto:</label>
-                                    <input type="text" class="form-control" id="contacto" name="contacto">
+                                    <input type="text" class="form-control" id="contacto" name="contacto" readonly="readonly">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -60,6 +59,27 @@
                                     <label>Motivo:</label>
                                     <select  class="form-control" id="motivo" name="motivo">
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>% Descuento:</label>
+                                    <input type="number" id="descuento" name="descuento" class="form-control" max="100" min="0">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>IVA:</label>
+                                    <select name="tieneiva" id="tieneiva" class="form-control">
+                                        <option value="1">Si</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Orden Compra:</label>
+                                    <input type="text" id="oc" name="oc" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -75,13 +95,13 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Cedula o Nit:</label>
-                                        <input type="text" class="form-control" id="documento" name="documento">
+                                        <input type="text" class="form-control" id="documento" name="documento" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Fecha Factura:</label>
-                                        <input type="text" class="form-control" id="fecha_factura" name="fecha_factura">
+                                        <input type="text" class="form-control" id="fecha_factura" name="fecha_factura" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -95,25 +115,25 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Fecha Vencimiento:</label>
-                                        <input type="text" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento">
+                                        <input type="text" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Codigo Cliente:</label>
-                                        <input type="text" class="form-control" id="codigo_cliente" name="codigo_cliente">
+                                        <input type="text" class="form-control" id="codigo_cliente" name="codigo_cliente" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Orden de venta:</label>
-                                        <input type="text" class="form-control" id="remision" name="remision">
+                                        <input type="text" class="form-control" id="remision" name="remision" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Notas Factura:</label>
-                                        <textarea cols="30" rows="3" class="form-control" id="notas_factura" name="notas_factura"></textarea>
+                                        <textarea cols="30" rows="5" class="form-control" id="notas_factura" name="notas_factura"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +148,7 @@
                 <div class="card-body">
                     <form role="form">
                         <div class="table-responsive">
-                            <table class="table table-striped first">
+                            <table class="table table-striped first tabla_productos">
                                 <thead>
                                     <tr>
                                         <th style="width: 10% !important; text-align: center">ORDEN</th>
@@ -165,14 +185,14 @@
                             </thead>
                             <tbody id="totales_factura">
                                 <tr>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_bruto"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_descuento"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_retencion"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_seguro"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_flete"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_subtotal"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_iva"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_factura"></td>
+                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_bruto" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_descuento" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_retencion" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_seguro" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_flete" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_subtotal" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_iva" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_factura" readonly="readonly"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -184,14 +204,13 @@
             <div class="col-sm-12 pl-0">
                 <p class="text-right">
                     <a href="{{ route('fe.index') }}" class="btn btn-sm btn-secondary" role="button">Volver</a>
-                    <button class="btn btn-sm btn-primary" type="submit">Guardar cambios</button>
+                    <a href="javascript:void(0)" id="SaveBtn" name="SaveBtn" class="btn btn-sm btn-primary">Guardar cambios</a>
                 </p>
             </div>
         </div>
-    </form>
     @else
         <div class="alert alert-danger" role="alert">
-            No tienes permisos para visualizar editar facturas.
+            No tienes permisos para editar facturas.
         </div>
     @endcan
 
@@ -222,7 +241,7 @@
                             $('#codigo_cliente').val(data['encabezado'][0]['codigocliente'].trim());
                             $('#remision').val(data['encabezado'][0]['ov'].trim());
                             $('#notas_factura').val(data['encabezado'][0]['notas'].trim());
-                            $('#condicion_pago').val(data['encabezado'][0]['plazo'].trim());
+                            $('#condicion_pago').val(data['encabezado'][0]['dias'].trim());
                             $('#Total_flete').val(data['encabezado'][0]['fletes'].trim());
                             $('#Total_subtotal').val(data['encabezado'][0]['subtotal'].trim());
                             $('#Total_seguro').val(data['encabezado'][0]['seguros'].trim());
@@ -230,19 +249,23 @@
                             $('#Total_bruto').val(data['encabezado'][0]['bruto'].trim());
                             $('#Total_iva').val(data['encabezado'][0]['iva'].trim());
                             $('#Total_retencion').val(0);
+                            $('#oc').val(data['encabezado'][0]['OC'].trim());
+
 
                             var i = 0;
                             var n = 1;
                             $(data['detalle']).each(function (){
                                 $('#items_factura').append('<tr>' +
-                                    '<td style="width: 10% !important;">' + '<input id="'+n+'" type="text" class="form-control" value="'+ data['detalle'][i]['OV'].trim() +'">' + '</td>' +
-                                    '<td style="width: 12% !important;">' + '<input id="'+n+'" type="text" class="form-control" value="'+ data['detalle'][i]['CodigoProducto'].trim() +'">' + '</td>' +
-                                    '<td style="width: 15% !important;">' + '<input id="'+n+'" type="text" class="form-control" value="'+ data['detalle'][i]['descripcionproducto'].trim() +'">' + '</td>' +
-                                    '<td style="width: 5%  !important;">' + '<input id="'+n+'" type="text" class="form-control item_unidadmedida" value="'+ data['detalle'][i]['UM'].trim() +'">'  + '</td>' +
-                                    '<td style="width: 10% !important;">' + '<input id="Cant-'+n+'" style="text-align: right !important;" type="number" class="form-control item_cantidad" value="'+ data['detalle'][i]['cantidad'].trim() +'">' + '</td>' +
-                                    '<td style="width: 10% !important;">' + '<input id="Precun-'+n+'" style="text-align: right !important;" type="number" class="form-control item_preciounitario" value="'+ data['detalle'][i]['precio'].trim() +'">' + '</td>' +
-                                    '<td style="width: 10% !important;">' + '<input id="Itmiva-'+n+'" style="text-align: right !important;" type="number" class="form-control item_iva" value="'+ data['detalle'][i]['iva_item'].trim() +'">' + '</td>' +
-                                    '<td style="width: 15% !important;">' + '<input id="ItmPrec-'+n+'" style="text-align: right !important;" type="number" class="form-control item_preciototal" value="'+ data['detalle'][i]['totalitem'].trim() +'">' +'</td>' +
+                                    '<td style="width: 10% !important;">' + '<input type="text" class="form-control" value="'+ data['detalle'][i]['OV'].trim() +'" readonly="readonly" >' + '</td>' +
+                                    '<td style="width: 12% !important;">' + '<input type="text" class="form-control" value="'+ data['detalle'][i]['CodigoProducto'].trim() +' " readonly="readonly">' + '</td>' +
+                                    '<td style="width: 15% !important;">' + '<input type="text" class="form-control" value="'+ data['detalle'][i]['descripcionproducto'].trim() +'" readonly="readonly">' + '</td>' +
+                                    '<td style="width: 5%  !important;">' + '<input id="'+n+'" type="text" class="form-control item_unidadmedida" value="'+ data['detalle'][i]['UM'].trim() +'" readonly="readonly">'  + '</td>' +
+                                    '<td style="width: 10% !important;">' + '<input id="Cant-'+n+'" style="text-align: right !important;" type="number" class="form-control item_cantidad" value="'+ parseFloat(data['detalle'][i]['cantidad'].trim()).toFixed(2) +'" readonly="readonly">' + '</td>' +
+                                    '<td style="width: 10% !important;">' + '<input id="Precun-'+n+'" style="text-align: right !important;" type="number" class="form-control item_preciounitario" value="'+ parseFloat(data['detalle'][i]['precio'].trim()).toFixed(2) +'">' + '</td>' +
+                                    '<td style="width: 10% !important;">' + '<input id="Itmiva-'+n+'" style="text-align: right !important;" type="number" class="form-control item_iva" value="'+ parseFloat(data['detalle'][i]['iva_item'].trim()).toFixed(2) +'" readonly="readonly">' + '</td>' +
+                                    '<td style="width: 15% !important;">' + '<input id="ItmPrec-'+n+'" style="text-align: right !important;" type="number" class="form-control item_preciototal" value="'+ parseFloat(data['detalle'][i]['totalitem'].trim()).toFixed(2) +'" readonly="readonly">' +'</td>' +
+                                    '<td class="item" style="display: none !important;">' + ' <input type="text" value="'+ data['detalle'][i]['item'].trim() +'">' + '</td>' +
+                                    '<td class="ordencompra" style="display: none !important;">' + '<input type="text" value="' + data['detalle'][i]['OV'].trim() + '">' + '</td>' +
                                     '</tr>'
                                 );
                                 i++;
@@ -266,7 +289,7 @@
                             var i = 0;
                             $('#condicion_pago').append('<option value="" >Seleccione...</option>');
                             $(data).each(function (){
-                                $('#condicion_pago').append('<option value="'+ data[i].DESC_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
+                                $('#condicion_pago').append('<option value="'+ data[i].DAYS_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
                                 i++
                             });
                         }
@@ -289,47 +312,56 @@
                 }
 
                 function Calcular_Valores(){
-
                 	var TotalBruto      = $('#Total_bruto').val();
                 	var TotalDescuento  = $('#Total_descuento').val();
                 	var TotalRetencion  = $('#Total_retencion').val();
                     var TotalSeguro     = $('#Total_seguro').val();
                     var TotalFlete      = $('#Total_flete').val();
-                    var TotalSubtotal   = TotalBruto - TotalDescuento;
+                    var TotalSubtotal   = parseFloat(TotalBruto) - parseFloat(TotalDescuento);
                     var TotalIva        = $('#Total_iva').val();
-                    var TotalFactura    = (TotalSubtotal + parseFloat(TotalIva) + parseFloat(TotalSeguro) + parseFloat(TotalFlete)) - parseFloat(TotalRetencion)
-
-                    console.log( TotalSubtotal , TotalSubtotal , parseFloat(TotalIva) , parseFloat(TotalSeguro) , parseFloat(TotalRetencion));
+                    var TotalFactura    = (parseFloat(TotalSubtotal) + parseFloat(TotalIva)  + parseFloat(TotalSeguro) + parseFloat(TotalFlete)) - parseFloat(TotalRetencion);
 
                     $('#Total_factura').val(TotalFactura);
                     $('#Total_subtotal').val(TotalSubtotal);
 
-
                 }
 
                 function Sumar() {
-
                     var Subtotal=0;
                     var IVA = 0;
                     var $dataRows=$("#items_factura");
                     $dataRows.each(function() {
-                        $(this).find('.item_preciototal').each(function(){
-                            Subtotal+=parseInt( $(this).val());
+                        $(this).find('.item_preciounitario').each(function(){
+                            Subtotal+=parseFloat( $(this).val());
                         });
                         $(this).find('.item_iva').each(function(){
-                            IVA+=parseInt( $(this).val());
+                            IVA+=parseFloat( $(this).val());
                         });
                     });
 
                     $('#Total_bruto').val(Subtotal);
                     $('#Total_iva').val(IVA);
                     console.log(Subtotal);
+
+
+                    var valuedesc = $('#descuento').val();
+                    var bruto = $('#Total_bruto').val();
+
+                    if(valuedesc == 0 || valuedesc < 0){
+                        $('#Total_descuento').val(0);
+                    }else{
+                        var Descuento = (bruto * valuedesc) / 100;
+                        console.log('Descuento:'+Descuento);
+                        $('#Total_descuento').val(Descuento);
+                    }
+
                     Calcular_Valores();
                 }
 
                 $('form').on('keyup','.item_preciounitario', function () {
 					var id = $(this).attr('id');
                     id = id.substring(7);
+
                     var precio_unitario = 'Precun-'+id;
                     var item_iva = 'Itmiva-'+id;
                     var item_cant = 'Cant-'+id;
@@ -337,15 +369,202 @@
                     var value = document.getElementById(item_cant).value;
                     var precio_unitarioitm = document.getElementById(precio_unitario).value;
                     var subtotal = precio_unitarioitm * value;
-                    var iva = subtotal * 0.19;
 
-                    document.getElementById(item_iva).value=iva;
-                    document.getElementById(item_subtotal).value=subtotal;
-                    console.log(subtotal);
+                    var Porcdescuento = $('#descuento').val();
+                    var descuento = (subtotal * Porcdescuento) / 100;
 
+                    var subtotalmenosdesc = subtotal - descuento;
+                    var iva = subtotalmenosdesc * 0.19;
+
+                    document.getElementById(item_subtotal).value=subtotalmenosdesc;
+                    document.getElementById(id).value=precio_unitarioitm;
+
+                    if($('#tieneiva').val() == 1){
+                        document.getElementById(item_iva).value=iva;
+                    }else{
+                        document.getElementById(item_iva).value=0;
+                    }
                     Sumar();
-                })
+                });
+
+                $('#tieneiva').on('change',function () {
+                    var estado = $(this).val();
+                    console.log(estado);
+                    if(estado == 1)
+                    {
+                       Sumar();
+                    }
+                    if(estado == 2)
+                    {
+                       $('.item_iva').val(0);
+                       Sumar();
+                    }
+                });
+
+                $('#condicion_pago').on('change', function () {
+                    var fecha_inicio = $('#fecha_factura').val();
+                    console.log('Fecha', fecha_inicio);
+                    var dias = $(this).val();
+                    console.log('Días', dias);
+
+                    // Fecha
+                    // Separar las partes de la fecha por /
+                    var dateparts = fecha_inicio.split('-').map(d => parseInt(d));
+                    // Si no hay 3 partes o alguna no es un número no es correcto
+                    if (dateparts.length !== 3 || !dateparts.every(d => !isNaN(d))){
+                        alert('La fecha no tiene un formato correcto');
+                        return;
+                    }
+                    console.log(dateparts);
+                    // Crea el objeto Date pasando año, mes, día
+                    var fechaDate = new Date(dateparts[0], dateparts[1]-1, dateparts[2]);
+
+                    console.log('part:'+dateparts[2]);
+                    // Dias en formato entero
+                    var diasNum = parseInt(dias);
+
+                    console.log(diasNum);
+                    // Si no es un número no es correcto
+                    if (isNaN(diasNum)){
+                      alert('El número de días no tiene un formato correcto');
+                    }
+
+                    // Suma los días a la fecha
+                    fechaDate.setDate(fechaDate.getDate() + diasNum);
+
+                    console.log('dias:'+ fechaDate.getDate());
+
+                    let formatted_date = fechaDate.getFullYear() + "-" + (fechaDate.getMonth() + 1) + "-" + fechaDate.getDate() + " " + fechaDate.getHours() + ":" + fechaDate.getMinutes() + ":" + fechaDate.getSeconds();
+
+                    $('#fecha_vencimiento').val(formatted_date);
+                    alert('El resultado de sumar ' + dias + ' días a la fecha ' + fecha_inicio + ' es ' + formatted_date);
+                });
+
+                $('#SaveBtn').on('click', function () {
+					var notas =	$('#notas_factura').val();
+					var motivo = $('#motivo').val();
+					var condicionpago = $('#condicion_pago').val();
+					var fechavencimiento = $('#fecha_vencimiento').val();
+					var total_bruto = $('#Total_bruto').val();
+                    var total_descuento = $('#Total_descuento').val();
+                    var total_retencion = $('#Total_retencion').val();
+                    var total_seguro = $('#Total_seguro').val();
+                    var total_flete = $('#Total_flete').val();
+                    var total_subtotal = $('#Total_subtotal').val();
+                    var total_iva = $('#Total_iva').val();
+                    var total_factura = $('#Total_factura').val();
+                    var orden_compra = $('#oc').val();
+
+                    var encabezado = [];
+                    let Items = [];
+                    var Inputs = {
+                        notas: notas,
+                        motivo: motivo,
+                        condicionpago: condicionpago,
+                        fechavencimiento: fechavencimiento,
+                        total_bruto: total_bruto,
+                        total_descuento: total_descuento,
+                        total_retencion: total_retencion,
+                        total_seguro: total_seguro,
+                        total_flete: total_flete,
+                        total_subtotal: total_subtotal,
+                        total_iva: total_iva,
+                        total_factura: total_factura,
+                        Numero_factura: Numero_factura,
+                        ordencompra: orden_compra
+                    };
+                    encabezado.push(Inputs);
+
+
+                    var filas = $("#items_factura").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
+                    for(i=0; i<filas.length; i++) { //Recorre las filas 1 a 1
+                        var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
+                        var cantidad = $($(celdas[4]).children("input")[0]).val();
+                        var preciounitario = $($(celdas[5]).children("input")[0]).val();
+                        var iva = $($(celdas[6]).children("input")[0]).val();
+                        var subtotal = $($(celdas[7]).children("input")[0]).val();
+                        var item = $($(celdas[8]).children("input")[0]).val();
+                        var ordencompra = $($(celdas[9]).children("input")[0]).val();
+
+                        let values = {
+                            cantidad,
+                            preciounitario,
+                            iva,
+                            subtotal,
+                            item,
+                            ordencompra,
+                        };
+                        Items.push(values);
+                    }
+                    console.log(Items);
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        url: "/GuardarFacturaEdit",
+                        type: "post",
+                        data:{
+                            Items,encabezado
+                        },
+                        success: function (data) {
+                            if (data.hasOwnProperty('error')) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '¡Oops!',
+                                    text: '¡Hubo un error al guardar la factura!',
+                                })
+                            }else{
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡Guardado!',
+                                    text: '¡Factura editada con exito!',
+                                })
+                            }
+                        }
+                    })
+                });
+
+                $('#descuento').on('keyup', function () {
+                    var value = $(this).val();
+                    var bruto = $('#Total_bruto').val();
+
+                    if(value == 0 || value < 0){
+                    	$('#Total_descuento').val(0);
+                    	Sumar();
+                    }else{
+                    	var Descuento = (bruto * value) / 100;
+                    	console.log('Descuento:'+Descuento);
+                        $('#Total_descuento').val(Descuento);
+                        Sumar();
+                    }
+                    resultado();
+                });
+
+                function resultado(){
+                    var filas = $("#items_factura").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
+                    var resultado = [];
+                    for(i=0; i<filas.length; i++){ //Recorre las filas 1 a 1
+                        var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
+                        var cantidad = $($(celdas[4]).children("input")[0]).val();
+                        var precio_unitario = $($(celdas[5]).children("input")[0]).val();
+                        var iva = $($(celdas[6]).children("input")[0]).val();
+                        var subtotal = $($(celdas[7]).children("input")[0]).val();
+
+                        var items = [cantidad, precio_unitario, iva, subtotal];
+
+                        console.log(items);
+                        resultado.push(items);
+                    }
+                    console.log(items);
+                }
+
             });
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     @endpush
 @stop

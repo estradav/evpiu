@@ -6,6 +6,7 @@ use App\Http\Requests\FacFeFromRequest;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\DeclareDeclare;
 use XMLWriter;
 use Yajra\DataTables\DataTables;
 
@@ -235,15 +236,15 @@ class FeFacturasController extends Controller
                $objetoXML->text($enc->moneda);
                $objetoXML->endElement();
 
-               $objetoXML->startElement("cufe"); // Cuando se recibe se compara el valor contra el calculado por el sistema y se lanza error en caso de diferencias
+               /*$objetoXML->startElement("cufe"); // Cuando se recibe se compara el valor contra el calculado por el sistema y se lanza error en caso de diferencias
                $objetoXML->text('');
                $objetoXML->endElement();
 
                $objetoXML->startElement("idconceptonota"); // Tabla 7. Códigos Conceptos Notas Crédito. y Tabla 8. Códigos Conceptos Notas Débito. Solo es obligatorio si <idnumeracion> corresponde a una nota debito o credito
                $objetoXML->text('');
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
-               $objetoXML->startElement("referencias"); // 0..1 Obligatorio cuando se trata de una nota debito o credito. La DIAN ya no permite notas sin referencia a una factura
+               /*$objetoXML->startElement("referencias"); // 0..1 Obligatorio cuando se trata de una nota debito o credito. La DIAN ya no permite notas sin referencia a una factura
                $objetoXML->startElement("referencia"); // La DIAN solo acepta referencias a documentos electrónicos, por tanto la referencia debe existir previamente en el sistema
                $objetoXML->startElement("idnumeracion"); // Ya no se acepta referencia a la numeracion por su prefijo
                $objetoXML->text('');
@@ -261,7 +262,7 @@ class FeFacturasController extends Controller
                $objetoXML->startElement('fechafinal'); // En formato YYYY-MM-DD hh:mm:dd
                $objetoXML->text('');
                $objetoXML->endElement();
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
     /*           $objetoXML->startElement("ordencompra");
                $objetoXML->startElement("codigo");
                $objetoXML->text('');
@@ -393,14 +394,14 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
 
 
-               $objetoXML->startElement("otroautorizado");
+               /*$objetoXML->startElement("otroautorizado");
                $objetoXML->startElement("idtipopersona");
                $objetoXML->text('');
                $objetoXML->endElement();
              /*  $objetoXML->startElement("ressponsableiva");
                $objetoXML->text('');
                $objetoXML->endElement();*/
-               $objetoXML->startElement("idactividadeconomica");
+             /*  $objetoXML->startElement("idactividadeconomica");
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->startElement("nombrecomercial");
@@ -459,20 +460,20 @@ class FeFacturasController extends Controller
                $objetoXML->startElement("telefono");
                $objetoXML->text('');
                $objetoXML->endElement();
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
 
-               $objetoXML->startElement("mandato");
+              /* $objetoXML->startElement("mandato");
                $objetoXML->startElement("identificador");
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->startElement("fechacontrato");
                $objetoXML->text('');
                $objetoXML->endElement();
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
 
-               $objetoXML->startElement("mandantes");
+              /* $objetoXML->startElement("mandantes");
                $objetoXML->startElement("mandante");
                $objetoXML->startElement("idtipopersona");
                $objetoXML->text('');
@@ -540,7 +541,7 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->endElement();
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
                $objetoXML->startElement("formaspago");
                $objetoXML->startElement("formapago");
@@ -581,7 +582,7 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();*/
 
 
-               $objetoXML->startElement("anticipos");
+              /* $objetoXML->startElement("anticipos");
                $objetoXML->startElement("anticipo");
                $objetoXML->startElement("identificador");
                $objetoXML->text('');
@@ -593,10 +594,10 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->endElement();
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
 
-               $objetoXML->startElement("cargos");
+              /* $objetoXML->startElement("cargos");
                $objetoXML->startElement("cargo");
                $objetoXML->startElement("idconcepto");
                $objetoXML->text('');
@@ -617,7 +618,7 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->endElement();
-               $objetoXML->endElement();
+               $objetoXML->endElement();*/
 
 
                $objetoXML->startElement("impuestos");
@@ -803,7 +804,7 @@ class FeFacturasController extends Controller
                    $objetoXML->text(number_format($valor_item,2,'.',''));
                    $objetoXML->endElement();
 
-                   $objetoXML->startElement("cargos");
+                   /*$objetoXML->startElement("cargos");
                    $objetoXML->startElement("cargo");
 
                    $objetoXML->startElement("idconcepto");
@@ -831,7 +832,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->endElement();
-                   $objetoXML->endElement();
+                   $objetoXML->endElement();*/
 
                    $objetoXML->startElement("impuestos");
                        $objetoXML->startElement("impuesto");
@@ -949,7 +950,7 @@ class FeFacturasController extends Controller
 
     public function DatosxFactura(Request $request)
     {
-        $encabezado =  DB::connection('MAX')->table('CIEV_V_FE')
+        $encabezado =  DB::connection('MAXP')->table('CIEV_V_FE')
          ->leftJoin('CIEV_V_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FacturasTotalizadas.numero')
          ->select('CIEV_V_FE.numero','CIEV_V_FE.notas','CIEV_V_FE.identificacion as nit_cliente','CIEV_V_FE.nombres',
              'CIEV_V_FE.apellidos','CIEV_V_FE.emailcontacto','CIEV_V_FE.direccion','CIEV_V_FE.emailentrega','CIEV_V_FE.digito_verificador',
@@ -958,10 +959,10 @@ class FeFacturasController extends Controller
              'CIEV_V_FacturasTotalizadas.descuento','CIEV_V_FacturasTotalizadas.subtotal', 'CIEV_V_FacturasTotalizadas.iva','CIEV_V_FacturasTotalizadas.fletes',
              'CIEV_V_FacturasTotalizadas.seguros','CIEV_V_FacturasTotalizadas.moneda','CIEV_V_FacturasTotalizadas.ov','CIEV_V_FacturasTotalizadas.dias',
              'CIEV_V_FacturasTotalizadas.motivo','CIEV_V_FacturasTotalizadas.descplazo as plazo','CIEV_V_FacturasTotalizadas.descmotivo',
-             'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento')
+             'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento','CIEV_V_FE.OC')
          ->where('CIEV_V_FE.numero', '=', $request->numero)->take(1)->get();
 
-         $detalle = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
+         $detalle = DB::connection('MAXP')->table('CIEV_V_FacturasDetalladas')
              ->select('CIEV_V_FacturasDetalladas.factura', 'CIEV_V_FacturasDetalladas.descripcionproducto','CIEV_V_FacturasDetalladas.CodigoProducto',
                  'CIEV_V_FacturasDetalladas.OV','CIEV_V_FacturasDetalladas.item','CIEV_V_FacturasDetalladas.cantidad','CIEV_V_FacturasDetalladas.precio',
                  'CIEV_V_FacturasDetalladas.totalitem', 'CIEV_V_FacturasDetalladas.iva as iva_item', 'CIEV_V_FacturasDetalladas.valormercancia',
@@ -981,28 +982,136 @@ class FeFacturasController extends Controller
         return response()->json($Condicion);
     }
 
-    public function updatefactura(Request $request)
+    public function GuardarFacturaEdit(Request $request)
     {
-        DB::beginTransaction();
-        try{
+        /* preguntar por reason o condicion de pago en un query */
+        $CondicionPago =  DB::connection('MAXP')->table('Code_Master')->where('CDEKEY_36','=','TERM')
+        ->where('DAYS_36','=', $request->encabezado[0]['condicionpago'])->select('CODE_36')->get();
 
-            DB::connection();
+        $Numero_de_factura = '00'.$request->encabezado[0]['Numero_factura'];
 
+        $Detalle = $request->Items;
+        $ConIVA = [];
+        $SinIVA = [];
 
-            DB::commit();
+        foreach($Detalle as $dest){
+            if ($dest['iva'] > 0 ){
+                $ConIVA[] = $dest;
+            }
+            else{
+                $SinIVA[] = $dest;
+            }
         }
-        catch (\Exception $e){
-            DB::rollback();
-            echo json_encode(array(
-                'error' => array(
-                    'msg' => $e->getMessage(),
-                    'code' => $e->getCode(),
-                    'code2' =>$e->getLine(),
-                ),
-            ));
+
+     
+
+
+        if($ConIVA != null && $SinIVA == null) {
+            dd($ConIVA);
+            DB::beginTransaction();
+            try {
+                DB::connection('MAXP')->table('Invoice_master')
+                    ->where('INVCE_31', '=', $Numero_de_factura)
+                    ->update([
+                        'COMNT1_31' => $request->encabezado[0]['notas'],
+                        'REASON_31' => $request->encabezado[0]['motivo'],
+                        'TAX1_31'   => $request->encabezado[0]['total_iva'],
+                        'LNETOT_31' => $request->encabezado[0]['total_bruto'],
+                        'ORDDSC_31' => $request->encabezado[0]['total_descuento'],
+                        'UDFKEY_31' => $request->encabezado[0]['total_retencion'],
+                        'MSCAMT_31' => $request->encabezado[0]['total_seguro'],
+                        'FRTAMT_31' => $request->encabezado[0]['total_flete'],
+                        'TAXTOT_31' => $request->encabezado[0]['total_subtotal'],
+                        'CUSTPO_31' => $request->encabezado[0]['ordencompra'],
+                        'TAXCD1_31' => 'IVA-V19',
+                        'TAXABL_31' => 'Y',
+                        'TERMS_31'  => $CondicionPago[0]->CODE_36,
+                    ]);
+
+                foreach ($ConIVA as $Det) {
+                    $limnnum = substr($Det['item'], 0, 2);
+                    $delnum = substr($Det['item'], 2, 4);
+
+
+
+                    DB::connection('MAXP')->table('Invoice_detail')
+                        ->where('INVCE_32', '=', $Numero_de_factura)
+                        ->where('LINNUM_32', '=', $limnnum)
+                        ->where('DELNUM_32', '=', $delnum)
+                        ->where('ORDNUM_32', '=', $Det['ordencompra'])
+                        ->update([
+                            'PRICE_32'      => $Det['preciounitario'],
+                            'TAX1_32'       => $Det['iva'],
+                            'TAXCDE1_32'    => 'IVA-V19',
+                            'TAXABL_32'     => 'Y'
+                        ]);
+                }
+                DB::commit();
+                return response()->json(['Success' => 'Todo Ok']);
+            }
+            catch (\Exception $e){
+                DB::rollback();
+                echo json_encode(array(
+                    'error' => array(
+                        'msg' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                        'code2' =>$e->getLine(),
+                    ),
+                ));
+            }
         }
+
+
+        if($ConIVA == null && $SinIVA != null) {
+            DB::beginTransaction();
+            try {
+                DB::connection('MAXP')->table('Invoice_master')
+                    ->where('INVCE_31', '=', $Numero_de_factura)
+                    ->update([
+                        'COMNT1_31' => $request->encabezado[0]['notas'],
+                        'REASON_31' => $request->encabezado[0]['motivo'],
+                        'TAX1_31'   => $request->encabezado[0]['total_iva'],
+                        'LNETOT_31' => $request->encabezado[0]['total_bruto'],
+                        'ORDDSC_31' => $request->encabezado[0]['total_descuento'],
+                        'UDFKEY_31' => $request->encabezado[0]['total_retencion'],
+                        'MSCAMT_31' => $request->encabezado[0]['total_seguro'],
+                        'FRTAMT_31' => $request->encabezado[0]['total_flete'],
+                        'TAXTOT_31' => $request->encabezado[0]['total_subtotal'],
+                        'CUSTPO_31' => $request->encabezado[0]['ordencompra'],
+                        'TAXCD1_31' => '',
+                        'TAXABL_31' => 'N',
+                        'TERMS_31'  => $CondicionPago[0]->CODE_36,
+                    ]);
+
+                foreach ($SinIVA as $Det) {
+                    $limnnum = substr($Det['item'], 0, 2);
+                    $delnum = substr($Det['item'], 2, 4);
+                    DB::connection('MAXP')->table('Invoice_detail')
+                        ->where('INVCE_32', '=', $Numero_de_factura)
+                        ->where('LINNUM_32', '=', $limnnum)
+                        ->where('DELNUM_32', '=', $delnum)
+                        ->where('ORDNUM_32', '=', $Det['ordencompra'])
+                        ->update([
+                            'PRICE_32'      => $Det['preciounitario'],
+                            'TAX1_32'       => $Det['iva'],
+                            'TAXCDE1_32'    => '',
+                            'TAXABL_32'     => 'N'
+                        ]);
+                }
+                DB::commit();
+                return response()->json(['Success' => 'Todo Ok']);
+            }
+            catch (\Exception $e){
+                DB::rollback();
+                echo json_encode(array(
+                    'error' => array(
+                        'msg' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                        'code2' =>$e->getLine(),
+                    ),
+                ));
+            }
+        }
+
     }
-
-
-
 }

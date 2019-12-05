@@ -201,6 +201,7 @@ Route::middleware(['auth'])->group(function() {
 
     Route::get('/DatosxFactura','FeFacturasController@DatosxFactura');
     Route::get('/VerCondicionesPago','FeFacturasController@VerCondicionesPago');
+    Route::post('/GuardarFacturaEdit', 'FeFacturasController@GuardarFacturaEdit');
 
 
 });
