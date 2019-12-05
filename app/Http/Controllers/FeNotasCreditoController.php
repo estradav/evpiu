@@ -197,17 +197,17 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text($enc->notas);
                 $objetoXML->endElement();
 
-                $objetoXML->startElement("fechaimpuestos"); // fecha de pago de impuestos ?
+           /*     $objetoXML->startElement("fechaimpuestos"); // fecha de pago de impuestos ?
                 $objetoXML->text('');
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
                 $objetoXML->startElement("moneda"); // ok
                 $objetoXML->text($enc->moneda);
                 $objetoXML->endElement();
 
-                $objetoXML->startElement("cufe"); // Cuando se recibe se compara el valor contra el calculado por el sistema y se lanza error en caso de diferencias
+               /* $objetoXML->startElement("cufe"); // Cuando se recibe se compara el valor contra el calculado por el sistema y se lanza error en caso de diferencias
                 $objetoXML->text('');
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
                 $conceptonota = substr($enc->motivo,1);
                 $objetoXML->startElement("idconceptonota"); // Tabla 7. Códigos Conceptos Notas Crédito. y Tabla 8. Códigos Conceptos Notas Débito. Solo es obligatorio si <idnumeracion> corresponde a una nota debito o credito
@@ -226,7 +226,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
 
 
-                $objetoXML->startElement("ordencompra");
+               /* $objetoXML->startElement("ordencompra");
                 $objetoXML->startElement("codigo");
                 $objetoXML->text('');
                 $objetoXML->endElement();
@@ -239,7 +239,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->startElement("nombrearchivo");
                 $objetoXML->text('');
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
                 /*$objetoXML->startElement("constanciarecibido");
                 $objetoXML->startElement("codigo");
@@ -655,7 +655,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();*/
 
 
-                $objetoXML->startElement("cargos");
+                /*$objetoXML->startElement("cargos");
                 $objetoXML->startElement("cargo");
                 $objetoXML->startElement("idconcepto");
                 $objetoXML->text('');
@@ -676,7 +676,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();
-                $objetoXML->endElement();
+                $objetoXML->endElement();*/
 
 
                 $objetoXML->startElement("impuestos");
@@ -820,7 +820,7 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("cantidad");
-                    $objetoXML->text(number_format($dNc->cantidad, 0, '', ''));
+                    $objetoXML->text(number_format(abs($dNc->cantidad)  , 0, '', ''));
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("cantidadporempaque");
@@ -828,7 +828,7 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("preciounitario");
-                    $objetoXML->text(number_format($dNc->precio,2,'.',''));
+                    $objetoXML->text(number_format(abs($dNc->precio),2,'.',''));
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("unidaddemedida");
@@ -864,7 +864,7 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->endElement();
 
 
-                    $objetoXML->startElement("cargos");
+                    /*$objetoXML->startElement("cargos");
                     $objetoXML->startElement("cargo");
 
                     $objetoXML->startElement("idconcepto");
@@ -892,7 +892,7 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->endElement();
-                    $objetoXML->endElement();
+                    $objetoXML->endElement();*/
 
 
                     $objetoXML->startElement("impuestos");
@@ -902,7 +902,7 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("base");
-                    $objetoXML->text(number_format($subtotal_item,2,'.',''));
+                    $objetoXML->text(number_format(abs($subtotal_item),2,'.',''));
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("factor");
@@ -914,7 +914,7 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("valor");
-                    $objetoXML->text(number_format($total_valor_item_iva,2,'.',''));
+                    $objetoXML->text(number_format(abs($total_valor_item_iva),2,'.',''));
                     $objetoXML->endElement();
                     $objetoXML->endElement();
                     // RETEFUENTE
