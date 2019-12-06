@@ -630,7 +630,7 @@ class FeFacturasController extends Controller
                $objetoXML->startElement("impuestos");
                $objetoXML->startElement("impuesto");
                $objetoXML->startElement("idimpuesto");
-               $objetoXML->text($id_total_impuesto_iva);
+               $objetoXML->text(abs($id_total_impuesto_iva));
                $objetoXML->endElement();
                $objetoXML->startElement("base");
                $objetoXML->text(number_format($enc->subtotal,2,'.',''));
@@ -642,7 +642,7 @@ class FeFacturasController extends Controller
                $objetoXML->text($tarifa_unitaria_total);
                $objetoXML->endElement();
                $objetoXML->startElement("valor");
-               $objetoXML->text(number_format($total_valor_iva,2,'.',''));
+               $objetoXML->text(number_format(abs($total_valor_iva),2,'.',''));
                $objetoXML->endElement();
                $objetoXML->endElement();
                $objetoXML->endElement();
