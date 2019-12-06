@@ -854,7 +854,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("base");
-                   $objetoXML->text(number_format($subtotal_item, 2, '.', ''));
+                   $objetoXML->text(number_format(abs($subtotal_item), 2, '.', ''));
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("factor");
@@ -866,7 +866,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("valor");
-                   $objetoXML->text(number_format($total_valor_item_iva, 2, '.', ''));
+                   $objetoXML->text(number_format(abs($total_valor_item_iva), 2, '.', ''));
                    $objetoXML->endElement();
                    $objetoXML->endElement();
                    // RETEFUENTE
