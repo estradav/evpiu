@@ -134,9 +134,10 @@ class FeFacturasController extends Controller
 
            foreach ($Encabezado as $enc) {
                ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
-               $brutomasiva     =  $enc->bruto + $enc->iva;
-               $totalpagar      = ($enc->bruto - $enc->descuento) + $enc->iva;
-               $total_cargos    =  $enc->fletes + $enc->seguros;
+               $brutomasiva     =  number_format($enc->bruto,2,'.','') + number_format($enc->iva,2,'.','');
+               $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
+               $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
+               $total_cargos    = number_format($enc->fletes,2,'.','') + number_format($enc->seguros,2,'.','');
 
                //determina si la factura es exportacion o para venta nacional
                 $tipo_fac_en = null;
@@ -189,6 +190,8 @@ class FeFacturasController extends Controller
                /// para  Rte Fuente
                $total_item_valor = $enc->subtotal + $total_valor_iva;
 
+
+               $DescuentoTotalFactura = ($enc->descuento / $enc->bruto )* 100;
                ////////////////// FIN CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
 
                //Construimos el xlm
@@ -605,28 +608,30 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
                $objetoXML->endElement();*/
-              /* $objetoXML->startElement("cargos");
-               $objetoXML->startElement("cargo");
-               $objetoXML->startElement("idconcepto");
-               $objetoXML->text('');
+               $objetoXML->startElement("cargos");
+                   $objetoXML->startElement("cargo");
+                       $objetoXML->startElement("idconcepto");
+                       $objetoXML->text('01');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("escargo");
+                       $objetoXML->text('0');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("descripcion");
+                       $objetoXML->text('Descuento general');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("porcentaje");
+                       $objetoXML->text($DescuentoTotalFactura);
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("base");
+                       $objetoXML->text($enc->bruto);
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("valor");
+                       $objetoXML->text($enc->descuento);
+                       $objetoXML->endElement();
+                   $objetoXML->endElement();
                $objetoXML->endElement();
-               $objetoXML->startElement("escargo");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("descripcion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("porcentaje");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("base");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("valor");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
+
+
                $objetoXML->startElement("impuestos");
                $objetoXML->startElement("impuesto");
                $objetoXML->startElement("idimpuesto");
@@ -662,7 +667,7 @@ class FeFacturasController extends Controller
                $objetoXML->text(number_format($enc->descuento,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("totalcargos");
-               $objetoXML->text($total_cargos);
+               $objetoXML->text(number_format($total_cargos,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("totalanticipos");
                $objetoXML->text('');
@@ -748,6 +753,8 @@ class FeFacturasController extends Controller
                    $subtotal_item = $it->totalitem - $it->Desc_Item;
                    $total_valor_item_iva = $subtotal_item * 0.19;
 
+                   $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
+
 
                    $objetoXML->startElement("item");
 
@@ -817,35 +824,35 @@ class FeFacturasController extends Controller
                    $objetoXML->text(number_format($valor_item, 2, '.', ''));
                    $objetoXML->endElement();
 
-                   /*$objetoXML->startElement("cargos");
+                   $objetoXML->startElement("cargos");
                    $objetoXML->startElement("cargo");
 
                    $objetoXML->startElement("idconcepto");
-                   $objetoXML->text('');
+                   $objetoXML->text('01');
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("escargo");
-                   $objetoXML->text('');
+                   $objetoXML->text('0');
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("descripcion");
-                   $objetoXML->text('');
+                   $objetoXML->text('Descuento general');
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("porcentaje");
-                   $objetoXML->text('');
+                   $objetoXML->text($DescuentoPorItem);
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("base");
-                   $objetoXML->text('');
+                   $objetoXML->text($valor_item);
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("valor");
-                   $objetoXML->text('');
+                   $objetoXML->text($it->Desc_Item);
                    $objetoXML->endElement();
 
                    $objetoXML->endElement();
-                   $objetoXML->endElement();*/
+                   $objetoXML->endElement();
 
                    $objetoXML->startElement("impuestos");
                    $objetoXML->startElement("impuesto");
@@ -1141,6 +1148,5 @@ class FeFacturasController extends Controller
                 ));
             }
         }
-
     }
 }
