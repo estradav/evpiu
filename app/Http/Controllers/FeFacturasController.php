@@ -115,7 +115,7 @@ class FeFacturasController extends Controller
                ->select('CIEV_V_FacturasDetalladas.factura','CIEV_V_FacturasDetalladas.codigoproducto', 'CIEV_V_FacturasDetalladas.descripcionproducto',
                    'CIEV_V_FacturasDetalladas.OC','CIEV_V_FacturasDetalladas.item','CIEV_V_FacturasDetalladas.cantidad','CIEV_V_FacturasDetalladas.precio',
                    'CIEV_V_FacturasDetalladas.totalitem', 'CIEV_V_FacturasDetalladas.iva as iva_item', 'CIEV_V_FacturasDetalladas.valormercancia',
-                   'CIEV_V_FacturasDetalladas.descuento','CIEV_V_FacturasDetalladas.UM','CIEV_V_FacturasDetalladas.base')
+                   'CIEV_V_FacturasDetalladas.Desc_Item','CIEV_V_FacturasDetalladas.UM','CIEV_V_FacturasDetalladas.base')
                ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
 
            $Config = DB::table('fe_configs')->take(1)->get();
@@ -285,7 +285,7 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();*/
                $objetoXML->startElement("ordendecompra");
                $objetoXML->startElement("codigo");
-               $objetoXML->text($enc->OC);
+               $objetoXML->text(trim($enc->OC));
                $objetoXML->endElement();
                $objetoXML->startElement("fechageneracion");
                $objetoXML->text('');
@@ -630,7 +630,7 @@ class FeFacturasController extends Controller
                $objetoXML->startElement("impuestos");
                $objetoXML->startElement("impuesto");
                $objetoXML->startElement("idimpuesto");
-               $objetoXML->text(abs($id_total_impuesto_iva));
+               $objetoXML->text($id_total_impuesto_iva);
                $objetoXML->endElement();
                $objetoXML->startElement("base");
                $objetoXML->text(number_format($enc->subtotal,2,'.',''));
@@ -734,18 +734,18 @@ class FeFacturasController extends Controller
                    ////
                    $id_item_iva = null;
                    if ($it->iva_item != null) {
-                       $id_item_iva = '01';
+                       $id_item_iva = '0'.'1';
                    }
                    $factor_total_item = null;
-                   if ($id_item_iva == '01') {
+                   if ($id_item_iva == '0'.'1') {
                        $factor_total_item = '19';
                    }
                    $tarifa_item_unitaria = null;
-                   if ($id_item_iva == '01') {
+                   if ($id_item_iva == '0'.'1') {
                        $tarifa_item_unitaria = '0';
                    }
 
-                   $subtotal_item = $it->totalitem - $it->descuento;
+                   $subtotal_item = $it->totalitem - $it->Desc_Item;
                    $total_valor_item_iva = $subtotal_item * 0.19;
 
 
@@ -802,7 +802,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("subcodigovendedor");
-                   $objetoXML->text($it->OC);
+                   $objetoXML->text(trim($it->OC));
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("idmandante");
