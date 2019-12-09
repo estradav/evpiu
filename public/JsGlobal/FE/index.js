@@ -178,7 +178,7 @@ $(document).ready(function () {
                     $('td', row).css('color', 'red');
                 }
 
-                if (data.emailcontacto.trim() == ''){
+                if (data.emailcontacto == ''){
                     $('td', row).css('color', 'red');
                 }
             },
@@ -395,7 +395,7 @@ $(document).ready(function () {
             count = 1;
         }
 
-        if (d.emailcontacto.trim() == ''){
+        if (d.emailcontacto == null){
             resultado.push('<label class="alert-danger">Falta email de Contacto </label><br>');
             count = 1;
         }
