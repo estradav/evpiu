@@ -84,7 +84,7 @@ $(document).ready(function () {
                 {data: 'selectAll', name: 'selectAll', orderable: false, searchable: false },
                 {class: "details-control", orderable:false, data: null, defaultContent: ""},
                 {data: 'id', name: 'id', orderable: false, searchable: true},
-                {data: 'ov', name: 'ov', orderable: false, searchable: true},
+                /*{data: 'ov', name: 'ov', orderable: false, searchable: true},*/
                 {data: 'fecha', name: 'fecha', orderable: false, searchable: false},
                 {data: 'plazo', name: 'plazo', orderable: false, searchable: false},
                 {data: 'razon_social', name: 'razon_social'},
@@ -145,7 +145,6 @@ $(document).ready(function () {
                     $(row).find('td:eq(9)').css('color', 'red');
                 }
 
-
                 if (data.bruto <= 3000) {
                     $(row).find('td:eq(9)').css('color', 'red');
                 }
@@ -174,13 +173,17 @@ $(document).ready(function () {
                 if (data.email == null) {
                     $('td', row).css('color', 'red');
                 }
+
                 if (data.nombres == null){
+                    $('td', row).css('color', 'red');
+                }
+
+                if (data.emailcontacto.trim() == ''){
                     $('td', row).css('color', 'red');
                 }
             },
 
         });
-        console.log(errors);
     }
 
     var detailRows = [];
@@ -241,26 +244,21 @@ $(document).ready(function () {
             }
         });
         if (selected.length) {
+
+            Swal.fire({
+                icon: false,
+                title: 'Generando XML un momento por favor...',
+                html: '<img src="img/cargando.gif" alt="" >',
+                showConfirmButton: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            });
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            });
-            toastr.info('Un momento por favor...','Generando XML.',{
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "10000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
             });
 
             $.ajax({
@@ -270,7 +268,13 @@ $(document).ready(function () {
                 data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
                 url: 'fe/xml',
                 success: function ( data) {
-                    toastr.success("El Archivo XML se ha generado con Exito!.");
+                    sweetAlert.close();
+                    Swal.fire({
+                        title: 'Terminado!',
+                        html: 'XML generado con exito!.',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                    });
                     // preventDefault();  //stop the browser from following
                     var req = new XMLHttpRequest();
                     req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
@@ -278,7 +282,6 @@ $(document).ready(function () {
 
                     req.onload = function (event) {
                         var blob = req.response;
-                        console.log(blob.size);
                         var link=document.createElement('a');
                         link.href=window.URL.createObjectURL(blob);
                         let current_datetime = new Date();
@@ -290,7 +293,11 @@ $(document).ready(function () {
                 }
             });
         } else
-            toastr.error("Debes seleccionar al menos una Factura.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Debes seleccionar al menos una factura...!',
+            });
         return false;
     });
 
@@ -309,7 +316,6 @@ $(document).ready(function () {
 
     var resultado;
     function format ( d ) {
-        console.log(d);
         var porc_iva = (d.valor_iva / d.subtotal) * 100;
         var count = 0;
         resultado = [];
@@ -383,8 +389,14 @@ $(document).ready(function () {
             resultado.push('<label class="alert-danger">la factura debe llevar motivo </label><br>');
             count = 1;
         }
+
         if (d.nombres == null){
             resultado.push('<label class="alert-danger">Falta nombres en DMS </label><br>');
+            count = 1;
+        }
+
+        if (d.emailcontacto.trim() == ''){
+            resultado.push('<label class="alert-danger">Falta email de Contacto </label><br>');
             count = 1;
         }
 

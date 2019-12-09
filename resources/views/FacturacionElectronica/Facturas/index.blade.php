@@ -51,7 +51,7 @@
                                     <th><input type="checkbox" id="selectAll" name="selectAll" class="selectAll"></th>
                                     <th>&nbsp; &nbsp;</th>
                                     <th>Numero</th>
-                                    <th>OV</th>
+                                    {{--<th>OV</th>--}}
                                     <th>Fecha</th>
                                     <th>Plazo</th>
                                     <th>Razon Social</th>
@@ -92,6 +92,17 @@
         </div>
     </div>
 
+   {{-- <div class="modal fade" id="Carga" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="img/carga.gif" alt="" >
+                </div>
+            </div>
+        </div>
+    </div>
+--}}
+
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar las Facturas.
@@ -125,5 +136,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" ></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 @endpush
 @stop

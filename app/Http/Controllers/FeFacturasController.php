@@ -34,6 +34,7 @@ class FeFacturasController extends Controller
                         'CIEV_V_FE.codigo_alterno as cod_alter',
                         'CIEV_V_FacturasTotalizadas.subtotal as subtotal',
                         'CIEV_V_FE.emailentrega as email',
+                        'CIEV_V_FE.emailcontacto as emailcontacto',
                         'CIEV_V_FE.nombres as nombres',
                         'CIEV_V_FE.apellidos as apellidos',
                         'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
@@ -58,6 +59,7 @@ class FeFacturasController extends Controller
                         'CIEV_V_FE.codigo_alterno as cod_alter',
                         'CIEV_V_FacturasTotalizadas.subtotal as subtotal',
                         'CIEV_V_FE.emailentrega as email',
+                        'CIEV_V_FE.emailcontacto as emailcontacto',
                         'CIEV_V_FE.nombres as nombres',
                         'CIEV_V_FE.apellidos as apellidos',
                         'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
@@ -936,6 +938,9 @@ class FeFacturasController extends Controller
                        $objetoXML->endElement();
                    }
 
+                   if($enc->tipo_cliente != 'PN' && $enc->iva != 0 && $enc->subtotal != 0){
+
+                   }
                    // RETEFUENTE
                    /*$objetoXML->startElement("impuesto");
                        $objetoXML->startElement("idimpuesto");
@@ -958,7 +963,7 @@ class FeFacturasController extends Controller
                        $objetoXML->text(number_format($total_valor_item_iva,2,'.',''));
                        $objetoXML->endElement();
                    $objetoXML->endElement();*/
-                   
+
                    $objetoXML->endElement();
                    $objetoXML->endElement(); // cierra item
                }
