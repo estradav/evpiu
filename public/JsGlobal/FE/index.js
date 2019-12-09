@@ -84,7 +84,7 @@ $(document).ready(function () {
                 {data: 'selectAll', name: 'selectAll', orderable: false, searchable: false },
                 {class: "details-control", orderable:false, data: null, defaultContent: ""},
                 {data: 'id', name: 'id', orderable: false, searchable: true},
-                /*{data: 'ov', name: 'ov', orderable: false, searchable: true},*/
+                {data: 'ov', name: 'ov', orderable: false, searchable: true},
                 {data: 'fecha', name: 'fecha', orderable: false, searchable: false},
                 {data: 'plazo', name: 'plazo', orderable: false, searchable: false},
                 {data: 'razon_social', name: 'razon_social'},
@@ -390,12 +390,12 @@ $(document).ready(function () {
             count = 1;
         }
 
-        if (d.nombres == null){
+        if (d.nombres == ''){
             resultado.push('<label class="alert-danger">Falta nombres en DMS </label><br>');
             count = 1;
         }
 
-        if (d.emailcontacto == null){
+        if (d.emailcontacto == ''){
             resultado.push('<label class="alert-danger">Falta email de Contacto </label><br>');
             count = 1;
         }
