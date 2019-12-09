@@ -174,6 +174,9 @@ $(document).ready(function () {
                 if (data.email == null) {
                     $('td', row).css('color', 'red');
                 }
+                if (data.nombres == null){
+                    $('td', row).css('color', 'red');
+                }
             },
 
         });
@@ -377,7 +380,11 @@ $(document).ready(function () {
         }
 
         if (d.motivo == null) {
-             resultado.push('<label class="alert-danger">la factura debe llevar motivo </label><br>');
+            resultado.push('<label class="alert-danger">la factura debe llevar motivo </label><br>');
+            count = 1;
+        }
+        if (d.nombres == null){
+            resultado.push('<label class="alert-danger">Falta nombres en DMS </label><br>');
             count = 1;
         }
 
