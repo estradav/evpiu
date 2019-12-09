@@ -390,12 +390,12 @@ $(document).ready(function () {
             count = 1;
         }
 
-        if (d.nombres == null){
+        if (d.nombres.trim() == ''){
             resultado.push('<label class="alert-danger">Falta nombres en DMS </label><br>');
             count = 1;
         }
 
-        if (d.emailcontacto == null){
+        if (d.emailcontacto.trim() == ''){
             resultado.push('<label class="alert-danger">Falta email de Contacto </label><br>');
             count = 1;
         }
