@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 	<documento>
-		<idnumeracion>2901</idnumeracion>
-		<numero>656959</numero>
-		<idambiente>2</idambiente>
-		<idreporte>2031</idreporte>
-		<fechadocumento>2019-01-02 06:20:11</fechadocumento>
-		<fechavencimiento>2019-02-16 00:00:00</fechavencimiento>
+		<idnumeracion>1416</idnumeracion>
+		<numero>674030</numero>
+		<idambiente>1</idambiente>
+		<idreporte>1000</idreporte>
+		<fechadocumento>2019-12-10 15:36:23</fechadocumento>
+		<fechavencimiento>2019-12-10 00:00:00</fechavencimiento>
 		<tipofactura>01</tipofactura>
 		<tipooperacion>05</tipooperacion>
-		<notas>  </notas>
+		<notas>COMPLEMENTO: </notas>
 		<fechaimpuestos></fechaimpuestos>
 		<moneda>COP</moneda>
+		<ordendecompra>
+			<codigo></codigo>
+			<fechageneracion></fechageneracion>
+			<base64></base64>
+			<nombrearchivo> </nombrearchivo>
+		</ordendecompra>
 		<adquiriente>
 			<idtipopersona></idtipopersona>
 			<idactividadeconomica></idactividadeconomica>
 			<nombrecomercial></nombrecomercial>
-			<idciudad>05088</idciudad>
-			<direccion>CARRERA 50 33 -38  PISO 3 </direccion>
+			<idciudad>05360</idciudad>
+			<direccion>CR 42 75 273 AUT SUR </direccion>
 			<codigopostal></codigopostal>
-			<nombres>CREAJEANS SAS</nombres>
+			<nombres>LAMINACO SAS</nombres>
 			<apellidos></apellidos>
 			<idtipodocumentoidentidad>31</idtipodocumentoidentidad>
-			<digitoverificacion>2</digitoverificacion>
-			<identificacion>811045990</identificacion>
-			<obligaciones></obligaciones>
+			<digitoverificacion>7</digitoverificacion>
+			<identificacion>890900486</identificacion>
+			<obligaciones>R-99-PN</obligaciones>
 			<idtiporegimen></idtiporegimen>
 			<direccionfiscal>
 				<idcuidad></idcuidad>
@@ -32,36 +38,46 @@
 				<codigopostal></codigopostal>
 			</direccionfiscal>
 			<matriculamercantil></matriculamercantil>
-			<emailcontacto>creajeans@une.net.co</emailcontacto>
-			<emailentrega>creajeans@une.net.co</emailentrega>
-			<telefono>4514472</telefono>
+			<emailcontacto>laminaco@une.net.co</emailcontacto>
+			<emailentrega>laminaco@une.net.co</emailentrega>
+			<telefono>2814800</telefono>
 		</adquiriente>
 		<formaspago>
 			<formapago>
-				<idmetodopago>2</idmetodopago>
-				<idmediopago></idmediopago>
-				<fechavencimiento>2019-02-16 00:00:00</fechavencimiento>
+				<idmetodopago>1</idmetodopago>
+				<idmediopago>10</idmediopago>
+				<fechavencimiento>2019-12-10 00:00:00</fechavencimiento>
 				<identificador></identificador>
-				<dias>45</dias>
+				<dias>0</dias>
 			</formapago>
 		</formaspago>
+		<cargos>
+			<cargo>
+				<idconcepto>01</idconcepto>
+				<escargo>0</escargo>
+				<descripcion>Descuento general</descripcion>
+				<porcentaje>0</porcentaje>
+				<base>3486412.7999999998</base>
+				<valor>0.0</valor>
+			</cargo>
+		</cargos>
 		<impuestos>
 			<impuesto>
 				<idimpuesto>01</idimpuesto>
-				<base>605319.00</base>
+				<base>3486412.80</base>
 				<factor>19</factor>
 				<estarifaunitaria>0</estarifaunitaria>
-				<valor>115010.61</valor>
+				<valor>662418.43</valor>
 			</impuesto>
 		</impuestos>
 		<totales>
-			<totalbruto>605319.00</totalbruto>
-			<baseimponible>605319.00</baseimponible>
-			<totalbrutoconimpuestos>720330.00</totalbrutoconimpuestos>
+			<totalbruto>3486412.80</totalbruto>
+			<baseimponible>3486412.80</baseimponible>
+			<totalbrutoconimpuestos>4148830.80</totalbrutoconimpuestos>
 			<totaldescuento>0.00</totaldescuento>
-			<totalcargos>0</totalcargos>
+			<totalcargos>0.00</totalcargos>
 			<totalanticipos></totalanticipos>
-			<totalapagar>720330.00</totalapagar>
+			<totalapagar>4148830.80</totalapagar>
 			<payableroundingamount></payableroundingamount>
 		</totales>
 		<items>
@@ -70,63 +86,54 @@
 					<estandar>
 						<idestandar>999</idestandar>
 						<nombreestandar></nombreestandar>
-						<codigo>33101L040121900</codigo>
+						<codigo>60002</codigo>
 					</estandar>
 				</codigos>
-				<descripcion>TBPA L 31 MAR AR C/P</descripcion>
+				<descripcion>RETAL LATON</descripcion>
 				<notas></notas>
-				<cantidad>4233</cantidad>
+				<cantidad>340.47</cantidad>
 				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>143.00</preciounitario>
-				<unidaddemedida>94</unidaddemedida>
+				<preciounitario>10240.00</preciounitario>
+				<unidaddemedida>KGM</unidaddemedida>
 				<marca></marca>
 				<modelo></modelo>
-				<codigovendedor>33101L040121900</codigovendedor>
+				<codigovendedor>60002</codigovendedor>
 				<subcodigovendedor></subcodigovendedor>
 				<idmandante></idmandante>
 				<regalo>0</regalo>
-				<totalitem>605319.00</totalitem>
+				<totalitem>3486412.80</totalitem>
+				<cargos>
+					<cargo>
+						<idconcepto>01</idconcepto>
+						<escargo>0</escargo>
+						<descripcion>Descuento general</descripcion>
+						<porcentaje>0</porcentaje>
+						<base>3486412.8</base>
+						<valor></valor>
+					</cargo>
+				</cargos>
 				<impuestos>
 					<impuesto>
 						<idimpuesto>01</idimpuesto>
-						<base>605319.00</base>
+						<base>3486412.80</base>
 						<factor>19</factor>
 						<estarifaunitaria>0</estarifaunitaria>
-						<valor>115010.61</valor>
-					</impuesto>
-				</impuestos>
-			</item>
-			<item>
-				<codigos>
-					<estandar>
-						<idestandar>999</idestandar>
-						<nombreestandar></nombreestandar>
-						<codigo>30100A040000000</codigo>
-					</estandar>
-				</codigos>
-				<descripcion>PUNTILLA ALUM 03 LISA</descripcion>
-				<notas></notas>
-				<cantidad>4233</cantidad>
-				<cantidadporempaque></cantidadporempaque>
-				<preciounitario>0.00</preciounitario>
-				<unidaddemedida>94</unidaddemedida>
-				<marca></marca>
-				<modelo></modelo>
-				<codigovendedor>30100A040000000</codigovendedor>
-				<subcodigovendedor></subcodigovendedor>
-				<idmandante></idmandante>
-				<regalo>1</regalo>
-				<totalitem>0.00</totalitem>
-				<impuestos>
-					<impuesto>
-						<idimpuesto>01</idimpuesto>
-						<base>0.00</base>
-						<factor>19</factor>
-						<estarifaunitaria>0</estarifaunitaria>
-						<valor>0.00</valor>
+						<valor>662418.43</valor>
 					</impuesto>
 				</impuestos>
 			</item>
 		</items>
+		<datosextra>
+			<datoextra>
+				<tipo>1</tipo>
+				<clave>CONDICION_PAGO</clave>
+				<valor>CONTADO</valor>
+			</datoextra>
+			<datoextra>
+				<tipo>1</tipo>
+				<clave>CODIGO_CLIENTE</clave>
+				<valor>03017</valor>
+			</datoextra>
+		</datosextra>
 	</documento>
 </root>

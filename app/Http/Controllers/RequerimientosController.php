@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CodLinea;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -23,7 +24,7 @@ class RequerimientosController extends Controller
                         ->get();
                     return Datatables::of($data)
                         ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Asignar " name="Asignar" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
+                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm addRender " name="addRender" id="'.$row->id.'" disabled><i class="fas fa-file-upload"></i> Cargar</button>'.'</div>';
                             return $btn;
                         })
                         ->rawColumns(['opciones'])
@@ -36,12 +37,41 @@ class RequerimientosController extends Controller
                         ->get();
                     return Datatables::of($data)
                         ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Asignar" name="Asignar" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
+                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm addRender" name="addRender" id="'.$row->id.'"><i class="fas fa-file-upload"></i> Cargar</button>'.'</div>';
                             return $btn;
                         })
                         ->rawColumns(['opciones'])
                         ->make(true);
+                }
+            }
 
+
+            if ($request->estado == 2) {
+                if ($request->perfil == 1 || $request->perfil == 3 || $request->perfil == 4){
+                    $data =  DB::table('maestro_requerimientos')
+                        ->where('estado','=',$request->estado)
+                        ->orderBy('estado', 'desc')
+                        ->get();
+                    return Datatables::of($data)
+                        ->addColumn('opciones', function($row){
+                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Asignar " name="Asignar" id="'.$row->id.'" disabled><i class="fas fa-hands-helping"></i> Asignar</button>'.'</div>';
+                            return $btn;
+                        })
+                        ->rawColumns(['opciones'])
+                        ->make(true);
+                }
+                if ($request->perfil == 2 ||$request->perfil == 999){
+                    $data =  DB::table('maestro_requerimientos')
+                        ->where('estado','=',$request->estado)
+                        ->orderBy('estado', 'desc')
+                        ->get();
+                    return Datatables::of($data)
+                        ->addColumn('opciones', function($row){
+                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Asignar" name="Asignar" id="'.$row->id.'"><i class="fas fa-hands-helping"></i> Asignar</button>'.'</div>';
+                            return $btn;
+                        })
+                        ->rawColumns(['opciones'])
+                        ->make(true);
                 }
             }
 
@@ -518,15 +548,26 @@ class RequerimientosController extends Controller
 
     public function NewRequerimiento(Request $request)
     {
-        dd($request);
-        DB::table('maestro_requerimientos')->insertGetId([
-            'descripcion'   => $request->Producto,
+        if($request->Plano == 1){
+            $estado = 1;
+        }else{
+            $estado = 2;
+        }
+        $requerimiento = DB::table('maestro_requerimientos')->insertGetId([
+            'producto'      => $request->Producto,
             'informacion'   => $request->Informacion,
-            'vendedor'      => $request->Vendedor,
-            'diseñador'     => $request->Diseñador,
+            'vendedor_id'   => $request->Vendedor,
+/*            'diseñador_id'  => $request->Diseñador,*/
             'marca'         => $request->Marca,
-            'render'        => $request->Render
+            'render'        => $request->Render,
+            'estado'        => $estado,
+            'created_at'    => Carbon::now(),
+            'Updated_at'    => Carbon::now(),
+            'usuario'       => $request->Creado
         ]);
+
+        $path = public_path().'/requerimientos/'.$requerimiento;
+        File::makeDirectory($path, $mode= 0777, true,true);
     }
 
     public function RequerimientoSaveFile(Request $request)
@@ -537,5 +578,40 @@ class RequerimientosController extends Controller
         $request->file->move(public_path('upload'), $imageName);
 
         return response()->json(['uploaded' => '/upload/'.$imageName]);
+    }
+
+    public function GetDisenador(Request $request)
+    {
+        if ($request->ajax()){
+            $diseñador =  DB::table('users')->where('diseñador','<>',null)->get();
+        }
+        return response()->json($diseñador);
+    }
+
+    public function AsignarDisenador(Request $request)
+    {
+        DB::table('maestro_requerimientos')->where('id','=',$request->id_requerimiento)->update([
+            'diseñador_id'  => $request->Usuario_diseñador,
+            'estado'        => '3'
+        ]);
+    }
+
+    public function MisRequerimientos(Request $request)
+    {
+        if ($request->ajax()){
+            $data =  DB::table('maestro_requerimientos')
+                ->where('usuario','=',$request->Username)
+                ->orderBy('estado', 'desc')
+                ->get();
+            return Datatables::of($data)
+                ->addColumn('opciones', function($row){
+                    $btn = '<div class="btn-group ml-auto">'.'<button class="btn btn-light btn-sm addComment " name="addComment" id="'.$row->id.'" ><i class="fas fa-comments"></i></button>';
+                    $btn = $btn.'<button class="btn btn-light btn-sm Anular " name="Anular" id="'.$row->id.'" ><i class="fas fa-ban"></i></button>'.'</div>';
+                    return $btn;
+                })
+                ->rawColumns(['opciones'])
+                ->make(true);
+        }
+        return view('Requerimientos.mis_requerimientos');
     }
 }

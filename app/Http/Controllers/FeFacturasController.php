@@ -143,7 +143,6 @@ class FeFacturasController extends Controller
                ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
                $brutomasiva     =  number_format($enc->bruto,2,'.','') + number_format($enc->iva,2,'.','');
                $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
-               $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
                $total_cargos    = number_format($enc->fletes,2,'.','') + number_format($enc->seguros,2,'.','');
 
                //determina si la factura es exportacion o para venta nacional
@@ -809,7 +808,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("cantidad");
-                   $objetoXML->text(number_format($it->cantidad, 0, '', ''));
+                   $objetoXML->text(number_format($it->cantidad, 2, '.', ''));
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("cantidadporempaque");
