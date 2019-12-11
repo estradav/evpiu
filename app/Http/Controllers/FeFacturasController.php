@@ -165,8 +165,10 @@ class FeFacturasController extends Controller
 
                 // determina el metodo de pago
                $medio_pago = null;
-                if ($metodo_pago == 2) { $medio_pago = null;}
-                else{ $medio_pago = 10;}
+                if ($metodo_pago == 2)
+                { $medio_pago = null;}
+                else
+                    { $medio_pago = 10;}
 
                 // valida el tipo de documento de identidad
                $tipo_documento_ide = null;

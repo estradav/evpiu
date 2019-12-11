@@ -20,7 +20,7 @@ class CreateAdjuntosRequeremientosTable extends Migration
             $table->timestamps();
         });
         Schema::table('adjuntos_requerimientos', function($table) {
-            $table->foreign('idRequerimiento')->references('id')->on('maestro_requeremientos');
+            $table->foreign('idRequerimiento')->references('id')->on('encabezado_requerimientos');
         });
     }
 

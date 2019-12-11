@@ -116,7 +116,7 @@
                 var table;
                 var Estado = 2;
 
-                var idDiseno =  @json( Auth::user()->diseñador);
+                var idDiseno =  @json( Auth::user()->cod_designer);
                 var Username = @json( Auth::user()->username );
 
                 load_data(Estado, idDiseno, Username);
@@ -174,6 +174,7 @@
                             }
                         },
                         rowCallback: function (row, data, index) {
+                        	console.log(data);
                             if (data.diseñador_id == null) {
                                 $(row).find('td:eq(4)').html('<label class="alert-light">Sin asingar</label>');
                             }
@@ -346,7 +347,7 @@
                         success: function (data) {
                             var i = 0;
                             $(data).each(function () {
-                                $('#SelectDiseñador').append('<option value="'+data[i].diseñador +'">'+data[i].name+'</option>');
+                                $('#SelectDiseñador').append('<option value="'+data[i].cod_designer +'">'+data[i].name+'</option>');
                                 i++;
                             });
                         }
@@ -366,7 +367,8 @@
                         url: '/AsignarDisenador',
                         data:{
                             Usuario_diseñador: Usuario_diseñador,
-                            id_requerimiento: Numero_requerimiento
+                            id_requerimiento: Numero_requerimiento,
+                            User: Username
                         },
                         success: function () {
                             $('#AsignarADiseñador').modal('hide');

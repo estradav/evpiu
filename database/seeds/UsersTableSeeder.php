@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -22,7 +23,7 @@ class UsersTableSeeder extends Seeder
             'menu'           => 'administrator',
             'Codvendedor'    => '999',
             'password'       => bcrypt('password'),
-            'remember_token' => str_random(60),
+            'remember_token' => Str::random(60),
         ]);
 
         $user->assignRole('user');
@@ -35,7 +36,7 @@ class UsersTableSeeder extends Seeder
             'menu'           => 'user',
             'Codvendedor'    => '999',
             'password'       => bcrypt('password'),
-            'remember_token' => str_random(60),
+            'remember_token' => Str::random(60),
         ]);
 
         $user->assignRole('user');

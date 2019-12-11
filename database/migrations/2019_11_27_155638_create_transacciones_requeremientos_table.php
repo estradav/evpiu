@@ -14,8 +14,15 @@ class CreateTransaccionesRequeremientosTable extends Migration
     public function up()
     {
         Schema::create('transacciones_requerimientos', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->unsignedBigInteger('idReq');
+            $table->string('tipo');
+            $table->string('descripcion');
+            $table->string('usuario');
             $table->timestamps();
+        });
+
+        Schema::table('transacciones_requerimientos', function($table) {
+            $table->foreign('idReq')->references('id')->on('encabezado_requerimientos');
         });
     }
 

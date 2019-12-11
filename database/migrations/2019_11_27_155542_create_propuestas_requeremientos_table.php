@@ -27,7 +27,7 @@ class CreatePropuestasRequeremientosTable extends Migration
             $table->timestamps();
         });
         Schema::table('propuestas_requerimientos', function($table) {
-            $table->foreign('idRequerimiento')->references('id')->on('maestro_requeremientos');
+            $table->foreign('idRequerimiento')->references('id')->on('encabezado_requerimientos');
         });
     }
 
