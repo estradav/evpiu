@@ -18,7 +18,7 @@ class RequerimientosController extends Controller
         if ($request->ajax()) {
             if ($request->estado == 1) {
                 if ($request->perfil == 1 || $request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -31,7 +31,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 2 ||$request->perfil == 999){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -48,7 +48,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 2) {
                 if ($request->perfil == 1 || $request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -61,7 +61,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 2 ||$request->perfil == 999){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -78,7 +78,7 @@ class RequerimientosController extends Controller
             /* Ojo falta el estado 2 para los vendedores */
             if ($request->estado == 3) {
                 if ($request->perfil == 3 || $request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -92,7 +92,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 1){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -109,7 +109,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 4) {
                 if ($request->perfil == 1){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=', $request->asignado)
                         ->orderBy('estado', 'desc')
@@ -124,7 +124,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -138,7 +138,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -155,7 +155,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 5) {
                 if ($request->perfil == 1){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=', $request->asignado)
                         ->orderBy('estado', 'desc')
@@ -171,7 +171,7 @@ class RequerimientosController extends Controller
                 }
                 if ($request->perfil == 2 || $request->perfil == 999)
                 {
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -186,7 +186,7 @@ class RequerimientosController extends Controller
                 }
                 if ($request->perfil == 3 || $request->perfil == 4)
                 {
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -203,7 +203,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 6) {
                 if ($request->perfil == 4 || $request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -217,7 +217,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 1 || $request->perfil == 3){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -234,7 +234,7 @@ class RequerimientosController extends Controller
 
             /* Ojo falta el estado 7 para los vendedores */
             /*if ($request->estado == 7) {
-                $data =  DB::table('maestro_requerimientos')
+                $data =  DB::table('encabezado_requerimientos')
                     ->where('estado','=',$request->estado)
                     ->orderBy('estado', 'desc')
                     ->get();
@@ -250,7 +250,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 8) {
                 if ($request->perfil == 1 || $request->perfil == 2 || $request->perfil == 999 ){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=',$request->asignado)
                         ->orderBy('estado', 'desc')
@@ -265,7 +265,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=',$request->asignado)
                         ->orderBy('estado', 'desc')
@@ -284,7 +284,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 9) {
                 if ($request->perfil == 1){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=',$request->asignado)
                         ->orderBy('estado', 'desc')
@@ -299,7 +299,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 3 || $request->perfil == 4 ){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -313,7 +313,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 2 || $request->perfil == 999 ){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -330,7 +330,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 10) {
                 if ($request->perfil == 1){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=',$request->asignado)
                         ->orderBy('estado', 'desc')
@@ -345,7 +345,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 3 || $request->perfil == 4 ){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=',$request->asignado)
                         ->orderBy('estado', 'desc')
@@ -360,7 +360,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 2 || $request->perfil == 999 ){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=',$request->asignado)
                         ->orderBy('estado', 'desc')
@@ -379,7 +379,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 11) {
                 if ($request->perfil == 1){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=',$request->asignado)
                         ->orderBy('estado', 'desc')
@@ -394,7 +394,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -408,7 +408,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -426,7 +426,7 @@ class RequerimientosController extends Controller
 
             if ($request->estado == 12) {
                 if ($request->perfil == 1){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->where('diseñador','=',$request->asignado)
                         ->orderBy('estado', 'desc')
@@ -441,7 +441,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -455,7 +455,7 @@ class RequerimientosController extends Controller
                         ->make(true);
                 }
                 if ($request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('maestro_requerimientos')
+                    $data =  DB::table('encabezado_requerimientos')
                         ->where('estado','=',$request->estado)
                         ->orderBy('estado', 'desc')
                         ->get();
@@ -548,26 +548,41 @@ class RequerimientosController extends Controller
 
     public function NewRequerimiento(Request $request)
     {
-        if($request->Plano == 1){
-            $estado = 1;
-        }else{
-            $estado = 2;
-        }
-        $requerimiento = DB::table('maestro_requerimientos')->insertGetId([
+
+        $requerimiento = DB::table('encabezado_requerimientos')->insertGetId([
             'producto'      => $request->Producto,
             'informacion'   => $request->Informacion,
             'vendedor_id'   => $request->Vendedor,
 /*            'diseñador_id'  => $request->Diseñador,*/
             'marca'         => $request->Marca,
             'render'        => $request->Render,
-            'estado'        => $estado,
+            'estado'        => '2',
             'created_at'    => Carbon::now(),
             'Updated_at'    => Carbon::now(),
             'usuario'       => $request->Creado
         ]);
 
-        $path = public_path().'/requerimientos/'.$requerimiento;
-        File::makeDirectory($path, $mode= 0777, true,true);
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         =>  $requerimiento,
+            'tipo'          => 'Nuevo Requerimiento',
+            'descripcion'   => 'se creo un nuevo requerimiento',
+            'usuario'       => $request->Creado,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now()
+        ]);
+
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         =>  $requerimiento,
+            'tipo'          =>  'Cambio de estado',
+            'descripcion'   =>  'Requerimiento enviado para revision.',
+            'usuario'       =>  'System',
+            'created_at'    =>  Carbon::now(),
+            'updated_at'    =>  Carbon::now()
+        ]);
+
+
+       /* $path = public_path().'/requerimientos/'.$requerimiento;
+        File::makeDirectory($path, $mode= 0777, true,true);*/
     }
 
     public function RequerimientoSaveFile(Request $request)
@@ -583,35 +598,96 @@ class RequerimientosController extends Controller
     public function GetDisenador(Request $request)
     {
         if ($request->ajax()){
-            $diseñador =  DB::table('users')->where('diseñador','<>',null)->get();
+            $diseñador =  DB::table('users')->where('cod_designer','<>',null)->get();
         }
         return response()->json($diseñador);
     }
 
     public function AsignarDisenador(Request $request)
     {
-        DB::table('maestro_requerimientos')->where('id','=',$request->id_requerimiento)->update([
+        DB::table('encabezado_requerimientos')->where('id','=',$request->id_requerimiento)->update([
             'diseñador_id'  => $request->Usuario_diseñador,
             'estado'        => '3'
         ]);
+
+        $ObtenerNombre = DB::table('users')->where('cod_designer','=',$request->Usuario_diseñador)->select('name')->get();
+
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         => $request->id_requerimiento,
+            'tipo'          => 'Aprobacion de requerimiento',
+            'descripcion'   => 'Requerimiento aprobado',
+            'usuario'       => $request->User,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now()
+        ]);
+
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         => $request->id_requerimiento,
+            'tipo'          => 'Asignacion de requerimiento',
+            'descripcion'   => 'Requerimiento asignado a '.$ObtenerNombre[0]->name,
+            'usuario'       => $request->User,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now()
+        ]);
+
     }
 
     public function MisRequerimientos(Request $request)
     {
         if ($request->ajax()){
-            $data =  DB::table('maestro_requerimientos')
+            $data =  DB::table('encabezado_requerimientos')
+                ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.cod_designer')
                 ->where('usuario','=',$request->Username)
+                ->select('encabezado_requerimientos.id','encabezado_requerimientos.producto','encabezado_requerimientos.informacion',
+                    'encabezado_requerimientos.marca','encabezado_requerimientos.usuario','encabezado_requerimientos.estado','encabezado_requerimientos.created_at',
+                    'encabezado_requerimientos.updated_at','users.name')
                 ->orderBy('estado', 'desc')
                 ->get();
             return Datatables::of($data)
                 ->addColumn('opciones', function($row){
                     $btn = '<div class="btn-group ml-auto">'.'<button class="btn btn-light btn-sm addComment " name="addComment" id="'.$row->id.'" ><i class="fas fa-comments"></i></button>';
-                    $btn = $btn.'<button class="btn btn-light btn-sm Anular " name="Anular" id="'.$row->id.'" ><i class="fas fa-ban"></i></button>'.'</div>';
+                    $btn = $btn.'<button class="btn btn-light btn-sm Anular " name="Anular" id="'.$row->id.'" ><i class="fas fa-ban"></i></button>';
+                    $btn = $btn.'<button class="btn btn-light btn-sm Coments " name="Coments" id="'.$row->id.'" ><i class="fas fa-eye"></i></button>'.'</div>';
                     return $btn;
                 })
                 ->rawColumns(['opciones'])
                 ->make(true);
         }
         return view('Requerimientos.mis_requerimientos');
+    }
+
+    public function MisRequerimientosAddComent(Request $request)
+    {
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         => $request->idReq,
+            'tipo'          => 'Comentario',
+            'descripcion'   => $request->coments,
+            'usuario'       => $request->user,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now()
+        ]);
+    }
+
+    public function MisRequerimientosAnular(Request $request)
+    {
+        DB::table('encabezado_requerimientos')->where('id','=',$request->numeroReq)->update([
+            'estado'        => '3'
+        ]);
+
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         => $request->numeroReq,
+            'tipo'          => 'Anular',
+            'descripcion'   => 'El vendedor '.$request->user.' anulo el requerimiento.',
+            'usuario'       => $request->user,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now()
+        ]);
+    }
+
+    public function RequerimientosComentariosDetalles(Request $request)
+    {
+        $datos = DB::table('transacciones_requerimientos')->where('idReq','=',$request->id)->get();
+
+        return response()->json($datos);
     }
 }

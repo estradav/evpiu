@@ -21,7 +21,7 @@ class CreateAdjuntosPropuestasRequeremientosTable extends Migration
         });
 
         Schema::table('adjuntos_propuestas_requerimientos', function($table) {
-            $table->foreign('idRequerimiento')->references('id')->on('maestro_requerimientos');
+            $table->foreign('idRequerimiento')->references('id')->on('encabezado_requerimientos');
         });
     }
 

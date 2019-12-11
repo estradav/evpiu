@@ -25,17 +25,17 @@
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped dataTable" id="table">
                                 <thead>
-                                <tr>
-                                    <th>Numero</th>
-                                    <th>Descripcion</th>
-                                    <th>Informacion</th>
-                                    <th>Creado por</th>
-                                    <th>Diseñador</th>
-                                    <th>Estado</th>
-                                    <th>Fecha Creacion</th>
-                                    <th>Ultima Actualizacion</th>
-                                    <th>Opciones</th>
-                                </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Descripcion</th>
+                                        <th>Informacion</th>
+                                        <th>Creado por</th>
+                                        <th>Diseñador asignado</th>
+                                        <th>Estado</th>
+                                        <th>Fecha Creacion</th>
+                                        <th>Ultima Actualizacion</th>
+                                        <th>Opciones</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -92,7 +92,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">¿Render 3D?:</label>
                                         <div class="col-sm-12">
@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                               {{-- <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="name" class="col-sm-12 control-label">¿Planos?:</label>
                                         <div class="col-sm-12">
@@ -111,7 +111,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--}}
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <div class="col-sm-12">
@@ -233,7 +233,19 @@
             </div>
         </div>
 
+        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" id="timelinemodal" name="timelinemodal" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-align: right !important; margin-top: 10px; margin-right: 12px">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <br>
+                    <div class="container py-2" id="DetallesComentariosReque">
 
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     @else
@@ -268,7 +280,7 @@
                         {data: 'producto', name: 'producto', orderable: false, searchable: true},
                         {data: 'informacion', name: 'informacion', orderable: false, searchable: false},
                         {data: 'usuario', name: 'usuario', orderable: false, searchable: false},
-                        {data: 'diseñador_id', name: 'diseñador_id', orderable: false, searchable: false},
+                        {data: 'name', name: 'name', orderable: false, searchable: false},
                         {data: 'estado', name: 'estado', orderable: false, searchable: false},
                         {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
                         {data: 'updated_at', name: 'updated_at', orderable: false, searchable: false},
@@ -298,7 +310,7 @@
                         }
                     },
                     rowCallback: function (row, data, index) {
-                        if (data.diseñador_id == null) {
+                        if (data.name == null) {
                             $(row).find('td:eq(4)').html('<label class="alert-light">Sin asingar</label>');
                         }
                         if (data.estado == '1') {
@@ -496,7 +508,6 @@
                                 Vendedor: vendedor,
                                 Informacion: informacion,
                                 Render: render,
-                                Plano: plano,
                                 Creado: Username
                             },
                             url: "/NewRequerimiento",
@@ -616,7 +627,7 @@
                     }
                 });
 
-                var plano = 1;
+        /*        var plano = 1;
                 $("[name='Plano']").bootstrapSwitch({
                     animate: true,
                     onColor: 'success',
@@ -630,13 +641,14 @@
                     }else{
                         plano = 0;
                     }
-                });
+                });*/
 
 
                 $('body').on('click','.addComment',function () {
-                	var id = $(this).attr('id');
+                    var id = $(this).attr('id');
                     Swal.fire({
-                        title: 'Añadir comentarios',
+                        title: 'Requerimiento # ' + id,
+                        html: '<label for="">Añade comentarios o informacion que pueda ser importante para este requerimiento</label> ',
                         input: 'textarea',
                         icon: 'info',
                         inputAttributes: {
@@ -649,15 +661,153 @@
                         allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
                         if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
                             $.ajax({
                                 type: "post",
-                                url: '',
-
-
+                                url: '/MisRequerimientosAddComent',
+                                data: {
+                                	idReq: id,
+                                    coments: result.value,
+                                    user: Username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                       icon: 'success',
+                                       title: 'Guardado!',
+                                       text: 'Tu comentario fue enviado con exito!',
+                                       confirmButtonText: 'Aceptar',
+                                    })
+                                }
                             });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
                         }
                     })
-})
+                });
+
+                $('body').on('click','.Anular',function () {
+                    var id = $(this).attr('id');
+                    console.log(id);
+                    Swal.fire({
+                        title: '¿Esta seguro de anular el requerimiento # '+ id +'?',
+                        text: "¡Esta accion no se puede revertir!",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si, anular!',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.value) {
+                            $.ajax({
+                                type: "post",
+                                url: "/MisRequerimientosAnular",
+                                data: {
+                                    numeroReq: id,
+                                    user: Username
+                                },
+                                success: function (data) {
+                                    Swal.fire({
+                                        title: 'Anulado!',
+                                        text: 'El requerimiento '+ id +'ha sido anulado.',
+                                        icon: 'success',
+                                    });
+                                    table.draw();
+                                },
+                                error: function (data) {
+                                    Swal.fire(
+                                        'Error al anular!',
+                                        'Hubo un error al anular.',
+                                        'error'
+                                    )
+                                }
+                            });
+                        }else {
+                           /* Read more about handling dismissals below */
+                           result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+
+                });
+
+                $('body').on('click', '.Coments', function () {
+                    var id = $(this).attr('id');
+                    $.ajax({
+                        type: 'get',
+                        url: '/RequerimientosComentariosDetalles',
+                        data: {
+                       	   id: id
+                        },
+                        success: function (data) {
+                           console.log(data);
+                        	var i = 0;
+                            $(data).each(function () {
+                                if (i % 2 == 0)
+                                {
+                                    $('#DetallesComentariosReque').append('<div class="row no-gutters">' +
+                                         '<div class="col-sm"></div>' +
+                                         '<div class="col-sm-1 text-center flex-column d-none d-sm-flex">' +
+                                         '<div class="row h-50">' +
+                                         '<div class="col border-right">&nbsp;</div>' +
+                                         '<div class="col">&nbsp;</div>' +
+                                         '</div>' +
+                                         '<h5 class="m-2">' +
+                                         '<span class="badge badge-pill bg-primary-light" style="height: 25px; line-height: 25px; border-radius: 25px ; width: 25px;">&nbsp;</span>' +
+                                         '</h5>' +
+                                         '<div class="row h-50">' +
+                                         '<div class="col border-right">&nbsp;</div>' +
+                                         '<div class="col">&nbsp;</div>' +
+                                         '</div>' +
+                                         '</div>' +
+                                         '<div class="col-sm py-2">' +
+                                         '<div class="card border-success shadow">' +
+                                         '<div class="card-body">' +
+                                         '<div class="float-right text-primary small">'+ data[i].created_at +'</div>' +
+                                         '<h4 class="card-title text-primary">'+ data[i].usuario +'</h4>' +
+                                         '<p class="card-text">'+ data[i].descripcion +'</p>' +
+                                         '</div></div>' +
+                                         '</div></div>'
+                                    )
+                                }
+                                else{
+                                	$('#DetallesComentariosReque').append('<div class="row no-gutters">' +
+                                          '<div class="col-sm py-2">' +
+                                          '<div class="card border-success shadow">' +
+                                          '<div class="card-body">' +
+                                          '<div class="float-right text-primary small">'+ data[i].created_at +'</div>' +
+                                          '<h4 class="card-title text-primary">'+ data[i].usuario +'</h4>' +
+                                          '<p class="card-text">'+ data[i].descripcion +'</p>' +
+                                          '</div>' +
+                                          '</div>' +
+                                          '</div>' +
+                                          '<div class="col-sm-1 text-center flex-column d-none d-sm-flex">' +
+                                          '<div class="row h-50">' +
+                                          '<div class="col border-right">&nbsp;</div><' +
+                                          'div class="col">&nbsp;</div>' +
+                                          '</div>' +
+                                          '<h5 class="m-2">' +
+                                          '<span class="badge badge-pill bg-primary-light" style="height: 25px; line-height: 25px; border-radius: 25px ; width: 25px;">&nbsp;</span>' +
+                                          '</h5>' +
+                                          '<div class="row h-50">' +
+                                          '<div class="col border-right">&nbsp;</div>' +
+                                          '<div class="col">&nbsp;</div>' +
+                                          '</div>' +
+                                          '</div>' +
+                                          '<div class="col-sm">' +
+                                          '</div></div>'
+                                    )
+                                }
+                           	 i++;
+                            });
+                            $('#timelinemodal').modal('show');
+                        }
+                    })
+                })
+
 
             })
         </script>
