@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Menu;
 use App\MenuItem;
+use Illuminate\Support\Arr;
 
 class MenuItemController extends Controller
 {
@@ -112,7 +113,7 @@ class MenuItemController extends Controller
 
     protected function prepareParameters($parameters)
     {
-        switch (array_get($parameters, 'type')) {
+        switch (Arr::get($parameters, 'type')) {
             case 'route':
                 $parameters['url'] = null;
                 break;

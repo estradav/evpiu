@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function() {
 
     //Facturacion Electronica facturas
     Route::resource('fe','FeFacturasController');
-    Route::post('fe/xml','FeFacturasController@CrearXml')->name('fe.xml');
+    Route::post('fe/xml','FeFacturasController@CrearXml');
     Route::get('fe/{fe}/edit','FeFacturasController@editfactura')->name('fe.edit');
     Route::put('/fe/{fe}', 'FeFacturasController@updatefactura')->name('fe.update');
     Route::get('/fe/getDownload/{file}','FeFacturasController@getDownload');
@@ -189,7 +189,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/PedidoBodegaIndex','PedidoBodegaController@index');
     Route::post('/PedidoBodegaUpdate','PedidoBodegaController@PedidoBodegaUpdate');
 
-    Route::resource('Requerimientos','RequerimientosController');
+    Route::resource('Requerimientoss','RequerimientosController');
     Route::get('/RequerimientosIndex','RequerimientosController@index');
     Route::get('/SearchMarcas','RequerimientosController@SearchMarcas');
     Route::get('/RequerimientosSearchProductsMax','RequerimientosController@SearchProductsMax');
@@ -202,6 +202,11 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/DatosxFactura','FeFacturasController@DatosxFactura');
     Route::get('/VerCondicionesPago','FeFacturasController@VerCondicionesPago');
     Route::post('/GuardarFacturaEdit', 'FeFacturasController@GuardarFacturaEdit');
+    Route::get('/misrequerimientos','RequerimientosController@MisRequerimientos');
+
+
+/*    Route::get('/GetDisenador','RequerimientosController@GetDisenador');
+    Route::post('/AsignarDisenador','RequerimientosController@AsignarDisenador');*/
 
 
 });

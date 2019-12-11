@@ -51,7 +51,7 @@
                                     <th><input type="checkbox" id="selectAll" name="selectAll" class="selectAll"></th>
                                     <th>&nbsp; &nbsp;</th>
                                     <th>Numero</th>
-                                    {{--<th>OV</th>--}}
+                                    <th>OV</th>
                                     <th>Fecha</th>
                                     <th>Plazo</th>
                                     <th>Razon Social</th>
@@ -65,7 +65,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <input class="test" type="hidden" id="test" name="test">
+                            <input class="test" type="hidden" id="test" name="test" style="display: none">
                             </tbody>
                         </table>
                     </div>
@@ -91,18 +91,6 @@
             </div>
         </div>
     </div>
-
-   {{-- <div class="modal fade" id="Carga" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <img src="img/carga.gif" alt="" >
-                </div>
-            </div>
-        </div>
-    </div>
---}}
-
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar las Facturas.

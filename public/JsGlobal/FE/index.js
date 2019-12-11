@@ -279,7 +279,7 @@ $(document).ready(function () {
                     var req = new XMLHttpRequest();
                     req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
                     req.responseType = "blob";
-
+                    console.log(req)
                     req.onload = function (event) {
                         var blob = req.response;
                         var link=document.createElement('a');
