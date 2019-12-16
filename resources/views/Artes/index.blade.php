@@ -29,6 +29,7 @@
                                     <th>DISEÑADOR</th>
                                     <th>SOLICITUD</th>
                                     <th>CREACION</th>
+                                    <th style="display: none !important;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -87,7 +88,7 @@
                 columns: [
                     {data: 'idRequerimiento', name:'idRequerimiento'},
                     {data: 'CodigoArte', name: 'idArte', render: function ( data, type, row ) {
-                        return '<button  value="'+data+'" class=" btn btn-link btn-sm btnArt" id="'+ data +'" >' + data + '</button>';}},
+                        return '<a href="javascript:void(0)" class=" btn btn-link btn-sm btnArt" id="'+ data +'" >' + data + '</a>';}},
                     {data: 'Producto', name: 'Producto'},
                     {data: 'NombreMaterial', name: 'Material'},
                     {data: 'NombreMarca', name: 'NombreMarca'},
@@ -95,6 +96,7 @@
                     {data: 'NombreDisenador', name: 'Disenador', orderable: false, searchable: false},
                     {data: 'FechaSolicitud', name: 'FechaSolicitud', orderable: false, searchable: false},
                     {data: 'FechaCreacion', name: 'FechaCreacion', orderable: false, searchable: false},
+                    {data: 'CodigoArte', name: 'CodigoArte', visible: false},
                 ],
                 language: {
                     // traduccion de datatables
