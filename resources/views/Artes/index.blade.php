@@ -11,7 +11,7 @@
 @stop--}}
 
 @section('content')
-    @can('pronosticos.view')
+    @can('artes.view')
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -91,10 +91,10 @@
                     {data: 'Producto', name: 'Producto'},
                     {data: 'NombreMaterial', name: 'Material'},
                     {data: 'NombreMarca', name: 'NombreMarca'},
-                    {data: 'NombreVendedor', name: 'Vendedor'},
-                    {data: 'NombreDisenador', name: 'Disenador'},
+                    {data: 'NombreVendedor', name: 'Vendedor', orderable: false, searchable: false},
+                    {data: 'NombreDisenador', name: 'Disenador', orderable: false, searchable: false},
                     {data: 'FechaSolicitud', name: 'FechaSolicitud', orderable: false, searchable: false},
-                    {data: 'FechaCreacion', name: 'FechaCreacion'},
+                    {data: 'FechaCreacion', name: 'FechaCreacion', orderable: false, searchable: false},
                 ],
                 language: {
                     // traduccion de datatables
