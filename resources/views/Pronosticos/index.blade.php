@@ -156,7 +156,6 @@
             </div>
         </div>
 
-
         <div class="modal fade bd-modal-lg" id="DetallePronostico" tabindex="-1" role="dialog" aria-labelledby="DetallePronostico" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">

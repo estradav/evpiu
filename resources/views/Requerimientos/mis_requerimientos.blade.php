@@ -152,6 +152,7 @@
                 </div>
             </div>
         </div>
+
         <div class="modal fade bd-example-modal-sm" id="CreateMedidaModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
@@ -240,14 +241,112 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <br>
-                    <div class="container py-2" id="DetallesComentariosReque">
-
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <b>INFORMACION GENERAL</b>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <label for="name" class="control-label"><b>Cliente:</b></label>
+                                                <label id="InfoCliente"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <label for="name" class="control-label">Descripcion:</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label id="InfoDescripcion"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <label for="name" class="control-label">Informacion Adicional:</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label id="InfoInfo"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <label for="name" class="control-label">Diseñador Asignado:</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label id="InfoDiseño"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <label for="name" class="control-label">Marca:</label>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label id="InfoMarca"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <label id="InfoDate"></label>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <b></b>
+                                <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapseComents" aria-expanded="false" aria-controls="collapseExample" >
+                                    COMENTARIOS <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="collapse" id="collapseComents">
+                                <div class="card-body">
+                                    <div class="container py-2" id="DetallesComentariosReque">
+
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Comentarios generales
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <b></b>
+                                <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapsePropuestas" aria-expanded="false" aria-controls="collapseExample" >
+                                    PROPUESTAS <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="collapse" id="collapsePropuestas">
+                                <div class="card-body" id="PropuestasDiv">
+
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Propuestas de requerimientos
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
                 </div>
             </div>
         </div>
-
-
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar requerimientos.
@@ -514,16 +613,11 @@
                             type: "POST",
                             dataType: 'json',
                             success: function (data) {
-                                /*if (data == 'ok'){
-                                    $('.fileinput-upload-button').click();
-                                }*/
-
                                 $('#NewRequerimientoSave').trigger("reset");
                                 $('#NewRequerimientoModal').modal('hide');
                                 table.draw();
                                 toastr.success("Registro Guardado con Exito!");
                                 $(this).html('Crear');
-
                             },
                             error: function (data) {
                                 console.log('Error:', data);
@@ -745,7 +839,13 @@
                         success: function (data) {
                            console.log(data);
                         	var i = 0;
-                            $(data).each(function () {
+                        	$('#InfoCliente').html(data.encabezado[0].cliente);
+                            $('#InfoDescripcion').html(data.encabezado[0].producto);
+                            $('#InfoInfo').html(data.encabezado[0].informacion);
+                            $('#InfoMarca').html(data.encabezado[0].marca);
+                            $('#InfoDate').html(data.encabezado[0].created_at);
+
+                            $(data.Datos).each(function () {
                                 if (i % 2 == 0)
                                 {
                                     $('#DetallesComentariosReque').append('<div class="row no-gutters">' +
@@ -766,9 +866,9 @@
                                          '<div class="col-sm py-2">' +
                                          '<div class="card border-success shadow">' +
                                          '<div class="card-body">' +
-                                         '<div class="float-right text-primary small">'+ data[i].created_at +'</div>' +
-                                         '<h4 class="card-title text-primary">'+ data[i].usuario +'</h4>' +
-                                         '<p class="card-text">'+ data[i].descripcion +'</p>' +
+                                         '<div class="float-right text-primary small">'+ data.Datos[i].created_at +'</div>' +
+                                         '<h4 class="card-title text-primary">'+ data.Datos[i].usuario +'</h4>' +
+                                         '<p class="card-text">'+ data.Datos[i].descripcion +'</p>' +
                                          '</div></div>' +
                                          '</div></div>'
                                     )
@@ -778,9 +878,9 @@
                                           '<div class="col-sm py-2">' +
                                           '<div class="card border-success shadow">' +
                                           '<div class="card-body">' +
-                                          '<div class="float-right text-primary small">'+ data[i].created_at +'</div>' +
-                                          '<h4 class="card-title text-primary">'+ data[i].usuario +'</h4>' +
-                                          '<p class="card-text">'+ data[i].descripcion +'</p>' +
+                                          '<div class="float-right text-primary small">'+ data.Datos[i].created_at +'</div>' +
+                                          '<h4 class="card-title text-primary">'+ data.Datos[i].usuario +'</h4>' +
+                                          '<p class="card-text">'+ data.Datos[i].descripcion +'</p>' +
                                           '</div>' +
                                           '</div>' +
                                           '</div>' +
@@ -803,11 +903,30 @@
                                 }
                            	 i++;
                             });
+
+                            var tes = 1;
+
+                            console.log(data.propuestas.length);
+
+                            if(data.propuestas.length == 0){
+                                $('#PropuestasDiv').append('<div class="alert alert-danger" role="alert">ESTE REQUERIMIENTO AUN NO TIENE PROPUESTAS...</div>');
+
+                            }else{
+                               var ii = 0;
+                               $(data.propuestas).each(function () {
+
+                               	ii++;
+                               });
+                            }
+
                             $('#timelinemodal').modal('show');
                         }
                     })
-                })
+                });
 
+                $('#timelinemodal').on('hide.bs.modal', function () {
+                    $('#DetallesComentariosReque').html('');
+                })
 
             })
         </script>

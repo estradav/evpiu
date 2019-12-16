@@ -167,7 +167,7 @@ $(document).ready(function () {
                 }
 
                 if (data.motivo == null) {
-                    $(row).find('td:eq(11)').css('color', 'red');
+                    $(row).find('td:eq(12)').css('color', 'red');
                 }
 
                 if (data.email == null) {
@@ -180,6 +180,9 @@ $(document).ready(function () {
 
                 if (data.emailcontacto == ''){
                     $('td', row).css('color', 'red');
+                }
+                if (data.tipo_cliente != 'ZF' && data.tipo_cliente != 'EX' && data.valor_iva == 0 ){
+                    $(row).find('td:eq(11)').css('color', 'red');
                 }
             },
 
@@ -248,7 +251,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: false,
                 title: 'Generando XML un momento por favor...',
-                html: '<img src="img/cargando.gif" alt="" >',
+                html: '<img src="img/loading.gif" alt="" >',
                 showConfirmButton: false,
                 showCancelButton: false,
                 allowOutsideClick: false,
@@ -400,9 +403,15 @@ $(document).ready(function () {
             count = 1;
         }
 
+        if (d.tipo_cliente != 'ZF' && d.tipo_cliente != 'EX' && d.valor_iva == 0){
+            resultado.push('<label class="alert-danger">Falta IVA en esta factura </label><br>');
+            count = 1;
+        }
+
         if (count == 0) {
             resultado = '<label class="alert-success">Factura OK</label><br>';
         }
+
 
         return  'Detalle de Factura : '+d.id+' <br>'+ resultado ;
     }
