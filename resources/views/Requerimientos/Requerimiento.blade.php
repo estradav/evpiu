@@ -62,15 +62,15 @@
                             <table class="table table-responsive table-striped dataTable" id="table">
                                 <thead>
                                     <tr>
-                                        <th>Numero</th>
-                                        <th>Descripcion</th>
-                                        <th>Informacion</th>
-                                        <th>Creado por</th>
-                                        <th>Diseñador</th>
-                                        <th>Estado</th>
-                                        <th>Fecha Creacion</th>
-                                        <th>Ultima Actualizacion</th>
-                                        <th>Opciones</th>
+                                        <th>#</th>
+                                        <th>DESCRIPCION</th>
+                                        <th>INFORMACION</th>
+                                        <th>CREADO POR</th>
+                                        <th>DISEÑADOR</th>
+                                        <th>ESTADO</th>
+                                        <th>FECHA CREACION</th>
+                                        <th>ULTIMA ACTUALIZACION</th>
+                                        <th>OPCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>

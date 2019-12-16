@@ -17,6 +17,7 @@ class CreateEncabezadoRequerimientosTable extends Migration
             $table->bigIncrements('id');
             $table->string('producto');
             $table->string('informacion');
+            $table->string('cliente');
             $table->string('marca');
             $table->string('usuario');
             $table->string('estado');

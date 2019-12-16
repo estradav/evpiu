@@ -211,6 +211,26 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/RequerimientosComentariosDetalles','RequerimientosController@RequerimientosComentariosDetalles');
 
 
+    Route::get('/vistatest','RequerimientosController@vistatest');
+    Route::get('Requerimientoss/{Requerimientoss}/edit','RequerimientosController@VerRequerimiento');
+    Route::post('/CambiarEstadoRequeEd','RequerimientosController@CambiarEstadoRequeEd');
+    Route::get('/ObtenerDiseñadores','RequerimientosController@ObtenerDiseñadores');
+    Route::post('/CambiarDiseñadorRequeEd','RequerimientosController@CambiarDiseñadorRequeEd');
+    Route::post('/GuardarPropuestaReq','RequerimientosController@GuardarPropuestaReq');
+    Route::get('/ListaPropuestaReq','RequerimientosController@ListaPropuestaReq');
+    Route::post('/MisRequerimientosAnular','RequerimientosController@MisRequerimientosAnular');
+
+    Route::post('/Upload2DReq','RequerimientosController@Upload2DReq');
+    Route::post('/Upload3DReq','RequerimientosController@Upload3DReq');
+    Route::post('/UploadPlanoReq','RequerimientosController@UploadPlanoReq');
+
+    Route::resource('Artes','ArtesController');
+    Route::get('/ViewArtes','ArtesController@index');
+
+
+    /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/
+
+
 });
 
 
