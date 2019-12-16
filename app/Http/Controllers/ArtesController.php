@@ -11,7 +11,7 @@ class ArtesController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = DB::connection('EVPIUM')->table('V_Artes')->orderBy('idRequerimiento','desc')->get();
+            $data = DB::connection('EVPIUM')->table('V_Artes')->orderBy('idRequerimiento','desc')->take(5000)->get();
             return Datatables::of($data)->make(true);
 
         }
