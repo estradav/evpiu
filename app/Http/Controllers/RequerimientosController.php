@@ -909,11 +909,16 @@ class RequerimientosController extends Controller
     {
         $encabezado = DB::table('encabezado_requerimientos')
             ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.cod_designer')
-            ->leftJoin('users as vendor','encabezado_requerimientos.vendedor_id','=','vendor.codvendedor')
-            ->select('encabezado_requerimientos.marca as marca','encabezado_requerimientos.usuario as usuario',
-                'encabezado_requerimientos.estado as estado','vendor.name as vendedor_id','encabezado_requerimientos.informacion as informacion',
-                'users.name as diseñador_id', 'encabezado_requerimientos.created_at as created_at',
-                'encabezado_requerimientos.producto as producto','encabezado_requerimientos.cliente as cliente')
+            ->leftJoin('users as vendor','encabezado_requerimientos.vendedor_id','=','users.codvendedor')
+            ->select('encabezado_requerimientos.marca as marca',
+                'encabezado_requerimientos.usuario as usuario',
+                'encabezado_requerimientos.estado as estado',
+                'vendor.name as vendedor_id',
+                'encabezado_requerimientos.informacion as informacion',
+                'users.name as diseñador_id',
+                'encabezado_requerimientos.created_at as created_at',
+                'encabezado_requerimientos.producto as producto',
+                'encabezado_requerimientos.cliente as cliente')
             ->where('encabezado_requerimientos.id','=',$request->Req)
             ->get();
 

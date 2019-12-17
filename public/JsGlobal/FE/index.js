@@ -170,7 +170,7 @@ $(document).ready(function () {
                     $(row).find('td:eq(12)').css('color', 'red');
                 }
 
-                if (data.email == null) {
+                if (data.email == null || data.email == '') {
                     $('td', row).css('color', 'red');
                 }
 
@@ -178,7 +178,7 @@ $(document).ready(function () {
                     $('td', row).css('color', 'red');
                 }
 
-                if (data.emailcontacto == ''){
+                if (data.emailcontacto == '' || data.emailcontacto == null){
                     $('td', row).css('color', 'red');
                 }
                 if (data.tipo_cliente != 'ZF' && data.tipo_cliente != 'EX' && data.valor_iva == 0 ){
@@ -358,7 +358,7 @@ $(document).ready(function () {
             count = 1;
         }
 
-        if (d.email == null) {
+        if (d.email == null || d.email == '') {
             resultado.push('<label class="alert-danger">El cliene no tiene email para el envio de facturas</label> <br> ');
             count = 1;
         }
@@ -398,7 +398,7 @@ $(document).ready(function () {
             count = 1;
         }
 
-        if (d.emailcontacto == ''){
+        if (d.emailcontacto == '' || d.emailcontacto == null){
             resultado.push('<label class="alert-danger">Falta email de Contacto </label><br>');
             count = 1;
         }

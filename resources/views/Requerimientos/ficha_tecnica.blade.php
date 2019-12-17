@@ -249,12 +249,10 @@
                                             <tr>
                                                 <td style="height: 330px; width: 380px" >
                                                     <div class="text-center" style="height: 320px; width: 360px" id="PDFdibujo3d">
-                                                        <img src="/img/Logo_v2.png" alt="" style="height: 240px; width: 331px">
                                                     </div>
                                                 </td>
                                                 <td style="height: 330px; width: 380px">
                                                     <div class="text-center" style="height: 320px; width: 360px" id="PDFdibujo2d">
-                                                        <img src="/img/Logo_v2.png" alt="" style="height: 240px; width: 331px">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -271,12 +269,10 @@
                                             <tr>
                                                 <td style="height: 330px; width: 380px" >
                                                     <div class="text-center" style="height: 320px; width: 360px" id="PDFplano">
-                                                        <img src="/img/Logo_v2.png" alt="" style="height: 240px; width: 331px">
                                                     </div>
                                                 </td>
                                                 <td style="height: 330px; width: 380px" >
                                                     <div class="text-center" style="height: 320px; width: 360px" id="PDFcaracteristicas">
-                                                        <img src="/img/Logo_v2.png" alt="" style="height: 240px; width: 331px">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -508,7 +504,6 @@
                         	id: id
                         },
                         success: function (data) {
-                        	console.log(data.encabezado[0]);
                             $('#Fecha_solicitud').html(data.encabezado[0].created_at);
                             $('#Cliente').html(data.encabezado[0].cliente);
                             $('#Marca').html(data.encabezado[0].marca);
@@ -880,7 +875,6 @@
                                     var resp = $.map(data, function (obj) {
                                         return obj
                                     });
-                                    console.log(data);
                                     response(resp);
                                 }
                             })
@@ -920,7 +914,6 @@
                             formData.append("Numero",id);
                             formData.append("Prop",idProp);
                             formData.append("Usuario",Username);
-                            console.log(formData);
                             $.ajax({
                                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                                 method: 'post',
@@ -1018,7 +1011,6 @@
                             formData.append("Numero",id);
                             formData.append("Prop", idProp);
                             formData.append("Usuario",Username);
-                            console.log(formData);
                             $.ajax({
                                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                                 method: 'post',
@@ -1056,7 +1048,6 @@
                         onBeforeOpen: () => {
                             $(".swal2-file").change(function () {
                                 var reader = new FileReader();
-                                console.log(this.files);
                             });
                         }
                     }).then((file) => {
@@ -1065,7 +1056,7 @@
                             var ins = $('.swal2-file')[0].files.length;
                             var file = $('.swal2-file')[0].files;
 
-                            console.log(ins);
+
                             /*este foreaach es necesario para la subida de archivos multiples*/
                             for (var x = 0; x < ins; x++) {
                                 formData.append("fileToUpload[]",file[x]);
@@ -1076,7 +1067,6 @@
                          /*   console.log($('.swal2-file')[0].files);
                             formData.append("fileToUpload", file);
                             */
-                            console.log(formData);
                             $.ajax({
                                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                                 method: 'post',
@@ -1107,7 +1097,6 @@
                         },
                         success: function (data) {
                         	var Array = data;
-                        	console.log(data);
                         	var i = 0;
                             $(data).each(function () {
                                $('#ArchivosDeSoporte').append('<div class="col-sm-3">'+'<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a>'+'</div>');
@@ -1146,7 +1135,29 @@
                             Prop: Prop
                         },
                         success: function (data) {
-                            console.log(data);
+                            $('#PDFnumeroreq').html(id);
+                            $('#PDFnumeroprop').html(Prop);
+                            $('#PDFarticulo').html(data.propuesta[0].articulo);
+                            $('#PDFrelieve').html(data.propuesta[0].relieve);
+                            $('#PDFmarca').html(data.encabezado[0].marca);
+                            $('#PDFvendedor').html(data.encabezado[0].vendedor_id);
+                            $('#PDFdiseñador').html(data.encabezado[0].diseñador_id);
+                            $('#PDFfecha').html(data.encabezado[0].created_at);
+
+                            var i = 0;
+                            $(data.archivos).each(function () {
+                                if(data.archivos[i].tipo == '2D'){
+                                    $('#PDFdibujo2d').append('<img src="../../'+ data.archivos[i].url + data.archivos[i].archivo + '" style="height: 240px; width: 331px">')
+                                }
+                                if(data.archivos[i].tipo == '3D'){
+                                    $('#PDFdibujo3d').append('<img src="../../'+ data.archivos[i].url + data.archivos[i].archivo + '" style="height: 240px; width: 331px">')
+                                }
+                                if(data.archivos[i].tipo == 'plano' && data.archivos[i].archivo.substr(-3) == 'png'){
+                                    $('#PDFplano').append('<img src="../../'+ data.archivos[i].url + data.archivos[i].archivo + '" style="height: 240px; width: 331px">')
+                                }
+
+                               i++;
+                            })
                         }
                     });
 
