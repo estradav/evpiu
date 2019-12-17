@@ -17,12 +17,8 @@ class CreatePropuestasRequeremientosTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('idRequerimiento');
             $table->string('articulo');
-            $table->string('material');
-            $table->string('tamaño');
             $table->string('relieve');
-            $table->string('marca');
-            $table->string('diseñador');
-            $table->string('vendedor');
+            $table->string('usuario');
             $table->string('estado');
             $table->timestamps();
         });

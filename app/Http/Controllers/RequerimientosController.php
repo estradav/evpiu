@@ -673,7 +673,7 @@ class RequerimientosController extends Controller
     public function MisRequerimientosAnular(Request $request)
     {
         DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
-            'estado'        => '3'
+            'estado'        => '0'
         ]);
 
         DB::table('transacciones_requerimientos')->insert([
@@ -688,9 +688,17 @@ class RequerimientosController extends Controller
 
     public function RequerimientosComentariosDetalles(Request $request)
     {
-        $datos = DB::table('transacciones_requerimientos')->where('idReq','=',$request->id)->get();
+        $encabezado = DB::table('encabezado_requerimientos')
+            ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.cod_designer')
+            ->leftJoin('users as vendor','encabezado_requerimientos.vendedor_id','=','users.codvendedor')
+            ->select('encabezado_requerimientos.marca as marca','encabezado_requerimientos.usuario as usuario',
+                'encabezado_requerimientos.estado as estado','vendor.name as vendedor_id','encabezado_requerimientos.informacion as informacion',
+                'users.name as diseñador_id', 'encabezado_requerimientos.created_at as created_at',
+                'encabezado_requerimientos.producto as producto','encabezado_requerimientos.cliente as cliente')
+            ->where('encabezado_requerimientos.id','=',$request->id)
+            ->get();
 
-        $encabezado = DB::table('encabezado_requerimientos')->where('id','=',$request->id)->get();
+        $datos = DB::table('transacciones_requerimientos')->where('idReq','=',$request->id)->get();
 
         $propuestasReq = DB::table('propuestas_requerimientos')->where('idRequerimiento','=',$request->id)->get();
 
@@ -779,9 +787,10 @@ class RequerimientosController extends Controller
 
         return DataTables::of($data)
         ->addColumn('opciones', function($row){
-            $btn = '<div class="btn-group ml-auto">'.'<button class="btn btn-light btn-sm Crear2D" name="Crear2D" id="'.$row->id.'"><i class="fas fa-cube"></i> 2D</button>';
+            $btn = '<div class="btn-group ml-auto" style="text-align: center !important;">'.'<button class="btn btn-light btn-sm Crear2D" name="Crear2D" id="'.$row->id.'"><i class="fas fa-cube"></i> 2D</button>';
             $btn = $btn.'<button class="btn btn-light btn-sm Crear3D" name="Crear3D" id="'.$row->id.'"><i class="fas fa-cubes"></i> 3D</button>';
-            $btn = $btn.'<button class="btn btn-light btn-sm CrearPlano" name="CrearPlano" id="'.$row->id.'"><i class="far fa-file"></i> Plano</button>'.'</div>';
+            $btn = $btn.'<button class="btn btn-light btn-sm CrearPlano" name="CrearPlano" id="'.$row->id.'"><i class="far fa-file"></i> Plano</button>';
+            $btn = $btn.'<button class="btn btn-light btn-sm VerPropuest" name="VerPropuest" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
             return $btn;
         })
         ->rawColumns(['opciones'])
@@ -796,9 +805,20 @@ class RequerimientosController extends Controller
             $profilefile = $request->Prop.'.'.$files->getClientOriginalExtension(); /*$files->getClientOriginalName()*/;
             $files->move($destinationPath, $profilefile);
             $insert['fileToUpload'] = "$profilefile";
-            /*$file_name = $request->file('fileToUpload')->getClientOriginalName();
-            $earn_proof = $request->file('fileToUpload')->storeAs("requerimientos"/*.$request->id."/"*/
+
+            DB::table('adjuntos_propuestas_requerimientos')->insert([
+                'idRequerimiento'   =>  $request->Numero,
+                'idPropuesta'       =>  $request->Prop,
+                'archivo'           =>  $profilefile,
+                'url'               =>  $destinationPath,
+                'usuario'           =>  $request->Usuario,
+                'tipo'              =>  '2D',
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
         }
+
+
         return response()->json(['result' => true], 200);
     }
 
@@ -810,8 +830,17 @@ class RequerimientosController extends Controller
             $profilefile = $request->Prop.'.'.$files->getClientOriginalExtension(); /*$files->getClientOriginalName()*/;
             $files->move($destinationPath, $profilefile);
             $insert['fileToUpload'] = "$profilefile";
-            /*$file_name = $request->file('fileToUpload')->getClientOriginalName();
-            $earn_proof = $request->file('fileToUpload')->storeAs("requerimientos"/*.$request->id."/"*/
+
+            DB::table('adjuntos_propuestas_requerimientos')->insert([
+                'idRequerimiento'   =>  $request->Numero,
+                'idPropuesta'       =>  $request->Prop,
+                'archivo'           =>  $profilefile,
+                'url'               =>  $destinationPath,
+                'usuario'           =>  $request->Usuario,
+                'tipo'              =>  '3D',
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
         }
         return response()->json(['result' => true], 200);
     }
@@ -824,15 +853,86 @@ class RequerimientosController extends Controller
             $profilefile = $request->Prop.'.'.$files->getClientOriginalExtension(); /*$files->getClientOriginalName()*/;
             $files->move($destinationPath, $profilefile);
             $insert['fileToUpload'] = "$profilefile";
-            /*$file_name = $request->file('fileToUpload')->getClientOriginalName();
-            $earn_proof = $request->file('fileToUpload')->storeAs("requerimientos"/*.$request->id."/"*/
+
+            DB::table('adjuntos_propuestas_requerimientos')->insert([
+                'idRequerimiento'   =>  $request->Numero,
+                'idPropuesta'       =>  $request->Prop,
+                'archivo'           =>  $profilefile,
+                'url'               =>  $destinationPath,
+                'usuario'           =>  $request->Usuario,
+                'tipo'              =>  'plano',
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
         }
         return response()->json(['result' => true], 200);
     }
 
     public function UploadfilesSupport(Request $request)
     {
-        //
+        if ($request->hasFile('fileToUpload')) {
+            $files = $request->file('fileToUpload');
+            $i = 1;
+            foreach ($files as $file){
+                $destinationPath = 'requerimientos/'.'RQ-'.$request->Numero.'/soportes/';
+                $profilefile = 'SP-'.$i.'.'.$file->getClientOriginalExtension(); /*$files->getClientOriginalName()*/;
+                $file->move($destinationPath, $profilefile);
+                $insert['fileToUpload'] = "$profilefile";
+
+                DB::table('adjuntos_requerimientos')->insert([
+                    'idRequerimiento'   =>  $request->Numero,
+                    'archivo'           =>  $profilefile,
+                    'url'               =>  $destinationPath,
+                    'usuario'           =>  $request->Usuario,
+                    'created_at'        =>  Carbon::now(),
+                    'updated_at'        =>  Carbon::now()
+                ]);
+                $i++;
+            }
+
+
+
+            /*$file_name = $request->file('fileToUpload')->getClientOriginalName();
+            $earn_proof = $request->file('fileToUpload')->storeAs("requerimientos"/*.$request->id."/"*/
+        }
+        return response()->json(['result' => true], 200);
+    }
+
+    public function ImagesRequerimiento(Request $request)
+    {
+        $Archivos = DB::table('adjuntos_requerimientos')->where('idRequerimiento','=',$request->id)->get();
+
+        return response()->json($Archivos);
+    }
+
+    public function DatosPropuestaPDF(Request $request)
+    {
+        $encabezado = DB::table('encabezado_requerimientos')
+            ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.cod_designer')
+            ->leftJoin('users as vendor','encabezado_requerimientos.vendedor_id','=','users.codvendedor')
+            ->select('encabezado_requerimientos.marca as marca',
+                'encabezado_requerimientos.usuario as usuario',
+                'encabezado_requerimientos.estado as estado',
+                'vendor.name as vendedor_id',
+                'encabezado_requerimientos.informacion as informacion',
+                'users.name as diseñador_id',
+                'encabezado_requerimientos.created_at as created_at',
+                'encabezado_requerimientos.producto as producto',
+                'encabezado_requerimientos.cliente as cliente')
+            ->where('encabezado_requerimientos.id','=',$request->Req)
+            ->get();
+
+        $propuestasReq = DB::table('propuestas_requerimientos')
+            ->where('idRequerimiento','=',$request->Req)
+            ->where('id','=',$request->Prop)
+            ->get();
+
+        $archivos = DB::table('adjuntos_propuestas_requerimientos')
+            ->where('idRequerimiento','=', $request->Req)
+            ->where('idPropuesta','=',$request->Prop)
+            ->get();
+
+        return response()->json(['encabezado' => $encabezado, 'propuesta' => $propuestasReq, 'archivos' => $archivos]);
     }
 
 

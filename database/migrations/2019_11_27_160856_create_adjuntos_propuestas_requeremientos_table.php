@@ -15,13 +15,16 @@ class CreateAdjuntosPropuestasRequeremientosTable extends Migration
     {
         Schema::create('adjuntos_propuestas_requerimientos', function (Blueprint $table) {
             $table->unsignedBigInteger('idRequerimiento');
+            $table->unsignedBigInteger('idPropuesta');
             $table->string('archivo');
             $table->string('usuario');
+            $table->string('tipo');
             $table->timestamps();
         });
 
         Schema::table('adjuntos_propuestas_requerimientos', function($table) {
             $table->foreign('idRequerimiento')->references('id')->on('encabezado_requerimientos');
+            $table->foreign('idPropuesta')->references('id')->on('propuestas_requerimientos');
         });
     }
 

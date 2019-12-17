@@ -223,9 +223,12 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/Upload2DReq','RequerimientosController@Upload2DReq');
     Route::post('/Upload3DReq','RequerimientosController@Upload3DReq');
     Route::post('/UploadPlanoReq','RequerimientosController@UploadPlanoReq');
+    Route::post('/UploadfilesSupport','RequerimientosController@UploadfilesSupport');
+    Route::get('/ImagesRequerimiento','RequerimientosController@ImagesRequerimiento');
 
     Route::resource('Artes','ArtesController');
     Route::get('/ViewArtes','ArtesController@index');
+    Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
 
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/
