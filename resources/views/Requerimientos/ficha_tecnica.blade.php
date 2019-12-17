@@ -13,45 +13,44 @@
 @section('content')
     @can('requerimientos.view')
         <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <div class="card-header">
                         INFORMACION GENERAL
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label><b>REQUERIMIENTO #:</b></label>
                                 <label>{{ $var }}</label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label><b>FECHA DE SOLICITUD:</b></label>
                                 <label id="Fecha_solicitud"></label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label><b>ESTADO:</b></label>
                                 <label id="Estado" class="text-primary"></label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label><b>VENDEDOR:</b></label>
                                 <label id="Vendedor"></label>
                             </div>
                         </div>
-                        <br>
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label><b>CLIENTE:</b></label>
                                 <label id="Cliente"></label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label><b>DISEÑADOR:</b></label>
                                 <label id="Diseñador" class="text-danger"></label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label><b>MARCA:</b></label>
                                 <label id="Marca"></label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label><b>ARTICULO:</b></label>
                                 <label id="Articulo"></label>
                             </div>
@@ -59,7 +58,24 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        ARCHIVOS DE SOPORTE
+                    </div>
+                    <div class="card-body">
+                        <div class="col-sm-12">
+                            <div class="col-sm py-2">
+                               <div class="row" id="ArchivosDeSoporte">
+
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -87,14 +103,13 @@
                             <div class="text-center col-12">
                                 <button class="btn btn-light anularreq" id="{{ $var }}">ANULAR REQUERIMIENTO</button>
                                 <button class="btn btn-light CambEstreq" id="{{ $var }}">CAMBIAR ESTADO</button>
-                                <button class="btn btn-light CambiarDiseñador" id="{{ $var }}">CAMBIAR DISEÑADOR</button>
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="text-center col-12">
                                 <button class="btn btn-light SubirArchiv">SUBIR ARCHIVOS</button>
-                                <button class="btn btn-light ">ASIGNAR</button>
+                                <button class="btn btn-light CambiarDiseñador" id="{{ $var }}">ASIGNAR Ò CAMBIAR DISEÑADOR</button>
                             </div>
                         </div>
                     </div>
@@ -118,7 +133,7 @@
                                             <th scope="col">RELIEVE</th>
                                             <th scope="col">ESTADO</th>
                                             <th scope="col">FECHA CREACION</th>
-                                            <th scope="col" class="text-center"><button class="btn btn-success btn-sm AddPropuestaReq"><i class="far fa-plus-square"></i></button></th>
+                                            <th scope="col" class="text-center"><button class="btn btn-success btn-sm AddPropuestaReq">Agregar</button></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -126,6 +141,25 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bd-example-modal-lg" id="ViewArtModal" tabindex="-1" role="dialog" aria-labelledby="ViewArtModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ViewArtTitle"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="">
+                        <div id="ViewArtPdf" style="height:750px;" ></div>
+                    </div>
+                    <div class="modal-footer" style="text-align: center !important;">
+                        <button class="btn btn-primary" data-dismiss="modal" id="CloseViewArt">Aceptar</button>
                     </div>
                 </div>
             </div>
@@ -156,6 +190,112 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade bd-example-modal-xl" id="PdfView" tabindex="-1" role="dialog" aria-labelledby="PdfView" aria-hidden="true" style="overflow-y: scroll;">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="PdfTitle"></h5>
+                    </div>
+                    <div class="modal-body" id="TextoImprimir" name="TextoImprimir">
+                        <div class="wrapper">
+                            <section class="invoice">
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <img src="/img/Logo_v2.png" alt="" style="width: 150px !important; height: 109px !important;" class="headers">
+                                    </div>
+                                    <div class="col-12">
+                                        <label style="margin: -1px">CI Estrada Velasquez y Cia SAS</label> <br>
+                                        <label style="margin: -1px">CR 55 29 C 14 ZONA IND. DE BELEN, MEDELLIN, TEL 2656665</label><br>
+                                        <label style="margin: -1px">Requerimiento No.: </label> <label id="PDFnumeroreq"></label> - <label style="margin: -1px">Propuesta No.: </label>
+                                        <label id="PDFnumeroprop"></label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <label>ESPECIFICACIONES DE DISEÑO</label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row invoice-info text-center" style="margin-left: 15%; margin-right: 15%">
+                                    <div class="col-sm-6 invoice-col text-left">
+                                        <address>
+                                            <b>ARTICULO:</b><label id="PDFarticulo"></label> <br>
+                                            <b>TAMAÑO:</b><label id="PDFtamaño"></label><br>
+                                            <b>RELIEVE:</b><label id="PDFrelieve"></label> <br>
+                                            <b>MARCA:</b><label id="PDFmarca"></label>
+                                        </address>
+                                    </div>
+                                    <div class="col-sm-6 invoice-col text-left">
+                                        <address>
+                                            <b>VENDEDOR:</b><label id="PDFvendedor"></label> <br>
+                                            <b>MATERIAL:</b><label id="PDFmaterial"></label><br>
+                                            <b>DISEÑADOR:</b><label id="PDFdiseñador"></label> <br>
+                                            <b>FECHA:</b><label id="PDFfecha"></label>
+                                        </address>
+                                    </div>
+
+                                    <div class="col-sm-12 text-center">
+                                        <table style="width: 760px;" heig cellspacing="1" cellpadding="2" border="1">
+                                            <tr>
+                                                <td>
+                                                    <b>DIBUJO 2D</b>
+                                                </td>
+                                                <td>
+                                                    <b>DIBUJO 3D</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 330px; width: 380px" >
+                                                    <div class="text-center" style="height: 320px; width: 360px" id="PDFdibujo3d">
+                                                        <img src="/img/Logo_v2.png" alt="" style="height: 240px; width: 331px">
+                                                    </div>
+                                                </td>
+                                                <td style="height: 330px; width: 380px">
+                                                    <div class="text-center" style="height: 320px; width: 360px" id="PDFdibujo2d">
+                                                        <img src="/img/Logo_v2.png" alt="" style="height: 240px; width: 331px">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table style="width: 760px;" heig cellspacing="1" cellpadding="2" border="1">
+                                            <tr>
+                                                <td>
+                                                    <b>PLANO</b>
+                                                </td>
+                                                <td>
+                                                    <b>CARACTERISTICAS</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 330px; width: 380px" >
+                                                    <div class="text-center" style="height: 320px; width: 360px" id="PDFplano">
+                                                        <img src="/img/Logo_v2.png" alt="" style="height: 240px; width: 331px">
+                                                    </div>
+                                                </td>
+                                                <td style="height: 330px; width: 380px" >
+                                                    <div class="text-center" style="height: 320px; width: 360px" id="PDFcaracteristicas">
+                                                        <img src="/img/Logo_v2.png" alt="" style="height: 240px; width: 331px">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br>
+
+                            </section>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary ImprimirPdf" id="ImprimirPdf">Imprimir</button>
+                        <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar requerimientos.
@@ -337,6 +477,7 @@
                                      id, Username
                                 },
                                 success: function (data) {
+                                    Obtenerdatos();
                                     Swal.fire({
                                         title: 'Anulado!',
                                         text: 'El requerimiento '+ id +' ha sido anulado.',
@@ -367,66 +508,126 @@
                         	id: id
                         },
                         success: function (data) {
-                            $('#Fecha_solicitud').html(data.encabezado[0].updated_at);
+                        	console.log(data.encabezado[0]);
+                            $('#Fecha_solicitud').html(data.encabezado[0].created_at);
                             $('#Cliente').html(data.encabezado[0].cliente);
                             $('#Marca').html(data.encabezado[0].marca);
                             $('#Articulo').html(data.encabezado[0].producto);
                             $('#Detalles').html(data.encabezado[0].informacion);
+                            $('#Estado').html(data.encabezado[0].estado);
+                            $('#Vendedor').html(data.encabezado[0].vendedor_id);
 
                             var diseñador = data.encabezado[0].diseñador_id;
+                            var estado = data.encabezado[0].estado;
+
                             if(diseñador == null){
+                                $('#Diseñador').removeClass('text-success');
                             	$('#Diseñador').html('SIN ASIGNAR').addClass('text-danger');
                             }else{
-                                $('#Diseñador').html(diseñador);
+                                $('#Diseñador').removeClass('text-danger');
+                                $('#Diseñador').html(diseñador).addClass('text-success');
                             }
+                            if(estado == 0){
+                                $('#Estado').removeClass('text-success');
+                                $('#Estado').html('ANULADO VENDEDOR').addClass('text-danger');
+                            }
+                            if(estado == 2){
+                                $('#Estado').removeClass('text-danger');
+                                $('#Estado').html('PENDIENTE POR REVISAR').addClass('text-success');
+                            }
+                            if(estado == 3){
+                                $('#Estado').removeClass('text-danger');
+                                $('#Estado').html('ASIGNADO').addClass('text-success');
+                            }
+                            if(estado == 4){
+                                $('#Estado').removeClass('text-danger');
+                                $('#Estado').html('INICIADO').addClass('text-success');
+                            }
+                            if(estado == 5){
+                                $('#Estado').removeClass('text-success');
+                                $('#Estado').html('CERRADO').addClass('text-danger');
+                            }
+                            if(estado == 6){
+                                $('#Estado').removeClass('text-success');
+                                $('#Estado').html('ANULADO DISEÑO').addClass('text-danger');
+                            }
+                            if(estado == 7){
+                                $('#Estado').removeClass('text-success');
+                                $('#Estado').html('SIN APROBAR').addClass('text-danger');
+                            }
+
                         }
                     })
                 }
+
                 Obtenerdatos();
 
-                var table = $('.table').DataTable({
-                    processing: false,
-                    serverSide: false,
-                    searching: false,
-                    paginate: false,
-                    bInfo: false,
-                    ajax: {
-                        url: '/ListaPropuestaReq',
-                        data: {id: id}
-                    },
-                    columns: [
-                        {data: 'id', name: 'id', orderable: false, searchable: false},
-                        {data: 'articulo', name: 'articulo', orderable: false, searchable: false},
-                        {data: 'relieve', name: 'relieve', orderable: false, searchable: false},
-                        {data: 'estado', name: 'estado', orderable: false, searchable: false},
-                        {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
-                        {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+                var table;
 
-                    ],
-                    language: {
-                        // traduccion de datatables
-                        processing: "Procesando...",
-                        search: "Buscar&nbsp;:",
-                        lengthMenu: "Mostrar _MENU_ registros",
-                        info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                        infoPostFix: "",
-                        loadingRecords: "Cargando...",
-                        zeroRecords: "No se encontraron resultados",
-                        emptyTable: "No se encontraron propuestas",
-                        paginate: {
-                            first: "Primero",
-                            previous: "Anterior",
-                            next: "Siguiente",
-                            last: "Ultimo"
+                function loadtable(){
+                    table = $('.table').DataTable({
+                        processing: false,
+                        serverSide: false,
+                        searching: false,
+                        paginate: false,
+                        bInfo: false,
+                        ajax: {
+                            url: '/ListaPropuestaReq',
+                            data: {id: id}
                         },
-                        aria: {
-                            sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                            sortDescending: ": Activar para ordenar la columna de manera descendente"
+                        columns: [
+                            {data: 'id', name: 'id', orderable: false, searchable: false},
+                            {data: 'articulo', name: 'articulo', orderable: false, searchable: false},
+                            {data: 'relieve', name: 'relieve', orderable: false, searchable: false},
+                            {data: 'estado', name: 'estado', orderable: false, searchable: false},
+                            {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
+                            {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+                        ],
+                        columnDefs: [
+                            { className: "text-center", "targets": [ 5 ] }
+                        ],
+                        language: {
+                            // traduccion de datatables
+                            processing: "Procesando...",
+                            search: "Buscar&nbsp;:",
+                            lengthMenu: "Mostrar _MENU_ registros",
+                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                            infoPostFix: "",
+                            loadingRecords: "Cargando...",
+                            zeroRecords: "No se encontraron resultados",
+                            emptyTable: "No se encontraron propuestas",
+                            paginate: {
+                                first: "Primero",
+                                previous: "Anterior",
+                                next: "Siguiente",
+                                last: "Ultimo"
+                            },
+                            aria: {
+                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                                sortDescending: ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
+                        rowCallback: function( row, data, index ) {
+                            if (data.estado == 1) {
+                                $(row).find('td:eq(3)').html('Creada');
+                            }
+                            if (data.estado == 2) {
+                                $(row).find('td:eq(3)').html('Cancelada');
+                            }
+                            if (data.estado == 3) {
+                                $(row).find('td:eq(3)').html('Aprobada');
+                            }
+                            if (data.estado == 4) {
+                                $(row).find('td:eq(3)').html('En render 3D');
+                            }
+                            if (data.estado == 5) {
+                                $(row).find('td:eq(3)').html('En planos');
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
                 $('.CambEstreq').on('click', function () {
                     var id = $(this).attr('id');
@@ -445,9 +646,11 @@
                         {
                             html:'<label>Selecciona una opcion</label> <br> <select name="state" id="state" class="form-control">' +
                               '<option value="" selected>Seleccione...</option>' +
-                              '<option value="1">Solicitar plano</option>' +
-                              '<option value="1">Por revisar</option>' +
+                              '<option value="2">Por revisar</option>' +
+                              '<option value="3">Asignado</option>' +
                               '<option value="5">Cerrar</option>' +
+                              '<option value="6">Anulado diseño</option>' +
+                              '<option value="7">Sin aprobar</option>' +
                               '</select>' +
                               '<br>' +
                               '<label style="text-align: left" >Justificacion:</label> <br>' +
@@ -486,6 +689,7 @@
                                     result, id, Username
                                 },
                                 success: function () {
+                                    Obtenerdatos();
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Guardardo',
@@ -518,7 +722,7 @@
                         success: function (data) {
                             swal.fire({
                                 icon: 'question',
-                                title: '¿Cambiar diseñador?',
+                                title: 'Asignar o cambiar diseñador',
                                 text: 'Seleccione el diseñador al que se le sera asignado este requerimiento',
                                 input: 'select',
                                 confirmButtonText: 'Aceptar',
@@ -551,6 +755,7 @@
                                             result, Username, id
                                         },
                                         success: function () {
+                                            Obtenerdatos();
                                             Swal.fire({
                                                 icon: 'success',
                                                 title: 'Guardardo',
@@ -599,7 +804,7 @@
                               '<option value="" selected>Seleccione...</option>' +
                               '<option value="Alto">Alto</option>' +
                               '<option value="Bajo">Bajo</option>' +
-                              '<option value="AltoBajo">Alto y bajo</option>' +
+                              '<option value="Alto/Bajo">Alto/Bajo</option>' +
                               '<option value="Liso">Liso</option>' +
                               '</select></form>',
                             inputValidator: () => {
@@ -635,6 +840,8 @@
                                     result, id, Username
                                 },
                                 success: function () {
+                                    $('.table').DataTable().destroy();
+                                    loadtable();
                                     table.draw();
                                     Swal.fire({
                                         icon: 'success',
@@ -688,10 +895,7 @@
                     Swal.fire({
                         title: '3D',
                         text: 'Por favor, seleccione un archivo 3D para esta propuesta',
-                        imageUrl: '../../requerimientos/'+'RQ-'+id+'/Propuestas/'+'/PP-'+idProp+'/3D/'+idProp+'.png',
-                        imageAlt: '3D',
-                        imageHeight: 100,
-                        imageWidth: 100,
+                        icon: 'info',
                         confirmButtonText: 'Subir',
                         cancelButtonText: 'Cancelar',
                         confirmButtonColor: '#3085d6',
@@ -699,6 +903,9 @@
                         buttonsStyling: true,
                         showCancelButton: true,
                         input: 'file',
+                        inputAttributes: {
+                            accept: 'image/*'
+                        },
                         onBeforeOpen: () => {
                             $(".swal2-file").change(function () {
                                 var reader = new FileReader();
@@ -712,6 +919,7 @@
                             formData.append("fileToUpload", file);
                             formData.append("Numero",id);
                             formData.append("Prop",idProp);
+                            formData.append("Usuario",Username);
                             console.log(formData);
                             $.ajax({
                                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -744,6 +952,9 @@
                         buttonsStyling: true,
                         showCancelButton: true,
                         input: 'file',
+                        inputAttributes: {
+                            accept: 'image/*,application/pdf'
+                        },
                         onBeforeOpen: () => {
                             $(".swal2-file").change(function () {
                                 var reader = new FileReader();
@@ -757,6 +968,7 @@
                             formData.append("fileToUpload", file);
                             formData.append("Numero",id);
                             formData.append("Prop",idProp);
+                            formData.append("Usuario",Username);
                             console.log(formData);
                             $.ajax({
                                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -789,6 +1001,9 @@
                         buttonsStyling: true,
                         showCancelButton: true,
                         input: 'file',
+                        inputAttributes: {
+                            accept: 'image/*'
+                        },
                         onBeforeOpen: () => {
                             $(".swal2-file").change(function () {
                                 var reader = new FileReader();
@@ -802,6 +1017,7 @@
                             formData.append("fileToUpload", file);
                             formData.append("Numero",id);
                             formData.append("Prop", idProp);
+                            formData.append("Usuario",Username);
                             console.log(formData);
                             $.ajax({
                                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -819,9 +1035,129 @@
                             })
                         }
                     })
-                })
+                });
+
+                $('body').on('click','.SubirArchiv', function () {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Soportes',
+                        text: 'Por favor, seleccione los archivos de soporte para este requerimiento',
+                        confirmButtonText: 'Subir',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        input: 'file',
+                        inputAttributes: {
+                        	multiple: 'multiple',
+                            accept: 'image/*,application/pdf,application/msword'
+                        },
+                        onBeforeOpen: () => {
+                            $(".swal2-file").change(function () {
+                                var reader = new FileReader();
+                                console.log(this.files);
+                            });
+                        }
+                    }).then((file) => {
+                        if (file.value) {
+                            var formData = new FormData();
+                            var ins = $('.swal2-file')[0].files.length;
+                            var file = $('.swal2-file')[0].files;
+
+                            console.log(ins);
+                            /*este foreaach es necesario para la subida de archivos multiples*/
+                            for (var x = 0; x < ins; x++) {
+                                formData.append("fileToUpload[]",file[x]);
+                            }
+                            formData.append("Numero",id);
+                            formData.append("Usuario",Username);
+
+                         /*   console.log($('.swal2-file')[0].files);
+                            formData.append("fileToUpload", file);
+                            */
+                            console.log(formData);
+                            $.ajax({
+                                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                                method: 'post',
+                                url: '/UploadfilesSupport',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function (resp) {
+                                    Swal.fire('Subido', 'Archivo subido con exito!', 'success');
+                                    ObtenerArchivosRequerimiento();
+                                },
+                                error: function() {
+                                    Swal.fire({ type: 'error', title: 'Oops...', text: 'Something went wrong!' })
+                                }
+                            })
+                        }
+                    })
+                });
+
+                ObtenerArchivosRequerimiento();
+
+                function ObtenerArchivosRequerimiento() {
+                    $.ajax({
+                        url: '/ImagesRequerimiento',
+                        type: 'get',
+                        data: {
+                        	id: id
+                        },
+                        success: function (data) {
+                        	var Array = data;
+                        	console.log(data);
+                        	var i = 0;
+                            $(data).each(function () {
+                               $('#ArchivosDeSoporte').append('<div class="col-sm-3">'+'<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a>'+'</div>');
+                               i++;
+                           })
+                        }
+                    })
+                }
+
+                $('body').on('click','.ViewImgReq',function () {
+                	var file = $(this).attr('id');
+
+                	if(file.substr(-3) == 'png' || file.substr(-3) == 'jpg' || file.substr(-3) == 'gif'){
+                        Swal.fire({
+                            imageUrl: '../../requerimientos/'+'RQ-'+id+'/soportes/'+file,
+                            /*imageHeight: 300,
+                            imageWidth: 500,*/
+                            imageAlt: 'A tall image'
+                        })
+                    }else{
+                        $('#ViewArtTitle').html('Ver PDF');
+                        PDFObject.embed('../../requerimientos/'+'RQ-'+id+'/soportes/'+file, '#ViewArtPdf');
+                        $('#ViewArtModal').modal('show');
+                    }
 
 
+                });
+
+                $('body').on('click','.VerPropuest', function () {
+                    var Prop = $(this).attr('id');
+                	$.ajax({
+                        url: '/DatosPropuestaPDF',
+                        type: 'get',
+                        data: {
+                        	Req: id,
+                            Prop: Prop
+                        },
+                        success: function (data) {
+                            console.log(data);
+                        }
+                    });
+
+                    $('#PdfView').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                    });
+
+                });
+
+                loadtable();
 
             });
         </script>
@@ -838,5 +1174,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.js"></script>
     @endpush
 @stop
