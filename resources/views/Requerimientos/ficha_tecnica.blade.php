@@ -197,9 +197,9 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="PdfTitle"></h5>
                     </div>
-                    <div class="modal-body" id="TextoImprimir" name="TextoImprimir">
+                    <div class="modal-body">
                         <div class="wrapper">
-                            <section class="invoice">
+                            <section class="invoice" id="TextoImprimir" name="TextoImprimir">
                                 <div class="row text-center">
                                     <div class="col-12">
                                         <img src="/img/Logo_v2.png" alt="" style="width: 150px !important; height: 109px !important;" class="headers">
@@ -237,7 +237,7 @@
                                     </div>
 
                                     <div class="col-sm-12 text-center">
-                                        <table style="width: 760px;" heig cellspacing="1" cellpadding="2" border="1">
+                                        <table style="width: 740px;" heig cellspacing="1" cellpadding="2" border="1">
                                             <tr>
                                                 <td>
                                                     <b>DIBUJO 2D</b>
@@ -247,17 +247,17 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 330px; width: 380px" >
+                                                <td style="height: 330px; width: 370px" >
                                                     <div class="text-center" style="height: 320px; width: 360px" id="PDFdibujo3d">
                                                     </div>
                                                 </td>
-                                                <td style="height: 330px; width: 380px">
+                                                <td style="height: 330px; width: 370px">
                                                     <div class="text-center" style="height: 320px; width: 360px" id="PDFdibujo2d">
                                                     </div>
                                                 </td>
                                             </tr>
                                         </table>
-                                        <table style="width: 760px;" heig cellspacing="1" cellpadding="2" border="1">
+                                        <table style="width: 740px;" heig cellspacing="1" cellpadding="2" border="1">
                                             <tr>
                                                 <td>
                                                     <b>PLANO</b>
@@ -267,11 +267,11 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 330px; width: 380px" >
+                                                <td style="height: 330px; width: 370px" >
                                                     <div class="text-center" style="height: 320px; width: 360px" id="PDFplano">
                                                     </div>
                                                 </td>
-                                                <td style="height: 330px; width: 380px" >
+                                                <td style="height: 330px; width: 370px" >
                                                     <div class="text-center" style="height: 320px; width: 360px" id="PDFcaracteristicas">
                                                     </div>
                                                 </td>
@@ -279,8 +279,6 @@
                                         </table>
                                     </div>
                                 </div>
-                                <br>
-
                             </section>
                         </div>
                     </div>
@@ -1169,6 +1167,29 @@
                 });
 
                 loadtable();
+
+
+                function imprimirElemento(elemento) {
+                    var ventana =  window.open('Print','','width=900');
+                    ventana.document.write('<html><head><title>' + document.title + '</title>');
+                    ventana.document.write('<link rel="stylesheet" href="http://evpiu.test/dashboard/styles/app.css">' +
+                        ' <link rel="stylesheet" href="http://evpiu.test/dashboard/styles/main.css">');
+                    ventana.document.write('</head><body >');
+                    ventana.document.write(elemento.innerHTML);
+                    ventana.document.write('</body></html>');
+                    ventana.document.close();
+                    ventana.focus();
+                    ventana.onload = function() {
+                        ventana.print();
+                        ventana.close();
+                    };
+                    return true;
+                }
+
+                document.querySelector("#ImprimirPdf").addEventListener("click", function() {
+                    var div = document.querySelector("#TextoImprimir");
+                    imprimirElemento(div);
+                });
 
             });
         </script>
