@@ -19,7 +19,11 @@ Route::get('/post/{post}', 'BlogController@post')->name('post');
 Route::get('/post/tag/{tag}', 'BlogController@tag')->name('tag');
 Route::get('/post/category/{category}', 'BlogController@category')->name('category');
 
-Auth::routes();
+/*Auth::routes();*/
+
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::middleware(['auth'])->group(function() {
     // Dashboard
