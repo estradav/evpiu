@@ -25,8 +25,8 @@
                         <li class="nav-item">Login</li>
                         @else
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/storage/users/user.png') }}" alt="" class="user-avatar-md rounded-circle"></a>
-                            <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
+                            <a class="nav-link nav-user-img" href="javascript:void(0)" id="Usermenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/storage/users/user.png') }}" alt="" class="user-avatar-md rounded-circle"></a>
+                            <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="Usermenu">
                                 <div class="nav-user-info">
                                     <h5 class="mb-0 text-white nav-user-name">{{ Auth::user()->name }}</h5>
                                     <span class="ml-2">{{ Auth::user()->email }}</span>

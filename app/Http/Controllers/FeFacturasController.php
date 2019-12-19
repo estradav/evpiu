@@ -127,6 +127,7 @@ class FeFacturasController extends Controller
 
            $Config = DB::table('fe_configs')->take(1)->get();
 
+
            $itemNormales = [];
            $itemRegalo = [];
 
@@ -138,10 +139,16 @@ class FeFacturasController extends Controller
                }
            }
 
-
            foreach ($Encabezado as $enc) {
                ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
-               $brutomasiva     =  number_format($enc->bruto,2,'.','') + number_format($enc->iva,2,'.','');
+               ///
+               if($enc->tipo_cliente  == 'EX'){
+                   $brutomasiva =  number_format($enc->bruto,2,'.','');
+
+               }else{
+                   $brutomasiva =  number_format($enc->bruto,2,'.','') + number_format($enc->iva,2,'.','');
+
+               }
                $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
                $total_cargos    = number_format($enc->fletes,2,'.','') + number_format($enc->seguros,2,'.','');
 
@@ -628,7 +635,7 @@ class FeFacturasController extends Controller
                $objetoXML->text('Descuento general');
                $objetoXML->endElement();
                $objetoXML->startElement("porcentaje");
-               $objetoXML->text($DescuentoTotalFactura);
+               $objetoXML->text(number_format($DescuentoTotalFactura,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("base");
                $objetoXML->text($enc->bruto);
@@ -641,7 +648,7 @@ class FeFacturasController extends Controller
 
 
                $objetoXML->startElement("impuestos");
-               if($enc->iva == 0)
+               if($enc->iva == 0 || $enc->tipo_cliente == 'EX')
                {
                    $objetoXML->startElement("impuesto");
                    $objetoXML->startElement("idimpuesto");
@@ -877,7 +884,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("porcentaje");
-                   $objetoXML->text($DescuentoPorItem);
+                   $objetoXML->text(number_format($DescuentoPorItem,2,'.',''));
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("base");
@@ -893,7 +900,7 @@ class FeFacturasController extends Controller
 
                    $objetoXML->startElement("impuestos");
 
-                   if($enc->iva == 0){
+                   if($it->iva_item == 0 || $it->iva_item == null || $it->iva_item == '' || $enc->tipo_cliente == 'EX'){
                        $objetoXML->startElement("impuesto");
                        $objetoXML->startElement("idimpuesto");
                        $objetoXML->text('');
@@ -939,9 +946,9 @@ class FeFacturasController extends Controller
                        $objetoXML->endElement();
                    }
 
-                   if($enc->tipo_cliente != 'PN' && $enc->iva != 0 && $enc->subtotal != 0){
+                   /*if($enc->tipo_cliente != 'PN' && $enc->iva != 0 && $enc->subtotal != 0){
 
-                   }
+                   }*/
                    // RETEFUENTE
                    /*$objetoXML->startElement("impuesto");
                        $objetoXML->startElement("idimpuesto");

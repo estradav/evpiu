@@ -17,464 +17,22 @@ class RequerimientosController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            if ($request->estado == 1) {
-                if ($request->perfil == 1 || $request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm addRender " name="addRender" id="'.$row->id.'" disabled><i class="fas fa-file-upload"></i></button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 2 ||$request->perfil == 999){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm addRender" name="addRender" id="'.$row->id.'"><i class="fas fa-file-upload"></i> Cargar</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-            }
-
-
-            if ($request->estado == 2) {
-                if ($request->perfil == 1 || $request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<a href="/Requerimientoss/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="ver"><i class="fas fa-file-signature"></i> Ver</a>'.'</div>';
-
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 2 ||$request->perfil == 999){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<a href="/Requerimientoss/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="ver"><i class="fas fa-file-signature"></i> Ver</a>'.'</div>';
-
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-            }
-
-            /* Ojo falta el estado 2 para los vendedores */
-            if ($request->estado == 3) {
-                if ($request->perfil == 3 || $request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_PorPlano" name="Ver_PorPlano" id="'.$row->id.'" ><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 1){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_PorPlano" name="Ver_PorPlano" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-            }
-
-            if ($request->estado == 4) {
-                if ($request->perfil == 1){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=', $request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Asignado" name="Ver_Asignado" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Asignado" name="Ver_Asignado" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Asignado" name="Ver_Asignado" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-            }
-
-            if ($request->estado == 5) {
-                if ($request->perfil == 1){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=', $request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_iniciado" name="Ver_iniciado" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 2 || $request->perfil == 999)
-                {
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_iniciado" name="Ver_iniciado" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 3 || $request->perfil == 4)
-                {
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_iniciado" name="Ver_iniciado" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-            }
-
-            if ($request->estado == 6) {
-                if ($request->perfil == 4 || $request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Renderizando" name="Ver_Renderizando" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 1 || $request->perfil == 3){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Renderizando" name="Ver_Renderizando" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-            }
-
-            /* Ojo falta el estado 7 para los vendedores */
-            /*if ($request->estado == 7) {
-                $data =  DB::table('encabezado_requerimientos')
-                    ->where('estado','=',$request->estado)
+            if ($request->estado != null) {
+                $data = DB::table('encabezado_requerimientos')
+                    ->where('estado', '=', $request->estado)
                     ->orderBy('estado', 'desc')
                     ->get();
-
                 return Datatables::of($data)
-                    ->addColumn('opciones', function($row){
-                        $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_PorAprobar" name="Ver_PorAprobar" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
+                    ->addColumn('opciones', function ($row) {
+                        $btn = '<div class="btn-group ml-auto">' . '<a href="/Requerimientoss/' . $row->id . '/edit" class="btn btn-sm btn-outline-light" id="ver"><i class="fas fa-file-signature"></i> Ver</a>' . '</div>';
                         return $btn;
                     })
                     ->rawColumns(['opciones'])
                     ->make(true);
-            }*/
 
-            if ($request->estado == 8) {
-                if ($request->perfil == 1 || $request->perfil == 2 || $request->perfil == 999 ){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=',$request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_PorCorregir" name="Ver_PorCorregir" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=',$request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_PorCorregir" name="Ver_PorCorregir" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-
-            }
-
-            if ($request->estado == 9) {
-                if ($request->perfil == 1){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=',$request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Aprobados" name="Ver_Aprobados" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 3 || $request->perfil == 4 ){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Aprobados" name="Ver_Aprobados" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 2 || $request->perfil == 999 ){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Aprobados" name="Ver_Aprobados" id="'.$row->id.'" ><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-            }
-
-            if ($request->estado == 10) {
-                if ($request->perfil == 1){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=',$request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Cerrados" name="Ver_Cerrados" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 3 || $request->perfil == 4 ){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=',$request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Cerrados" name="Ver_Cerrados" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 2 || $request->perfil == 999 ){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=',$request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Cerrados" name="Ver_Cerrados" id="'.$row->id.'" ><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-
-            }
-
-            if ($request->estado == 11) {
-                if ($request->perfil == 1){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=',$request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Anulados" name="Ver_Anulados" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Anulados" name="Ver_Anulados" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_Anulados" name="Ver_Anulados" id="'.$row->id.'" ><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-
-            }
-
-            if ($request->estado == 12) {
-                if ($request->perfil == 1){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->where('diseñador','=',$request->asignado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_SinAprobar" name="Ver_SinAprobar" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 3 || $request->perfil == 4){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_SinAprobar" name="Ver_SinAprobar" id="'.$row->id.'" disabled><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
-                if ($request->perfil == 2 || $request->perfil == 999){
-                    $data =  DB::table('encabezado_requerimientos')
-                        ->where('estado','=',$request->estado)
-                        ->orderBy('estado', 'desc')
-                        ->get();
-
-                    return Datatables::of($data)
-                        ->addColumn('opciones', function($row){
-                            $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Ver_SinAprobar" name="Ver_SinAprobar" id="'.$row->id.'" ><i class="fas fa-eye"></i> Ver</button>'.'</div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['opciones'])
-                        ->make(true);
-                }
             }
         }
         return view('Requerimientos.Requerimiento');
-
     }
 
     public function SearchMarcas(Request $request)
@@ -889,6 +447,14 @@ class RequerimientosController extends Controller
                 ]);
                 $i++;
             }
+            DB::table('transacciones_requerimientos')->insert([
+                'idReq'         =>  $request->Numero,
+                'tipo'          =>  'Adjunto Archivos',
+                'descripcion'   =>  'El Usuario '.$request->Usuario.' Adjunto archivos al requerimiento # '.$request->idReq,
+                'usuario'       =>  $request->Usuario,
+                'created_at'    =>  Carbon::now(),
+                'updated_at'    =>  Carbon::now()
+            ]);
 
 
 
@@ -935,6 +501,27 @@ class RequerimientosController extends Controller
         return response()->json(['encabezado' => $encabezado, 'propuesta' => $propuestasReq, 'archivos' => $archivos]);
     }
 
+    public function DeleteFileFromPropuesta (Request $request)
+    {
+        $destinationPath = 'requerimientos/'.'RQ-'.$request->idReq.'/soportes/';
+        $profilefile = $request->file;
+        File::delete($destinationPath.$profilefile);
+
+        DB::table('adjuntos_requerimientos')
+            ->where('idRequerimiento','=',$request->idReq)
+            ->where('archivo','=',$request->file)->delete();
+
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         =>  $request->idReq,
+            'tipo'          =>  'Elimino Archivo',
+            'descripcion'   =>  'El Usuario '.$request->user.' Elimino un archivo del requerimiento # '.$request->idReq.' - Detalles:'.$request->coments,
+            'usuario'       =>  $request->user,
+            'created_at'    =>  Carbon::now(),
+            'updated_at'    =>  Carbon::now()
+        ]);
+
+        return response()->json(['ok' => 'ok']);
+    }
 
 
 

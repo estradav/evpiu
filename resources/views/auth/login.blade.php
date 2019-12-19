@@ -9,16 +9,16 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="form-group">
-                <input id="email" type="email" class="form-control form-control-lg{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="Tu correo electrónico" required autofocus>
+                <input id="username" type="text" class="form-control form-control-lg{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Usuario" required autofocus>
 
-                @if ($errors->has('email'))
+                @if ($errors->has('username'))
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('email') }}</strong>
+                        <strong>{{ $errors->first('username') }}</strong>
                     </span>
                 @endif
             </div>
             <div class="form-group">
-                <input id="password" type="password" class="form-control form-control-lg{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Tu contraseña" required>
+                <input id="password" type="password" class="form-control form-control-lg{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Contraseña" required>
 
                 @if ($errors->has('password'))
                     <span class="invalid-feedback" role="alert">
@@ -35,9 +35,9 @@
         </form>
     </div>
     <div class="card-footer bg-white p-0">
-        <div class="card-footer-item card-footer-item-bordered">
+        {{--<div class="card-footer-item card-footer-item-bordered">
             <a href="{{ route('register') }}" class="footer-link">{{ __('Crear cuenta') }}</a>
-        </div>
+        </div>--}}
         @if (Route::has('password.request'))
         <div class="card-footer-item card-footer-item-bordered">
             <a href="{{ route('password.request') }}" class="footer-link">{{ __('Olvidé mi contraseña') }}</a>

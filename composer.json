@@ -12,6 +12,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "ext-xmlwriter": "*",
+        "adldap2/adldap2-laravel": "^6.0",
         "barryvdh/laravel-dompdf": "^0.8.5",
         "consoletvs/charts": "6.*",
         "davejamesmiller/laravel-breadcrumbs": "5.x",

@@ -16,30 +16,30 @@
             <div class="form-group">
                 <ul class="nav nav-tabs " id="nav">
                     <li class="nav-item">
-                        <a class="nav-link Por_Plano" href="javascript:void(0)" id="1">Por Plano</a>
+                        <a class="nav-link Por_Plano" href="javascript:void(0)" id="1">RENDER</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link Por_revisar active" href="javascript:void(0)" id="2">Por revisar</a>
+                        <a class="nav-link Por_revisar active" href="javascript:void(0)" id="2">POR REVISAR</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link Rediligenciar" href="javascript:void(0)" id="00">Rediligenciar</a>
+                        <a class="nav-link Rediligenciar" href="javascript:void(0)" id="3">ASIGNADO</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link Asignados" href="javascript:void(0)" id="4">Asignados</a>
+                        <a class="nav-link Asignados" href="javascript:void(0)" id="4">INICIADO</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link Iniciados" href="javascript:void(0)" id="5">Iniciados</a>
+                        <a class="nav-link Iniciados" href="javascript:void(0)" id="5">CERRADO</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link Renderizando" href="javascript:void(0)" id="6">Renderizando</a>
+                        <a class="nav-link Renderizando" href="javascript:void(0)" id="6">ANULADO DISEÑO</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link Por_Aprobar" href="javascript:void(0)" id="7">Por aprobar</a>
+                        <a class="nav-link Por_Aprobar" href="javascript:void(0)" id="7">SIN APROBAR</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link Por_Corregir" href="javascript:void(0)" id="8">Por corregir</a>
+                        <a class="nav-link Por_Corregir" href="javascript:void(0)" id="0">ANULADO VENDEDOR</a>
                     </li>
-                    <li class="nav-item">
+                  {{--  <li class="nav-item">
                         <a class="nav-link Aprobados" href="javascript:void(0)" id="9">Aprobados</a>
                     </li>
                     <li class="nav-item">
@@ -50,7 +50,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link Sin_Aprobar" href="javascript:void(0)" id="12">Sin aprobar</a>
-                    </li>
+                    </li>--}}
                 </ul>
             </div>
         </div>
@@ -81,7 +81,6 @@
                 </div>
             </div>
         </div>
-
         <div class="modal fade bd-example-modal-sm " id="AsignarADiseñador" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
@@ -92,7 +91,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <label for="SelectDiseñador"> Diseñador:</label>
+                        <label for="SelectDiseñador">Diseñador:</label>
                         <select name="SelectDiseñador" id="SelectDiseñador" class="form-control">
                         </select>
                     </div>
@@ -102,9 +101,6 @@
                 </div>
             </div>
         </div>
-
-
-
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar requerimientos.
@@ -193,7 +189,7 @@
 
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los pronosticos Cerrados.");
                     }
@@ -204,7 +200,7 @@
 
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar Requerimientos.");
                     }
@@ -214,7 +210,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -224,7 +220,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -234,7 +230,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -244,7 +240,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -254,7 +250,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -264,7 +260,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -274,7 +270,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -284,7 +280,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -294,7 +290,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -304,7 +300,7 @@
                     Estado = $(this).attr("id");
                     if (Estado != '') {
                         $('.dataTable').DataTable().destroy();
-                        load_data(Estado, idDiseno);
+                        load_data(Estado);
                     } else {
                         toastr.error("Error al consultar los Requerimientos.");
                     }
@@ -314,19 +310,6 @@
                     e.preventDefault();
                     $(this).parents('#nav').find('.active').removeClass('active').end().end().addClass('active');
                 });
-
-
-
-
-
-
-
-
-                /*var fileinput = $("#input-24");*/
-
-
-
-
 
                 $("#archivos").change(function() {
                     var file = this.files[0];
@@ -338,7 +321,9 @@
                         return false;
                     }
                 });
+
                 var Numero_requerimiento;
+
                 $('body').on('click','.Asignar', function () {
                 	 Numero_requerimiento = $(this).attr("id");
                     $.ajax({

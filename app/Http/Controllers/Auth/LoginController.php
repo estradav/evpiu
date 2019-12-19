@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Adldap\Auth\BindException;
+use Adldap\Auth\PasswordRequiredException;
+use Adldap\Auth\UsernameRequiredException;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Adldap\Laravel\Facades\Adldap;
+use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -36,4 +43,13 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+
+    public function username() {
+        return 'username';
+    }
+
+
+
+
 }
