@@ -251,7 +251,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: false,
                 title: 'Generando XML un momento por favor...',
-                html: '<img src="img/loading.gif" alt="" >',
+                html: '<img src="../img/carga.gif" alt="">',
                 showConfirmButton: false,
                 showCancelButton: false,
                 allowOutsideClick: false,
@@ -269,7 +269,7 @@ $(document).ready(function () {
                 type: 'post',
                 dataType: 'json', // importante para que
                 data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
-                url: 'fe/xml',
+                url: '/fe/xml',
                 success: function ( data) {
                     sweetAlert.close();
                     Swal.fire({
@@ -282,7 +282,7 @@ $(document).ready(function () {
                     var req = new XMLHttpRequest();
                     req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
                     req.responseType = "blob";
-                    console.log(req)
+                    console.log(req);
                     req.onload = function (event) {
                         var blob = req.response;
                         var link=document.createElement('a');

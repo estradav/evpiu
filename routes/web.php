@@ -233,6 +233,7 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('Artes','ArtesController');
     Route::get('/ViewArtes','ArtesController@index');
     Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
+    Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
 
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/

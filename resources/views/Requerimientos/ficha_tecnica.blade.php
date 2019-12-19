@@ -13,7 +13,7 @@
 @section('content')
     @can('requerimientos.view')
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <div class="card-header">
                         INFORMACION GENERAL
@@ -21,16 +21,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
-                                <label><b>REQUERIMIENTO #:</b></label>
-                                <label>{{ $var }}</label>
-                            </div>
-                            <div class="col-6">
-                                <label><b>FECHA DE SOLICITUD:</b></label>
-                                <label id="Fecha_solicitud"></label>
-                            </div>
-                            <div class="col-6">
-                                <label><b>ESTADO:</b></label>
-                                <label id="Estado" class="text-primary"></label>
+                                <label><b>DISEÑADOR:</b></label>
+                                <label id="Diseñador" class="text-danger"></label>
                             </div>
                             <div class="col-6">
                                 <label><b>VENDEDOR:</b></label>
@@ -43,10 +35,6 @@
                                 <label id="Cliente"></label>
                             </div>
                             <div class="col-6">
-                                <label><b>DISEÑADOR:</b></label>
-                                <label id="Diseñador" class="text-danger"></label>
-                            </div>
-                            <div class="col-6">
                                 <label><b>MARCA:</b></label>
                                 <label id="Marca"></label>
                             </div>
@@ -54,11 +42,19 @@
                                 <label><b>ARTICULO:</b></label>
                                 <label id="Articulo"></label>
                             </div>
+                            <div class="col-6">
+                                <label><b>FECHA DE SOLICITUD:</b></label>
+                                <label id="Fecha_solicitud"></label>
+                            </div>
+                            <div class="col-6">
+                                <label><b>ESTADO:</b></label>
+                                <label id="Estado" class="text-primary"></label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <div class="card-header">
                         ARCHIVOS DE SOPORTE
@@ -77,14 +73,15 @@
         </div>
 
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <div class="card-header">
                         DETALLE REQUERIMIENTO
                     </div>
                     <div class="card-body">
-                        <label id="Detalles"></label>
-                        <br>
+                        <div id="Detalles">
+
+                        </div>
                         <br>
                         <div class="text-center">
                             <button class="btn btn-light newcoment" id="{{ $var }}">ENVIAR UN COMENTARIO</button>
@@ -93,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <div class="card-header">
                         OPCIONES
@@ -173,18 +170,8 @@
                     </button>
                     <br>
                     <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header text-center">
-                                <b>COMENTARIOS </b>
-                            </div>
-                            <div class="card-body">
-                                <div class="container py-2" id="DetallesComentariosReque">
+                        <div class="container py-2" id="DetallesComentariosReque">
 
-                                </div>
-                            </div>
-                            <div class="card-footer text-muted">
-                                Comentarios generales
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -289,7 +276,6 @@
                 </div>
             </div>
         </div>
-
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar requerimientos.
@@ -300,7 +286,7 @@
         <script>
             $(document).ready(function () {
                 var id = @json( $var );
-                var Username = @json( Auth::user()->username );
+                var Username = @json( Auth::user()->name );
 
                 $('body').on('click','.newcoment',function () {
                     var id = $(this).attr('id');
@@ -506,12 +492,19 @@
                             $('#Cliente').html(data.encabezado[0].cliente);
                             $('#Marca').html(data.encabezado[0].marca);
                             $('#Articulo').html(data.encabezado[0].producto);
-                            $('#Detalles').html(data.encabezado[0].informacion);
                             $('#Estado').html(data.encabezado[0].estado);
                             $('#Vendedor').html(data.encabezado[0].vendedor_id);
 
                             var diseñador = data.encabezado[0].diseñador_id;
                             var estado = data.encabezado[0].estado;
+
+
+                            if(data.encabezado[0].informacion == null){
+                                $('#Detalles').append('<div class="alert alert-danger" role="alert">No se agrego ningun detalle para este requerimiento</div>');
+                            }else{
+                                $('#Detalles').append('<label> <label for="">'+data.encabezado[0].informacion+'</label><br>')
+                            }
+
 
                             if(diseñador == null){
                                 $('#Diseñador').removeClass('text-success');
@@ -523,6 +516,10 @@
                             if(estado == 0){
                                 $('#Estado').removeClass('text-success');
                                 $('#Estado').html('ANULADO VENDEDOR').addClass('text-danger');
+                            }
+                            if(estado == 1){
+                                $('#Estado').removeClass('text-danger');
+                                $('#Estado').html('RENDER').addClass('text-success');
                             }
                             if(estado == 2){
                                 $('#Estado').removeClass('text-danger');
@@ -1073,8 +1070,9 @@
                                 processData: false,
                                 contentType: false,
                                 success: function (resp) {
-                                    Swal.fire('Subido', 'Archivo subido con exito!', 'success');
+                                    $('#ArchivosDeSoporte').html('');
                                     ObtenerArchivosRequerimiento();
+                                    Swal.fire('Subido', 'Archivo subido con exito!', 'success');
                                 },
                                 error: function() {
                                     Swal.fire({ type: 'error', title: 'Oops...', text: 'Something went wrong!' })
@@ -1096,10 +1094,17 @@
                         success: function (data) {
                         	var Array = data;
                         	var i = 0;
-                            $(data).each(function () {
-                               $('#ArchivosDeSoporte').append('<div class="col-sm-3">'+'<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a>'+'</div>');
-                               i++;
-                           })
+                        	if(data[i] == null){
+                                $('#ArchivosDeSoporte').append('<div class="alert alert-danger" role="alert">Aun no se ha añadido ningun archivo</div>');
+                            }else{
+                                $(data).each(function () {
+                                    $('#ArchivosDeSoporte').append('<div class="col-sm-4">'+
+                                        '<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a> ' +
+                                        ' <a href="javascript:void(0)" id="'+data[i].archivo+'" class="DeleteImgReq">' +
+                                        '<i class="fas fa-trash"></i></a>'+'</div>');
+                                    i++;
+                                })
+                            }
                         }
                     })
                 }
@@ -1168,7 +1173,6 @@
 
                 loadtable();
 
-
                 function imprimirElemento(elemento) {
                     var ventana =  window.open('Print','','width=900');
                     ventana.document.write('<html><head><title>' + document.title + '</title>');
@@ -1190,6 +1194,58 @@
                     var div = document.querySelector("#TextoImprimir");
                     imprimirElemento(div);
                 });
+
+                $('body').on('click','.DeleteImgReq', function () {
+                    var file = $(this).attr('id');
+                    Swal.fire({
+                        title: '¿Eliminar archivo?',
+                        html: '<label for="">Añade una justificacion para eliminar este archivo</label> ',
+                        input: 'textarea',
+                        icon: 'question',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Si, eliminar!',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                type: "post",
+                                url: '/DeleteFileFromPropuesta',
+                                data: {
+                                    idReq: id,
+                                    file: file,
+                                    coments: result.value,
+                                    user: Username
+                                },
+                                success: function () {
+                                	$('#ArchivosDeSoporte').html('');
+                                    ObtenerArchivosRequerimiento();
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Eliminado!',
+                                        text: 'El archivo fue eliminado con exito!',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
+
 
             });
         </script>
