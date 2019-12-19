@@ -176,6 +176,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        Adldap\Laravel\AdldapServiceProvider::class,
+        Adldap\Laravel\AdldapAuthServiceProvider::class,
     ],
 
     /*
@@ -226,6 +229,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Adldap' => Adldap\Laravel\Facades\Adldap::class,
     ],
 
 ];
