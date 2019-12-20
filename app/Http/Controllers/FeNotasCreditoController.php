@@ -94,6 +94,18 @@ class FeNotasCreditoController extends Controller
 
             $Config = DB::table('fe_configs')->take(1)->get();
 
+
+            $itemNormales = [];
+            $itemRegalo = [];
+
+            foreach ($DetalleNc as $D) {
+                if ($D->totalitem == 0 || $D->totalitem < 0){
+                    $itemRegalo[] = $D;
+                }else{
+                    $itemNormales[] = $D;
+                }
+            }
+
             foreach ($EncabezadoNc as $enc) {
                 ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
                 $brutomasiva     =  $enc->bruto + $enc->iva;
@@ -181,7 +193,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text($enc->fechadocumento);
                 $objetoXML->endElement();
 
-                $objetoXML->startElement("fechadvencimiento"); // pendiente
+                $objetoXML->startElement("fechavencimiento"); // pendiente
                 $objetoXML->text($enc->fechavencimiento);
                 $objetoXML->endElement();
 
@@ -193,8 +205,17 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text($tipo_operacion);
                 $objetoXML->endElement();*/
 
+                $Regalos = [];
+                $RegalosString = '';
+                foreach($itemRegalo as $regalo){
+                    $Regalos[] =  trim($regalo->codigoproducto).' '.trim($regalo->descripcionproducto).' '.trim($regalo->cantidad);
+                }
+                foreach ($Regalos as $itm){
+                    $RegalosString .= $itm.' + ';
+                }
+
                 $objetoXML->startElement("notas"); // ok
-                $objetoXML->text($enc->notas);
+                $objetoXML->text('COMPLEMENTO: '. $RegalosString);
                 $objetoXML->endElement();
 
            /*     $objetoXML->startElement("fechaimpuestos"); // fecha de pago de impuestos ?
@@ -363,7 +384,6 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
 
-
                 /*$objetoXML->startElement("otroautorizado");
                 $objetoXML->startElement("idtipopersona");
                 $objetoXML->text('');
@@ -431,7 +451,6 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();*/
-
 /*
                 $objetoXML->startElement("mandato");
                 $objetoXML->startElement("identificador");
@@ -441,8 +460,6 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();*/
-
-
                 /*$objetoXML->startElement("mandantes");
                 $objetoXML->startElement("mandante");
                 $objetoXML->startElement("idtipopersona");
@@ -512,8 +529,6 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
                 $objetoXML->endElement();*/
-
-
                 /*$objetoXML->startElement("entrega");
                 $objetoXML->startElement("fecha");
                 $objetoXML->text('');
@@ -621,7 +636,6 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
 
-
                /* $objetoXML->startElement("tasasdecambio");
                 $objetoXML->startElement("tasadecambio");
                 $objetoXML->startElement("fecha");
@@ -638,8 +652,6 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
                 $objetoXML->endElement();*/
-
-
                /* $objetoXML->startElement("anticipos");
                 $objetoXML->startElement("anticipo");
                 $objetoXML->startElement("identificador");
@@ -653,8 +665,6 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
                 $objetoXML->endElement();*/
-
-
                 /*$objetoXML->startElement("cargos");
                 $objetoXML->startElement("cargo");
                 $objetoXML->startElement("idconcepto");
@@ -677,7 +687,6 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
                 $objetoXML->endElement();*/
-
 
                 $objetoXML->startElement("impuestos");
                 $objetoXML->startElement("impuesto");
@@ -719,7 +728,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->startElement("totalanticipos");
                 $objetoXML->text('');
                 $objetoXML->endElement();
-                $objetoXML->startElement("totalpagar");
+                $objetoXML->startElement("totalapagar");
                 $objetoXML->text(number_format($totalpagar,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("payableroundingamount");
@@ -735,7 +744,7 @@ class FeNotasCreditoController extends Controller
 
                 $objetoXML->startElement("items");
 
-                foreach ($DetalleNc as $dNc) {
+                foreach ($itemNormales as $dNc) {
 
                     $valor_item = $dNc->precio * $dNc->cantidad;
                     //$impuestos_item = $it->
@@ -844,11 +853,11 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("codigovendedor");
-                    $objetoXML->text('');
+                    $objetoXML->text($dNc->codigoproducto);
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("subcodigovendedor");
-                    $objetoXML->text('');
+                    $objetoXML->text($dNc->OC);
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("idmandatario");
@@ -862,7 +871,6 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->startElement("totalitem");
                     $objetoXML->text(number_format($valor_item,2,'.',''));
                     $objetoXML->endElement();
-
 
                     /*$objetoXML->startElement("cargos");
                     $objetoXML->startElement("cargo");
@@ -893,7 +901,6 @@ class FeNotasCreditoController extends Controller
 
                     $objetoXML->endElement();
                     $objetoXML->endElement();*/
-
 
                     $objetoXML->startElement("impuestos");
                     $objetoXML->startElement("impuesto");
