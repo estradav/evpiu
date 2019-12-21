@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\CodLinea;
 use Carbon\Carbon;
-use Couchbase\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
-use XMLWriter;
 
 
 class RequerimientosController extends Controller
@@ -125,7 +123,7 @@ class RequerimientosController extends Controller
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         =>  $requerimiento,
             'tipo'          => 'Nuevo Requerimiento',
-            'descripcion'   => 'se creo un nuevo requerimiento',
+            'descripcion'   => 'Creo un nuevo requerimiento',
             'usuario'       => $request->Creado,
             'created_at'    => Carbon::now(),
             'updated_at'    => Carbon::now()
@@ -140,19 +138,7 @@ class RequerimientosController extends Controller
             'updated_at'    =>  Carbon::now()
         ]);
 
-
-        $path = public_path().'/requerimientos/'.$requerimiento;
-        File::makeDirectory($path, $mode= 0777, true,true);
-    }
-
-    public function RequerimientoSaveFile(Request $request)
-    {
-        dd($request);
-        /*File::makeDirectory('/path/to/directory');*/
-        $imageName = $request->file->getClientOriginalName();
-        $request->file->move(public_path('upload'), $imageName);
-
-        return response()->json(['uploaded' => '/upload/'.$imageName]);
+        return response()->json(['ok' => 'ok']);
     }
 
     public function GetDisenador(Request $request)
@@ -175,7 +161,7 @@ class RequerimientosController extends Controller
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         => $request->id_requerimiento,
             'tipo'          => 'Aprobacion de requerimiento',
-            'descripcion'   => 'Requerimiento aprobado',
+            'descripcion'   => 'Aprobo el requerimiento # '.$request->id_requerimiento,
             'usuario'       => $request->User,
             'created_at'    => Carbon::now(),
             'updated_at'    => Carbon::now()
@@ -184,12 +170,11 @@ class RequerimientosController extends Controller
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         => $request->id_requerimiento,
             'tipo'          => 'Asignacion de requerimiento',
-            'descripcion'   => 'Requerimiento asignado a '.$ObtenerNombre[0]->name,
+            'descripcion'   => 'Asigno el requerimiento a '.$ObtenerNombre[0]->name,
             'usuario'       => $request->User,
             'created_at'    => Carbon::now(),
             'updated_at'    => Carbon::now()
         ]);
-
     }
 
     public function MisRequerimientos(Request $request)
@@ -205,9 +190,7 @@ class RequerimientosController extends Controller
                 ->get();
             return Datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto">'.'<button class="btn btn-light btn-sm addComment " name="addComment" id="'.$row->id.'" ><i class="fas fa-comments"></i></button>';
-                    $btn = $btn.'<button class="btn btn-light btn-sm Anular " name="Anular" id="'.$row->id.'" ><i class="fas fa-ban"></i></button>';
-                    $btn = $btn.'<button class="btn btn-light btn-sm Coments " name="Coments" id="'.$row->id.'" ><i class="fas fa-eye"></i></button>'.'</div>';
+                    $btn = '<div class="btn-group ml-auto">'.'<a href="/Requerimientoss/' . $row->id . '/edit" class="btn btn-sm btn-outline-light" id="ver"><i class="fas fa-file-signature"></i> Ver</a>' . '</div>';
                     return $btn;
                 })
                 ->rawColumns(['opciones'])
@@ -249,18 +232,35 @@ class RequerimientosController extends Controller
         $encabezado = DB::table('encabezado_requerimientos')
             ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.cod_designer')
             ->leftJoin('users as vendor','encabezado_requerimientos.vendedor_id','=','users.codvendedor')
-            ->select('encabezado_requerimientos.marca as marca','encabezado_requerimientos.usuario as usuario',
-                'encabezado_requerimientos.estado as estado','vendor.name as vendedor_id','encabezado_requerimientos.informacion as informacion',
-                'users.name as diseñador_id', 'encabezado_requerimientos.created_at as created_at',
-                'encabezado_requerimientos.producto as producto','encabezado_requerimientos.cliente as cliente')
+            ->select('encabezado_requerimientos.marca as marca',
+                'encabezado_requerimientos.usuario as usuario',
+                'encabezado_requerimientos.estado as estado',
+                'vendor.name as vendedor_id',
+                'encabezado_requerimientos.informacion as informacion',
+                'users.name as diseñador_id',
+                'encabezado_requerimientos.created_at as created_at',
+                'encabezado_requerimientos.producto as producto',
+                'encabezado_requerimientos.cliente as cliente')
             ->where('encabezado_requerimientos.id','=',$request->id)
             ->get();
+
+        $idDiseñador = DB::table('encabezado_requerimientos')->where('encabezado_requerimientos.id','=',$request->id)->select('diseñador_id','vendedor_id')->get();
+
+        $diseñador_id = DB::table('users')->where('cod_designer','=',$idDiseñador[0]->diseñador_id)->get();
+
+        $vendedor_id  = DB::table('users')->where('codvendedor','=',$idDiseñador[0]->vendedor_id)->get();
 
         $datos = DB::table('transacciones_requerimientos')->where('idReq','=',$request->id)->get();
 
         $propuestasReq = DB::table('propuestas_requerimientos')->where('idRequerimiento','=',$request->id)->get();
 
-        return response()->json(['Datos' => $datos,'encabezado' => $encabezado,'propuestas' => $propuestasReq]);
+        return response()->json([
+            'Datos'         => $datos,
+            'encabezado'    => $encabezado,
+            'propuestas'    => $propuestasReq,
+            'vendedor_id'   => $vendedor_id,
+            'diseñador_id'  => $diseñador_id
+        ]);
     }
 
     public function VerRequerimiento($numero)
@@ -278,7 +278,7 @@ class RequerimientosController extends Controller
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         => $request->id,
             'tipo'          => 'Cambio de estado',
-            'descripcion'   => 'El Usuario '.$request->Username.' Cambio el estado del requerimiento.',
+            'descripcion'   => 'Cambio el estado del requerimiento.',
             'usuario'       => $request->Username,
             'created_at'    => Carbon::now(),
             'updated_at'    => Carbon::now()
@@ -308,7 +308,7 @@ class RequerimientosController extends Controller
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         => $request->id,
             'tipo'          => 'Cambio de diseñador',
-            'descripcion'   => 'El Usuario '.$request->Username.' Cambio el diseñador asignado al requerimiento.',
+            'descripcion'   => 'Cambio el diseñador asignado al requerimiento.',
             'usuario'       => $request->Username,
             'created_at'    => Carbon::now(),
             'updated_at'    => Carbon::now()
@@ -330,11 +330,21 @@ class RequerimientosController extends Controller
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         =>  $request->id,
             'tipo'          =>  'Nueva propuesta',
-            'descripcion'   =>  'El Usuario '.$request->Username.' Creo una nueva propuesta.',
+            'descripcion'   =>  'Creo una nueva propuesta.',
             'usuario'       =>  $request->Username,
             'created_at'    =>  Carbon::now(),
             'updated_at'    =>  Carbon::now()
         ]);
+        $mail_vendedor =  DB::table('users')->where('name','=',$request->Nombre_vendedor)->select('name','email')->get();
+
+        $subject = "SE HA CREADO UNA NUEVA PROPUESTA";
+        $for = $mail_vendedor[0]->email;
+        Mail::send('mails.NewRequerimentMail',$request->all(), function($msj) use($subject,$for){
+            $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+            $msj->subject($subject);
+            $msj->to($for);
+            $msj->cc("dcorrea@estradavelasquez.com");
+        });
     }
 
     public function ListaPropuestaReq(Request $request)
@@ -374,6 +384,14 @@ class RequerimientosController extends Controller
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
             ]);
+            DB::table('transacciones_requerimientos')->insert([
+                'idReq'         =>  $request->Numero,
+                'tipo'          =>  'Adjuntos',
+                'descripcion'   =>  'Adjunto un archivo 2D a la propuesta '.$request->Prop.' del requerimiento '.$request->Numero,
+                'usuario'       =>  $request->Usuario,
+                'created_at'    =>  Carbon::now(),
+                'updated_at'    =>  Carbon::now()
+            ]);
         }
 
 
@@ -399,6 +417,14 @@ class RequerimientosController extends Controller
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
             ]);
+            DB::table('transacciones_requerimientos')->insert([
+                'idReq'         =>  $request->Numero,
+                'tipo'          =>  'Adjuntos',
+                'descripcion'   =>  'Adjunto un archivo 3D a la propuesta '.$request->Prop.' del requerimiento '.$request->Numero,
+                'usuario'       =>  $request->Usuario,
+                'created_at'    =>  Carbon::now(),
+                'updated_at'    =>  Carbon::now()
+            ]);
         }
         return response()->json(['result' => true], 200);
     }
@@ -421,6 +447,14 @@ class RequerimientosController extends Controller
                 'tipo'              =>  'plano',
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
+            ]);
+            DB::table('transacciones_requerimientos')->insert([
+                'idReq'         =>  $request->Numero,
+                'tipo'          =>  'Adjuntos',
+                'descripcion'   =>  'Adjunto un archivo de plano a la propuesta '.$request->Prop.' del requerimiento '.$request->Numero,
+                'usuario'       =>  $request->Usuario,
+                'created_at'    =>  Carbon::now(),
+                'updated_at'    =>  Carbon::now()
             ]);
         }
         return response()->json(['result' => true], 200);
@@ -449,8 +483,8 @@ class RequerimientosController extends Controller
             }
             DB::table('transacciones_requerimientos')->insert([
                 'idReq'         =>  $request->Numero,
-                'tipo'          =>  'Adjunto Archivos',
-                'descripcion'   =>  'El Usuario '.$request->Usuario.' Adjunto archivos al requerimiento # '.$request->idReq,
+                'tipo'          =>  'Adjuntos',
+                'descripcion'   =>  'Adjunto archivos al requerimiento # '.$request->idReq,
                 'usuario'       =>  $request->Usuario,
                 'created_at'    =>  Carbon::now(),
                 'updated_at'    =>  Carbon::now()
@@ -498,7 +532,20 @@ class RequerimientosController extends Controller
             ->where('idPropuesta','=',$request->Prop)
             ->get();
 
-        return response()->json(['encabezado' => $encabezado, 'propuesta' => $propuestasReq, 'archivos' => $archivos]);
+        $idDiseñador = DB::table('encabezado_requerimientos')->where('encabezado_requerimientos.id','=',$request->Req)->select('diseñador_id','vendedor_id')->get();
+
+        $diseñador_id = DB::table('users')->where('cod_designer','=',$idDiseñador[0]->diseñador_id)->get();
+
+        $vendedor_id  = DB::table('users')->where('codvendedor','=',$idDiseñador[0]->vendedor_id)->get();
+
+
+        return response()->json([
+            'encabezado'    => $encabezado,
+            'propuesta'     => $propuestasReq,
+            'archivos'      => $archivos,
+            'diseñador_id'  => $diseñador_id,
+            'vendedor_id'   => $vendedor_id
+        ]);
     }
 
     public function DeleteFileFromPropuesta (Request $request)
@@ -513,16 +560,23 @@ class RequerimientosController extends Controller
 
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         =>  $request->idReq,
-            'tipo'          =>  'Elimino Archivo',
-            'descripcion'   =>  'El Usuario '.$request->user.' Elimino un archivo del requerimiento # '.$request->idReq.' - Detalles:'.$request->coments,
+            'tipo'          =>  'Adjuntos',
+            'descripcion'   =>  'Elimino un archivo del requerimiento # '.$request->idReq.' - Detalles:'.$request->coments,
             'usuario'       =>  $request->user,
             'created_at'    =>  Carbon::now(),
             'updated_at'    =>  Carbon::now()
         ]);
 
         return response()->json(['ok' => 'ok']);
+
+
+
+        /*$subject = "SE LE HA ASIGNADO UN REQUERIMIENTO";
+        $for = "dcorrea@estradavelasquez.com";
+        Mail::send('mails.NewRequerimentMail',$request->all(), function($msj) use($subject,$for){
+            $msj->from("dcorrea@estradavelasquez.com","Test EV-PIU");
+            $msj->subject($subject);
+            $msj->to($for);
+        });*/
     }
-
-
-
 }

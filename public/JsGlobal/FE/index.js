@@ -415,5 +415,74 @@ $(document).ready(function () {
 
         return  'Detalle de Factura : '+d.id+' <br>'+ resultado ;
     }
+
+
+    $('#WebService').on('click',function () {
+        var selected = [];
+        $(".checkboxes").each(function () {
+            if (this.checked) {
+                var numero = this.id;
+                var factura ={
+                    "numero":numero,
+                };
+                selected.push(factura);
+            }
+        });
+        if (selected.length) {
+            Swal.fire({
+                icon: false,
+                title: 'Enviando Facturas seleccionadas a traves de WebService, un momento por favor...',
+                html: '<img src="../img/carga.gif" alt="">',
+                showConfirmButton: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            });
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                cache: false,
+                type: 'post',
+                dataType: 'json', // importante para que
+                data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
+                url: '/FacturaElectronicaWebService',
+                success: function ( data) {
+                    sweetAlert.close();
+                    Swal.fire({
+                        title: 'Terminado!',
+                        html: 'XML generado con exito!.',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                    });
+                    // preventDefault();  //stop the browser from following
+                   /* var req = new XMLHttpRequest();
+                    req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
+                    req.responseType = "blob";
+                    console.log(req);
+                    req.onload = function (event) {
+                        var blob = req.response;
+                        var link=document.createElement('a');
+                        link.href=window.URL.createObjectURL(blob);
+                        let current_datetime = new Date();
+                        let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
+                        link.download="Factura_Electronica_" + formatted_date + "_.xml";
+                        link.click();
+                    };
+                    req.send();*/
+                }
+            });
+        } else
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Debes seleccionar al menos una factura...!',
+            });
+        return false;
+    })
 });
 

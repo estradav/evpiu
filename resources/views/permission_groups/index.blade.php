@@ -111,10 +111,12 @@
             });
         });
 
-        $('td').on('click', '.delete', function (e) {
-            $('#delete_form')[0].action = '{{ route('permission_groups.destroy', ['permission' => '__permission']) }}'.replace('__permission', $(this).data('id'));
 
-            $('#delete_modal').modal('show');
-        });
     </script>
+
+    {{--/*  $('td').on('click', '.delete', function (e) {
+    $('#delete_form')[0].action = '{{ route('permission_groups.destroy', ['permission' => '__permission']) }}'.replace('__permission', $(this).data('id'));
+
+    $('#delete_modal').modal('show');
+    });*/--}}
 @endpush

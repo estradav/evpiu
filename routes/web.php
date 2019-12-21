@@ -234,6 +234,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/ViewArtes','ArtesController@index');
     Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
     Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
+    Route::post('/FacturaElectronicaWebService','FeFacturasController@FacturasWebService');
 
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/

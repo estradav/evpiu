@@ -22,7 +22,8 @@
         "laravelcollective/html": "6.0.*",
         "nnnick/chartjs": "^2.8",
         "spatie/laravel-permission": "^3.0",
-        "yajra/laravel-datatables-oracle": "^9.6"
+        "yajra/laravel-datatables-oracle": "^9.6",
+        "ext-soap": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

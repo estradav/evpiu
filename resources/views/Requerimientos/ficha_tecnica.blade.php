@@ -11,7 +11,7 @@
 @stop--}}
 
 @section('content')
-    @can('requerimientos.view')
+    @can('show_requerimientos.view')
         <div class="row">
             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -25,10 +25,15 @@
                                 <label id="Diseñador" class="text-danger"></label>
                             </div>
                             <div class="col-6">
+                                <label><b>ESTADO:</b></label>
+                                <label id="Estado" class="text-primary"></label>
+                            </div>
+                            <div class="col-6">
                                 <label><b>VENDEDOR:</b></label>
                                 <label id="Vendedor"></label>
                             </div>
                         </div>
+                        <hr>
                         <div class="row">
                             <div class="col-6">
                                 <label><b>CLIENTE:</b></label>
@@ -45,10 +50,6 @@
                             <div class="col-6">
                                 <label><b>FECHA DE SOLICITUD:</b></label>
                                 <label id="Fecha_solicitud"></label>
-                            </div>
-                            <div class="col-6">
-                                <label><b>ESTADO:</b></label>
-                                <label id="Estado" class="text-primary"></label>
                             </div>
                         </div>
                     </div>
@@ -304,7 +305,10 @@
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         showLoaderOnConfirm: true,
-                        allowOutsideClick: () => !Swal.isLoading()
+                        allowOutsideClick: () => !Swal.isLoading(),
+                        inputValidator: (value) => {
+                            return !value && 'No puedes enviar un comentario vacio...'
+                        }
                     }).then((result) => {
                         if (result.value) {
                             $.ajaxSetup({
@@ -480,7 +484,10 @@
                     })
                 });
 
+                var Nombre_vendedor = '';
+
                 function Obtenerdatos(){
+
                 	$.ajax({
                         url:'/RequerimientosComentariosDetalles',
                         type: 'get',
@@ -488,17 +495,19 @@
                         	id: id
                         },
                         success: function (data) {
+                        	console.log(data);
                             $('#Fecha_solicitud').html(data.encabezado[0].created_at);
                             $('#Cliente').html(data.encabezado[0].cliente);
                             $('#Marca').html(data.encabezado[0].marca);
                             $('#Articulo').html(data.encabezado[0].producto);
                             $('#Estado').html(data.encabezado[0].estado);
-                            $('#Vendedor').html(data.encabezado[0].vendedor_id);
+                            $('#Vendedor').html(data.vendedor_id[0].name);
 
-                            var diseñador = data.encabezado[0].diseñador_id;
+                            Nombre_vendedor = data.vendedor_id[0].name;
+                            var diseñador = data.diseñador_id[0].name;
                             var estado = data.encabezado[0].estado;
 
-
+                            console.log(Nombre_vendedor);
                             if(data.encabezado[0].informacion == null){
                                 $('#Detalles').append('<div class="alert alert-danger" role="alert">No se agrego ningun detalle para este requerimiento</div>');
                             }else{
@@ -545,7 +554,8 @@
                                 $('#Estado').removeClass('text-success');
                                 $('#Estado').html('SIN APROBAR').addClass('text-danger');
                             }
-
+                            $('#ArchivosDeSoporte').html('');
+                            ObtenerArchivosRequerimiento();
                         }
                     })
                 }
@@ -604,16 +614,16 @@
                                 $(row).find('td:eq(3)').html('Creada');
                             }
                             if (data.estado == 2) {
-                                $(row).find('td:eq(3)').html('Cancelada');
+                                $(row).find('td:eq(3)').html('Enviado aprobacion');
                             }
                             if (data.estado == 3) {
-                                $(row).find('td:eq(3)').html('Aprobada');
+                                $(row).find('td:eq(3)').html('Rechazado vendedor');
                             }
                             if (data.estado == 4) {
-                                $(row).find('td:eq(3)').html('En render 3D');
+                                $(row).find('td:eq(3)').html('Aprobado vendedor');
                             }
                             if (data.estado == 5) {
-                                $(row).find('td:eq(3)').html('En planos');
+                                $(row).find('td:eq(3)').html('En solicitud de planos');
                             }
                         }
                     });
@@ -679,6 +689,7 @@
                                     result, id, Username
                                 },
                                 success: function () {
+                                    $('#Detalles').html('');
                                     Obtenerdatos();
                                     Swal.fire({
                                         icon: 'success',
@@ -745,6 +756,7 @@
                                             result, Username, id
                                         },
                                         success: function () {
+                                            $('#Detalles').html('');
                                             Obtenerdatos();
                                             Swal.fire({
                                                 icon: 'success',
@@ -827,7 +839,7 @@
                                 url: '/GuardarPropuestaReq',
                                 type: 'post',
                                 data: {
-                                    result, id, Username
+                                    result, id, Username, Nombre_vendedor
                                 },
                                 success: function () {
                                     $('.table').DataTable().destroy();
@@ -900,6 +912,9 @@
                                 var reader = new FileReader();
                                 reader.readAsDataURL(this.files[0]);
                             });
+                        },
+                        inputValidator: (value) => {
+                            return !value && 'Debes seleccionar un archivo'
                         }
                     }).then((file) => {
                         if (file.value) {
@@ -948,6 +963,9 @@
                                 var reader = new FileReader();
                                 reader.readAsDataURL(this.files[0]);
                             });
+                        },
+                        inputValidator: (value) => {
+                            return !value && 'Debes seleccionar un archivo'
                         }
                     }).then((file) => {
                         if (file.value) {
@@ -997,6 +1015,9 @@
                                 var reader = new FileReader();
                                 reader.readAsDataURL(this.files[0]);
                             });
+                        },
+                        inputValidator: (value) => {
+                            return !value && 'Debes seleccionar un archivo'
                         }
                     }).then((file) => {
                         if (file.value) {
@@ -1044,6 +1065,9 @@
                             $(".swal2-file").change(function () {
                                 var reader = new FileReader();
                             });
+                        },
+                        inputValidator: (value) => {
+                            return !value && 'Debes seleccionar al menos un archivo'
                         }
                     }).then((file) => {
                         if (file.value) {
@@ -1082,8 +1106,6 @@
                     })
                 });
 
-                ObtenerArchivosRequerimiento();
-
                 function ObtenerArchivosRequerimiento() {
                     $.ajax({
                         url: '/ImagesRequerimiento',
@@ -1092,18 +1114,27 @@
                         	id: id
                         },
                         success: function (data) {
+                        	console.log(Vendedor);
                         	var Array = data;
                         	var i = 0;
                         	if(data[i] == null){
                                 $('#ArchivosDeSoporte').append('<div class="alert alert-danger" role="alert">Aun no se ha añadido ningun archivo</div>');
                             }else{
-                                $(data).each(function () {
-                                    $('#ArchivosDeSoporte').append('<div class="col-sm-4">'+
-                                        '<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a> ' +
-                                        ' <a href="javascript:void(0)" id="'+data[i].archivo+'" class="DeleteImgReq">' +
-                                        '<i class="fas fa-trash"></i></a>'+'</div>');
-                                    i++;
-                                })
+                        		if(Username != Nombre_vendedor ){
+                                    $(data).each(function () {
+                                        $('#ArchivosDeSoporte').append('<div class="col-sm-4">'+
+                                            '<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a> '+'</div>');
+                                        i++;
+                                    })
+                                }else{
+                                    $(data).each(function () {
+                                        $('#ArchivosDeSoporte').append('<div class="col-sm-4">'+
+                                            '<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a> ' +
+                                            ' <a href="javascript:void(0)" id="'+data[i].archivo+'" class="DeleteImgReq">' +
+                                            '<i class="fas fa-trash"></i></a>'+'</div>');
+                                        i++;
+                                    })
+                                }
                             }
                         }
                     })
@@ -1117,7 +1148,13 @@
                             imageUrl: '../../requerimientos/'+'RQ-'+id+'/soportes/'+file,
                             /*imageHeight: 300,
                             imageWidth: 500,*/
-                            imageAlt: 'A tall image'
+                            imageAlt: 'A tall image',
+                            confirmButtonText: 'Cerrar',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            buttonsStyling: true,
+                            showCancelButton: false,
                         })
                     }else{
                         $('#ViewArtTitle').html('Ver PDF');
@@ -1138,13 +1175,14 @@
                             Prop: Prop
                         },
                         success: function (data) {
+                        	console.log(data);
                             $('#PDFnumeroreq').html(id);
                             $('#PDFnumeroprop').html(Prop);
                             $('#PDFarticulo').html(data.propuesta[0].articulo);
                             $('#PDFrelieve').html(data.propuesta[0].relieve);
                             $('#PDFmarca').html(data.encabezado[0].marca);
-                            $('#PDFvendedor').html(data.encabezado[0].vendedor_id);
-                            $('#PDFdiseñador').html(data.encabezado[0].diseñador_id);
+                            $('#PDFvendedor').html(data.vendedor_id[0].name);
+                            $('#PDFdiseñador').html(data.diseñador_id[0].name);
                             $('#PDFfecha').html(data.encabezado[0].created_at);
 
                             var i = 0;
@@ -1211,7 +1249,10 @@
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         showLoaderOnConfirm: true,
-                        allowOutsideClick: () => !Swal.isLoading()
+                        allowOutsideClick: () => !Swal.isLoading(),
+                        inputValidator: (value) => {
+                            return !value && 'Debes escribir una justificacion para poder eliminar el archivo'
+                        }
                     }).then((result) => {
                         if (result.value) {
                             $.ajaxSetup({

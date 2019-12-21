@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Permission;
 use App\User;
 use App\Http\Requests\PermissionFormRequest;
+use Illuminate\Http\Response;
 
 class PermissionController extends Controller
 {
@@ -26,7 +28,7 @@ class PermissionController extends Controller
     /**
      * Muestra una lista de todos los permisos de la plataforma.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -38,7 +40,7 @@ class PermissionController extends Controller
     /**
      * Muestra el formulario para crear un nuevo permiso en la plataforma.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -49,7 +51,7 @@ class PermissionController extends Controller
      * Almacena un nuevo permiso en la plataforma.
      *
      * @param  \App\Http\Requests\PermissionFormRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(PermissionFormRequest $request)
     {
@@ -68,7 +70,7 @@ class PermissionController extends Controller
      * junto con los usuarios y roles asociados.
      *
      * @param  \Spatie\Permission\Models\Permission  $permission
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Permission $permission)
     {
@@ -83,7 +85,7 @@ class PermissionController extends Controller
      * permiso en específico.
      *
      * @param  \Spatie\Permission\Models\Permission  $permission
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Permission $permission)
     {
@@ -95,7 +97,7 @@ class PermissionController extends Controller
      *
      * @param  \App\Http\Requests\PermissionFormRequest  $request
      * @param  \Spatie\Permission\Models\Permission  $permission
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(PermissionFormRequest $request, Permission $permission)
     {
@@ -117,8 +119,9 @@ class PermissionController extends Controller
     /**
      * Elimina un permiso en específico de la plataforma.
      *
-     * @param  \Spatie\Permission\Models\Permission  $permission
-     * @return \Illuminate\Http\Response
+     * @param Permission $permission
+     * @return Response
+     * @throws Exception
      */
     public function destroy(Permission $permission)
     {
