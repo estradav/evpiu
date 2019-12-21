@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FacFeFromRequest;
-use http\Env\Response;
+use http\Params;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\DeclareDeclare;
 use XMLWriter;
 use Yajra\DataTables\DataTables;
 use SoapClient;
@@ -179,8 +177,11 @@ class FeFacturasController extends Controller
 
                 // valida el tipo de documento de identidad
                $tipo_documento_ide = null;
-                if ($enc->digito_verificador != null )  {$tipo_documento_ide = 31;}
+                if ($enc->digito_verificador != null )
+                {$tipo_documento_ide = 31;}
                 else{$tipo_documento_ide = 13;}
+
+
 
                // valida si tiene correo de entrega, si no tiene , pone el mismo correo de adquiriente
                $correo_entrega = $enc->emailentrega;
@@ -1220,6 +1221,451 @@ class FeFacturasController extends Controller
                         'code2' =>$e->getLine(),
                     ),
                 ));
+            }
+        }
+    }
+
+    public function FacturasWebService(Request $request)
+    {
+        $facturasv = $request->selected;
+        $facturasv = json_decode($facturasv);
+
+        foreach ($facturasv as $fac) {
+            $num = $fac->numero;
+
+            $Encabezado = DB::connection('MAX')->table('CIEV_V_FE')
+                ->leftJoin('CIEV_V_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FacturasTotalizadas.numero')
+                ->select('CIEV_V_FE.numero', 'CIEV_V_FE.notas', 'CIEV_V_FE.identificacion as nit_cliente', 'CIEV_V_FE.apellidos',
+                    'CIEV_V_FE.emailcontacto', 'CIEV_V_FE.direccion', 'CIEV_V_FE.emailentrega', 'CIEV_V_FE.digito_verificador',
+                    'CIEV_V_FE.telefono', 'CIEV_V_FE.notas', 'CIEV_V_FE.OC', 'CIEV_V_FE.codciudad', 'CIEV_V_FE.coddpto', 'CIEV_V_FE.codigo_alterno',
+                    'CIEV_V_FE.codigocliente', 'CIEV_V_FE.fechadocumento', 'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
+                    'CIEV_V_FacturasTotalizadas.bruto', 'CIEV_V_FacturasTotalizadas.descuento', 'CIEV_V_FacturasTotalizadas.subtotal', 'CIEV_V_FacturasTotalizadas.iva',
+                    'CIEV_V_FacturasTotalizadas.fletes', 'CIEV_V_FacturasTotalizadas.seguros', 'CIEV_V_FacturasTotalizadas.moneda', 'CIEV_V_FacturasTotalizadas.ov',
+                    'CIEV_V_FacturasTotalizadas.dias', 'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FacturasTotalizadas.descplazo as plazo', 'CIEV_V_FacturasTotalizadas.descmotivo',
+                    'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente', 'CIEV_V_FE.nombres', 'CIEV_V_FE.fechavencimiento')
+                ->where('CIEV_V_FE.numero', '=', $num)->take(1)->get();
+
+            // esta consulta muestra el detalle de los items de cada factura
+            $Detalle = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
+                ->select('CIEV_V_FacturasDetalladas.factura', 'CIEV_V_FacturasDetalladas.codigoproducto', 'CIEV_V_FacturasDetalladas.descripcionproducto',
+                    'CIEV_V_FacturasDetalladas.OC', 'CIEV_V_FacturasDetalladas.item', 'CIEV_V_FacturasDetalladas.cantidad', 'CIEV_V_FacturasDetalladas.precio',
+                    'CIEV_V_FacturasDetalladas.totalitem', 'CIEV_V_FacturasDetalladas.iva as iva_item', 'CIEV_V_FacturasDetalladas.valormercancia',
+                    'CIEV_V_FacturasDetalladas.Desc_Item', 'CIEV_V_FacturasDetalladas.UM', 'CIEV_V_FacturasDetalladas.base')
+                ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
+
+            $Config = DB::table('fe_configs')->take(1)->get();
+
+
+            $itemNormales = [];
+            $itemRegalo = [];
+
+            foreach ($Detalle as $D) {
+                if ($D->totalitem == 0 || $D->totalitem < 0) {
+                    $itemRegalo[] = $D;
+                } else {
+                    $itemNormales[] = $D;
+                }
+            }
+
+            foreach($Encabezado as $enc) {
+
+                /*VALIDACION NECESARIAS*/
+                $tipo_documento_ide = null;
+                if ($enc->digito_verificador != null )
+                {$tipo_documento_ide = 31;}
+                else{$tipo_documento_ide = 13;}
+
+
+                $total_valor_iva = $enc->subtotal * 0.19;
+
+                if($enc->tipo_cliente  == 'EX'){
+                    $brutomasiva =  number_format($enc->bruto,2,'.','');
+
+                }else{
+                    $brutomasiva =  number_format($enc->bruto,2,'.','') + number_format($enc->iva,2,'.','');
+
+                }
+                $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
+                $total_cargos    = number_format($enc->fletes,2,'.','') + number_format($enc->seguros,2,'.','');
+
+                //determina si la factura es exportacion o para venta nacional
+                $tipo_fac_en = null;
+                if ($enc->motivo == 27) {$tipo_fac_en = '02';}// exportaciones 27
+                else {$tipo_fac_en = '01';}
+
+                // determina si el tipo de operacion
+                $tipo_operacion = null;
+                if ($tipo_fac_en == 02) {$tipo_operacion = '04';}
+                if ($tipo_fac_en == 01) {$tipo_operacion = '05';}
+                if($enc->iva == 0)      {$tipo_operacion = '03';}
+
+                //Determina si la factura es a contado o a credito
+                $metodo_pago = null;
+                if ($enc->dias == 0) {
+                    $metodo_pago = 1;
+                }
+                else {$metodo_pago = 2;}
+
+                // determina el metodo de pago
+                $medio_pago = null;
+                if ($metodo_pago == 2)
+                { $medio_pago = null;}
+                else
+                { $medio_pago = 10;}
+
+
+                /* se comienza con el web service */
+
+                $login1 = "estradavws"; /*estos datos de inicio de sesion se deben guardar en una tabla para mejor manejo */
+                $password = "Estradavws1*";
+                $wsdl_url = "https://test-factel.avance.org.co/FactibleWebService/FacturacionWebService?wsdl";
+                $client = new SoapClient($wsdl_url);
+                $client->__setLocation($wsdl_url);
+
+                // Inicio de sesion
+                $params = array(
+                    'login' => $login1,
+                    'password' => $password
+                );
+
+                /*        $return = $client->ping($params);*/
+
+                $auth = $client->autenticar($params);
+                $respuesta = json_decode($auth->return);
+                $token = $respuesta->data->salida;
+
+                // Lista los  tipos de persona de la DIAN
+                $params = array(
+                    'token' => $token
+                );
+                $return = $client->listarTipoDocumentoIdentidad($params);
+                $resultados = json_decode($return->return);
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+
+
+
+                /*Se consulta si el cliente exite*/
+                $params = array(
+                    'token' => $token,
+                    'idtipodocumentoidentificacion' => $tipo_documento_ide, // este campo debe ser cambiado por una variable
+                    'identificacion' => $enc->nit_cliente // campo string o variable
+                );
+                $return = $client->existePersonaEmpresa($params);
+                $resultados = json_decode($return->return);
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+                $idEmpresa = $resultados->data->salida;
+
+                if ($idEmpresa == 0) {
+                    $params = array(
+                        'token' => $token
+                    );
+                    $return = $client->ListarTipoRegimen($params);
+                    $resultados = json_decode($return->return);
+                    echo "<pre>";
+                    var_dump($resultados);
+                    echo "<pre>";
+                    echo "<hr>";
+
+                    $params = array(
+                        'token' => $token
+                    );
+                    $return = $client->ListarActividadEconomica($params);
+                    $resultados = json_decode($return->return);
+                    echo "<pre>";
+                    var_dump($resultados);
+                    echo "<pre>";
+                    echo "<hr>";
+
+                    /*Se registra el cliente ya que no existe */
+                    $params = array(
+                        'token' => $token,
+                        'idtipodocumentoidentidad'  => $tipo_documento_ide,
+                        'identificacion'            => $enc->nit_cliente,
+                        'idtiporegimen'             => '',
+                        'idactividadeconomica'      => '',
+                        'razonsocial'               => $enc->razon_social,
+                        'idciudad'                  => $enc->coddpto.$enc->codciudad,
+                        'direccion'                 => $enc->direccion,
+                        'emailcontacto'             => $enc->emailcontacto,
+                        'emailentrega'              => $enc->emailentrega,
+                        'grancontribuyente'         => true,
+                        'autoretenedor'             => true
+                    );
+                    $return = $client->registrarEmpresa($params);
+                    $resultados = json_decode($return->return);
+                    $idEmpresa = $resultados->data->salida;
+                    echo "<pre>";
+                    var_dump($resultados);
+                    echo "<pre>";
+                    echo "<hr>";
+                }
+
+                /* se listan las empresas a las que tiene acceso el usuario autenticado*/
+                $params = array(
+                    'token' => $token
+                );
+                $return = $client->obtenerEmpresa($params);
+                $resultados = json_decode($return->return);
+                $idEmpresaUsuario = $resultados->data->idempresa;
+                echo "<pre>";
+                var_dump($return);
+                echo "<pre>";
+                echo "<hr>";
+
+
+                /*listamos las numeraciones de la empresa selecionada, el identificador del documento es la clave  para seguir con a generacion*/
+                $params = array(
+                    'token' => $token,
+                    'idEmpresa' => $idEmpresaUsuario
+                );
+
+                $return = $client->listarNumeraciones($params);
+                $resultados = json_decode($return->return);
+                $idNumeracion = $resultados->data[2]->idnumeracion;
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+
+
+                /*inicio del proyecto de generacion*/
+                $params = array(
+                    'token' => $token,
+                    'idnumeracion' => $idNumeracion
+                );
+                $return = $client->registrarDocumentoElectronico_IniciarNuevo($params);
+                $resultados = json_decode($return->return);
+                $idDocumento = $resultados->data->salida;
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+
+
+                /*vinculamos el cliente del documento electronico*/
+                $params = array(
+                    'token' => $token,
+                    'iddocumentoelectronico'            => $idDocumento,
+                    'idtipodocumentoidentificacion'     => $tipo_documento_ide,
+                    'identificacion'                    => $enc->nit_cliente
+                );
+                $return = $client->vincularCliente($params);
+                $resultados = json_decode($return->return);
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+
+
+                /*listamos los conceptos de impuestos disponibles */
+                $params = array(
+                    'token' => $token
+                );
+                $return = $client->listarConceptosImpuestos($params);
+                $resultados = json_decode($return->return);
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+
+
+                /*Vinculamos el impuesto o varios impuestos al documento, en el caso de estrada solo se usaa el IVA, entonces solo usaresmos 1*/
+                $params = array(
+                    'token'                     => $token,
+                    'iddocumentoelectronico'    => $idDocumento,
+                    'idconceptoimpuesto'        => "01",
+                    'taxevidenceindicator'      => false,
+                    'base'                      => number_format($enc->subtotal,2,'.',''),
+                    'porcentaje'                => 19, /* siempre es el mismo entonces ese valor es estatico*/
+                    'valor'                     => $total_valor_iva
+                );
+                $return = $client->vincularImpuesto($params);
+                $resultados = json_decode($return->return);
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+
+
+                /*se vinculan los importes del documento o lo que es lo mismo los totales de la factura*/
+                $params = array(
+                    'token' => $token,
+                    'iddocumentoelectronico'    => $idNumeracion,
+                    'totalImporteBruto'         => number_format($enc->bruto,2,'.',''),
+                    'totalBaseImponible'        => number_format($enc->subtotal,2,'.',''),
+                    'totalDescuentos'           => number_format($enc->descuento,2,'.',''),
+                    'totalCargos'               => number_format($total_cargos,2,'.',''),
+                    'totalAnticipos'            => 0.0, /*se debe cambiar por variable*/
+                    'totalPagado'               => number_format($totalpagar,2,'.',''), /*se debe cambiar por variable*/
+                );
+                $return = $client->vincularImportes($params);
+                $resultados = json_decode($return->return);
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+
+
+                /*SE RECORREN LOS ITEMS */
+                $i = 1;
+                foreach ($itemNormales as $it) {
+                    $valor_item = $it->precio * $it->cantidad;
+                    // valida si el item es comprado o se da como regalo
+                    $regalo = null;
+                    if ($valor_item == 0) {
+                        $regalo = 1;
+                    } else {
+                        $regalo = 0;
+                    }
+
+                    // valida el tipo de codigo 020 posicion alacelaria o 999 adopcion del contribuyente
+                    $id_estandar = null;
+                    if ($tipo_fac_en == 02) {
+                        $id_estandar = '020-999';
+                    } else {
+                        $id_estandar = 999;
+                    }
+
+                    // valida nombre estandar del codigo
+                    $nombre_estandar = null;
+                    if ($id_estandar <> 999) {
+                        $nombre_estandar = null;
+                    } else {
+                        $nombre_estandar = 'EAN13';
+                    }
+
+                    // valida el id impuesto por item
+                    $id_impuesto = null;
+                    if ($it->iva_item != 0) {
+                        $id_impuesto = '01';
+                    }
+
+                    // porcentaje de impuesto
+                    $factor = null;
+                    if ($id_impuesto == '01') {
+                        $factor = '19';
+                    }
+
+                    $umed = null;
+                    if ($it->UM == 'UN') {
+                        $umed = '94';
+                    } else {
+                        $umed = 'KGM';
+                    }
+
+                    ////
+                    $id_item_iva = null;
+                    if ($it->iva_item != null) {
+                        $id_item_iva = '0'.'1';
+                    }
+                    $factor_total_item = null;
+                    if ($id_item_iva == '0'.'1') {
+                        $factor_total_item = '19';
+                    }
+                    $tarifa_item_unitaria = null;
+                    if ($id_item_iva == '0'.'1') {
+                        $tarifa_item_unitaria = '0';
+                    }
+
+                    $subtotal_item = $it->totalitem - $it->Desc_Item;
+                    $total_valor_item_iva = $subtotal_item * 0.19;
+                    $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
+
+
+                    if ($enc->tipo_cliente == 'EX'){
+                        $marca = $it->descripcionproducto;
+                        $modelo = $it->codigoproducto;
+                    }else{
+                        $marca = '';
+                        $modelo = '';
+                    }
+
+
+                    /*se vinculan los items al documentos*/
+                    $params = array(
+                        'token'                     => $token,
+                        'iddocumentoelectronico'    => $idDocumento,
+                        'consecutivo'               => $i,
+                        'notasExtrasOpcionales'     => 'notas',
+                        'descripcionItem'           => $it->descripcionproducto,
+                        'datosTecnicosOpcionales'   => '',
+                        'marcaOpcional'             => $marca,
+                        'modeloOpcional'            => $modelo,
+                        'cantidad'                  => number_format($it->cantidad, 2, '.', ''),
+                        'costoTotalSinImpuestos'    => number_format($it->precio, 2, '.', ''),
+                        'unidadDeMedidaOpcional'    => $umed,
+                        'TotalImpuestos'            => $total_valor_item_iva
+                    );
+                    $return = $client->vincularItem($params);
+                    $resultados = json_decode($return->return);
+                    echo "<pre>";
+                    var_dump($resultados);
+                    echo "<pre>";
+                    echo "<hr>";
+
+
+                    /*se vinculan los impuestos por cada item*/
+                    if($it->iva_item == 0 || $it->iva_item == null || $it->iva_item == '' || $enc->tipo_cliente == 'EX') {
+                        $params = array(
+                            'token' => $token,
+                            'iddocumentoelectronico' => $idDocumento,
+                            'consecutivo' => $i,
+                            'idconceptoimpuesto' => $id_impuesto,
+                            'porcentaje' => $factor_total_item,
+                            'valor' => $total_valor_item_iva
+                        );
+                        $return = $client->vincularImpuestoItem($params);
+                        $resultados = json_decode($return->return);
+                        echo "<pre>";
+                        var_dump($resultados);
+                        echo "<pre>";
+                        echo "<hr>";
+                    }else{
+                        $params = array(
+                            'token' => $token,
+                            'iddocumentoelectronico' => $idDocumento,
+                            'consecutivo' => $i,
+                            'idconceptoimpuesto' => '',
+                            'porcentaje' => '',
+                            'valor' => ''
+                        );
+                        $return = $client->vincularImpuestoItem($params);
+                        $resultados = json_decode($return->return);
+                        echo "<pre>";
+                        var_dump($resultados);
+                        echo "<pre>";
+                        echo "<hr>";
+                    }
+
+                }
+
+                $params = array(
+                    'token'                     => $token,
+                    'iddocumentoelectronico'    => $idDocumento,
+                    'fechadocumento'            => $enc->fechadocumento,
+                    'documentoexportacion'      => false,
+                    'notas'                     => 'COMPLEMENTO: '. $RegalosString,
+                    'idreporte'                 => $Config[0]->fac_idreporte,
+                    'tipocontenido'             => '',
+                    'obtenerDatosTecnicos'      => false
+                );
+                $return = $client->registrarDocumentoElectronico_GenerarAutomatico($params);
+                $resultados = json_decode($return->return);
+                echo "<pre>";
+                var_dump($resultados);
+                echo "<pre>";
+                echo "<hr>";
+
+                $params = array(
+                    'token'     => $token,
+                );
+                $return = $client->cerrarSesion($params);
             }
         }
     }

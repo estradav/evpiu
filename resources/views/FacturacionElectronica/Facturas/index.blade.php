@@ -35,6 +35,7 @@
     <div class="col-lg-4">
         <div class="form-group">
             <span><input type="button" class="btn btn-primary btn-sm" id="CrearXml" value="Crear XML"></span>
+            <span><input type="button" class="btn btn-primary btn-sm" id="WebService" value="Test WebService"></span>
         </div>
     </div>
     <div class="test" id="test" name="test">

@@ -11,7 +11,7 @@
 @stop--}}
 
 @section('content')
-    @can('requerimientos.view')
+    @can('gestion_requerimientos.view')
         <div class="col-lg-12">
             <div class="form-group">
                 <ul class="nav nav-tabs " id="nav">

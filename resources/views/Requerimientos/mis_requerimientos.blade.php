@@ -11,7 +11,7 @@
 @stop--}}
 
 @section('content')
-    @can('requerimientos.view')
+    @can('mis_requerimientos.view')
         <div class="col-lg-12">
             <div class="form-group">
                 <span><input type="button" class="btn btn-primary btn-sm NewRequerimiento" id="NewRequerimiento" value="Crear requerimiento"></span>
@@ -27,14 +27,14 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Descripcion</th>
-                                        <th>Informacion</th>
-                                        <th>Creado por</th>
-                                        <th>Diseñador asignado</th>
-                                        <th>Estado</th>
-                                        <th>Fecha Creacion</th>
-                                        <th>Ultima Actualizacion</th>
-                                        <th>Opciones</th>
+                                        <th>DESCRIPCION</th>
+                                        <th>INFORMACION</th>
+                                        <th>VENDEDOR</th>
+                                        <th>DISEÑADOR</th>
+                                        <th>ESTADO</th>
+                                        <th>FECHA CREACION</th>
+                                        <th>ULTIMA ACTUALIZACION</th>
+                                        <th>OPCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -102,16 +102,6 @@
                                         </div>
                                     </div>
                                 </div>
-                               {{-- <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <label for="name" class="col-sm-12 control-label">¿Planos?:</label>
-                                        <div class="col-sm-12">
-                                            <div class="input-group">
-                                                <input type="checkbox" name="Plano" checked>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>--}}
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <div class="col-sm-12">
@@ -129,16 +119,6 @@
                                         <label for="name" class="col-sm-6 control-label">Informacion adicional:</label>
                                         <div class="col-sm-12">
                                             <textarea name="NewRequirementNewInfo" id="NewRequirementNewInfo" cols="30" rows="5" class="form-control" placeholder="Escribe toda la informacion relevante para el area de diseño" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase();" ></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <label for="exampleInputFile">Archivos:</label>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <input type="file" class="custom-file" multiple id="archivos[]" name="archivos[]">
                                         </div>
                                     </div>
                                 </div>
@@ -234,119 +214,6 @@
             </div>
         </div>
 
-        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" id="timelinemodal" name="timelinemodal" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-align: right !important; margin-top: 10px; margin-right: 12px">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <br>
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header text-center">
-                                <b>INFORMACION GENERAL</b>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <label for="name" class="control-label"><b>Cliente:</b></label>
-                                                <label id="InfoCliente"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <label for="name" class="control-label">Descripcion:</label>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <label id="InfoDescripcion"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <label for="name" class="control-label">Informacion Adicional:</label>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <label id="InfoInfo"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <label for="name" class="control-label">Diseñador Asignado:</label>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <label id="InfoDiseño"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <label for="name" class="control-label">Marca:</label>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <label id="InfoMarca"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer text-muted">
-                                <label id="InfoDate"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header text-center">
-                                <b></b>
-                                <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapseComents" aria-expanded="false" aria-controls="collapseExample" >
-                                    COMENTARIOS <i class="far fa-eye"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="collapseComents">
-                                <div class="card-body">
-                                    <div class="container py-2" id="DetallesComentariosReque">
-
-                                    </div>
-                                </div>
-                                <div class="card-footer text-muted">
-                                    Comentarios generales
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header text-center">
-                                <b></b>
-                                <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapsePropuestas" aria-expanded="false" aria-controls="collapseExample" >
-                                    PROPUESTAS <i class="far fa-eye"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="collapsePropuestas">
-                                <div class="card-body" id="PropuestasDiv">
-
-                                </div>
-                                <div class="card-footer text-muted">
-                                    Propuestas de requerimientos
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br>
-                </div>
-            </div>
-        </div>
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar requerimientos.
@@ -356,7 +223,7 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
-                var Username = @json( Auth::user()->username );
+                var Username = @json( Auth::user()->name );
 
             	var table = $('#table').DataTable({
                     processing: true,
@@ -412,14 +279,29 @@
                         if (data.name == null) {
                             $(row).find('td:eq(4)').html('<label class="alert-light">Sin asingar</label>');
                         }
+                        if (data.estado == '0') {
+                            $(row).find('td:eq(5)').html('<label class="alert-danger">ANULADO</label>');
+                        }
                         if (data.estado == '1') {
-                            $(row).find('td:eq(5)').html('<label class="alert-light">Pendiente por plano</label>');
+                            $(row).find('td:eq(5)').html('<label class="alert-success">RENDER</label>');
                         }
                         if (data.estado == '2') {
-                            $(row).find('td:eq(5)').html('<label class="alert-light">Por revisar</label>');
+                            $(row).find('td:eq(5)').html('<label class="alert-success">POR REVISAR</label>');
                         }
                         if (data.estado == '3') {
-                            $(row).find('td:eq(5)').html('<label class="alert-light">Asignado, pendiente propuestas</label>');
+                            $(row).find('td:eq(5)').html('<label class="alert-success">ASIGNADO</label>');
+                        }
+                        if (data.estado == '4') {
+                            $(row).find('td:eq(5)').html('<label class="alert-success">INICIADO</label>');
+                        }
+                        if (data.estado == '5') {
+                            $(row).find('td:eq(5)').html('<label class="alert-success">CERRADO</label>');
+                        }
+                        if (data.estado == '6') {
+                            $(row).find('td:eq(5)').html('<label class="alert-danger">ANULADO POR DISEÑO</label>');
+                        }
+                        if (data.estado == '7') {
+                            $(row).find('td:eq(5)').html('<label class="alert-warning">SIN APROBAR</label>');
                         }
                     }
                 });
@@ -612,11 +494,20 @@
                             url: "/NewRequerimiento",
                             type: "POST",
                             dataType: 'json',
-                            success: function (data) {
+                            success: function () {
                                 $('#NewRequerimientoSave').trigger("reset");
-                                $('#NewRequerimientoModal').modal('hide');
+                                $('#NewRequerimientoModal ').modal('hide');
                                 table.draw();
-                                toastr.success("Registro Guardado con Exito!");
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Guardado!',
+                                    text: 'Requerimiento creado con exito!',
+                                    showCancelButton: false,
+                                    confirmButtonText: 'Guardar!',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                });
                                 $(this).html('Crear');
                             },
                             error: function (data) {
@@ -720,23 +611,6 @@
                         render = 0;
                     }
                 });
-
-        /*        var plano = 1;
-                $("[name='Plano']").bootstrapSwitch({
-                    animate: true,
-                    onColor: 'success',
-                    offColor: 'danger',
-                    onText: 'SI',
-                    offText: 'NO',
-                    size: 'large'
-                }).on('switchChange.bootstrapSwitch', function (event, state) {
-                    if(state === true){
-                        plano = 1;
-                    }else{
-                        plano = 0;
-                    }
-                });*/
-
 
                 $('body').on('click','.addComment',function () {
                     var id = $(this).attr('id');
