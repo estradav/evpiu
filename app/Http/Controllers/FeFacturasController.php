@@ -230,13 +230,6 @@ class FeFacturasController extends Controller
                $objetoXML->text($Config[0]->fac_idreporte); // sumistrado por fenalco para version grafica
                $objetoXML->endElement();
 
-              /* $objetoXML->startElement("idestadoenviocliente");
-               $objetoXML->text('3');
-               $objetoXML->endElement();
-
-               $objetoXML->startElement("idestadoenviodian");
-               $objetoXML->text('3');
-               $objetoXML->endElement();*/
 
                $objetoXML->startElement("fechadocumento");
                $objetoXML->text($enc->fechadocumento);
@@ -276,32 +269,7 @@ class FeFacturasController extends Controller
                $objetoXML->text($enc->moneda);
                $objetoXML->endElement();
 
-               /*$objetoXML->startElement("cufe"); // Cuando se recibe se compara el valor contra el calculado por el sistema y se lanza error en caso de diferencias
-               $objetoXML->text('');
-               $objetoXML->endElement();
 
-               $objetoXML->startElement("idconceptonota"); // Tabla 7. Códigos Conceptos Notas Crédito. y Tabla 8. Códigos Conceptos Notas Débito. Solo es obligatorio si <idnumeracion> corresponde a una nota debito o credito
-               $objetoXML->text('');
-               $objetoXML->endElement();*/
-               /*$objetoXML->startElement("referencias"); // 0..1 Obligatorio cuando se trata de una nota debito o credito. La DIAN ya no permite notas sin referencia a una factura
-               $objetoXML->startElement("referencia"); // La DIAN solo acepta referencias a documentos electrónicos, por tanto la referencia debe existir previamente en el sistema
-               $objetoXML->startElement("idnumeracion"); // Ya no se acepta referencia a la numeracion por su prefijo
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("numero");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-
-               $objetoXML->startElement("periodofacturacion"); //  Usable por ejemplo en el pago de servicios publicos
-               $objetoXML->startElement('fechainicial'); // En formato YYYY-MM-DD hh:mm:dd
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement('fechafinal'); // En formato YYYY-MM-DD hh:mm:dd
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
                $objetoXML->startElement("ordendecompra");
                $objetoXML->startElement("codigo");
                $objetoXML->text(trim($enc->OC));
@@ -316,57 +284,7 @@ class FeFacturasController extends Controller
                $objetoXML->text(' ');
                $objetoXML->endElement();
                $objetoXML->endElement();
-/*
-               $objetoXML->startElement("constanciarecibido");
-               $objetoXML->startElement("codigo");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("fechageneracion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("base64");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombrearchivo");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
-       /*        $objetoXML->startElement("ordendedespacho");
-               $objetoXML->startElement("codigo");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("fechageneracion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("base64");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombrearchivo");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
-               /*$objetoXML->startElement("adjuntos");
-               $objetoXML->startElement("adjunto");
-               $objetoXML->startElement("codigo");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("idtipoadjunto");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("cufe");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("fechageneracion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("base64");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombrearchivo");
-               $objetoXML->text(' ');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
+
                $objetoXML->startElement("adquiriente"); // falta
                $objetoXML->startElement("idtipopersona"); // falta
                $objetoXML->text('');
@@ -432,150 +350,7 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
 
-               /*$objetoXML->startElement("otroautorizado");
-               $objetoXML->startElement("idtipopersona");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-             /*  $objetoXML->startElement("ressponsableiva");
-               $objetoXML->text('');
-               $objetoXML->endElement();*/
-             /*  $objetoXML->startElement("idactividadeconomica");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombrecomercial");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("idciudad");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("direccion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("codigopostal");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombres");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("apellidos");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("idtipodocumentoidentidad");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("digitoverificacion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("identificacion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("obligaciones");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("idtiporegimen");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("direccionfiscal");
-               $objetoXML->startElement("idcuidad");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("direccion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("codigopostal");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->startElement("matriculamercantil");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("emailcontacto");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("emailentrega");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("telefono");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
-            /*   $objetoXML->startElement("mandato");
-               $objetoXML->startElement("identificador");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("fechacontrato");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
-              /* $objetoXML->startElement("mandantes");
-               $objetoXML->startElement("mandante");
-               $objetoXML->startElement("idtipopersona");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("ressponsableiva");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("idactividadeconomica");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombrecomercial");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("idciudad");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("direccion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("codigopostal");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombres");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("apellidos");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("idtipodocumentoidentidad");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("digitoverificacion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("identificacion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("obligaciones");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("idtiporegimen");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("direccionfiscal");
-               $objetoXML->startElement("idcuidad");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("direccion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("codigopostal");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->startElement("matriculamercantil");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("emailcontacto");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("emailentrega");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("telefono");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
+
                $objetoXML->startElement("formaspago");
                $objetoXML->startElement("formapago");
                $objetoXML->startElement("idmetodopago");
@@ -595,35 +370,7 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
                $objetoXML->endElement();
-        /*       $objetoXML->startElement("tasasdecambio");
-               $objetoXML->startElement("tasadecambio");
-               $objetoXML->startElement("fecha");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("moneda");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("cambiominimo");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("tasarepresentativa");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
-              /* $objetoXML->startElement("anticipos");
-               $objetoXML->startElement("anticipo");
-               $objetoXML->startElement("identificador");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("valor");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("fecha");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
+
                $objetoXML->startElement("cargos");
                $objetoXML->startElement("cargo");
                $objetoXML->startElement("idconcepto");
@@ -716,12 +463,6 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->endElement();
-
-              /* $objetoXML->startElement("correoscopia");
-               $objetoXML->startElement("correocopia");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->endElement();*/
 
                $objetoXML->startElement("items");
 
@@ -947,31 +688,9 @@ class FeFacturasController extends Controller
                        $objetoXML->endElement();
                    }
 
-                   /*if($enc->tipo_cliente != 'PN' && $enc->iva != 0 && $enc->subtotal != 0){
 
-                   }*/
                    // RETEFUENTE
-                   /*$objetoXML->startElement("impuesto");
-                       $objetoXML->startElement("idimpuesto");
-                       $objetoXML->text('');
-                       $objetoXML->endElement();
 
-                       $objetoXML->startElement("base");
-                       $objetoXML->text('');
-                       $objetoXML->endElement();
-
-                       $objetoXML->startElement("factor");
-                       $objetoXML->text($factor_total_item);
-                       $objetoXML->endElement();
-
-                       $objetoXML->startElement("estarifaunitaria");
-                       $objetoXML->text($tarifa_item_unitaria);
-                       $objetoXML->endElement();
-
-                       $objetoXML->startElement("valor");
-                       $objetoXML->text(number_format($total_valor_item_iva,2,'.',''));
-                       $objetoXML->endElement();
-                   $objetoXML->endElement();*/
 
                    $objetoXML->endElement();
                    $objetoXML->endElement(); // cierra item
