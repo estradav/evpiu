@@ -424,7 +424,7 @@ class FeNotasCreditoController extends Controller
                         $tarifa_item_unitaria = '0';
                     }
 
-                    $subtotal_item = $dNc->totalitem - $dNc->descuento;
+                    $subtotal_item = abs($dNc->totalitem) - abs($dNc->descuento);
                     $total_valor_item_iva = $subtotal_item * 0.19;
 
 
@@ -500,31 +500,53 @@ class FeNotasCreditoController extends Controller
 
 
                     $objetoXML->startElement("impuestos");
-                    $objetoXML->startElement("impuesto");
-                    $objetoXML->startElement("idimpuesto");
-                    $objetoXML->text($id_item_iva);
-                    $objetoXML->endElement();
+                    if($dNc->iva_item == 0 || $dNc->iva_item == null || $dNc->iva_item == '' || $enc->tipo_cliente == 'EX'){
+                        $objetoXML->startElement("impuesto");
+                        $objetoXML->startElement("idimpuesto");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("base");
-                    $objetoXML->text(number_format(abs($subtotal_item),2,'.',''));
-                    $objetoXML->endElement();
+                        $objetoXML->startElement("base");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("factor");
-                    $objetoXML->text($factor_total_item);
-                    $objetoXML->endElement();
+                        $objetoXML->startElement("factor");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("estarifaunitaria");
-                    $objetoXML->text($tarifa_item_unitaria);
-                    $objetoXML->endElement();
+                        $objetoXML->startElement("estarifaunitaria");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("valor");
-                    $objetoXML->text(number_format(abs($total_valor_item_iva),2,'.',''));
-                    $objetoXML->endElement();
-                    $objetoXML->endElement();
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
+                        $objetoXML->endElement();
+                    }else{
+                        $objetoXML->startElement("impuesto");
+                        $objetoXML->startElement("idimpuesto");
+                        $objetoXML->text($id_item_iva);
+                        $objetoXML->endElement();
 
+                        $objetoXML->startElement("base");
+                        $objetoXML->text(number_format(abs($subtotal_item),2,'.',''));
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("factor");
+                        $objetoXML->text($factor_total_item);
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("estarifaunitaria");
+                        $objetoXML->text($tarifa_item_unitaria);
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text(number_format(abs($total_valor_item_iva),2,'.',''));
+                        $objetoXML->endElement();
+                        $objetoXML->endElement();
+
+                    }
                     $objetoXML->endElement();
-
-
                     $objetoXML->endElement(); // cierra item
                 }
 
