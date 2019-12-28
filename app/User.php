@@ -2,21 +2,23 @@
 
 namespace App;
 
+use App\Traits\LockableTrait;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use Notifiable,
+        HasRoles,
+        LockableTrait;
 
     /** The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'username','menu','password','created_at','objectguid'
+        'name', 'email', 'username','menu','password','created_at','objectguid','lockout_time'
     ];
 
     /**

@@ -246,7 +246,14 @@ class RequerimientosController extends Controller
 
         $idDiseñador = DB::table('encabezado_requerimientos')->where('encabezado_requerimientos.id','=',$request->id)->select('diseñador_id','vendedor_id')->get();
 
-        $diseñador_id = DB::table('users')->where('cod_designer','=',$idDiseñador[0]->diseñador_id)->get();
+        $disenador_id = null;
+        if ($idDiseñador[0]->diseñador_id == null){
+            $disenador_id = null;
+        }else{
+            $disenador_id = DB::table('users')->where('cod_designer','=',$idDiseñador[0]->diseñador_id)->get();
+        }
+
+
 
         $vendedor_id  = DB::table('users')->where('codvendedor','=',$idDiseñador[0]->vendedor_id)->get();
 
@@ -259,7 +266,7 @@ class RequerimientosController extends Controller
             'encabezado'    => $encabezado,
             'propuestas'    => $propuestasReq,
             'vendedor_id'   => $vendedor_id,
-            'diseñador_id'  => $diseñador_id
+            'diseñador_id'  => $disenador_id
         ]);
     }
 
@@ -302,7 +309,8 @@ class RequerimientosController extends Controller
     public function CambiarDiseñadorRequeEd(Request $request)
     {
         DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
-            'diseñador_id' => $request->result['value']
+            'diseñador_id'  => $request->result['value'],
+            'estado'        => '3'
         ]);
 
         DB::table('transacciones_requerimientos')->insert([
@@ -355,10 +363,7 @@ class RequerimientosController extends Controller
 
         return DataTables::of($data)
         ->addColumn('opciones', function($row){
-            $btn = '<div class="btn-group ml-auto" style="text-align: center !important;">'.'<button class="btn btn-light btn-sm Crear2D" name="Crear2D" id="'.$row->id.'"><i class="fas fa-cube"></i> 2D</button>';
-            $btn = $btn.'<button class="btn btn-light btn-sm Crear3D" name="Crear3D" id="'.$row->id.'"><i class="fas fa-cubes"></i> 3D</button>';
-            $btn = $btn.'<button class="btn btn-light btn-sm CrearPlano" name="CrearPlano" id="'.$row->id.'"><i class="far fa-file"></i> Plano</button>';
-            $btn = $btn.'<button class="btn btn-light btn-sm VerPropuest" name="VerPropuest" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
+            $btn = '<div class="btn-group ml-auto" style="text-align: center !important;">'.'<button class="btn btn-light btn-sm VerPropuest" name="VerPropuest" id="'.$row->id.'"><i class="fas fa-eye"></i> Ver</button>'.'</div>';
             return $btn;
         })
         ->rawColumns(['opciones'])
@@ -374,7 +379,7 @@ class RequerimientosController extends Controller
             $files->move($destinationPath, $profilefile);
             $insert['fileToUpload'] = "$profilefile";
 
-            DB::table('adjuntos_propuestas_requerimientos')->insert([
+            DB::table('adjuntos_propuestas_requerimientos')->updateOrInsert(['url'  =>  $destinationPath],[
                 'idRequerimiento'   =>  $request->Numero,
                 'idPropuesta'       =>  $request->Prop,
                 'archivo'           =>  $profilefile,
@@ -384,7 +389,7 @@ class RequerimientosController extends Controller
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
             ]);
-            DB::table('transacciones_requerimientos')->insert([
+            DB::table('transacciones_requerimientos')->Insert([
                 'idReq'         =>  $request->Numero,
                 'tipo'          =>  'Adjuntos',
                 'descripcion'   =>  'Adjunto un archivo 2D a la propuesta '.$request->Prop.' del requerimiento '.$request->Numero,
@@ -407,7 +412,7 @@ class RequerimientosController extends Controller
             $files->move($destinationPath, $profilefile);
             $insert['fileToUpload'] = "$profilefile";
 
-            DB::table('adjuntos_propuestas_requerimientos')->insert([
+            DB::table('adjuntos_propuestas_requerimientos')->updateOrInsert(['url'  =>  $destinationPath], [
                 'idRequerimiento'   =>  $request->Numero,
                 'idPropuesta'       =>  $request->Prop,
                 'archivo'           =>  $profilefile,
@@ -438,7 +443,7 @@ class RequerimientosController extends Controller
             $files->move($destinationPath, $profilefile);
             $insert['fileToUpload'] = "$profilefile";
 
-            DB::table('adjuntos_propuestas_requerimientos')->insert([
+            DB::table('adjuntos_propuestas_requerimientos')->updateOrInsert(['url' => $destinationPath],[
                 'idRequerimiento'   =>  $request->Numero,
                 'idPropuesta'       =>  $request->Prop,
                 'archivo'           =>  $profilefile,
@@ -464,6 +469,9 @@ class RequerimientosController extends Controller
     {
         if ($request->hasFile('fileToUpload')) {
             $files = $request->file('fileToUpload');
+
+
+
             $i = 1;
             foreach ($files as $file){
                 $destinationPath = 'requerimientos/'.'RQ-'.$request->Numero.'/soportes/';
@@ -489,11 +497,6 @@ class RequerimientosController extends Controller
                 'created_at'    =>  Carbon::now(),
                 'updated_at'    =>  Carbon::now()
             ]);
-
-
-
-            /*$file_name = $request->file('fileToUpload')->getClientOriginalName();
-            $earn_proof = $request->file('fileToUpload')->storeAs("requerimientos"/*.$request->id."/"*/
         }
         return response()->json(['result' => true], 200);
     }
@@ -548,7 +551,7 @@ class RequerimientosController extends Controller
         ]);
     }
 
-    public function DeleteFileFromPropuesta (Request $request)
+    public function DeleteFileFromPropuesta(Request $request)
     {
         $destinationPath = 'requerimientos/'.'RQ-'.$request->idReq.'/soportes/';
         $profilefile = $request->file;
@@ -579,4 +582,44 @@ class RequerimientosController extends Controller
             $msj->to($for);
         });*/
     }
+
+    public function RechazarPropuesta(Request $request)
+    {
+        DB::table('propuestas_requerimientos')
+            ->where('idRequerimiento','=', $request->id)
+            ->where('id','=',$request->Prop)
+            ->update([
+                'estado' => '3'
+        ]);
+
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         =>  $request->id,
+            'tipo'          =>  'Propuesta',
+            'descripcion'   =>  'Rechazo la propuesta #'.$request->Prop.' del requerimiento #'. $request->id,
+            'usuario'       =>  $request->Username,
+            'created_at'    =>  Carbon::now(),
+            'updated_at'    =>  Carbon::now()
+        ]);
+    }
+
+    public function AprobarPropuesta(Request $request)
+    {
+        DB::table('propuestas_requerimientos')
+            ->where('idRequerimiento','=', $request->id)
+            ->where('id','=',$request->Prop)
+            ->update([
+                'estado' => '4'
+            ]);
+
+        DB::table('transacciones_requerimientos')->insert([
+            'idReq'         =>  $request->id,
+            'tipo'          =>  'Propuesta',
+            'descripcion'   =>  'Aprobo la propuesta #'.$request->Prop.' del requerimiento #'. $request->id,
+            'usuario'       =>  $request->Username,
+            'created_at'    =>  Carbon::now(),
+            'updated_at'    =>  Carbon::now()
+        ]);
+    }
+
+
 }

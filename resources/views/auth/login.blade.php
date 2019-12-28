@@ -45,4 +45,13 @@
         @endif
     </div>
 </div>
+<style>
+    body {
+        background: #cccccc url("/img/back.JPG") no-repeat fixed center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
 @endsection

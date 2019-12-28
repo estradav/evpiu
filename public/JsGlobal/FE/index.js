@@ -181,10 +181,11 @@ $(document).ready(function () {
                 if (data.emailcontacto == '' || data.emailcontacto == null){
                     $('td', row).css('color', 'red');
                 }
+
                 if (data.tipo_cliente != 'ZF' && data.tipo_cliente != 'EX' && data.valor_iva == 0 ){
-                    $(row).find('td:eq(11)').css('color', 'red');
+                    $('td', row).css('color', 'red');
                 }
-            },
+            }
 
         });
     }

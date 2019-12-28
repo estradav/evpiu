@@ -1,7 +1,7 @@
 @extends('layouts.blog')
 
 @section('bg-img')
-{{ asset('/img/home-bg.jpg') }}
+{{ asset('img/home_bg.JPG') }}
 @stop
 
 @section('header')
