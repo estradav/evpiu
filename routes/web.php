@@ -25,7 +25,10 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::middleware(['auth'])->group(function() {
+Route::get('login/locked', 'Auth\LoginController@locked')->middleware('auth')->name('login.locked');
+Route::post('login/locked', 'Auth\LoginController@unlock')->name('login.unlock');
+
+Route::middleware(['auth.lock'])->group(function() {
     // Dashboard
     Route::get('/home', 'HomeController@index')
         ->name('home')
@@ -235,6 +238,11 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
     Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
     Route::post('/FacturaElectronicaWebService','FeFacturasController@FacturasWebService');
+
+
+    Route::post('/RechazarPropuesta','RequerimientosController@RechazarPropuesta');
+    Route::post('/AprobarPropuesta','RequerimientosController@AprobarPropuesta');
+
 
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/

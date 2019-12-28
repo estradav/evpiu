@@ -17,7 +17,7 @@
         "consoletvs/charts": "6.*",
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "fideloper/proxy": "^4.0",
-        "laravel/framework": "6.6.*",
+        "laravel/framework": "6.9.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "6.0.*",
         "nnnick/chartjs": "^2.8",

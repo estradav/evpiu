@@ -16,12 +16,12 @@
     @inject('Usuarios','App\Services\Usuarios')
 @can('dashboard.view')
 <div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card">
-            <h5 class="card-header">Usuarios Registrados en la Plataforma</h5>
+            <h5 class="card-header">Dashboard</h5>
             <div class="card-body">
-                <div class="row">
-                    <canvas id="Usuarios"></canvas>
+                <div class="alert alert-danger" role="alert">
+                    Nada por aqui...
                 </div>
             </div>
         </div>
