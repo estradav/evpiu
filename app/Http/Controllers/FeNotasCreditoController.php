@@ -162,6 +162,7 @@ class FeNotasCreditoController extends Controller
                 /// para  Rte Fuente
                 $total_item_valor = $enc->subtotal + $total_valor_iva;
                 ////////////////// FIN CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
+                $DescuentoTotalFactura = ($enc->descuento / $enc->bruto )* 100;
 
                 //Construimos el xlm
                 $objetoXML->startElement("documento");    // Se inicia un elemento para cada factura.
@@ -312,25 +313,69 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
 
-
-                $objetoXML->startElement("impuestos");
-                $objetoXML->startElement("impuesto");
-                $objetoXML->startElement("idimpuesto");
-                $objetoXML->text($id_total_impuesto_iva);
+                $objetoXML->startElement("cargos");
+                $objetoXML->startElement("cargo");
+                $objetoXML->startElement("idconcepto");
+                $objetoXML->text('01');
+                $objetoXML->endElement();
+                $objetoXML->startElement("escargo");
+                $objetoXML->text('0');
+                $objetoXML->endElement();
+                $objetoXML->startElement("descripcion");
+                $objetoXML->text('Descuento general');
+                $objetoXML->endElement();
+                $objetoXML->startElement("porcentaje");
+                $objetoXML->text(number_format($DescuentoTotalFactura,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("base");
-                $objetoXML->text(number_format($enc->subtotal,2,'.',''));
-                $objetoXML->endElement();
-                $objetoXML->startElement("factor");
-                $objetoXML->text($factor_total);
-                $objetoXML->endElement();
-                $objetoXML->startElement("estarifaunitaria");
-                $objetoXML->text($tarifa_unitaria_total);
+                $objetoXML->text($enc->bruto);
                 $objetoXML->endElement();
                 $objetoXML->startElement("valor");
-                $objetoXML->text(number_format($total_valor_iva,2,'.',''));
+                $objetoXML->text($enc->descuento);
                 $objetoXML->endElement();
                 $objetoXML->endElement();
+                $objetoXML->endElement();
+
+
+                $objetoXML->startElement("impuestos");
+                if($enc->iva == 0 || $enc->tipo_cliente == 'EX')
+                {
+                    $objetoXML->startElement("impuesto");
+                    $objetoXML->startElement("idimpuesto");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("base");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("factor");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("estarifaunitaria");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
+                }else{
+                    $objetoXML->startElement("impuesto");
+                    $objetoXML->startElement("idimpuesto");
+                    $objetoXML->text($id_total_impuesto_iva);
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("base");
+                    $objetoXML->text(number_format($enc->subtotal,2,'.',''));
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("factor");
+                    $objetoXML->text($factor_total);
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("estarifaunitaria");
+                    $objetoXML->text($tarifa_unitaria_total);
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text(number_format(abs($total_valor_iva),2,'.',''));
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
+                }
                 $objetoXML->endElement();
 
 
@@ -426,9 +471,7 @@ class FeNotasCreditoController extends Controller
 
                     $subtotal_item = abs($dNc->totalitem) - abs($dNc->descuento);
                     $total_valor_item_iva = $subtotal_item * 0.19;
-
-
-
+                    $DescuentoPorItem = ($dNc->descuento / $valor_item) * 100;
 
                     $objetoXML->startElement("item");
 
@@ -498,6 +541,35 @@ class FeNotasCreditoController extends Controller
                     $objetoXML->text(number_format(abs($valor_item),2,'.',''));
                     $objetoXML->endElement();
 
+                    $objetoXML->startElement("cargos");
+                    $objetoXML->startElement("cargo");
+
+                    $objetoXML->startElement("idconcepto");
+                    $objetoXML->text('01');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("escargo");
+                    $objetoXML->text('0');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("descripcion");
+                    $objetoXML->text('Descuento general');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("porcentaje");
+                    $objetoXML->text(number_format($DescuentoPorItem,2,'.',''));
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("base");
+                    $objetoXML->text($valor_item);
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text($dNc->descuento);
+                    $objetoXML->endElement();
+
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
 
                     $objetoXML->startElement("impuestos");
                     if($dNc->iva_item == 0 || $dNc->iva_item == null || $dNc->iva_item == '' || $enc->tipo_cliente == 'EX'){
