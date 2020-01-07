@@ -252,7 +252,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: false,
                 title: 'Generando XML un momento por favor...',
-                html: '<img src="../img/carga.gif" alt="">',
+                html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
                 showConfirmButton: false,
                 showCancelButton: false,
                 allowOutsideClick: false,
@@ -294,6 +294,13 @@ $(document).ready(function () {
                         link.click();
                     };
                     req.send();
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Hubo un error al generar el XML..!',
+                    });
                 }
             });
         } else

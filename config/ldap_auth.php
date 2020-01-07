@@ -44,10 +44,13 @@ return [
     'login_fallback' => env('LDAP_LOGIN_FALLBACK', true),
 
 
+    /*Atributos que se quieren sincronizar con el directorio activo a la derecha el campo del AD
+    y a la izquierda el campo de la base de datos local (EVPIU) */
     'sync_attributes' => [
         'username' => 'sAMAccountName',
         'name' => 'cn',
-        'email' => 'mail'
+        'email' => 'mail',
+        'app_roll'  => 'title'
     ],
 
     /*

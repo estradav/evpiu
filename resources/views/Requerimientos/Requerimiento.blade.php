@@ -175,10 +175,19 @@
                                 $(row).find('td:eq(4)').html('<label class="alert-light">Sin asingar</label>');
                             }
                             if (data.estado == '1') {
-                                $(row).find('td:eq(5)').html('<label class="alert-light">Pendiente por plano</label>');
+                                $(row).find('td:eq(5)').html('<label class="alert-light">Render</label>');
                             }
                             if (data.estado == '2') {
                                 $(row).find('td:eq(5)').html('<label class="alert-light">Por revisar</label>');
+                            }
+                            if (data.estado == '3') {
+                                $(row).find('td:eq(5)').html('<label class="alert-light">Asignado</label>');
+                            }
+                            if (data.estado == '6') {
+                                $(row).find('td:eq(5)').html('<label class="alert-light">Anulado Diseño</label>');
+                            }
+                            if (data.estado == '7') {
+                                $(row).find('td:eq(5)').html('<label class="alert-light">Sin aprobar</label>');
                             }
                         }
                     })

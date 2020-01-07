@@ -17,17 +17,20 @@ class RequerimientosController extends Controller
         if ($request->ajax()) {
             if ($request->estado != null) {
                 $data = DB::table('encabezado_requerimientos')
+                    ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.id')
+                    ->select('users.name as diseñador_id','encabezado_requerimientos.id','encabezado_requerimientos.producto',
+                        'encabezado_requerimientos.informacion','encabezado_requerimientos.usuario','encabezado_requerimientos.estado',
+                        'encabezado_requerimientos.created_at','encabezado_requerimientos.updated_at')
                     ->where('estado', '=', $request->estado)
                     ->orderBy('estado', 'desc')
                     ->get();
                 return Datatables::of($data)
                     ->addColumn('opciones', function ($row) {
-                        $btn = '<div class="btn-group ml-auto">' . '<a href="/Requerimientoss/' . $row->id . '/edit" class="btn btn-sm btn-outline-light" id="ver"><i class="fas fa-file-signature"></i> Ver</a>' . '</div>';
+                        $btn = '<div class="btn-group ml-auto">'.'<a href="/Requerimientoss/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="ver"><i class="fas fa-file-signature"></i> Ver</a>'.'</div>';
                         return $btn;
                     })
                     ->rawColumns(['opciones'])
                     ->make(true);
-
             }
         }
         return view('Requerimientos.Requerimiento');
@@ -252,8 +255,6 @@ class RequerimientosController extends Controller
         }else{
             $disenador_id = DB::table('users')->where('cod_designer','=',$idDiseñador[0]->diseñador_id)->get();
         }
-
-
 
         $vendedor_id  = DB::table('users')->where('codvendedor','=',$idDiseñador[0]->vendedor_id)->get();
 
@@ -620,6 +621,4 @@ class RequerimientosController extends Controller
             'updated_at'    =>  Carbon::now()
         ]);
     }
-
-
 }

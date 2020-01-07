@@ -92,6 +92,7 @@
             </div>
         </div>
     </div>
+
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar las Facturas.
@@ -106,10 +107,32 @@
             background: url('/img/informacion.png') no-repeat center center;
             cursor: pointer;
         }
+
         tr.details td.details-control {
             background: url('/img/x.png') no-repeat center center;
         }
+
+        .preloader {
+            width: 140px;
+            height: 140px;
+            border: 20px solid #eee;
+            border-top: 20px solid #008000;
+            border-radius: 50%;
+            animation-name: girar;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes girar {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
+
 @push('javascript')
     <script type="text/javascript" src="/JsGlobal/FE/index.js" ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
