@@ -405,12 +405,15 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text('');
                 $objetoXML->endElement();
                 $objetoXML->endElement();
-/*
+
                 $objetoXML->startElement("correoscopia");
-                $objetoXML->startElement("correocopia");
-                $objetoXML->text('');
+
+                foreach (explode(";",$enc->correoscopia) as $Arraycc){
+                    $objetoXML->startElement("correocopia");
+                    $objetoXML->text($Arraycc);
+                    $objetoXML->endElement();
+                }
                 $objetoXML->endElement();
-                $objetoXML->endElement();*/
 
                 $objetoXML->startElement("items");
 

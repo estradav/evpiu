@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use http\Params;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use XMLWriter;
@@ -16,53 +15,53 @@ class FeFacturasController extends Controller
     {
         if (request()->ajax()) {
             if (!empty($request->from_date)) {
-                $data = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadas')
-                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
-                    ->select('CIEV_V_FacturasTotalizadas.numero as id',
-                        'CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
-                        'CIEV_V_FacturasTotalizadas.fecha as fecha',
-                        'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                        'CIEV_V_FacturasTotalizadas.bruto as bruto',
-                        'CIEV_V_FacturasTotalizadas.descuento as desc',
-                        'CIEV_V_FacturasTotalizadas.iva as valor_iva',
-                        'CIEV_V_FacturasTotalizadas.nomvendedor as vendedor',
-                        'CIEV_V_FacturasTotalizadas.ov as ov',
-                        'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                        'CIEV_V_FacturasTotalizadas.motivo as motivo',
+                $data = DB::connection('MAX')->table('CIEV_V_FE_FacturasTotalizadas')
+                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FE_FacturasTotalizadas.numero','=','CIEV_V_FE.numero')
+                    ->select('CIEV_V_FE_FacturasTotalizadas.numero as id',
+                        'CIEV_V_FE_FacturasTotalizadas.identificacion as nit_cliente',
+                        'CIEV_V_FE_FacturasTotalizadas.fecha as fecha',
+                        'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social',
+                        'CIEV_V_FE_FacturasTotalizadas.bruto as bruto',
+                        'CIEV_V_FE_FacturasTotalizadas.descuento as desc',
+                        'CIEV_V_FE_FacturasTotalizadas.iva as valor_iva',
+                        'CIEV_V_FE_FacturasTotalizadas.nomvendedor as vendedor',
+                        'CIEV_V_FE_FacturasTotalizadas.ov as ov',
+                        'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo',
+                        'CIEV_V_FE_FacturasTotalizadas.motivo as motivo',
                         'CIEV_V_FE.codigo_alterno as cod_alter',
-                        'CIEV_V_FacturasTotalizadas.subtotal as subtotal',
+                        'CIEV_V_FE_FacturasTotalizadas.subtotal as subtotal',
                         'CIEV_V_FE.emailentrega as email',
                         'CIEV_V_FE.emailcontacto as emailcontacto',
                         'CIEV_V_FE.nombres as nombres',
                         'CIEV_V_FE.apellidos as apellidos',
-                        'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
-                    ->where('CIEV_V_FacturasTotalizadas.tipodoc', '=', 'CU')
-                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')
+                        'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente')
+                    ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc', '=', 'CU')
+                    ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')
                     ->whereBetween('fecha', array($request->from_date, $request->to_date))
                     ->get();
             }else {
-                $data = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadas')
-                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
-                    ->select('CIEV_V_FacturasTotalizadas.numero as id',
-                        'CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
-                        'CIEV_V_FacturasTotalizadas.fecha as fecha',
-                        'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                        'CIEV_V_FacturasTotalizadas.bruto as bruto',
-                        'CIEV_V_FacturasTotalizadas.descuento as desc',
-                        'CIEV_V_FacturasTotalizadas.iva as valor_iva',
-                        'CIEV_V_FacturasTotalizadas.nomvendedor as vendedor',
-                        'CIEV_V_FacturasTotalizadas.ov as ov',
-                        'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                        'CIEV_V_FacturasTotalizadas.motivo as motivo',
+                $data = DB::connection('MAX')->table('CIEV_V_FE_FacturasTotalizadas')
+                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FE_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
+                    ->select('CIEV_V_FE_FacturasTotalizadas.numero as id',
+                        'CIEV_V_FE_FacturasTotalizadas.identificacion as nit_cliente',
+                        'CIEV_V_FE_FacturasTotalizadas.fecha as fecha',
+                        'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social',
+                        'CIEV_V_FE_FacturasTotalizadas.bruto as bruto',
+                        'CIEV_V_FE_FacturasTotalizadas.descuento as desc',
+                        'CIEV_V_FE_FacturasTotalizadas.iva as valor_iva',
+                        'CIEV_V_FE_FacturasTotalizadas.nomvendedor as vendedor',
+                        'CIEV_V_FE_FacturasTotalizadas.ov as ov',
+                        'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo',
+                        'CIEV_V_FE_FacturasTotalizadas.motivo as motivo',
                         'CIEV_V_FE.codigo_alterno as cod_alter',
-                        'CIEV_V_FacturasTotalizadas.subtotal as subtotal',
+                        'CIEV_V_FE_FacturasTotalizadas.subtotal as subtotal',
                         'CIEV_V_FE.emailentrega as email',
                         'CIEV_V_FE.emailcontacto as emailcontacto',
                         'CIEV_V_FE.nombres as nombres',
                         'CIEV_V_FE.apellidos as apellidos',
-                        'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente')
-                    ->where('CIEV_V_FacturasTotalizadas.tipodoc', '=', 'CU')
-                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')->take(100)
+                        'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente')
+                    ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc', '=', 'CU')
+                    ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')->take(100)
                     ->get();
             }
             return datatables::of($data)
@@ -85,7 +84,6 @@ class FeFacturasController extends Controller
        $facturasv = $request->selected;
        $facturasv = json_decode($facturasv);
 
-
        // Estructura del XML
        $objetoXML = new    XMLWriter();
        $objetoXML->openURI("XML/Facturacion_electronica_Facturas.xml");
@@ -97,34 +95,67 @@ class FeFacturasController extends Controller
        //Elemento Raiz del XML
        $objetoXML->startElement("root");
 
-       //Variable para almacenar la salida de la validacion
-       $html = '';
-
        foreach ($facturasv as $fac) {
            $num = $fac->numero;
 
            $Encabezado = DB::connection('MAX')->table('CIEV_V_FE')
-               ->leftJoin('CIEV_V_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FacturasTotalizadas.numero')
-               ->select('CIEV_V_FE.numero', 'CIEV_V_FE.notas','CIEV_V_FE.identificacion as nit_cliente','CIEV_V_FE.apellidos',
-                   'CIEV_V_FE.emailcontacto','CIEV_V_FE.direccion','CIEV_V_FE.emailentrega','CIEV_V_FE.digito_verificador',
-                   'CIEV_V_FE.telefono','CIEV_V_FE.notas','CIEV_V_FE.OC','CIEV_V_FE.codciudad','CIEV_V_FE.coddpto','CIEV_V_FE.codigo_alterno',
-                   'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FE.codigocliente','CIEV_V_FE.fechadocumento','CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                   'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FacturasTotalizadas.descuento', 'CIEV_V_FacturasTotalizadas.subtotal', 'CIEV_V_FacturasTotalizadas.iva',
-                   'CIEV_V_FacturasTotalizadas.fletes','CIEV_V_FacturasTotalizadas.seguros', 'CIEV_V_FacturasTotalizadas.moneda','CIEV_V_FacturasTotalizadas.ov',
-                   'CIEV_V_FacturasTotalizadas.dias','CIEV_V_FacturasTotalizadas.motivo','CIEV_V_FacturasTotalizadas.descplazo as plazo','CIEV_V_FacturasTotalizadas.descmotivo',
-                   'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento')
+               ->leftJoin('CIEV_V_FE_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FE_FacturasTotalizadas.numero')
+               ->select('CIEV_V_FE.numero',
+                   'CIEV_V_FE.notas',
+                   'CIEV_V_FE.identificacion as nit_cliente',
+                   'CIEV_V_FE.apellidos',
+                   'CIEV_V_FE.emailcontacto',
+                   'CIEV_V_FE.direccion',
+                   'CIEV_V_FE.emailentrega',
+                   'CIEV_V_FE.digito_verificador',
+                   'CIEV_V_FE.telefono',
+                   'CIEV_V_FE.notas',
+                   'CIEV_V_FE.OC',
+                   'CIEV_V_FE.codciudad',
+                   'CIEV_V_FE.coddpto',
+                   'CIEV_V_FE.codigo_alterno',
+                   'CIEV_V_FE.codigocliente',
+                   'CIEV_V_FE.fechadocumento',
+                   'CIEV_V_FE.nombres',
+                   'CIEV_V_FE.fechavencimiento',
+                   'CIEV_V_FE_FacturasTotalizadas.bruto',
+                   'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social',
+                   'CIEV_V_FE_FacturasTotalizadas.descuento',
+                   'CIEV_V_FE_FacturasTotalizadas.subtotal',
+                   'CIEV_V_FE_FacturasTotalizadas.bruto_usd',
+                   'CIEV_V_FE_FacturasTotalizadas.fletes_usd',
+                   'CIEV_V_FE_FacturasTotalizadas.seguros_usd',
+                   'CIEV_V_FE_FacturasTotalizadas.iva',
+                   'CIEV_V_FE_FacturasTotalizadas.fletes',
+                   'CIEV_V_FE_FacturasTotalizadas.seguros',
+                   'CIEV_V_FE_FacturasTotalizadas.moneda',
+                   'CIEV_V_FE_FacturasTotalizadas.ov',
+                   'CIEV_V_FE_FacturasTotalizadas.dias',
+                   'CIEV_V_FE_FacturasTotalizadas.motivo',
+                   'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo',
+                   'CIEV_V_FE_FacturasTotalizadas.descmotivo',
+                   'CIEV_V_FE_FacturasTotalizadas.correoscopia',
+                   'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente')
                ->where('CIEV_V_FE.numero', '=', $num)->take(1)->get();
 
            // esta consulta muestra el detalle de los items de cada factura
            $Detalle = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
-               ->select('CIEV_V_FacturasDetalladas.factura','CIEV_V_FacturasDetalladas.codigoproducto', 'CIEV_V_FacturasDetalladas.descripcionproducto',
-                   'CIEV_V_FacturasDetalladas.OC','CIEV_V_FacturasDetalladas.item','CIEV_V_FacturasDetalladas.cantidad','CIEV_V_FacturasDetalladas.precio',
-                   'CIEV_V_FacturasDetalladas.totalitem', 'CIEV_V_FacturasDetalladas.iva as iva_item', 'CIEV_V_FacturasDetalladas.valormercancia',
-                   'CIEV_V_FacturasDetalladas.Desc_Item','CIEV_V_FacturasDetalladas.UM','CIEV_V_FacturasDetalladas.base')
+               ->select('CIEV_V_FacturasDetalladas.factura',
+                   'CIEV_V_FacturasDetalladas.codigoproducto',
+                   'CIEV_V_FacturasDetalladas.descripcionproducto',
+                   'CIEV_V_FacturasDetalladas.OC',
+                   'CIEV_V_FacturasDetalladas.item',
+                   'CIEV_V_FacturasDetalladas.cantidad',
+                   'CIEV_V_FacturasDetalladas.precio',
+                   'CIEV_V_FacturasDetalladas.totalitem',
+                   'CIEV_V_FacturasDetalladas.iva as iva_item',
+                   'CIEV_V_FacturasDetalladas.valormercancia',
+                   'CIEV_V_FacturasDetalladas.Desc_Item',
+                   'CIEV_V_FacturasDetalladas.UM',
+                   'CIEV_V_FacturasDetalladas.base')
                ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
 
            $Config = DB::table('fe_configs')->take(1)->get();
-
 
            $itemNormales = [];
            $itemRegalo = [];
@@ -138,17 +169,35 @@ class FeFacturasController extends Controller
            }
 
            foreach ($Encabezado as $enc) {
+
+               $bruto_factura = null;
+               $subtotal_factura = null;
+               $brutomasiva =  null;
+               $descuento_factura = null;
+               $total_cargos    = null;
+               $totalpagar    = null;
                ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
                ///
                if($enc->tipo_cliente  == 'EX'){
-                   $brutomasiva =  number_format($enc->bruto,2,'.','');
-
-               }else{
-                   $brutomasiva =  number_format($enc->bruto,2,'.','') + number_format($enc->iva,2,'.','');
+                   $bruto_factura = $enc->bruto_usd;
+                   $subtotal_factura = $enc->bruto_usd;
+                   $brutomasiva =  number_format($enc->bruto_usd,2,'.','');
+                   $descuento_factura = 0;
+                   $total_cargos    = number_format($enc->fletes_usd,2,'.','') + number_format($enc->seguros_usd,2,'.','');
+                   $totalpagar      = (number_format($enc->bruto_usd,2,'.','')  + $total_cargos);
 
                }
-               $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
-               $total_cargos    = number_format($enc->fletes,2,'.','') + number_format($enc->seguros,2,'.','');
+               else {
+                   $bruto_factura = $enc->bruto;
+                   $subtotal_factura = $enc->bruto - $enc->descuento;
+                   $brutomasiva =  number_format($enc->bruto,2,'.','') + number_format($enc->iva,2,'.','');
+                   $descuento_factura = $enc->descuento;
+                   $total_cargos    = number_format($enc->fletes,2,'.','') + number_format($enc->seguros,2,'.','');
+                   $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
+               }
+
+
+
 
                //determina si la factura es exportacion o para venta nacional
                 $tipo_fac_en = null;
@@ -180,7 +229,6 @@ class FeFacturasController extends Controller
                 if ($enc->digito_verificador != null )
                 {$tipo_documento_ide = 31;}
                 else{$tipo_documento_ide = 13;}
-
 
 
                // valida si tiene correo de entrega, si no tiene , pone el mismo correo de adquiriente
@@ -439,16 +487,16 @@ class FeFacturasController extends Controller
 
                $objetoXML->startElement("totales");
                $objetoXML->startElement("totalbruto");
-               $objetoXML->text(number_format($enc->bruto,2,'.',''));
+               $objetoXML->text(number_format($bruto_factura,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("baseimponible");
-               $objetoXML->text(number_format($enc->subtotal,2,'.',''));
+               $objetoXML->text(number_format($subtotal_factura,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("totalbrutoconimpuestos");
                $objetoXML->text(number_format($brutomasiva,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("totaldescuento");
-               $objetoXML->text(number_format($enc->descuento,2,'.',''));
+               $objetoXML->text(number_format($descuento_factura,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("totalcargos");
                $objetoXML->text(number_format($total_cargos,2,'.',''));
@@ -464,15 +512,30 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
 
-               $objetoXML->startElement("items");
+               $objetoXML->startElement("correoscopia");
 
+               foreach (explode(";",$enc->correoscopia) as $Arraycc){
+                   $objetoXML->startElement("correocopia");
+                   $objetoXML->text($Arraycc);
+                   $objetoXML->endElement();
+               }
+               $objetoXML->endElement();
+
+               $objetoXML->startElement("items");
 
                foreach ($itemNormales as $it) {
 
                    //$impuestos_item = $it->
-                   $valor_item = $it->precio * $it->cantidad;
+                   if ($enc->tipo_cliente == 'EX'){
+                       $valor_item = $it->precio * $it->cantidad;
+                   }else{
+                       $valor_item = $it->precio * $it->cantidad;
+                   }
+
+
                    // valida si el item es comprado o se da como regalo
                    $regalo = null;
+
                    if ($valor_item == 0) {
                        $regalo = 1;
                    } else {
@@ -514,7 +577,6 @@ class FeFacturasController extends Controller
                        $umed = 'KGM';
                    }
 
-                   ////
                    $id_item_iva = null;
                    if ($it->iva_item != null) {
                        $id_item_iva = '0'.'1';
@@ -532,7 +594,6 @@ class FeFacturasController extends Controller
                    $total_valor_item_iva = $subtotal_item * 0.19;
 
                    $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
-
 
                    $objetoXML->startElement("item");
 
@@ -688,10 +749,6 @@ class FeFacturasController extends Controller
                        $objetoXML->endElement();
                    }
 
-
-                   // RETEFUENTE
-
-
                    $objetoXML->endElement();
                    $objetoXML->endElement(); // cierra item
                }
@@ -710,7 +767,6 @@ class FeFacturasController extends Controller
                    $objetoXML->text(trim($enc->plazo));
                    $objetoXML->endElement();
                    $objetoXML->endElement();
-
 
                    $objetoXML->startElement("datoextra");
                    $objetoXML->startElement("tipo");
@@ -1246,7 +1302,7 @@ class FeFacturasController extends Controller
                     // valida el tipo de codigo 020 posicion alacelaria o 999 adopcion del contribuyente
                     $id_estandar = null;
                     if ($tipo_fac_en == 02) {
-                        $id_estandar = '020-999';
+                        $id_estandar = 999;
                     } else {
                         $id_estandar = 999;
                     }
@@ -1294,7 +1350,8 @@ class FeFacturasController extends Controller
 
                     $subtotal_item = $it->totalitem - $it->Desc_Item;
                     $total_valor_item_iva = $subtotal_item * 0.19;
-                    $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
+
+
 
 
                     if ($enc->tipo_cliente == 'EX'){

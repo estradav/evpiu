@@ -72,7 +72,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -131,7 +130,9 @@
                                             <th scope="col">RELIEVE</th>
                                             <th scope="col">ESTADO</th>
                                             <th scope="col">FECHA CREACION</th>
-                                            <th scope="col" class="text-center"><button class="btn btn-success btn-sm AddPropuestaReq">Agregar</button></th>
+                                            <th scope="col" class="text-center">
+                                                <button class="btn btn-success btn-sm AddPropuestaReq">Agregar</button>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -184,10 +185,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="PdfTitle"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" id="TextoImprimir" >
                         <div class="wrapper">
-                            <section class="invoice" id="TextoImprimir" name="TextoImprimir">
+                            <section class="invoice" style="text-transform: uppercase">
                                 <div class="row text-center">
                                     <div class="col-12">
                                         <img src="/img/Logo_v2.png" alt="" style="width: 150px !important; height: 109px !important;" class="headers">
@@ -195,7 +199,7 @@
                                     <div class="col-12">
                                         <label style="margin: -1px">CI Estrada Velasquez y Cia SAS</label> <br>
                                         <label style="margin: -1px">CR 55 29 C 14 ZONA IND. DE BELEN, MEDELLIN, TEL 2656665</label><br>
-                                        <label style="margin: -1px">Requerimiento No.: </label> <label id="PDFnumeroreq"></label> - <label style="margin: -1px">Propuesta No.: </label>
+                                        <label style="margin: -1px;">Requerimiento No.: </label> <label id="PDFnumeroreq"></label> - <label style="margin: -1px">Propuesta No.: </label>
                                         <label id="PDFnumeroprop"></label>
                                     </div>
                                 </div>
@@ -209,38 +213,40 @@
                                 <div class="row invoice-info text-center" style="margin-left: 15%; margin-right: 15%">
                                     <div class="col-sm-6 invoice-col text-left">
                                         <address>
-                                            <b>ARTICULO:</b><label id="PDFarticulo"></label> <br>
-                                            <b>TAMAÑO:</b><label id="PDFtamaño"></label><br>
-                                            <b>RELIEVE:</b><label id="PDFrelieve"></label> <br>
-                                            <b>MARCA:</b><label id="PDFmarca"></label>
+                                            <b>ARTICULO:</b> <label id="PDFarticulo"></label> <br>
+                                            <b>TAMAÑO:</b> <label id="PDFtamaño"></label><br>
+                                            <b>RELIEVE:</b> <label id="PDFrelieve"></label> <br>
+                                            <b>MARCA:</b> <label id="PDFmarca"></label>
                                         </address>
                                     </div>
                                     <div class="col-sm-6 invoice-col text-left">
                                         <address>
-                                            <b>VENDEDOR:</b><label id="PDFvendedor"></label> <br>
-                                            <b>MATERIAL:</b><label id="PDFmaterial"></label><br>
-                                            <b>DISEÑADOR:</b><label id="PDFdiseñador"></label> <br>
-                                            <b>FECHA:</b><label id="PDFfecha"></label>
+                                            <b>VENDEDOR:</b> <label id="PDFvendedor"></label> <br>
+                                            <b>MATERIAL:</b> <label id="PDFmaterial"></label><br>
+                                            <b>DISEÑADOR:</b> <label id="PDFdiseñador"></label> <br>
+                                            <b>FECHA:</b> <label id="PDFfecha"></label>
                                         </address>
                                     </div>
 
                                     <div class="col-sm-12 text-center">
-                                        <table style="width: 740px;" heig cellspacing="1" cellpadding="2" border="1">
+                                        <table style="width: 740px;" heig cellspacing="3" cellpadding="3" border="1">
                                             <tr>
                                                 <td>
-                                                    <b>DIBUJO 2D</b>
+                                                    <b>DIBUJO 2D  <a href="javascript:void(0)" class="Upload2DProp"> <i class="fas fa-file-upload"></i></a></b>
                                                 </td>
                                                 <td>
-                                                    <b>DIBUJO 3D</b>
+                                                    <b>DIBUJO 3D  <a href="javascript:void(0)" class="Upload3DProp"> <i class="fas fa-file-upload"></i></a></b>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="height: 330px; width: 370px" >
-                                                    <div class="text-center" style="height: 320px; width: 360px" id="PDFdibujo3d">
+                                                    <div class="image-container" id="PDFdibujo2d">
+
                                                     </div>
                                                 </td>
                                                 <td style="height: 330px; width: 370px">
-                                                    <div class="text-center" style="height: 320px; width: 360px" id="PDFdibujo2d">
+                                                    <div class="image-container" id="PDFdibujo3d">
+
                                                     </div>
                                                 </td>
                                             </tr>
@@ -248,15 +254,16 @@
                                         <table style="width: 740px;" heig cellspacing="1" cellpadding="2" border="1">
                                             <tr>
                                                 <td>
-                                                    <b>PLANO</b>
+                                                    <b>PLANO  <a href="javascript:void(0)" class="UploadPlanoProp"> <i class="fas fa-file-upload"></i></a></b>
                                                 </td>
                                                 <td>
-                                                    <b>CARACTERISTICAS</b>
+                                                    <b>CARACTERISTICAS </b>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="height: 330px; width: 370px" >
-                                                    <div class="text-center" style="height: 320px; width: 360px" id="PDFplano">
+                                                    <div id="PDFplano">
+
                                                     </div>
                                                 </td>
                                                 <td style="height: 330px; width: 370px" >
@@ -270,13 +277,35 @@
                             </section>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary ImprimirPdf" id="ImprimirPdf">Imprimir</button>
-                        <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-light AprobarProp">Aprobar</button>
+                        <button type="button" class="btn btn-light RechazarProp">Rechazar</button>
+                        <button type="button" class="btn btn-light ImprimirPdf" id="ImprimirPdf">Imprimir</button>
+                        <button type="button" class="btn btn-light Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
+        <style>
+            .preloader {
+                width: 140px;
+                height: 140px;
+                border: 20px solid #eee;
+                border-top: 20px solid #008000;
+                border-radius: 50%;
+                animation-name: girar;
+                animation-duration: 1s;
+                animation-iteration-count: infinite;
+            }
+            @keyframes girar {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar requerimientos.
@@ -288,55 +317,67 @@
             $(document).ready(function () {
                 var id = @json( $var );
                 var Username = @json( Auth::user()->name );
+                var Roll = @json( Auth::user()->app_roll );
+
+                console.log($('#Vendedor').html());
 
                 $('body').on('click','.newcoment',function () {
                     var id = $(this).attr('id');
-                    Swal.fire({
-                        title: 'Enviar Comentarios',
-                        html: '<label for="">Añade comentarios o informacion que pueda ser importante para este requerimiento</label> ',
-                        input: 'textarea',
-                        icon: 'info',
-                        inputAttributes: {
-                            autocapitalize: 'off'
-                        },
-                        showCancelButton: true,
-                        confirmButtonText: 'Guardar!',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        showLoaderOnConfirm: true,
-                        allowOutsideClick: () => !Swal.isLoading(),
-                        inputValidator: (value) => {
-                            return !value && 'No puedes enviar un comentario vacio...'
-                        }
-                    }).then((result) => {
-                        if (result.value) {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-                            $.ajax({
-                                type: "post",
-                                url: '/MisRequerimientosAddComent',
-                                data: {
-                                    idReq: id,
-                                    coments: result.value,
-                                    user: Username
-                                },
-                                success: function () {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Guardado!',
-                                        text: 'Tu comentario fue enviado con exito!',
-                                        confirmButtonText: 'Aceptar',
-                                    })
-                                }
-                            });
-                        } else {
-                            result.dismiss === Swal.DismissReason.cancel
-                        }
-                    })
+
+                    if(Roll == 'diseñador' && Username == $('#Vendedor').html() || Roll == 'vendedor' && Username == $('#Diseñador').html() || Roll == 'super_diseño' || Roll == 'admin_evpiu'){
+                        Swal.fire({
+                            title: 'Enviar Comentarios',
+                            html: '<label>Añade comentarios o informacion que pueda ser importante para este requerimiento</label>',
+                            input: 'textarea',
+                            icon: 'info',
+                            inputAttributes: {
+                                autocapitalize: 'off'
+                            },
+                            showCancelButton: true,
+                            confirmButtonText: 'Guardar!',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            showLoaderOnConfirm: true,
+                            allowOutsideClick: () => !Swal.isLoading(),
+                            inputValidator: (value) => {
+                                return !value && 'No puedes enviar un comentario vacio...'
+                            }
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    type: "post",
+                                    url: '/MisRequerimientosAddComent',
+                                    data: {
+                                        idReq: id,
+                                        coments: result.value,
+                                        user: Username
+                                    },
+                                    success: function () {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Guardado!',
+                                            text: 'Tu comentario fue enviado con exito!',
+                                            confirmButtonText: 'Aceptar',
+                                        })
+                                    }
+                                });
+                            } else {
+                                result.dismiss === Swal.DismissReason.cancel
+                            }
+                        })
+                    }else {
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error',
+                        )
+                    }
                 });
 
                 $('body').on('click', '.showcoment', function () {
@@ -414,19 +455,15 @@
                                 i++;
                             });
 
-                            var tes = 1;
-
                             if(data.propuestas.length == 0){
                                 $('#PropuestasDiv').append('<div class="alert alert-danger" role="alert">ESTE REQUERIMIENTO AUN NO TIENE PROPUESTAS...</div>');
 
                             }else{
                                 var ii = 0;
                                 $(data.propuestas).each(function () {
-
                                     ii++;
                                 });
                             }
-
                             $('#timelinemodal').modal('show');
                         }
                     })
@@ -437,57 +474,73 @@
                 });
 
                 $('body').on('click','.anularreq',function () {
-                    var id = $(this).attr('id');
-                    Swal.fire({
-                        title: '¿Esta seguro de querer anular el requerimiento?',
-                        text: "¡Esta accion no se puede revertir!",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Si, anular!',
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.value) {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-                            $.ajax({
-                                type: "post",
-                                url: "/MisRequerimientosAnular",
-                                data: {
-                                     id, Username
-                                },
-                                success: function (data) {
-                                    Obtenerdatos();
-                                    Swal.fire({
-                                        title: 'Anulado!',
-                                        text: 'El requerimiento '+ id +' ha sido anulado.',
-                                        icon: 'success',
-                                    });
-                                    table.draw();
-                                },
-                                error: function (data) {
-                                    Swal.fire(
-                                        'Error al anular!',
-                                        'Hubo un error al anular.',
-                                        'error'
-                                    )
-                                }
-                            });
-                        }else {
-                            /* Read more about handling dismissals below */
-                            result.dismiss === Swal.DismissReason.cancel
-                        }
-                    })
+                	if(Roll == 'admin_evpiu' || Roll == 'super_diseño' || Roll == 'vendedor' && Username == $('#Vendedor').html()){
+                        var id = $(this).attr('id');
+                        Swal.fire({
+                            title: '¿Esta seguro de anular el requerimiento?',
+                            text: "¡Esta accion solo la puede revertir el supervisor o un administrador!",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Si, anular!',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    type: "post",
+                                    url: "/MisRequerimientosAnular",
+                                    data: {
+                                        id, Username
+                                    },
+                                    success: function () {
+                                        Obtenerdatos();
+                                        Swal.fire({
+                                            title: 'Anulado!',
+                                            text: 'El requerimiento '+ id +' ha sido anulado.',
+                                            icon: 'success',
+                                        });
+                                        table.draw();
+                                    },
+                                    error: function () {
+                                        Swal.fire(
+                                            'Error al anular!',
+                                            'Hubo un error al anular.',
+                                            'error'
+                                        )
+                                    }
+                                });
+                            }else {
+                                result.dismiss === Swal.DismissReason.cancel
+                            }
+                        });
+                    }
+                	else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
                 });
 
                 var Nombre_vendedor = '';
 
                 function Obtenerdatos(){
-
+                    Swal.fire({
+                        icon: false,
+                        title: 'Cargando informacion, un momento por favor...',
+                        html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
                 	$.ajax({
                         url:'/RequerimientosComentariosDetalles',
                         type: 'get',
@@ -495,7 +548,6 @@
                         	id: id
                         },
                         success: function (data) {
-                        	console.log(data);
                             $('#Fecha_solicitud').html(data.encabezado[0].created_at);
                             $('#Cliente').html(data.encabezado[0].cliente);
                             $('#Marca').html(data.encabezado[0].marca);
@@ -504,16 +556,20 @@
                             $('#Vendedor').html(data.vendedor_id[0].name);
 
                             Nombre_vendedor = data.vendedor_id[0].name;
-                            var diseñador = data.diseñador_id[0].name;
+                            var diseñador = null;
+                            if(data.diseñador_id == null){
+                                diseñador = null;
+                            }
+                            else{
+                                diseñador =data.diseñador_id[0].name
+                            }
                             var estado = data.encabezado[0].estado;
 
-                            console.log(Nombre_vendedor);
                             if(data.encabezado[0].informacion == null){
                                 $('#Detalles').append('<div class="alert alert-danger" role="alert">No se agrego ningun detalle para este requerimiento</div>');
                             }else{
                                 $('#Detalles').append('<label> <label for="">'+data.encabezado[0].informacion+'</label><br>')
                             }
-
 
                             if(diseñador == null){
                                 $('#Diseñador').removeClass('text-success');
@@ -522,38 +578,47 @@
                                 $('#Diseñador').removeClass('text-danger');
                                 $('#Diseñador').html(diseñador).addClass('text-success');
                             }
+
                             if(estado == 0){
                                 $('#Estado').removeClass('text-success');
                                 $('#Estado').html('ANULADO VENDEDOR').addClass('text-danger');
                             }
+
                             if(estado == 1){
                                 $('#Estado').removeClass('text-danger');
                                 $('#Estado').html('RENDER').addClass('text-success');
                             }
+
                             if(estado == 2){
                                 $('#Estado').removeClass('text-danger');
                                 $('#Estado').html('PENDIENTE POR REVISAR').addClass('text-success');
                             }
+
                             if(estado == 3){
                                 $('#Estado').removeClass('text-danger');
                                 $('#Estado').html('ASIGNADO').addClass('text-success');
                             }
+
                             if(estado == 4){
                                 $('#Estado').removeClass('text-danger');
                                 $('#Estado').html('INICIADO').addClass('text-success');
                             }
+
                             if(estado == 5){
                                 $('#Estado').removeClass('text-success');
                                 $('#Estado').html('CERRADO').addClass('text-danger');
                             }
+
                             if(estado == 6){
                                 $('#Estado').removeClass('text-success');
                                 $('#Estado').html('ANULADO DISEÑO').addClass('text-danger');
                             }
+
                             if(estado == 7){
                                 $('#Estado').removeClass('text-success');
                                 $('#Estado').html('SIN APROBAR').addClass('text-danger');
                             }
+
                             $('#ArchivosDeSoporte').html('');
                             ObtenerArchivosRequerimiento();
                         }
@@ -583,11 +648,11 @@
                             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
                             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
                         ],
-                        columnDefs: [
-                            { className: "text-center", "targets": [ 5 ] }
-                        ],
+                        columnDefs: [{
+                        	className: "text-center",
+                            targets: [ 5 ]
+                        }],
                         language: {
-                            // traduccion de datatables
                             processing: "Procesando...",
                             search: "Buscar&nbsp;:",
                             lengthMenu: "Mostrar _MENU_ registros",
@@ -631,242 +696,265 @@
 
                 $('.CambEstreq').on('click', function () {
                     var id = $(this).attr('id');
-                    swal.mixin({
-                        icon: 'question',
-                        text: 'Selecciona una opcion',
-                        title: '¿Cambiar estado del requerimiento?',
-                        confirmButtonText: 'Aceptar',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        buttonsStyling: true,
-                        showCancelButton: true,
-                        input: 'text',
-                    }).queue([
-                        {
-                            html:'<label>Selecciona una opcion</label> <br> <select name="state" id="state" class="form-control">' +
-                              '<option value="" selected>Seleccione...</option>' +
-                              '<option value="2">Por revisar</option>' +
-                              '<option value="3">Asignado</option>' +
-                              '<option value="5">Cerrar</option>' +
-                              '<option value="6">Anulado diseño</option>' +
-                              '<option value="7">Sin aprobar</option>' +
-                              '</select>' +
-                              '<br>' +
-                              '<label style="text-align: left" >Justificacion:</label> <br>' +
-                              '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
-                            inputValidator: () => {
-                                if(document.getElementById('state').value == ''){
-                                    return  'Debes seleccionar una opcion...';
+                    if(Roll == 'super_diseño' || Roll == 'admin_evpiu'){
+                        swal.mixin({
+                            icon: 'question',
+                            text: 'Selecciona una opcion',
+                            title: '¿Cambiar estado del requerimiento?',
+                            confirmButtonText: 'Aceptar',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            buttonsStyling: true,
+                            showCancelButton: true,
+                            input: 'text',
+                        }).queue([
+                            {
+                                html: '<label>Selecciona una opcion</label> <br> <select name="state" id="state" class="form-control">' +
+                                    '<option value="" selected>Seleccione...</option>' +
+                                    '<option value="2">Por revisar</option>' +
+                                    '<option value="3">Asignado</option>' +
+                                    '<option value="5">Cerrar</option>' +
+                                    '<option value="6">Anulado diseño</option>' +
+                                    '<option value="7">Sin aprobar</option>' +
+                                    '</select>' +
+                                    '<br>' +
+                                    '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                    '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                                inputValidator: () => {
+                                    if (document.getElementById('state').value == '') {
+                                        return 'Debes seleccionar una opcion...';
+                                    }
+                                    if (document.getElementById('justify').value == '') {
+                                        return 'Debes escribir una justificacion...';
+                                    }
+                                },
+                                preConfirm: function () {
+                                    var array = {
+                                        'state': document.getElementById("state").value,
+                                        'justify': document.getElementById("justify").value,
+                                    };
+                                    return array;
+                                },
+                                onBeforeOpen: function (dom) {
+                                    swal.getInput().style.display = 'none';
                                 }
-                            	if(document.getElementById('justify').value == ''){
-                            		return 'Debes escribir una justificacion...';
-                                }
-
                             },
-                            preConfirm: function () {
-                                var array = {
-                                    'state' : document.getElementById("state").value,
-                                    'justify' : document.getElementById("justify").value,
-                                };
-                                return array;
-                            },
-                            onBeforeOpen: function (dom) {
-                                swal.getInput().style.display = 'none';
+                        ]).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    url: '/CambiarEstadoRequeEd',
+                                    type: 'post',
+                                    data: {
+                                        result, id, Username
+                                    },
+                                    success: function () {
+                                        $('#Detalles').html('');
+                                        Obtenerdatos();
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Guardardo',
+                                            text: 'Estado cambiado con exito!',
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: 'Aceptar',
+                                        })
+                                    },
+                                    error: function () {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error!',
+                                            text: 'La solicitud no pudo ser procesada!',
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: 'Aceptar',
+                                        })
+                                    }
+                                });
+                            } else {
+                                result.dismiss === Swal.DismissReason.cancel
                             }
-                        },
-                    ]).then((result) => {
-                        if (result.value) {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-                            $.ajax({
-                                url: '/CambiarEstadoRequeEd',
-                                type: 'post',
-                                data: {
-                                    result, id, Username
-                                },
-                                success: function () {
-                                    $('#Detalles').html('');
-                                    Obtenerdatos();
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Guardardo',
-                                        text: 'Estado cambiado con exito!',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Aceptar',
-                                    })
-                                },
-                                error: function () {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error!',
-                                        text: 'La solicitud no pudo ser procesada!',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Aceptar',
-                                    })
-                                }
-                            });
-                        }else{
-                            result.dismiss === Swal.DismissReason.cancel
-                        }
-                    })
+                        })
+                    }else {
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
                 });
 
                 $('.CambiarDiseñador').on('click', function () {
                     var id = $(this).attr('id');
-                	$.ajax({
-                        url: '/ObtenerDiseñadores',
-                        tyoe: 'get',
-                        success: function (data) {
-                            swal.fire({
-                                icon: 'question',
-                                title: 'Asignar o cambiar diseñador',
-                                text: 'Seleccione el diseñador al que se le sera asignado este requerimiento',
-                                input: 'select',
-                                confirmButtonText: 'Aceptar',
-                                cancelButtonText: 'Cancelar',
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                buttonsStyling: true,
-                                showCancelButton: true,
-                                inputOptions: data,
-                                inputPlaceholder: 'Seleccione...',
-                                inputValidator: function (value) {
-                                    if (value == '') {
-                                        return 'Debes seleccionar una opcion...'
-                                    }
-                                },
-                                preConfirm: function (value) {
-                                    return value;
-                                },
-                            }).then((result) => {
-                                if (result.value) {
-                                    $.ajaxSetup({
-                                        headers: {
-                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                        }
-                                    });
-                                    $.ajax({
-                                        url: '/CambiarDiseñadorRequeEd',
-                                        type: 'post',
-                                        data: {
-                                            result, Username, id
-                                        },
-                                        success: function () {
-                                            $('#Detalles').html('');
-                                            Obtenerdatos();
-                                            Swal.fire({
-                                                icon: 'success',
-                                                title: 'Guardardo',
-                                                text: 'Diseñador cambiado con exito!',
-                                                confirmButtonColor: '#3085d6',
-                                                confirmButtonText: 'Aceptar',
-                                            })
-                                        },
-                                        error: function () {
-                                            Swal.fire({
-                                                icon: 'error',
-                                                title: 'Error!',
-                                                text: 'La solicitud no pudo ser procesada!',
-                                                confirmButtonColor: '#3085d6',
-                                                confirmButtonText: 'Aceptar',
-                                            })
-                                        }
-                                    });
 
-                                }else{
-                                    result.dismiss === Swal.DismissReason.cancel
-                                }
-                            })
-                        }
-                    })
+                    if(Roll == 'super_diseño' || Roll == 'admin_evpiu'){
+                        $.ajax({
+                            url: '/ObtenerDiseñadores',
+                            tyoe: 'get',
+                            success: function (data) {
+                                swal.fire({
+                                    icon: 'question',
+                                    title: 'Asignar o cambiar diseñador',
+                                    text: 'Seleccione el diseñador al que se le sera asignado este requerimiento',
+                                    input: 'select',
+                                    confirmButtonText: 'Aceptar',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    buttonsStyling: true,
+                                    showCancelButton: true,
+                                    inputOptions: data,
+                                    inputPlaceholder: 'Seleccione...',
+                                    inputValidator: function (value) {
+                                        if (value == '') {
+                                            return 'Debes seleccionar una opcion...'
+                                        }
+                                    },
+                                    preConfirm: function (value) {
+                                        return value;
+                                    },
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $.ajaxSetup({
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            }
+                                        });
+                                        $.ajax({
+                                            url: '/CambiarDiseñadorRequeEd',
+                                            type: 'post',
+                                            data: {
+                                                result, Username, id
+                                            },
+                                            success: function () {
+                                                $('#Detalles').html('');
+                                                Obtenerdatos();
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Guardardo',
+                                                    text: 'Diseñador cambiado con exito!',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Aceptar',
+                                                })
+                                            },
+                                            error: function () {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error!',
+                                                    text: 'La solicitud no pudo ser procesada!',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Aceptar',
+                                                })
+                                            }
+                                        });
+                                    } else {
+                                        result.dismiss === Swal.DismissReason.cancel
+                                    }
+                                })
+                            }
+                        })
+                    }else {
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
                 });
 
                 $('.AddPropuestaReq').on('click', function () {
-                    swal.mixin({
-                        icon: 'info',
-                        text: 'Selecciona una opcion',
-                        title: 'Crear una nueva propuesta',
-                        confirmButtonText: 'Aceptar',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        buttonsStyling: true,
-                        showCancelButton: true,
-                        input: 'text',
-                    }).queue([
-                        {
-                            html:'<form action="" id="FormTest"><label>Articulo:</label><br>' +
-                              '<input type="text" class="form-control" id="NewPropArticulo" placeholder="Escribe para buscar un articulo..."><br>' +
-                              '<label>Relieve:</label><br>' +
-                              '<select name="NewPropRelieve" id="NewPropRelieve" class="form-control">' +
-                              '<option value="" selected>Seleccione...</option>' +
-                              '<option value="Alto">Alto</option>' +
-                              '<option value="Bajo">Bajo</option>' +
-                              '<option value="Alto/Bajo">Alto/Bajo</option>' +
-                              '<option value="Liso">Liso</option>' +
-                              '</select></form>',
-                            inputValidator: () => {
-                                if(document.getElementById('NewPropArticulo').value == ''){
-                                    return  'Todos los campos son obligatorios..';
-                                }
-                                if(document.getElementById('NewPropRelieve').value == ''){
-                                    return 'Seleccione una opcion..';
+                    if(Roll == 'diseñador' && Username == $('#Diseñador').html() || Roll == 'super_diseño' || Roll == 'admin_evpiu'){
+                        swal.mixin({
+                            icon: 'info',
+                            text: 'Selecciona una opcion',
+                            title: 'Crear una nueva propuesta',
+                            confirmButtonText: 'Aceptar',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            buttonsStyling: true,
+                            showCancelButton: true,
+                            input: 'text',
+                        }).queue([
+                            {
+                                html: '<form action="" id="FormTest"><label>Articulo:</label><br>' +
+                                    '<input type="text" class="form-control" id="NewPropArticulo" placeholder="Escribe para buscar un articulo..."><br>' +
+                                    '<label>Relieve:</label><br>' +
+                                    '<select name="NewPropRelieve" id="NewPropRelieve" class="form-control">' +
+                                    '<option value="" selected>Seleccione...</option>' +
+                                    '<option value="Alto">Alto</option>' +
+                                    '<option value="Bajo">Bajo</option>' +
+                                    '<option value="Alto/Bajo">Alto/Bajo</option>' +
+                                    '<option value="Liso">Liso</option>' +
+                                    '</select></form>',
+                                inputValidator: () => {
+                                    if (document.getElementById('NewPropArticulo').value == '') {
+                                        return 'Todos los campos son obligatorios..';
+                                    }
+                                    if (document.getElementById('NewPropRelieve').value == '') {
+                                        return 'Seleccione una opcion..';
+                                    }
+                                },
+                                preConfirm: function () {
+                                    var array = {
+                                        'Articulo': document.getElementById("NewPropArticulo").value,
+                                        'Relieve': document.getElementById("NewPropRelieve").value,
+                                    };
+                                    return array;
+                                },
+                                onBeforeOpen: function (dom) {
+                                    swal.getInput().style.display = 'none';
                                 }
                             },
-                            preConfirm: function () {
-                                var array = {
-                                    'Articulo' : document.getElementById("NewPropArticulo").value,
-                                    'Relieve' : document.getElementById("NewPropRelieve").value,
-                                };
-                                return array;
-                            },
-                            onBeforeOpen: function (dom) {
-                                swal.getInput().style.display = 'none';
+                        ]).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    url: '/GuardarPropuestaReq',
+                                    type: 'post',
+                                    data: {
+                                        result, id, Username, Nombre_vendedor
+                                    },
+                                    success: function () {
+                                        $('.table').DataTable().destroy();
+                                        loadtable();
+                                        table.draw();
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Guardardo',
+                                            text: 'Propuesta guardada con exito!',
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: 'Aceptar',
+                                        });
+                                    },
+                                    error: function () {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error!',
+                                            text: 'La solicitud no pudo ser procesada!',
+                                            confirmButtonColor: '#3085d6',
+                                            confirmButtonText: 'Aceptar',
+                                        })
+                                    }
+                                });
+                            } else {
+                                result.dismiss === Swal.DismissReason.cancel
                             }
-                        },
-                    ]).then((result) => {
-                        if (result.value) {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-                            $.ajax({
-                                url: '/GuardarPropuestaReq',
-                                type: 'post',
-                                data: {
-                                    result, id, Username, Nombre_vendedor
-                                },
-                                success: function () {
-                                    $('.table').DataTable().destroy();
-                                    loadtable();
-                                    table.draw();
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Guardardo',
-                                        text: 'Propuesta guardada con exito!',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Aceptar',
-                                    });
-                                },
-                                error: function () {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error!',
-                                        text: 'La solicitud no pudo ser procesada!',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Aceptar',
-                                    })
-                                }
-                            });
-                        }else{
-                            result.dismiss === Swal.DismissReason.cancel
-                        }
-                    });
+                        });
+                    }else {
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
                     $(document).find( "#NewPropArticulo" ).autocomplete({
                         appendTo: $(".swal2-popup"),
                         source: function (request, response) {
@@ -888,222 +976,249 @@
                         },
                         minlength: 2
                     });
+                });
+
+                $('body').on('click','.Upload3DProp', function() {
+                	if(Roll == 'admin_evpiu' || Roll == 'render' || Roll == 'super_diseño'){
+                        var idProp = Prop;
+                        Swal.fire({
+                            title: '3D',
+                            text: 'Por favor, seleccione un archivo 3D para esta propuesta',
+                            icon: 'info',
+                            confirmButtonText: 'Subir',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            buttonsStyling: true,
+                            showCancelButton: true,
+                            input: 'file',
+                            inputAttributes: {
+                                accept: 'image/*'
+                            },
+                            onBeforeOpen: () => {
+                                $(".swal2-file").change(function () {
+                                    var reader = new FileReader();
+                                    reader.readAsDataURL(this.files[0]);
+                                });
+                            },
+                            inputValidator: (value) => {
+                                return !value && 'Debes seleccionar un archivo'
+                            }
+                        }).then((file) => {
+                            if (file.value) {
+                                var formData = new FormData();
+                                var file = $('.swal2-file')[0].files[0];
+                                formData.append("fileToUpload", file);
+                                formData.append("Numero",id);
+                                formData.append("Prop",idProp);
+                                formData.append("Usuario",Username);
+                                $.ajax({
+                                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                                    method: 'post',
+                                    url: '/Upload3DReq',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (resp) {
+                                        Swal.fire('Subidos', 'Archivo subido con exito!', 'success');
+                                    },
+                                    error: function() {
+                                        Swal.fire({ type: 'error', title: 'Oops...', text: 'Something went wrong!' })
+                                    }
+                                })
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
 
                 });
 
-                $('body').on('click','.Crear3D', function() {
-                    var idProp = $(this).attr('id');
-                    Swal.fire({
-                        title: '3D',
-                        text: 'Por favor, seleccione un archivo 3D para esta propuesta',
-                        icon: 'info',
-                        confirmButtonText: 'Subir',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        buttonsStyling: true,
-                        showCancelButton: true,
-                        input: 'file',
-                        inputAttributes: {
-                            accept: 'image/*'
-                        },
-                        onBeforeOpen: () => {
-                            $(".swal2-file").change(function () {
-                                var reader = new FileReader();
-                                reader.readAsDataURL(this.files[0]);
-                            });
-                        },
-                        inputValidator: (value) => {
-                            return !value && 'Debes seleccionar un archivo'
-                        }
-                    }).then((file) => {
-                        if (file.value) {
-                            var formData = new FormData();
-                            var file = $('.swal2-file')[0].files[0];
-                            formData.append("fileToUpload", file);
-                            formData.append("Numero",id);
-                            formData.append("Prop",idProp);
-                            formData.append("Usuario",Username);
-                            $.ajax({
-                                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                                method: 'post',
-                                url: '/Upload3DReq',
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: function (resp) {
-                                    Swal.fire('Subidos', 'Archivo subido con exito!', 'success');
-                                },
-                                error: function() {
-                                    Swal.fire({ type: 'error', title: 'Oops...', text: 'Something went wrong!' })
-                                }
-                            })
-                        }
-                    })
+                $('body').on('click','.UploadPlanoProp', function() {
+                    if(Roll == 'admin_evpiu' || Roll == 'plano' || Roll == 'super_diseño') {
+                        var idProp = Prop;
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Plano',
+                            text: 'Por favor, seleccione un plano para esta propuestas',
+                            confirmButtonText: 'Subir',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            buttonsStyling: true,
+                            showCancelButton: true,
+                            input: 'file',
+                            inputAttributes: {
+                                accept: 'image/*,application/pdf'
+                            },
+                            onBeforeOpen: () => {
+                                $(".swal2-file").change(function () {
+                                    var reader = new FileReader();
+                                    reader.readAsDataURL(this.files[0]);
+                                });
+                            },
+                            inputValidator: (value) => {
+                                return !value && 'Debes seleccionar un archivo'
+                            }
+                        }).then((file) => {
+                            if (file.value) {
+                                var formData = new FormData();
+                                var file = $('.swal2-file')[0].files[0];
+                                formData.append("fileToUpload", file);
+                                formData.append("Numero", id);
+                                formData.append("Prop", idProp);
+                                formData.append("Usuario", Username);
+                                $.ajax({
+                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                    method: 'post',
+                                    url: '/UploadPlanoReq',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (resp) {
+                                        Swal.fire('Subidos', 'Archivo subido con exito!', 'success');
+                                    },
+                                    error: function () {
+                                        Swal.fire({type: 'error', title: 'Oops...', text: 'Something went wrong!'})
+                                    }
+                                })
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
                 });
 
-                $('body').on('click','.CrearPlano', function() {
-                    var idProp = $(this).attr('id');
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Plano',
-                        text: 'Por favor, seleccione un plano para esta propuestas',
-                        confirmButtonText: 'Subir',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        buttonsStyling: true,
-                        showCancelButton: true,
-                        input: 'file',
-                        inputAttributes: {
-                            accept: 'image/*,application/pdf'
-                        },
-                        onBeforeOpen: () => {
-                            $(".swal2-file").change(function () {
-                                var reader = new FileReader();
-                                reader.readAsDataURL(this.files[0]);
-                            });
-                        },
-                        inputValidator: (value) => {
-                            return !value && 'Debes seleccionar un archivo'
-                        }
-                    }).then((file) => {
-                        if (file.value) {
-                            var formData = new FormData();
-                            var file = $('.swal2-file')[0].files[0];
-                            formData.append("fileToUpload", file);
-                            formData.append("Numero",id);
-                            formData.append("Prop",idProp);
-                            formData.append("Usuario",Username);
-                            console.log(formData);
-                            $.ajax({
-                                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                                method: 'post',
-                                url: '/UploadPlanoReq',
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: function (resp) {
-                                    Swal.fire('Subidos', 'Archivo subido con exito!', 'success');
-                                },
-                                error: function() {
-                                    Swal.fire({ type: 'error', title: 'Oops...', text: 'Something went wrong!' })
-                                }
-                            })
-                        }
-                    })
-                });
-
-                $('body').on('click','.Crear2D', function () {
-                    var idProp = $(this).attr('id');
-                    Swal.fire({
-                        icon: 'info',
-                        title: '2D',
-                        text: 'Por favor, seleccione un archivo 2D para esta propuestas',
-                        confirmButtonText: 'Subir',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        buttonsStyling: true,
-                        showCancelButton: true,
-                        input: 'file',
-                        inputAttributes: {
-                            accept: 'image/*'
-                        },
-                        onBeforeOpen: () => {
-                            $(".swal2-file").change(function () {
-                                var reader = new FileReader();
-                                reader.readAsDataURL(this.files[0]);
-                            });
-                        },
-                        inputValidator: (value) => {
-                            return !value && 'Debes seleccionar un archivo'
-                        }
-                    }).then((file) => {
-                        if (file.value) {
-                            var formData = new FormData();
-                            var file = $('.swal2-file')[0].files[0];
-                            formData.append("fileToUpload", file);
-                            formData.append("Numero",id);
-                            formData.append("Prop", idProp);
-                            formData.append("Usuario",Username);
-                            $.ajax({
-                                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                                method: 'post',
-                                url: '/Upload2DReq',
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: function (resp) {
-                                    Swal.fire('Subido', 'Archivo subido con exito!', 'success');
-                                },
-                                error: function() {
-                                    Swal.fire({ type: 'error', title: 'Oops...', text: 'Something went wrong!' })
-                                }
-                            })
-                        }
-                    })
+                $('body').on('click','.Upload2DProp', function () {
+                	if(Roll == 'admin_evpiu' || Roll == 'diseñador' && Username == $('#Diseñador').html() || Roll == 'super_diseño'){
+                        var idProp = Prop;
+                        Swal.fire({
+                            icon: 'info',
+                            title: '2D',
+                            text: 'Por favor, seleccione un archivo 2D para esta propuestas',
+                            confirmButtonText: 'Subir',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            buttonsStyling: true,
+                            showCancelButton: true,
+                            input: 'file',
+                            inputAttributes: {
+                                accept: 'image/*'
+                            },
+                            onBeforeOpen: () => {
+                                $(".swal2-file").change(function () {
+                                    var reader = new FileReader();
+                                    reader.readAsDataURL(this.files[0]);
+                                });
+                            },
+                            inputValidator: (value) => {
+                                return !value && 'Debes seleccionar un archivo'
+                            }
+                        }).then((file) => {
+                            if (file.value) {
+                                var formData = new FormData();
+                                var file = $('.swal2-file')[0].files[0];
+                                formData.append("fileToUpload", file);
+                                formData.append("Numero",id);
+                                formData.append("Prop", idProp);
+                                formData.append("Usuario",Username);
+                                $.ajax({
+                                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                                    method: 'post',
+                                    url: '/Upload2DReq',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (resp) {
+                                        Swal.fire('Subido', 'Archivo subido con exito!', 'success');
+                                    },
+                                    error: function() {
+                                        Swal.fire({ type: 'error', title: 'Oops...', text: 'Something went wrong!' })
+                                    }
+                                })
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
                 });
 
                 $('body').on('click','.SubirArchiv', function () {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Soportes',
-                        text: 'Por favor, seleccione los archivos de soporte para este requerimiento',
-                        confirmButtonText: 'Subir',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        buttonsStyling: true,
-                        showCancelButton: true,
-                        input: 'file',
-                        inputAttributes: {
-                        	multiple: 'multiple',
-                            accept: 'image/*,application/pdf,application/msword'
-                        },
-                        onBeforeOpen: () => {
-                            $(".swal2-file").change(function () {
-                                var reader = new FileReader();
-                            });
-                        },
-                        inputValidator: (value) => {
-                            return !value && 'Debes seleccionar al menos un archivo'
-                        }
-                    }).then((file) => {
-                        if (file.value) {
-                            var formData = new FormData();
-                            var ins = $('.swal2-file')[0].files.length;
-                            var file = $('.swal2-file')[0].files;
-
-
-                            /*este foreaach es necesario para la subida de archivos multiples*/
-                            for (var x = 0; x < ins; x++) {
-                                formData.append("fileToUpload[]",file[x]);
+                    if(Roll == 'super_diseño' || Roll == 'admin_evpiu' || Roll == 'vendedor' && Username == $('#Vendedor').html()){
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Soportes',
+                            text: 'Por favor, seleccione los archivos de soporte para este requerimiento',
+                            confirmButtonText: 'Subir',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            buttonsStyling: true,
+                            showCancelButton: true,
+                            input: 'file',
+                            inputAttributes: {
+                                multiple: 'multiple',
+                                accept: 'image/*,application/pdf,application/msword'
+                            },
+                            onBeforeOpen: () => {
+                                $(".swal2-file").change(function () {
+                                    var reader = new FileReader();
+                                });
+                            },
+                            inputValidator: (value) => {
+                                return !value && 'Debes seleccionar al menos un archivo'
                             }
-                            formData.append("Numero",id);
-                            formData.append("Usuario",Username);
+                        }).then((file) => {
+                            if (file.value) {
+                                var formData = new FormData();
+                                var ins = $('.swal2-file')[0].files.length;
+                                var file = $('.swal2-file')[0].files;
 
-                         /*   console.log($('.swal2-file')[0].files);
-                            formData.append("fileToUpload", file);
-                            */
-                            $.ajax({
-                                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                                method: 'post',
-                                url: '/UploadfilesSupport',
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: function (resp) {
-                                    $('#ArchivosDeSoporte').html('');
-                                    ObtenerArchivosRequerimiento();
-                                    Swal.fire('Subido', 'Archivo subido con exito!', 'success');
-                                },
-                                error: function() {
-                                    Swal.fire({ type: 'error', title: 'Oops...', text: 'Something went wrong!' })
+                                /*este for es necesario para la subida de archivos multiples*/
+                                for (var x = 0; x < ins; x++) {
+                                    formData.append("fileToUpload[]", file[x]);
                                 }
-                            })
-                        }
-                    })
+                                formData.append("Numero", id);
+                                formData.append("Usuario", Username);
+
+                                $.ajax({
+                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                    method: 'post',
+                                    url: '/UploadfilesSupport',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (resp) {
+                                        $('#ArchivosDeSoporte').html('');
+                                        ObtenerArchivosRequerimiento();
+                                        Swal.fire('Subido', 'Archivo subido con exito!', 'success');
+                                    },
+                                    error: function () {
+                                        Swal.fire({type: 'error', title: 'Oops...', text: 'Something went wrong!'})
+                                    }
+                                })
+                            }
+                        })
+                    }else {
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
                 });
 
                 function ObtenerArchivosRequerimiento() {
@@ -1114,7 +1229,6 @@
                         	id: id
                         },
                         success: function (data) {
-                        	console.log(Vendedor);
                         	var Array = data;
                         	var i = 0;
                         	if(data[i] == null){
@@ -1136,6 +1250,7 @@
                                     })
                                 }
                             }
+                            sweetAlert.close();
                         }
                     })
                 }
@@ -1146,8 +1261,6 @@
                 	if(file.substr(-3) == 'png' || file.substr(-3) == 'jpg' || file.substr(-3) == 'gif'){
                         Swal.fire({
                             imageUrl: '../../requerimientos/'+'RQ-'+id+'/soportes/'+file,
-                            /*imageHeight: 300,
-                            imageWidth: 500,*/
                             imageAlt: 'A tall image',
                             confirmButtonText: 'Cerrar',
                             cancelButtonText: 'Cancelar',
@@ -1161,12 +1274,11 @@
                         PDFObject.embed('../../requerimientos/'+'RQ-'+id+'/soportes/'+file, '#ViewArtPdf');
                         $('#ViewArtModal').modal('show');
                     }
-
-
                 });
 
+                var Prop;
                 $('body').on('click','.VerPropuest', function () {
-                    var Prop = $(this).attr('id');
+                    Prop = $(this).attr('id');
                 	$.ajax({
                         url: '/DatosPropuestaPDF',
                         type: 'get',
@@ -1175,7 +1287,6 @@
                             Prop: Prop
                         },
                         success: function (data) {
-                        	console.log(data);
                             $('#PDFnumeroreq').html(id);
                             $('#PDFnumeroprop').html(Prop);
                             $('#PDFarticulo').html(data.propuesta[0].articulo);
@@ -1184,7 +1295,6 @@
                             $('#PDFvendedor').html(data.vendedor_id[0].name);
                             $('#PDFdiseñador').html(data.diseñador_id[0].name);
                             $('#PDFfecha').html(data.encabezado[0].created_at);
-
                             var i = 0;
                             $(data.archivos).each(function () {
                                 if(data.archivos[i].tipo == '2D'){
@@ -1196,17 +1306,17 @@
                                 if(data.archivos[i].tipo == 'plano' && data.archivos[i].archivo.substr(-3) == 'png'){
                                     $('#PDFplano').append('<img src="../../'+ data.archivos[i].url + data.archivos[i].archivo + '" style="height: 240px; width: 331px">')
                                 }
-
+                                if(data.archivos[i].tipo == 'plano' && data.archivos[i].archivo.substr(-3) == 'pdf') {
+                                    $('#PDFplano').append('<a href="javascript:void(0)" id="'+data.archivos[i].archivo+'" class="VerPlanoPdfMod" ><i class="far fa-file-pdf fa-10x"></i><br><b><label for="">Clic para ver</label></b></a>');
+                                }
                                i++;
                             })
                         }
                     });
-
                     $('#PdfView').modal({
                         backdrop: 'static',
                         keyboard: false,
                     });
-
                 });
 
                 loadtable();
@@ -1286,8 +1396,135 @@
                     })
                 });
 
+                $('.AprobarProp').on('click',function () {
+                	if(Roll == 'admin_evpiu' || Roll == 'vendedor' && Username == $('#Vendedor').html()){
+                        Swal.fire({
+                            title: '¿Aprobar esta propuesta?',
+                            text: "¡Revise toda la informacion antes de Continuar..!",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Si, aprobar!',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    type: "post",
+                                    url: "/AprobarPropuesta",
+                                    data: {
+                                        id, Username, Prop
+                                    },
+                                    success: function (data) {
+                                        Obtenerdatos();
+                                        Swal.fire({
+                                            title: 'Aprobado!',
+                                            text: 'La propuesta fue aprobada con exito!.',
+                                            icon: 'success',
+                                        });
+                                        table.draw();
+                                    },
+                                    error: function (data) {
+                                        Swal.fire(
+                                            'Error al aprobar!',
+                                            'Hubo un error al aprobar la propuesta.',
+                                            'error'
+                                        )
+                                    }
+                                });
+                            }else {
+                                result.dismiss === Swal.DismissReason.cancel
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
 
+                $('.RechazarProp').on('click', function () {
+                	if(Roll == 'admin_evpiu' || Roll == 'vendedor' && Username == $('#Vendedor').html()){
+                        Swal.fire({
+                            title: '¿Rechazar esta propuesta?',
+                            text: "¡Revise toda la informacion antes de Continuar..!",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Si, rechazar!',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    type: "post",
+                                    url: "/RechazarPropuesta",
+                                    data: {
+                                        id, Username, Prop
+                                    },
+                                    success: function (data) {
+                                        Obtenerdatos();
+                                        Swal.fire({
+                                            title: 'Rechazado!',
+                                            text: 'La propuesta fue rechazada!.',
+                                            icon: 'success',
+                                        });
+                                        table.draw();
+                                    },
+                                    error: function (data) {
+                                        Swal.fire(
+                                            'Error!',
+                                            'Hubo un error al rechazar la propuesta.',
+                                            'error'
+                                        )
+                                    }
+                                });
+                            }else {
+                                result.dismiss === Swal.DismissReason.cancel
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
 
+                $('body').on('click','.VerPlanoPdfMod',function () {
+                    $('#PdfView').modal('hide');
+                    var file = $(this).attr('id');
+                    $('#ViewArtTitle').html('Ver PDF');
+                    PDFObject.embed('../../requerimientos/'+'RQ-'+id+'/propuestas/PP-'+Prop+'/Plano/'+file, '#ViewArtPdf');
+                    $('#ViewArtModal').modal('show');
+                });
+
+                $('#PdfView').on('hide.bs.modal', function () {
+                    $('#PDFnumeroreq').html('');
+                    $('#PDFnumeroprop').html('');
+                    $('#PDFarticulo').html('');
+                    $('#PDFrelieve').html('');
+                    $('#PDFmarca').html('');
+                    $('#PDFvendedor').html('');
+                    $('#PDFdiseñador').html('');
+                    $('#PDFfecha').html('');
+                    $('#PDFdibujo2d').html('');
+                    $('#PDFdibujo3d').html('');
+                    $('#PDFplano').html('');
+                })
             });
         </script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
