@@ -512,14 +512,17 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
 
-               $objetoXML->startElement("correoscopia");
+               if($enc->correoscopia != null){
+                   $objetoXML->startElement("correoscopia");
 
-               foreach (explode(";",$enc->correoscopia) as $Arraycc){
-                   $objetoXML->startElement("correocopia");
-                   $objetoXML->text($Arraycc);
+                   foreach (explode(";",$enc->correoscopia) as $Arraycc){
+                       $objetoXML->startElement("correocopia");
+                       $objetoXML->text($Arraycc);
+                       $objetoXML->endElement();
+                   }
                    $objetoXML->endElement();
                }
-               $objetoXML->endElement();
+
 
                $objetoXML->startElement("items");
 
