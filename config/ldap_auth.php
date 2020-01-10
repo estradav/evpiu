@@ -1,6 +1,5 @@
 <?php
 
-use http\Client\Curl\User;
 
 return [
 
@@ -50,7 +49,8 @@ return [
         'username' => 'sAMAccountName',
         'name' => 'cn',
         'email' => 'mail',
-        'app_roll'  => 'title'
+        'app_roll'  => 'title',
+        'codvendedor' => 'initials'
     ],
 
     /*

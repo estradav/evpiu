@@ -148,7 +148,7 @@
         </style>
     @else
         <div class="alert alert-danger" role="alert">
-            No tienes permisos para visualizar los indicadores.
+            No tienes permisos para visualizar requerimientos.
         </div>
     @endcan
 
