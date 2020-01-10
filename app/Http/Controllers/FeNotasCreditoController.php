@@ -16,28 +16,46 @@ class FeNotasCreditoController extends Controller
         if (request()->ajax()) {
             if (!empty($request->from_date)) {
                 $data = DB::connection('MAX')
-                    ->table('CIEV_V_FacturasTotalizadas')
-                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
-                    ->select('CIEV_V_FacturasTotalizadas.numero as id','CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
-                        'CIEV_V_FacturasTotalizadas.fecha', 'CIEV_V_FacturasTotalizadas.razonsocial as razon_social','CIEV_V_FE.emailentrega as email',
-                        'CIEV_V_FacturasTotalizadas.bruto', 'CIEV_V_FacturasTotalizadas.descuento as desc', 'CIEV_V_FacturasTotalizadas.iva as valor_iva',
-                        'CIEV_V_FacturasTotalizadas.nomvendedor as vendedor', 'CIEV_V_FacturasTotalizadas.OC as OC', 'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                        'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.codigo_alterno as cod_alter')
+                    ->table('CIEV_V_FE_FacturasTotalizadas')
+                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FE_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
+                    ->select('CIEV_V_FE_FacturasTotalizadas.numero as id',
+                        'CIEV_V_FE_FacturasTotalizadas.identificacion as nit_cliente',
+                        'CIEV_V_FE_FacturasTotalizadas.fecha',
+                        'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social',
+                        'CIEV_V_FE.emailentrega as email',
+                        'CIEV_V_FE_FacturasTotalizadas.bruto',
+                        'CIEV_V_FE_FacturasTotalizadas.descuento as desc',
+                        'CIEV_V_FE_FacturasTotalizadas.iva as valor_iva',
+                        'CIEV_V_FE_FacturasTotalizadas.nomvendedor as vendedor',
+                        'CIEV_V_FE_FacturasTotalizadas.OC as OC',
+                        'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo',
+                        'CIEV_V_FE_FacturasTotalizadas.motivo',
+                        'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente',
+                        'CIEV_V_FE.codigo_alterno as cod_alter')
                     ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CR')
                     ->whereBetween('fecha', array($request->from_date, $request->to_date))
                     ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')
                     ->get();
             }else {
                 $data = DB::connection('MAX')
-                    ->table('CIEV_V_FacturasTotalizadas')
-                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
-                    ->select('CIEV_V_FacturasTotalizadas.numero as id','CIEV_V_FacturasTotalizadas.identificacion as nit_cliente',
-                        'CIEV_V_FacturasTotalizadas.fecha', 'CIEV_V_FacturasTotalizadas.razonsocial as razon_social','CIEV_V_FE.emailentrega as email',
-                        'CIEV_V_FacturasTotalizadas.bruto', 'CIEV_V_FacturasTotalizadas.descuento as desc', 'CIEV_V_FacturasTotalizadas.iva as valor_iva',
-                        'CIEV_V_FacturasTotalizadas.nomvendedor as vendedor', 'CIEV_V_FacturasTotalizadas.OC', 'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                        'CIEV_V_FacturasTotalizadas.motivo', 'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.codigo_alterno as cod_alter')
-                    ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CR')
-                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')
+                    ->table('CIEV_V_FE_FacturasTotalizadas')
+                    ->leftJoin('CIEV_V_FE', 'CIEV_V_FE_FacturasTotalizadas.numero', '=', 'CIEV_V_FE.numero')
+                    ->select('CIEV_V_FE_FacturasTotalizadas.numero as id',
+                        'CIEV_V_FE_FacturasTotalizadas.identificacion as nit_cliente',
+                        'CIEV_V_FE_FacturasTotalizadas.fecha',
+                        'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social',
+                        'CIEV_V_FE.emailentrega as email',
+                        'CIEV_V_FE_FacturasTotalizadas.bruto',
+                        'CIEV_V_FE_FacturasTotalizadas.descuento as desc',
+                        'CIEV_V_FE_FacturasTotalizadas.iva as valor_iva',
+                        'CIEV_V_FE_FacturasTotalizadas.nomvendedor as vendedor',
+                        'CIEV_V_FE_FacturasTotalizadas.OC',
+                        'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo',
+                        'CIEV_V_FE_FacturasTotalizadas.motivo',
+                        'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente',
+                        'CIEV_V_FE.codigo_alterno as cod_alter')
+                    ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc','=','CR')
+                    ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')
                     ->take(50)
                     ->get();
             }
@@ -75,21 +93,55 @@ class FeNotasCreditoController extends Controller
             $num = $nc->numero;
 
             $EncabezadoNc = DB::connection('MAX')->table('CIEV_V_FE')
-                ->leftJoin('CIEV_V_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FacturasTotalizadas.numero')
-                ->select('CIEV_V_FE.numero','CIEV_V_FE.notas','CIEV_V_FE.identificacion as nit_cliente','CIEV_V_FE.apellidos','CIEV_V_FE.emailcontacto',
-                    'CIEV_V_FE.direccion','CIEV_V_FE.emailentrega','CIEV_V_FE.digito_verificador','CIEV_V_FE.telefono','CIEV_V_FE.notas','CIEV_V_FE.coddpto',
-                    'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FE.codigocliente','CIEV_V_FE.fechadocumento','CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                    'CIEV_V_FacturasTotalizadas.bruto','CIEV_V_FacturasTotalizadas.descuento','CIEV_V_FacturasTotalizadas.subtotal', 'CIEV_V_FacturasTotalizadas.iva',
-                    'CIEV_V_FacturasTotalizadas.fletes','CIEV_V_FacturasTotalizadas.seguros','CIEV_V_FacturasTotalizadas.moneda','CIEV_V_FacturasTotalizadas.OC','CIEV_V_FE.codciudad',
-                    'CIEV_V_FacturasTotalizadas.dias','CIEV_V_FacturasTotalizadas.motivo','CIEV_V_FacturasTotalizadas.descplazo as plazo','CIEV_V_FacturasTotalizadas.descmotivo',
-                    'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente','CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento')
+                ->leftJoin('CIEV_V_FE_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FE_FacturasTotalizadas.numero')
+                ->select('CIEV_V_FE.numero',
+                    'CIEV_V_FE.notas',
+                    'CIEV_V_FE.identificacion as nit_cliente',
+                    'CIEV_V_FE.apellidos',
+                    'CIEV_V_FE.emailcontacto',
+                    'CIEV_V_FE.direccion',
+                    'CIEV_V_FE.emailentrega',
+                    'CIEV_V_FE.digito_verificador',
+                    'CIEV_V_FE.telefono',
+                    'CIEV_V_FE.notas',
+                    'CIEV_V_FE.coddpto',
+                    'CIEV_V_FE.codigocliente',
+                    'CIEV_V_FE.fechadocumento',
+                    'CIEV_V_FE.codciudad',
+                    'CIEV_V_FE.nombres',
+                    'CIEV_V_FE.fechavencimiento',
+                    'CIEV_V_FE_FacturasTotalizadas.bruto',
+                    'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social',
+                    'CIEV_V_FE_FacturasTotalizadas.bruto',
+                    'CIEV_V_FE_FacturasTotalizadas.descuento',
+                    'CIEV_V_FE_FacturasTotalizadas.subtotal',
+                    'CIEV_V_FE_FacturasTotalizadas.iva',
+                    'CIEV_V_FE_FacturasTotalizadas.fletes',
+                    'CIEV_V_FE_FacturasTotalizadas.seguros',
+                    'CIEV_V_FE_FacturasTotalizadas.moneda',
+                    'CIEV_V_FE_FacturasTotalizadas.OC',
+                    'CIEV_V_FE_FacturasTotalizadas.dias',
+                    'CIEV_V_FE_FacturasTotalizadas.motivo',
+                    'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo',
+                    'CIEV_V_FE_FacturasTotalizadas.descmotivo',
+                    'CIEV_V_FE_FacturasTotalizadas.correoscopia',
+                    'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente')
                 ->where('CIEV_V_FE.numero', '=', $num)->take(1)->get();
 
             // esta consulta muestra el detalle de los items de cada factura
             $DetalleNc = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
-                ->select('CIEV_V_FacturasDetalladas.factura','CIEV_V_FacturasDetalladas.codigoproducto','CIEV_V_FacturasDetalladas.descripcionproducto',
-                    'CIEV_V_FacturasDetalladas.OC','CIEV_V_FacturasDetalladas.item','CIEV_V_FacturasDetalladas.cantidad','CIEV_V_FacturasDetalladas.precio','CIEV_V_FacturasDetalladas.UM',
-                    'CIEV_V_FacturasDetalladas.totalitem','CIEV_V_FacturasDetalladas.iva as iva_item','CIEV_V_FacturasDetalladas.valormercancia','CIEV_V_FacturasDetalladas.descuento')
+                ->select('CIEV_V_FacturasDetalladas.factura',
+                    'CIEV_V_FacturasDetalladas.codigoproducto',
+                    'CIEV_V_FacturasDetalladas.descripcionproducto',
+                    'CIEV_V_FacturasDetalladas.OC',
+                    'CIEV_V_FacturasDetalladas.item',
+                    'CIEV_V_FacturasDetalladas.cantidad',
+                    'CIEV_V_FacturasDetalladas.precio',
+                    'CIEV_V_FacturasDetalladas.UM',
+                    'CIEV_V_FacturasDetalladas.totalitem',
+                    'CIEV_V_FacturasDetalladas.iva as iva_item',
+                    'CIEV_V_FacturasDetalladas.valormercancia',
+                    'CIEV_V_FacturasDetalladas.descuento')
                 ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
 
             $Config = DB::table('fe_configs')->take(1)->get();

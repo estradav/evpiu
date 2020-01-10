@@ -326,14 +326,21 @@ class RequerimientosController extends Controller
 
     public function GuardarPropuestaReq(Request $request)
     {
-        DB::table('propuestas_requerimientos')->insertGetId([
+        $Dis_id = DB::table('encabezado_requerimientos')->where('id','=',$request->id)->select('diseñador_id')->get();
+        DB::table('propuestas_requerimientos')->insert([
             'idRequerimiento'   =>  $request->id,
             'articulo'          =>  $request->result['value'][0]['Articulo'],
             'relieve'           =>  $request->result['value'][0]['Relieve'],
             'usuario'           =>  $request->Username,
+            'diseñador_id'      =>  $Dis_id[0]->diseñador_id,
             'estado'            =>  '1',
             'created_at'        =>  Carbon::now(),
             'updated_at'        =>  Carbon::now()
+        ]);
+
+
+        DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
+            'estado'        => '4'
         ]);
 
         DB::table('transacciones_requerimientos')->insert([
@@ -344,16 +351,21 @@ class RequerimientosController extends Controller
             'created_at'    =>  Carbon::now(),
             'updated_at'    =>  Carbon::now()
         ]);
-        $mail_vendedor =  DB::table('users')->where('name','=',$request->Nombre_vendedor)->select('name','email')->get();
+        /*$mail_vendedor =  DB::table('users')->where('name','=',$request->Nombre_vendedor)->select('name','email')->get();
 
-        $subject = "SE HA CREADO UNA NUEVA PROPUESTA";
-        $for = $mail_vendedor[0]->email;
-        Mail::send('mails.NewRequerimentMail',$request->all(), function($msj) use($subject,$for){
-            $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
-            $msj->subject($subject);
-            $msj->to($for);
-            $msj->cc("dcorrea@estradavelasquez.com");
-        });
+        if ($mail_vendedor != null){
+            $subject = "SE HA CREADO UNA NUEVA PROPUESTA";
+            $for = $mail_vendedor[0]->email;
+            Mail::send('mails.NewRequerimentMail',$request->all(), function($msj) use($subject,$for){
+                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->subject($subject);
+                $msj->to($for);
+                $msj->cc("dcorrea@estradavelasquez.com");
+            });
+        }else{
+            return true;
+        }*/
+
     }
 
     public function ListaPropuestaReq(Request $request)

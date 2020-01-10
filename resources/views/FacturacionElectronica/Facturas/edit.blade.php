@@ -208,6 +208,26 @@
                 </p>
             </div>
         </div>
+    <style>
+        .preloader {
+            width: 140px;
+            height: 140px;
+            border: 20px solid #eee;
+            border-top: 20px solid #008000;
+            border-radius: 50%;
+            animation-name: girar;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+        @keyframes girar {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para editar facturas.
@@ -217,7 +237,20 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
+                preload();
+                function preload() {
+                    Swal.fire({
+                        icon: false,
+                        title: 'Cargando informacion, un momento por favor...',
+                        html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+                }
                 var Numero_factura = @json( $var );
+                console.log(Numero_factura);
                 function ObtenerDatos() {
                	    $.ajax({
                         url: "/DatosxFactura",
@@ -226,7 +259,8 @@
                         	numero: Numero_factura
                         },
                         success: function (data) {
-                        	var ciudad_est_pais = data['encabezado'][0]['Ciudad'].trim() + '-'+ data['encabezado'][0]['Dpto'].trim() + '-' + data['encabezado'][0]['Pais'].trim();
+                        	console.log(data);
+                        	var ciudad_est_pais = data['encabezado'][0]['ciudad'].trim() + '-'+ data['encabezado'][0]['dpto'].trim() + '-' + data['encabezado'][0]['pais'].trim();
                         	console.log(data['encabezado']);
                             $('#razon_social').val(data['encabezado'][0]['nombres'].trim());
                             $('#direccion').val(data['encabezado'][0]['direccion'].trim());
@@ -272,6 +306,15 @@
                                 n++;
                             });
                             Calcular_Valores();
+                            sweetAlert.close();
+                        },
+                        error: function (data) {
+                            sweetAlert.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Hubo un error en el cargue de la factura..!',
+                            });
                         }
                     })
                 }
@@ -292,6 +335,14 @@
                                 $('#condicion_pago').append('<option value="'+ data[i].DAYS_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
                                 i++
                             });
+                        },
+                        error: function (data) {
+                            sweetAlert.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Hubo un error en el cargue de la factura..!',
+                            });
                         }
                     })
                 }
@@ -306,6 +357,14 @@
                             $(data).each(function (){
                                 $('#motivo').append('<option value="'+ data[i].CODE_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
                                 i++
+                            });
+                        },
+                        error: function (data) {
+                            sweetAlert.close();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Hubo un error en el cargue de la factura..!',
                             });
                         }
                     })

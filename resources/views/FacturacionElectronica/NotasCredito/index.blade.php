@@ -80,6 +80,26 @@
         tr.details td.details-control {
             background: url('/img/x.png') no-repeat center center;
         }
+
+        .preloader {
+            width: 140px;
+            height: 140px;
+            border: 20px solid #eee;
+            border-top: 20px solid #008000;
+            border-radius: 50%;
+            animation-name: girar;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes girar {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 @else
     <div class="alert alert-danger" role="alert">
@@ -335,21 +355,15 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    toastr.info('Un momento por favor...', 'Generando XML.', {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "10000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
+
+                    Swal.fire({
+                        icon: false,
+                        title: 'Generando XML un momento por favor...',
+                        html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
                     });
 
                     $.ajax({
@@ -358,8 +372,14 @@
                         dataType: 'json', // importante para que
                         data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
                         url: 'nc/xml',
-                        success: function (data) {
-                            toastr.success("El Archivo XML se ha generado con Exito!.");
+                        success: function () {
+                            sweetAlert.close();
+                            Swal.fire({
+                                title: 'Terminado!',
+                                html: 'XML generado con exito!.',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar',
+                            });
                             // preventDefault();  //stop the browser from following
                             var req = new XMLHttpRequest();
                             req.open("GET", "XML/NotasCredito.xml", true);
@@ -376,10 +396,21 @@
                                 link.click();
                             };
                             req.send();
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Hubo un error al generar el XML..!',
+                            });
                         }
                     });
                 } else
-                    toastr.error("Debes seleccionar al menos una Factura.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Debes seleccionar al menos una nota credito...!',
+                    });
                 return false;
             });
 
@@ -404,27 +435,27 @@
                 resultado = [];
 
                 if ( d.fecha == null ) {
-                    resultado.push('<label class="alert-danger">La factura no tiene fecha</label> <br>');
+                    resultado.push('<label class="alert-danger">La nota credito no tiene fecha</label> <br>');
                     count = 1;
                 }
 
                 if (d.plazo == null) {
-                    resultado.push('<label class="alert-danger">La factura no tiene plazo</label> <br>');
+                    resultado.push('<label class="alert-danger">La nota credito no tiene plazo</label> <br>');
                     count = 1;
                 }
 
                 if (d.razon_social == null) {
-                    resultado.push('<label class="alert-danger">La factura no tiene razon social</label> <br>');
+                    resultado.push('<label class="alert-danger">La nota credito no tiene razon social</label> <br>');
                     count = 1;
                 }
 
                 if (d.tipo_cliente == null) {
-                    resultado.push('<label class="alert-danger">La factura no tiene tipo de cliente</label> <br>');
+                    resultado.push('<label class="alert-danger">La nota credito no tiene tipo de cliente</label> <br>');
                     count = 1;
                 }
 
                 if (d.vendedor == null) {
-                    resultado.push('<label class="alert-danger">La factura no tiene vendedor</label> <br>');
+                    resultado.push('<label class="alert-danger">La nota credito no tiene vendedor</label> <br>');
                     count = 1;
                 }
 
@@ -439,7 +470,7 @@
                 }
 
                 if (d.email == null) {
-                    resultado.push('<label class="alert-danger">El cliene no tiene email para el envio de facturas</label> <br> ');
+                    resultado.push('<label class="alert-danger">El cliene no tiene email para el envio de nota credito</label> <br> ');
                     count = 1;
                 }
 
@@ -449,7 +480,7 @@
                 }
 
                 if (d.motivo == null) {
-                    resultado.push('<label class="alert-danger">la factura debe llevar motivo </label><br>');
+                    resultado.push('<label class="alert-danger">la nota credito debe llevar motivo </label><br>');
                     count = 1;
                 }
 
@@ -469,15 +500,15 @@
                 }
 
                 if (d.motivo == null) {
-                    resultado.push('<label class="alert-danger">la factura debe llevar motivo </label><br>');
+                    resultado.push('<label class="alert-danger">la nota credito debe llevar motivo </label><br>');
                     count = 1;
                 }
 
                 if (count == 0) {
-                    resultado = '<label class="alert-success">Factura OK</label><br>';
+                    resultado = '<label class="alert-success">Nota credito OK</label><br>';
                 }
 
-                return  'Detalle de Factura : '+d.id+' <br>'+ resultado ;
+                return  'Detalle de Nota credito : '+d.id+' <br>'+ resultado ;
             }
 
         });
@@ -491,5 +522,7 @@
     <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/js/dataTables.checkboxes.min.js"></script>
     <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 @endpush
 @stop
