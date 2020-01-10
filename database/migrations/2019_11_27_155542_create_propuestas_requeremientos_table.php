@@ -20,6 +20,7 @@ class CreatePropuestasRequeremientosTable extends Migration
             $table->string('relieve');
             $table->string('usuario');
             $table->string('estado');
+            $table->unsignedBigInteger('diseñador_id')->index()->nullable();
             $table->timestamps();
         });
         Schema::table('propuestas_requerimientos', function($table) {

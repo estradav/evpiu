@@ -215,7 +215,6 @@ $(document).ready(function () {
         }
     });
 
-    // On each draw, loop over the `detailRows` array and show any child rows
     table.on( 'draw', function () {
         $.each( detailRows, function ( i, id ) {
             $('#'+id+' td.details-control').trigger( 'click' );
@@ -232,7 +231,11 @@ $(document).ready(function () {
         }
         else
         {
-            toastr.error("Ambas fechas son requeridas para poder filtrar.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Ambas fechas son requeridas para poder filtrar..!',
+            });
         }
     });
 
@@ -271,7 +274,7 @@ $(document).ready(function () {
                 dataType: 'json', // importante para que
                 data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
                 url: '/fe/xml',
-                success: function ( data) {
+                success: function () {
                     sweetAlert.close();
                     Swal.fire({
                         title: 'Terminado!',
@@ -440,7 +443,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: false,
                 title: 'Enviando Facturas seleccionadas a traves de WebService, un momento por favor...',
-                html: '<img src="../img/carga.gif" alt="">',
+                html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
                 showConfirmButton: false,
                 showCancelButton: false,
                 allowOutsideClick: false,
@@ -482,6 +485,13 @@ $(document).ready(function () {
                         link.click();
                     };
                     req.send();*/
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Hubo un error al enviar los datos por WebService..!',
+                    });
                 }
             });
         } else

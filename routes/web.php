@@ -28,7 +28,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('login/locked', 'Auth\LoginController@locked')->middleware('auth')->name('login.locked');
 Route::post('login/locked', 'Auth\LoginController@unlock')->name('login.unlock');
 
-Route::middleware(['auth.lock'])->group(function() {
+Route::middleware(['auth'])->group(function() {
     // Dashboard
     Route::get('/home', 'HomeController@index')
         ->name('home')
@@ -218,7 +218,6 @@ Route::middleware(['auth.lock'])->group(function() {
     Route::get('/RequerimientosComentariosDetalles','RequerimientosController@RequerimientosComentariosDetalles');
 
 
-    Route::get('/vistatest','RequerimientosController@vistatest');
     Route::get('Requerimientoss/{Requerimientoss}/edit','RequerimientosController@VerRequerimiento');
     Route::post('/CambiarEstadoRequeEd','RequerimientosController@CambiarEstadoRequeEd');
     Route::get('/ObtenerDiseñadores','RequerimientosController@ObtenerDiseñadores');
@@ -243,6 +242,11 @@ Route::middleware(['auth.lock'])->group(function() {
     Route::post('/RechazarPropuesta','RequerimientosController@RechazarPropuesta');
     Route::post('/AprobarPropuesta','RequerimientosController@AprobarPropuesta');
 
+
+    Route::resource('requerimientos_dashboard','RequerimientosChartsController');
+    Route::get('/req_dash_requerimientosxdiseñador','RequerimientosChartsController@RequerimientosxDiseñador');
+    Route::get('/req_dash_Prop_x_Estado','RequerimientosChartsController@Est_Propuestas');
+    Route::get('/req_dash_All_Req','RequerimientosChartsController@All_req_est');
 
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/

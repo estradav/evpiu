@@ -324,7 +324,7 @@
                 $('body').on('click','.newcoment',function () {
                     var id = $(this).attr('id');
 
-                    if(Roll == 'diseñador' && Username == $('#Vendedor').html() || Roll == 'vendedor' && Username == $('#Diseñador').html() || Roll == 'super_diseño' || Roll == 'admin_evpiu'){
+                    if(Roll == 'diseñador' && Username == $('#Diseñador').html() || Roll == 'vendedor' && Username == $('#Vendedor').html() || Roll == 'super_diseño' || Roll == 'admin_evpiu'){
                         Swal.fire({
                             title: 'Enviar Comentarios',
                             html: '<label>Añade comentarios o informacion que pueda ser importante para este requerimiento</label>',
@@ -364,10 +364,11 @@
                                             title: 'Guardado!',
                                             text: 'Tu comentario fue enviado con exito!',
                                             confirmButtonText: 'Aceptar',
-                                        })
+                                        });
+                                        table.draw();
                                     }
                                 });
-                            } else {
+                            }else{
                                 result.dismiss === Swal.DismissReason.cancel
                             }
                         })
@@ -926,6 +927,7 @@
                                         $('.table').DataTable().destroy();
                                         loadtable();
                                         table.draw();
+                                        Obtenerdatos();
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Guardardo',
