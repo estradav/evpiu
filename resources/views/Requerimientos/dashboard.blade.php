@@ -10,7 +10,7 @@
 
 @section('content')
     @inject('Usuarios','App\Services\Usuarios')
-    @can('dashboard.view')
+    @can('dashboardreq.view')
         <br onload="preload()">
         <div class="form-group">
             <div class="input-group">
@@ -146,6 +146,10 @@
                 }
             }
         </style>
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tienes permisos para visualizar los indicadores.
+        </div>
     @endcan
 
     @push('javascript')
