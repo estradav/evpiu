@@ -241,12 +241,19 @@ Route::middleware(['auth'])->group(function() {
 
     Route::post('/RechazarPropuesta','RequerimientosController@RechazarPropuesta');
     Route::post('/AprobarPropuesta','RequerimientosController@AprobarPropuesta');
+    Route::get('/ValidarEstadoPropuestasFR','RequerimientosController@ValidarEstadoPropuestasFR');
 
 
     Route::resource('requerimientos_dashboard','RequerimientosChartsController');
     Route::get('/req_dash_requerimientosxdiseñador','RequerimientosChartsController@RequerimientosxDiseñador');
     Route::get('/req_dash_Prop_x_Estado','RequerimientosChartsController@Est_Propuestas');
     Route::get('/req_dash_All_Req','RequerimientosChartsController@All_req_est');
+
+
+    Route::post('/SaveMarca','RequerimientosController@SaveMarca');
+    Route::post('/UniqueMarca','RequerimientosController@UniqueMarca');
+    Route::get('/ComprobarRender','RequerimientosController@ComprobarRender');
+    Route::post('/EnviarRender','RequerimientosController@EnviarRender');
 
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/

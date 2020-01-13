@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <div class="card-header">
                         DETALLE REQUERIMIENTO
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <div class="card-header">
                         OPCIONES
@@ -98,15 +98,17 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="text-center col-12">
-                                <button class="btn btn-light anularreq" id="{{ $var }}">ANULAR REQUERIMIENTO</button>
+                                <button class="btn btn-light EnvRender" id="{{ $var }}">ENVIAR A RENDER </button>
                                 <button class="btn btn-light CambEstreq" id="{{ $var }}">CAMBIAR ESTADO</button>
+                                <button class="btn btn-light anularreq" id="{{ $var }}">ANULAR</button>
+                                <button class="btn btn-light FinalizarReq" id="{{ $var }}">FINALIZAR</button>
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="text-center col-12">
                                 <button class="btn btn-light SubirArchiv">SUBIR ARCHIVOS</button>
-                                <button class="btn btn-light CambiarDiseñador" id="{{ $var }}">ASIGNAR Ò CAMBIAR DISEÑADOR</button>
+                                <button class="btn btn-light CambiarDiseñador" id="{{ $var }}">ASIGNAR/CAMBIAR DISEÑADOR</button>
                             </div>
                         </div>
                     </div>
@@ -715,7 +717,7 @@
                                     '<option value="" selected>Seleccione...</option>' +
                                     '<option value="2">Por revisar</option>' +
                                     '<option value="3">Asignado</option>' +
-                                    '<option value="5">Cerrar</option>' +
+                                    '<option value="5">Finalizado</option>' +
                                     '<option value="6">Anulado diseño</option>' +
                                     '<option value="7">Sin aprobar</option>' +
                                     '</select>' +
@@ -1526,7 +1528,219 @@
                     $('#PDFdibujo2d').html('');
                     $('#PDFdibujo3d').html('');
                     $('#PDFplano').html('');
-                })
+                });
+
+                $('.FinalizarReq').on('click', function () {
+                    if(Roll == 'admin_evpiu' || Roll == 'vendedor' && Username == $('#Vendedor').html()){
+
+                    	$.ajax({
+                            type: "get",
+                            url: "/ValidarEstadoPropuestasFR",
+                            data: {
+                            	id: id
+                            },
+                            success: function (data) {
+                            	console.log(data.cant_prop);
+                                if(data.cant_prop == 0){
+                                    Swal.fire(
+                                        '¡Error!',
+                                        'No puedes finalizar un requerimiento que no tiene propuestas.',
+                                        'error'
+                                    )
+                                }
+                                else if(data.cant_prop_rec_apr != 0){
+                                    Swal.fire(
+                                        '¡Error!',
+                                        'Para poder finalizar este requerimiento todas las propuestas deben estar aprobadas o rechazadas.',
+                                        'error'
+                                    )
+                                }else{
+                                    Swal.fire({
+                                        title: '¿Finalizar este Requerimiento?',
+                                        text: "¡Revise toda la informacion antes de Continuar..!",
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Si, finalizar!',
+                                        cancelButtonText: 'Cancelar'
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            $.ajaxSetup({
+                                                headers: {
+                                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                }
+                                            });
+                                            $.ajax({
+                                                type: "post",
+                                                url: "/RechazarPropuesta",
+                                                data: {
+                                                    id, Username, Prop
+                                                },
+                                                success: function (data) {
+                                                    Obtenerdatos();
+                                                    Swal.fire({
+                                                        title: 'Finalizado!',
+                                                        text: 'El requerimiento fue finalizado!.',
+                                                        icon: 'success',
+                                                    });
+                                                    table.draw();
+                                                },
+                                                error: function (data) {
+                                                    Swal.fire(
+                                                        'Error!',
+                                                        'Hubo un error al rechazar la propuesta.',
+                                                        'error'
+                                                    )
+                                                }
+                                            });
+                                        }else {
+                                            result.dismiss === Swal.DismissReason.cancel
+                                        }
+                                    })
+                                }
+                            },
+                            error: function () {
+                                Swal.fire(
+                                    '¡Error!',
+                                    'Hubo un error, por favor ponte en contacto con un administrador.',
+                                    'error'
+                                )
+                            }
+                        });
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
+
+                $('.EnvRender').on('click', function () {
+                    $.ajax({
+                        type: 'get',
+                        url: '/ComprobarRender',
+                        data: {
+                        	id: id
+                        },
+                        success: function (data) {
+                            if(data[0].render == 1 && data[0].estado == 4){
+                                Swal.fire({
+                                    title: '¿Enviar a renderizar?',
+                                    text: "¡Este requerimiento sera enviado al area de renderizado..!",
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Si, enviar!',
+                                    cancelButtonText: 'Cancelar'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $.ajaxSetup({
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            }
+                                        });
+                                        $.ajax({
+                                            type: "post",
+                                            url: "/EnviarRender",
+                                            data: id,
+                                            success: function () {
+                                                Obtenerdatos();
+                                                Swal.fire({
+                                                    title: 'Enviado!',
+                                                    text: 'El requerimiento fue enviado a renderizar!.',
+                                                    icon: 'success',
+                                                });
+                                                table.draw();
+                                            },
+                                            error: function (data) {
+                                                Swal.fire(
+                                                    'Error!',
+                                                    'Hubo un error al enviar.',
+                                                    'error'
+                                                )
+                                            }
+                                        });
+                                    }else {
+                                        result.dismiss === Swal.DismissReason.cancel
+                                    }
+                                })
+                            }else if(data[0].render == 0 && data[0].estado == 4){
+                                Swal.fire({
+                                    title: '¿Esta seguro de enviar a renderizar?',
+                                    html: "El vendedor que creo este requerimiento no definio que debia llevar renderizado. <br>   ¿Esta seguro que desea continuar..?",
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Estoy seguro, enviar!',
+                                    cancelButtonText: 'Cancelar'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $.ajaxSetup({
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            }
+                                        });
+                                        $.ajax({
+                                            type: "post",
+                                            url: "/EnviarRender",
+                                            data: id,
+                                            success: function () {
+                                                Obtenerdatos();
+                                                Swal.fire({
+                                                    title: 'Enviado!',
+                                                    text: 'El requerimiento fue enviado a renderizar!.',
+                                                    icon: 'success',
+                                                });
+                                                table.draw();
+                                            },
+                                            error: function (data) {
+                                                Swal.fire(
+                                                    'Error!',
+                                                    'Hubo un error al enviar.',
+                                                    'error'
+                                                )
+                                            }
+                                        });
+                                    }else {
+                                        result.dismiss === Swal.DismissReason.cancel
+                                    }
+                                })
+                            }else{
+                                Swal.fire(
+                                    'Error!',
+                                    'No puedes enviar a renderizar un requerimiento si ya esta en estado "en render" o esta en un estado diferente a iniciado.',
+                                    'error'
+                                )
+                            }
+                        }
+                    })
+
+                });
+                ComprobarButtons();
+                function ComprobarButtons(){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        type: 'get',
+                        url: '/ComprobarRender',
+                        data: {
+                            id: id
+                        },
+                        success: function (data) {
+                        	console.log(data[0].estado);
+                            if(data[0].estado == 4){
+                                document.getElementsByClassName('.EnvRender').style.visibility = 'hidden';
+                            }
+                        }
+                    });
+                }
             });
         </script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>

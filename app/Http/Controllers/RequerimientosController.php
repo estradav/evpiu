@@ -19,7 +19,7 @@ class RequerimientosController extends Controller
                 $data = DB::table('encabezado_requerimientos')
                     ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.id')
                     ->select('users.name as diseñador_id','encabezado_requerimientos.id','encabezado_requerimientos.producto',
-                        'encabezado_requerimientos.informacion','encabezado_requerimientos.usuario','encabezado_requerimientos.estado',
+                        'encabezado_requerimientos.informacion','encabezado_requerimientos.usuario','encabezado_requerimientos.marca','encabezado_requerimientos.estado',
                         'encabezado_requerimientos.created_at','encabezado_requerimientos.updated_at')
                     ->where('estado', '=', $request->estado)
                     ->orderBy('estado', 'desc')
@@ -41,14 +41,14 @@ class RequerimientosController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('EVPIUM')->table('Marcas')
-            ->where('NombreMarca', 'LIKE', '%'.$query.'%')
+        $queries = DB::table('marcas')
+            ->where('name', 'LIKE', '%'.$query.'%')
             ->take(20)
             ->get();
 
         foreach ($queries as $q) {
             $results[] = [
-                'value' =>  trim($q->NombreMarca),
+                'value' =>  trim($q->name),
             ];
         }
         return response()->json($results);
@@ -632,5 +632,58 @@ class RequerimientosController extends Controller
             'created_at'    =>  Carbon::now(),
             'updated_at'    =>  Carbon::now()
         ]);
+    }
+
+    public function ValidarEstadoPropuestasFR(Request $request)
+    {
+        $count = DB::table('propuestas_requerimientos')
+            ->where('idRequerimiento','=',$request->id)
+            ->get()->count();
+
+        $var = DB::table('propuestas_requerimientos')
+            ->where('idRequerimiento','=',$request->id)
+            ->where('estado','<>','3')
+            ->where('estado','<>', '4')
+            ->get()->count();
+
+        return response()->json(['cant_prop' => $count, 'cant_prop_rec_apr' => $var]);
+    }
+
+    public function SaveMarca(Request $request)
+    {
+        DB::table('marcas')->insert([
+           'name'           => $request->name,
+           'comments'       => $request->comment,
+           'type'           => $request->type,
+           'created_by'     => $request->createdby,
+            'created_at'    => Carbon::now(),
+           'updated_at'     => Carbon::now(),
+        ]);
+        return response()->json(true);
+    }
+
+    public function UniqueMarca(Request $request)
+    {
+        $UniqueCod = DB::table('marcas')->where('name','=',$request->NewRequirementNewMarcaName)->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
+    }
+
+    public function EnviarRender(Request $request)
+    {
+        DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
+            'estado'    =>  '1'
+        ]);
+    }
+
+    public function ComprobarRender(Request $request)
+    {
+        $var = DB::table('encabezado_requerimientos')
+            ->where('id','=',$request->id)
+            ->select('render','estado')->get();
+
+        return response()->json($var);
     }
 }
