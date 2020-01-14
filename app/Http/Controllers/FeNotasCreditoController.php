@@ -476,9 +476,6 @@ class FeNotasCreditoController extends Controller
 
                     $valor_item = $dNc->precio * $dNc->cantidad;
                     //$impuestos_item = $it->
-
-                    // valida si el item es comprado o se da como regalo
-                    // valida si el item es comprado o se da como regalo
                     $regalo = null;
                     if ($valor_item == 0)
                     {$regalo = 1;}
