@@ -81,11 +81,11 @@ class FeFacturasController extends Controller
 
     public function CrearXml(Request $request)
    {
-       $facturasv = $request->selected;
-       $facturasv = json_decode($facturasv);
+       $Facturas_Seleccionadas = $request->selected;
+       $Facturas_Seleccionadas = json_decode($Facturas_Seleccionadas);
 
        // Estructura del XML
-       $objetoXML = new    XMLWriter();
+       $objetoXML = new XMLWriter();
        $objetoXML->openURI("XML/Facturacion_electronica_Facturas.xml");
        $objetoXML->openMemory();
        $objetoXML->setIndent(true);
@@ -95,10 +95,10 @@ class FeFacturasController extends Controller
        //Elemento Raiz del XML
        $objetoXML->startElement("root");
 
-       foreach ($facturasv as $fac) {
-           $num = $fac->numero;
+       foreach ($Facturas_Seleccionadas as $Factura_seleccionada) {
+           $NumeroFactura = $Factura_seleccionada->numero;
 
-           $Encabezado = DB::connection('MAX')->table('CIEV_V_FE')
+           $Encabezado_Factura = DB::connection('MAX')->table('CIEV_V_FE')
                ->leftJoin('CIEV_V_FE_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FE_FacturasTotalizadas.numero')
                ->select('CIEV_V_FE.numero',
                    'CIEV_V_FE.notas',
@@ -136,10 +136,10 @@ class FeFacturasController extends Controller
                    'CIEV_V_FE_FacturasTotalizadas.descmotivo',
                    'CIEV_V_FE_FacturasTotalizadas.correoscopia',
                    'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente')
-               ->where('CIEV_V_FE.numero', '=', $num)->take(1)->get();
+               ->where('CIEV_V_FE.numero', '=', $NumeroFactura)->take(1)->get();
 
            // esta consulta muestra el detalle de los items de cada factura
-           $Detalle = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
+           $Items_Factura = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
                ->select('CIEV_V_FacturasDetalladas.factura',
                    'CIEV_V_FacturasDetalladas.codigoproducto',
                    'CIEV_V_FacturasDetalladas.descripcionproducto',
@@ -152,139 +152,142 @@ class FeFacturasController extends Controller
                    'CIEV_V_FacturasDetalladas.valormercancia',
                    'CIEV_V_FacturasDetalladas.Desc_Item',
                    'CIEV_V_FacturasDetalladas.UM',
-                   'CIEV_V_FacturasDetalladas.base')
-               ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
+                   'CIEV_V_FacturasDetalladas.base',
+                   'CIEV_V_FacturasDetalladas.bruto_usd',
+                   'CIEV_V_FacturasDetalladas.fletes_usd',
+                   'CIEV_V_FacturasDetalladas.seguros_usd')
+               ->where('CIEV_V_FacturasDetalladas.factura', '=', $NumeroFactura)->get();
 
-           $Config = DB::table('fe_configs')->take(1)->get();
+           $Configuracion = DB::table('fe_configs')->take(1)->get();
 
-           $itemNormales = [];
-           $itemRegalo = [];
+           $items_Normales = [];
+           $items_Regalo = [];
 
-           foreach ($Detalle as $D) {
-               if ($D->totalitem == 0 || $D->totalitem < 0){
-                   $itemRegalo[] = $D;
+           foreach ($Items_Factura as $Item_Factura) {
+               if ($Item_Factura->totalitem == 0 || $Item_Factura->totalitem < 0){
+                   $items_Regalo[] = $Item_Factura;
                }else{
-                   $itemNormales[] = $D;
+                   $items_Normales[] = $Item_Factura;
                }
            }
 
-           foreach ($Encabezado as $enc) {
+           foreach ($Encabezado_Factura as $encabezado) {
 
-               $bruto_factura = null;
-               $subtotal_factura = null;
-               $brutomasiva =  null;
-               $descuento_factura = null;
-               $total_cargos    = null;
-               $totalpagar    = null;
+               $bruto_factura           = null;
+               $subtotal_factura        = null;
+               $brutomasiva_factura     =  null;
+               $descuento_factura       = null;
+               $total_cargos            = null;
+               $totalpagar              = null;
+               $tipo_fac_en             = null;
+               $tipo_operacion          = null;
+               $metodo_pago             = null;
+               $medio_pago              = null;
+               $tipo_documento_ide      = null;
+               $correo_entrega          = $encabezado->emailentrega;
+               $id_total_impuesto_iva   = null;
+               $factor_total            = null;
+               $tarifa_unitaria_total   = null;
+               $total_valor_iva         = $subtotal_factura * 0.19;
+               $total_item_valor        = $subtotal_factura + $total_valor_iva;
+               $Regalos                 = [];
+               $RegalosString           = '';
+
                ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
                ///
-               if($enc->tipo_cliente  == 'EX'){
-                   $bruto_factura = $enc->bruto_usd;
-                   $subtotal_factura = $enc->bruto_usd;
-                   $brutomasiva =  number_format($enc->bruto_usd,2,'.','');
-                   $descuento_factura = 0;
-                   $total_cargos    = number_format($enc->fletes_usd,2,'.','') + number_format($enc->seguros_usd,2,'.','');
-                   $totalpagar      = (number_format($enc->bruto_usd,2,'.','')  + $total_cargos);
+               if($encabezado->tipo_cliente  == 'EX'){
+                   $bruto_factura       = $encabezado->bruto_usd;
+                   $subtotal_factura    = $encabezado->bruto_usd;
+                   $brutomasiva_factura = number_format($encabezado->bruto_usd,2,'.','');
+                   $descuento_factura   = 0;
+                   $total_cargos        = number_format($encabezado->fletes_usd,2,'.','') + number_format($encabezado->seguros_usd,2,'.','');
+                   $totalpagar          = (number_format($encabezado->bruto_usd,2,'.','')  + $total_cargos);
 
                }
                else {
-                   $bruto_factura = $enc->bruto;
-                   $subtotal_factura = $enc->bruto - $enc->descuento;
-                   $brutomasiva =  number_format($enc->bruto,2,'.','') + number_format($enc->iva,2,'.','');
-                   $descuento_factura = $enc->descuento;
-                   $total_cargos    = number_format($enc->fletes,2,'.','') + number_format($enc->seguros,2,'.','');
-                   $totalpagar      = (number_format($enc->bruto,2,'.','') - number_format($enc->descuento,2,'.','')) + number_format( $enc->iva,2,'.','');
+                   $bruto_factura       = $encabezado->bruto;
+                   $subtotal_factura    = $encabezado->bruto - $encabezado->descuento;
+                   $brutomasiva_factura = number_format($encabezado->bruto,2,'.','') + number_format($encabezado->iva,2,'.','');
+                   $descuento_factura   = $encabezado->descuento;
+                   $total_cargos        = number_format($encabezado->fletes,2,'.','') + number_format($encabezado->seguros,2,'.','');
+                   $totalpagar          = (number_format($encabezado->bruto,2,'.','') - number_format($encabezado->descuento,2,'.','')) + number_format( $encabezado->iva,2,'.','');
                }
-
-
-
+               $DescuentoTotalFactura   = ($descuento_factura / $bruto_factura )* 100;
 
                //determina si la factura es exportacion o para venta nacional
-                $tipo_fac_en = null;
-                if ($enc->motivo == 27) {$tipo_fac_en = '02';}// exportaciones 27
+
+                if($encabezado->motivo == 27) {$tipo_fac_en = '02';}// exportaciones 27
                 else {$tipo_fac_en = '01';}
 
                 // determina si el tipo de operacion
-                $tipo_operacion = null;
-                if ($tipo_fac_en == 02) {$tipo_operacion = '04';}
-                if ($tipo_fac_en == 01) {$tipo_operacion = '05';}
-                if($enc->iva == 0)      {$tipo_operacion = '03';}
+
+                if($tipo_fac_en == 02) {$tipo_operacion = '04';}
+                if($tipo_fac_en == 01) {$tipo_operacion = '05';}
+                if($encabezado->iva == 0) {$tipo_operacion = '03';}
 
                 //Determina si la factura es a contado o a credito
-               $metodo_pago = null;
-                if ($enc->dias == 0) {
-                    $metodo_pago = 1;
-                }
+
+                if($encabezado->dias == 0) {$metodo_pago = 1;}
                 else {$metodo_pago = 2;}
 
                 // determina el metodo de pago
-               $medio_pago = null;
-                if ($metodo_pago == 2)
+                if($metodo_pago == 2)
                 { $medio_pago = null;}
-                else
-                    { $medio_pago = 10;}
+                else { $medio_pago = 10;}
 
                 // valida el tipo de documento de identidad
-               $tipo_documento_ide = null;
-                if ($enc->digito_verificador != null )
+                if ($encabezado->digito_verificador != null )
                 {$tipo_documento_ide = 31;}
                 else{$tipo_documento_ide = 13;}
 
 
-               // valida si tiene correo de entrega, si no tiene , pone el mismo correo de adquiriente
-               $correo_entrega = $enc->emailentrega;
-
-
-               // Validacion de impuestos totales por factura
-
-               $id_total_impuesto_iva = null;
-               if ($enc->iva != null) {
+               if ($encabezado->iva != null) {
                    $id_total_impuesto_iva = '01';
                }
-               $factor_total = null;
+
                if ($id_total_impuesto_iva == '01'){
                    $factor_total = '19';
                }
-               $tarifa_unitaria_total  = null;
+
                if ($id_total_impuesto_iva == '01'){
                    $tarifa_unitaria_total = '0';
                }
 
-               $total_valor_iva = $enc->subtotal * 0.19;
-               /// para  Rte Fuente
-               $total_item_valor = $enc->subtotal + $total_valor_iva;
-
-
-               $DescuentoTotalFactura = ($enc->descuento / $enc->bruto )* 100;
+               foreach($items_Regalo as $regalo){
+                   $Regalos[] =  trim($regalo->codigoproducto).' '.trim($regalo->descripcionproducto).' '.trim($regalo->cantidad);
+               }
+               foreach ($Regalos as $itm){
+                   $RegalosString .= $itm.' + ';
+               }
                ////////////////// FIN CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
 
                //Construimos el xlm
 
                $objetoXML->startElement("documento");    // Se inicia un elemento para cada factura.
                $objetoXML->startElement("idnumeracion");
-               $objetoXML->text($Config[0]->fac_idnumeracion); // depende del tipo de documento
+               $objetoXML->text($Configuracion[0]->fac_idnumeracion); // depende del tipo de documento
                $objetoXML->endElement();
 
 
                $objetoXML->startElement("numero");
-               $objetoXML->text($enc->numero);
+               $objetoXML->text($encabezado->numero);
                $objetoXML->endElement();
 
                $objetoXML->startElement("idambiente");
-               $objetoXML->text($Config[0]->fac_idambiente);
+               $objetoXML->text($Configuracion[0]->fac_idambiente);
                $objetoXML->endElement();
 
                $objetoXML->startElement("idreporte");
-               $objetoXML->text($Config[0]->fac_idreporte); // sumistrado por fenalco para version grafica
+               $objetoXML->text($Configuracion[0]->fac_idreporte); // sumistrado por fenalco para version grafica
                $objetoXML->endElement();
 
 
                $objetoXML->startElement("fechadocumento");
-               $objetoXML->text($enc->fechadocumento);
+               $objetoXML->text($encabezado->fechadocumento);
                $objetoXML->endElement();
 
-               $objetoXML->startElement("fechavencimiento"); // pendiente
-               $objetoXML->text($enc->fechavencimiento.' '.'00:00:00');
+               $objetoXML->startElement("fechavencabezadoimiento"); // pendiente
+               $objetoXML->text($encabezado->fechavencimiento.' '.'00:00:00');
                $objetoXML->endElement();
 
                $objetoXML->startElement("tipofactura"); // si se omite es factura de venta
@@ -295,16 +298,6 @@ class FeFacturasController extends Controller
                $objetoXML->text($tipo_operacion);
                $objetoXML->endElement();
 
-               $Regalos = [];
-               $RegalosString = '';
-               foreach($itemRegalo as $regalo){
-                   $Regalos[] =  trim($regalo->codigoproducto).' '.trim($regalo->descripcionproducto).' '.trim($regalo->cantidad);
-               }
-               foreach ($Regalos as $itm){
-                   $RegalosString .= $itm.' + ';
-               }
-
-
                $objetoXML->startElement("notas"); // ok
                $objetoXML->text('COMPLEMENTO: '. $RegalosString);
                $objetoXML->endElement();
@@ -314,13 +307,13 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
 
                $objetoXML->startElement("moneda"); // ok
-               $objetoXML->text($enc->moneda);
+               $objetoXML->text($encabezado->moneda);
                $objetoXML->endElement();
 
 
                $objetoXML->startElement("ordendecompra");
                $objetoXML->startElement("codigo");
-               $objetoXML->text(trim($enc->OC));
+               $objetoXML->text(trim($encabezado->OC));
                $objetoXML->endElement();
                $objetoXML->startElement("fechageneracion");
                $objetoXML->text('');
@@ -344,28 +337,28 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->startElement("idciudad"); // codigo de ciudad
-               $objetoXML->text( $enc->coddpto.$enc->codciudad);
+               $objetoXML->text( $encabezado->coddpto.$encabezado->codciudad);
                $objetoXML->endElement();
                $objetoXML->startElement("direccion");
-               $objetoXML->text($enc->direccion);
+               $objetoXML->text($encabezado->direccion);
                $objetoXML->endElement();
                $objetoXML->startElement("codigopostal"); // validando con GIO
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->startElement("nombres");
-               $objetoXML->text($enc->nombres);
+               $objetoXML->text($encabezado->nombres);
                $objetoXML->endElement();
                $objetoXML->startElement("apellidos");
-               $objetoXML->text($enc->apellidos);
+               $objetoXML->text($encabezado->apellidos);
                $objetoXML->endElement();
                $objetoXML->startElement("idtipodocumentoidentidad");
                $objetoXML->text($tipo_documento_ide);
                $objetoXML->endElement();
                $objetoXML->startElement("digitoverificacion");
-               $objetoXML->text($enc->digito_verificador);
+               $objetoXML->text($encabezado->digito_verificador);
                $objetoXML->endElement();
                $objetoXML->startElement("identificacion");
-               $objetoXML->text($enc->nit_cliente);
+               $objetoXML->text($encabezado->nit_cliente);
                $objetoXML->endElement();
                $objetoXML->startElement("obligaciones");
                $objetoXML->text('R-99-PN');
@@ -388,13 +381,13 @@ class FeFacturasController extends Controller
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->startElement("emailcontacto");
-               $objetoXML->text($enc->emailcontacto);
+               $objetoXML->text($encabezado->emailcontacto);
                $objetoXML->endElement();
                $objetoXML->startElement("emailentrega");
                $objetoXML->text($correo_entrega);
                $objetoXML->endElement();
                $objetoXML->startElement("telefono");
-               $objetoXML->text(trim($enc->telefono));
+               $objetoXML->text(trim($encabezado->telefono));
                $objetoXML->endElement();
                $objetoXML->endElement();
 
@@ -408,13 +401,13 @@ class FeFacturasController extends Controller
                $objetoXML->text($medio_pago);
                $objetoXML->endElement();
                $objetoXML->startElement("fechavencimiento");
-               $objetoXML->text($enc->fechavencimiento.' '.'00:00:00');
+               $objetoXML->text($encabezado->fechavencimiento.' '.'00:00:00');
                $objetoXML->endElement();
                $objetoXML->startElement("identificador");
                $objetoXML->text('');
                $objetoXML->endElement();
                $objetoXML->startElement("dias");
-               $objetoXML->text($enc->dias);
+               $objetoXML->text($encabezado->dias);
                $objetoXML->endElement();
                $objetoXML->endElement();
                $objetoXML->endElement();
@@ -434,17 +427,17 @@ class FeFacturasController extends Controller
                $objetoXML->text(number_format($DescuentoTotalFactura,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("base");
-               $objetoXML->text($enc->bruto);
+               $objetoXML->text($bruto_factura);
                $objetoXML->endElement();
                $objetoXML->startElement("valor");
-               $objetoXML->text($enc->descuento);
+               $objetoXML->text($descuento_factura);
                $objetoXML->endElement();
                $objetoXML->endElement();
                $objetoXML->endElement();
 
 
                $objetoXML->startElement("impuestos");
-               if($enc->iva == 0 || $enc->tipo_cliente == 'EX')
+               if($encabezado->iva == 0 || $encabezado->tipo_cliente == 'EX')
                {
                    $objetoXML->startElement("impuesto");
                    $objetoXML->startElement("idimpuesto");
@@ -469,7 +462,7 @@ class FeFacturasController extends Controller
                    $objetoXML->text($id_total_impuesto_iva);
                    $objetoXML->endElement();
                    $objetoXML->startElement("base");
-                   $objetoXML->text(number_format($enc->subtotal,2,'.',''));
+                   $objetoXML->text(number_format($subtotal_factura,2,'.',''));
                    $objetoXML->endElement();
                    $objetoXML->startElement("factor");
                    $objetoXML->text($factor_total);
@@ -493,7 +486,7 @@ class FeFacturasController extends Controller
                $objetoXML->text(number_format($subtotal_factura,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("totalbrutoconimpuestos");
-               $objetoXML->text(number_format($brutomasiva,2,'.',''));
+               $objetoXML->text(number_format($brutomasiva_factura,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("totaldescuento");
                $objetoXML->text(number_format($descuento_factura,2,'.',''));
@@ -512,10 +505,10 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
 
-               if($enc->correoscopia != null){
+               if($encabezado->correoscopia != null){
                    $objetoXML->startElement("correoscopia");
 
-                   foreach (explode(";",$enc->correoscopia) as $Arraycc){
+                   foreach (explode(";",$encabezado->correoscopia) as $Arraycc){
                        $objetoXML->startElement("correocopia");
                        $objetoXML->text($Arraycc);
                        $objetoXML->endElement();
@@ -526,59 +519,69 @@ class FeFacturasController extends Controller
 
                $objetoXML->startElement("items");
 
-               foreach ($itemNormales as $it) {
+               foreach ($items_Normales as $it) {
+                   $valor_item = $it->precio * $it->cantidad;
+                   $subtotal_item = null;
+                   $brutomasiva =  null;
+                   $descuento_item = null;
+                   $valorDescItem = null;
+                   $cargos_item    = null;
+                   $totalpagar_item    = null;
+                   $nombre_estandar = 'EAN13';
+                   $id_estandar = 999;
+                   $id_impuesto = null;
+                   $factor = null;
+                   $umed = null;
+                   ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
+                   ///
+                   if($encabezado->tipo_cliente  == 'EX'){
+                       $subtotal_item = $it->bruto_usd ;
+                       $total_valor_item_iva = $subtotal_item * 0.19;
+                       $DescuentoPorItem = 0;
 
-                   //$impuestos_item = $it->
-                   if ($enc->tipo_cliente == 'EX'){
-                       $valor_item = $it->precio * $it->cantidad;
                    }else{
-                       $valor_item = $it->precio * $it->cantidad;
+                       $subtotal_item = $it->totalitem - $it->Desc_Item;
+                       $total_valor_item_iva = $subtotal_item * 0.19;
+                       $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
                    }
-
 
                    // valida si el item es comprado o se da como regalo
                    $regalo = null;
-
                    if ($valor_item == 0) {
                        $regalo = 1;
                    } else {
                        $regalo = 0;
                    }
 
-                   // valida el tipo de codigo 020 posicion alacelaria o 999 adopcion del contribuyente
-                   $id_estandar = null;
-                   if ($tipo_fac_en == 02) {
-                       $id_estandar = '020-999';
+               /*    // valida el tipo de codigo 020 posicion alacelaria o 999 adopcion del contribuyente
+
+                   /*if ($tipo_fac_en == 02) {
+                       $id_estandar = '999';
                    } else {
                        $id_estandar = 999;
-                   }
+                   }*/
 
                    // valida nombre estandar del codigo
-                   $nombre_estandar = null;
-                   if ($id_estandar <> 999) {
+
+                  /* if ($id_estandar <> 999) {
                        $nombre_estandar = null;
                    } else {
-                       $nombre_estandar = 'EAN13';
-                   }
+                       $nombre_estandar = ;
+                   }*/
 
-                   // valida el id impuesto por item
-                   $id_impuesto = null;
+                   // valida el id impuesto por item*/
+
                    if ($it->iva_item != 0) {
                        $id_impuesto = '01';
                    }
 
                    // porcentaje de impuesto
-                   $factor = null;
-                   if ($id_impuesto == '01') {
-                       $factor = '19';
-                   }
 
-                   $umed = null;
-                   if ($it->UM == 'UN') {
-                       $umed = '94';
-                   } else {
-                       $umed = 'KGM';
-                   }
+                   if ($id_impuesto == '01') {$factor = '19';}
+
+
+                   if ($it->UM == 'UN') {$umed = '94';}
+                   else {$umed = 'KGM';}
 
                    $id_item_iva = null;
                    if ($it->iva_item != null) {
@@ -593,10 +596,6 @@ class FeFacturasController extends Controller
                        $tarifa_item_unitaria = '0';
                    }
 
-                   $subtotal_item = $it->totalitem - $it->Desc_Item;
-                   $total_valor_item_iva = $subtotal_item * 0.19;
-
-                   $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
 
                    $objetoXML->startElement("item");
 
@@ -638,7 +637,7 @@ class FeFacturasController extends Controller
                    $objetoXML->text($umed);
                    $objetoXML->endElement();
 
-                   if ($enc->tipo_cliente == 'EX'){
+                   if ($encabezado->tipo_cliente == 'EX'){
                        $marca = $it->descripcionproducto;
                        $modelo = $it->codigoproducto;
                    }else{
@@ -698,7 +697,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("valor");
-                   $objetoXML->text($it->Desc_Item);
+                   $objetoXML->text($valorDescItem);
                    $objetoXML->endElement();
 
                    $objetoXML->endElement();
@@ -706,7 +705,7 @@ class FeFacturasController extends Controller
 
                    $objetoXML->startElement("impuestos");
 
-                   if($it->iva_item == 0 || $it->iva_item == null || $it->iva_item == '' || $enc->tipo_cliente == 'EX'){
+                   if($it->iva_item == 0 || $it->iva_item == null || $it->iva_item == '' || $encabezado->tipo_cliente == 'EX'){
                        $objetoXML->startElement("impuesto");
                        $objetoXML->startElement("idimpuesto");
                        $objetoXML->text('');
@@ -758,17 +757,20 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement(); // cierra items
 
                    $objetoXML->startElement("datosextra");
-
                    $objetoXML->startElement("datoextra");
+
                    $objetoXML->startElement("tipo");
                    $objetoXML->text('1');
                    $objetoXML->endElement();
+
                    $objetoXML->startElement("clave");
                    $objetoXML->text('CONDICION_PAGO');
                    $objetoXML->endElement();
+
                    $objetoXML->startElement("valor");
-                   $objetoXML->text(trim($enc->plazo));
+                   $objetoXML->text(trim($encabezado->plazo));
                    $objetoXML->endElement();
+
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("datoextra");
@@ -781,7 +783,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("valor");
-                   $objetoXML->text($enc->codigocliente);
+                   $objetoXML->text($encabezado->codigocliente);
                    $objetoXML->endElement();
                    $objetoXML->endElement();
 
@@ -808,7 +810,7 @@ class FeFacturasController extends Controller
     public function config(Request $request)
     {
         if ($request->ajax()){
-            $Configs = DB::table('fe_configs')->get();
+            $Configuracions = DB::table('fe_configs')->get();
                 return response()->json($Configs);
         }
 
@@ -1159,20 +1161,23 @@ class FeFacturasController extends Controller
                 echo "<hr>";
 
 
-
                 /*Se consulta si el cliente exite*/
                 $params = array(
                     'token' => $token,
                     'idtipodocumentoidentificacion' => $tipo_documento_ide, // este campo debe ser cambiado por una variable
-                    'identificacion' => $enc->nit_cliente // campo string o variable
+                    'identificacion' => strval($enc->nit_cliente) // campo string o variable
                 );
-                $return = $client->existePersonaEmpresa($params);
+
+                // este metodo saca error
+                $return = $client->obtenerAdquiriente($params);
                 $resultados = json_decode($return->return);
+                dd($resultados);
                 echo "<pre>";
                 var_dump($resultados);
                 echo "<pre>";
                 echo "<hr>";
                 $idEmpresa = $resultados->data->salida;
+
 
                 if ($idEmpresa == 0) {
                     $params = array(
@@ -1386,12 +1391,6 @@ class FeFacturasController extends Controller
                         $tarifa_item_unitaria = '0';
                     }
 
-                    $subtotal_item = $it->totalitem - $it->Desc_Item;
-                    $total_valor_item_iva = $subtotal_item * 0.19;
-
-
-
-
                     if ($enc->tipo_cliente == 'EX'){
                         $marca = $it->descripcionproducto;
                         $modelo = $it->codigoproducto;
@@ -1399,6 +1398,16 @@ class FeFacturasController extends Controller
                         $marca = '';
                         $modelo = '';
                     }
+
+
+
+
+                    $subtotal_item = $it->totalitem - $it->Desc_Item;
+                    $total_valor_item_iva = $subtotal_item * 0.19;
+
+
+
+
 
 
                     /*se vinculan los items al documentos*/
