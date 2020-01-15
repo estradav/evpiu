@@ -19,7 +19,7 @@ class RequerimientosController extends Controller
                 $data = DB::table('encabezado_requerimientos')
                     ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.id')
                     ->select('users.name as diseñador_id','encabezado_requerimientos.id','encabezado_requerimientos.producto',
-                        'encabezado_requerimientos.informacion','encabezado_requerimientos.usuario','encabezado_requerimientos.estado',
+                        'encabezado_requerimientos.informacion','encabezado_requerimientos.usuario','encabezado_requerimientos.marca','encabezado_requerimientos.estado',
                         'encabezado_requerimientos.created_at','encabezado_requerimientos.updated_at')
                     ->where('estado', '=', $request->estado)
                     ->orderBy('estado', 'desc')
@@ -41,14 +41,14 @@ class RequerimientosController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('EVPIUM')->table('Marcas')
-            ->where('NombreMarca', 'LIKE', '%'.$query.'%')
+        $queries = DB::table('marcas')
+            ->where('name', 'LIKE', '%'.$query.'%')
             ->take(20)
             ->get();
 
         foreach ($queries as $q) {
             $results[] = [
-                'value' =>  trim($q->NombreMarca),
+                'value' =>  trim($q->name),
             ];
         }
         return response()->json($results);
@@ -59,14 +59,15 @@ class RequerimientosController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('MAX')->table('CIEV_V_Inventario')
-            ->where('Descripcion', 'LIKE', '%'.$query.'%')
-            ->orWhere('Pieza', 'LIKE', '%'.$query.'%')->take(10)
+        $queries = DB::table('cod_codigos')
+            ->where('descripcion', 'LIKE', '%'.$query.'%')
+            ->orWhere('codigo', 'LIKE', '%'.$query.'0000')->take(10)
             ->get();
 
         foreach ($queries as $q) {
             $results[] = [
-                'value' => trim($q->Descripcion),
+                'value'     => trim($q->descripcion),
+                'Cod_Art'   => substr($q->codigo,0, 6)
             ];
         }
         return response()->json($results);
@@ -116,6 +117,7 @@ class RequerimientosController extends Controller
             'vendedor_id'   => $request->Vendedor,
             'cliente'       => $request->Cliente,
             'marca'         => $request->Marca,
+            'medida'        => $request->Medida,
             'render'        => $request->Render,
             'estado'        => '2',
             'created_at'    => Carbon::now(),
@@ -309,10 +311,19 @@ class RequerimientosController extends Controller
 
     public function CambiarDiseñadorRequeEd(Request $request)
     {
-        DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
-            'diseñador_id'  => $request->result['value'],
-            'estado'        => '3'
-        ]);
+
+        $Estado = DB::table('encabezado_requerimientos')->where('id','=',$request->id)->select('estado')->get();
+
+        if ($Estado[0]->estado == 2) {
+            DB::table('encabezado_requerimientos')->where('id', '=', $request->id)->update([
+                'diseñador_id' => $request->result['value'],
+                'estado' => '3'
+            ]);
+        }else{
+            DB::table('encabezado_requerimientos')->where('id', '=', $request->id)->update([
+                'diseñador_id' => $request->result['value'],
+            ]);
+        }
 
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         => $request->id,
@@ -330,7 +341,9 @@ class RequerimientosController extends Controller
         DB::table('propuestas_requerimientos')->insert([
             'idRequerimiento'   =>  $request->id,
             'articulo'          =>  $request->result['value'][0]['Articulo'],
+            'codigo_base'       =>  $request->result['value'][0]['Cod_Art'],
             'relieve'           =>  $request->result['value'][0]['Relieve'],
+            'medida'            =>  $request->medida,
             'usuario'           =>  $request->Username,
             'diseñador_id'      =>  $Dis_id[0]->diseñador_id,
             'estado'            =>  '1',
@@ -338,10 +351,14 @@ class RequerimientosController extends Controller
             'updated_at'        =>  Carbon::now()
         ]);
 
+        $Estado = DB::table('encabezado_requerimientos')->where('id','=',$request->id)->select('estado')->get();
 
-        DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
-            'estado'        => '4'
-        ]);
+        if ($Estado[0]->estado == 3) {
+            DB::table('encabezado_requerimientos')->where('id', '=', $request->id)->update([
+                'estado' => '4'
+            ]);
+        }
+
 
         DB::table('transacciones_requerimientos')->insert([
             'idReq'         =>  $request->id,
@@ -410,10 +427,12 @@ class RequerimientosController extends Controller
                 'created_at'    =>  Carbon::now(),
                 'updated_at'    =>  Carbon::now()
             ]);
+
+
         }
 
 
-        return response()->json(['result' => true], 200);
+        return response()->json(['url' => $destinationPath , 'archivo' => $profilefile], 200);
     }
 
     public function Upload3DReq(Request $request)
@@ -444,7 +463,8 @@ class RequerimientosController extends Controller
                 'updated_at'    =>  Carbon::now()
             ]);
         }
-        return response()->json(['result' => true], 200);
+        return response()->json(['url' => $destinationPath , 'archivo' => $profilefile], 200);
+
     }
 
     public function UploadPlanoReq(Request $request)
@@ -475,15 +495,13 @@ class RequerimientosController extends Controller
                 'updated_at'    =>  Carbon::now()
             ]);
         }
-        return response()->json(['result' => true], 200);
+        return response()->json(['url' => $destinationPath , 'archivo' => $profilefile], 200);
     }
 
     public function UploadfilesSupport(Request $request)
     {
         if ($request->hasFile('fileToUpload')) {
             $files = $request->file('fileToUpload');
-
-
 
             $i = 1;
             foreach ($files as $file){
@@ -632,5 +650,125 @@ class RequerimientosController extends Controller
             'created_at'    =>  Carbon::now(),
             'updated_at'    =>  Carbon::now()
         ]);
+    }
+
+    public function ValidarEstadoPropuestasFR(Request $request)
+    {
+        $count = DB::table('propuestas_requerimientos')
+            ->where('idRequerimiento','=',$request->id)
+            ->get()->count();
+
+        $var = DB::table('propuestas_requerimientos')
+            ->where('idRequerimiento','=',$request->id)
+            ->where('estado','<>','3')
+            ->where('estado','<>', '6')
+            ->get()->count();
+
+        return response()->json(['cant_prop' => $count, 'cant_prop_rec_apr' => $var]);
+    }
+
+    public function SaveMarca(Request $request)
+    {
+        DB::table('marcas')->insert([
+           'name'           => $request->name,
+           'comments'       => $request->comment,
+           'type'           => $request->type,
+           'created_by'     => $request->createdby,
+            'created_at'    => Carbon::now(),
+           'updated_at'     => Carbon::now(),
+        ]);
+        return response()->json(true);
+    }
+
+    public function UniqueMarca(Request $request)
+    {
+        $UniqueCod = DB::table('marcas')->where('name','=',$request->NewRequirementNewMarcaName)->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
+    }
+
+    public function EnviarRender(Request $request)
+    {
+        DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
+            'estado'    =>  '1'
+        ]);
+    }
+
+    public function ComprobarRender(Request $request)
+    {
+        $var = DB::table('encabezado_requerimientos')
+            ->where('id','=',$request->id)
+            ->select('render','estado')->get();
+
+        return response()->json($var);
+    }
+
+    public function ComprobarEstadoPropuesta(Request $request)
+    {
+        $var =  DB::table('propuestas_requerimientos')
+            ->where('id','=', $request->Prop)
+            ->select('estado')->get();
+
+        return response()->json($var);
+    }
+
+    public function FinalizaPropuesta(Request $request)
+    {
+        // pendientes: hay que permitir cambiar el producto en las propuestas
+        // almacenar el tañaño y poder editarlo
+        //
+
+    }
+
+    public function ObtenerMediasPorCodigoBase(Request $request)
+    {
+        $Codigo_Base = $request->Codigo_base_propuesta;
+
+        $Linea = substr($Codigo_Base,1,2);
+        $Sublinea = substr($Codigo_Base,3,2);
+
+        $Linea = DB::table('cod_lineas')->where('cod','=',$Linea)->select('id')->get();
+        $Sublinea = DB::table('cod_sublineas')->where('cod','=',$Sublinea)->select('id')->get();
+
+        $Medidas =  DB::table('cod_medidas')
+           ->where('med_lineas_id','=',$Linea[0]->id)
+           ->where('med_sublineas_id','=',$Sublinea[0]->id)
+           ->select('denominacion')
+           ->get();
+
+        $Array = [];
+        foreach ($Medidas as $val){
+            $Array[$val->denominacion] = $val->denominacion;
+        }
+        return response()->json($Array);
+    }
+
+    public function CambiarMedidaPropuesta(Request $request)
+    {
+        $Descripcion_Producto = $request->Descripcion_Producto;
+        $Descripcion_Producto = explode(" ",$Descripcion_Producto);
+        $indice = array_key_last($Descripcion_Producto);
+        $Descripcion_Producto[$indice] = $request->result['value'];
+        $Descripcion_Producto_String = implode(" ",$Descripcion_Producto);
+
+
+        DB::table('propuestas_requerimientos')->where('id','=',$request->Prop)->update([
+            'articulo'  => $Descripcion_Producto_String,
+            'medida'    => $request->result['value']
+        ]);
+
+        $value = $request->result['value'];
+
+        return response()->json(['medida' => $value, 'producto' =>  $Descripcion_Producto_String]);
+    }
+
+    public function ObtenerImagenesIndividuales(Request $request)
+    {
+        if ($request->Tipo_img == '2D'){
+
+        }
+
     }
 }

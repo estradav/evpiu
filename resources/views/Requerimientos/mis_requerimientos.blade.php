@@ -142,25 +142,37 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="name" class="control-label">Nombre:</label>
-                                <input type="text" class="form-control" name="NewRequirementNewMarcaName" id="NewRequirementNewMarcaName" style="text-transform:uppercase">
+                    <form action="" id="NewMarcaForm">
+                        <div class="modal-body">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Nombre:</label>
+                                    <input type="text" class="form-control" name="NewRequirementNewMarcaName" id="NewRequirementNewMarcaName" style="text-transform:uppercase " onkeyup="this.value = this.value.toUpperCase();">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="TypeMarca">Tipo:</label>
+                                    <select name="TypeMarca" id="TypeMarca"  class="form-control">
+                                        <option value="" selected>Seleccione...</option>
+                                        <option value="GL">Generico Liso</option>
+                                        <option value="GM">Generico Marcado</option>
+                                        <option value="MP">Marca Propia</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Comentario:</label>
+                                    <textarea class="form-control" name="NewRequirementNewMarcaDescription" id="NewRequirementNewMarcaDescription" cols="30" rows="3" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase();"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="name" class="control-label">Descripcion:</label>
-                                <textarea class="form-control" name="NewRequirementNewMarcaDescription" id="NewRequirementNewMarcaDescription" cols="30" rows="3" style="text-transform:uppercase">
-                                </textarea>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary NewRequerimientoMedidaSave" id="NewRequerimientoMedidaSave">Crear</button>
+                            <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary NewRequerimientoMedidaSave" id="NewRequerimientoMedidaSave">Crear</button>
-                        <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -223,6 +235,11 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
                 var Username = @json( Auth::user()->name );
 
             	var table = $('#table').DataTable({
@@ -277,31 +294,31 @@
                     },
                     rowCallback: function (row, data, index) {
                         if (data.name == null) {
-                            $(row).find('td:eq(4)').html('<label class="alert-light">Sin asingar</label>');
+                            $(row).find('td:eq(4)').html('<label class="text-primary">SIN ASIGNAR</label>');
                         }
                         if (data.estado == '0') {
-                            $(row).find('td:eq(5)').html('<label class="alert-danger">ANULADO</label>');
+                            $(row).find('td:eq(5)').html('<label class="text-danger">ANULADO</label>');
                         }
                         if (data.estado == '1') {
-                            $(row).find('td:eq(5)').html('<label class="alert-success">RENDER</label>');
+                            $(row).find('td:eq(5)').html('<label class="text-success">RENDER</label>');
                         }
                         if (data.estado == '2') {
-                            $(row).find('td:eq(5)').html('<label class="alert-success">POR REVISAR</label>');
+                            $(row).find('td:eq(5)').html('<label class="text-success">POR REVISAR</label>');
                         }
                         if (data.estado == '3') {
-                            $(row).find('td:eq(5)').html('<label class="alert-success">ASIGNADO</label>');
+                            $(row).find('td:eq(5)').html('<label class="text-success">ASIGNADO</label>');
                         }
                         if (data.estado == '4') {
-                            $(row).find('td:eq(5)').html('<label class="alert-success">INICIADO</label>');
+                            $(row).find('td:eq(5)').html('<label class="text-success">INICIADO</label>');
                         }
                         if (data.estado == '5') {
-                            $(row).find('td:eq(5)').html('<label class="alert-success">CERRADO</label>');
+                            $(row).find('td:eq(5)').html('<label class="text-success">FINALIZADO</label>');
                         }
                         if (data.estado == '6') {
-                            $(row).find('td:eq(5)').html('<label class="alert-danger">ANULADO POR DISEÑO</label>');
+                            $(row).find('td:eq(5)').html('<label class="text-danger">ANULADO POR DISEÑO</label>');
                         }
                         if (data.estado == '7') {
-                            $(row).find('td:eq(5)').html('<label class="alert-warning">SIN APROBAR</label>');
+                            $(row).find('td:eq(5)').html('<label class="text-warning">SIN APROBAR</label>');
                         }
                     }
                 });
@@ -429,7 +446,7 @@
 
                 jQuery.extend(jQuery.validator.messages, {
                     required: "Este campo es obligatorio.",
-                    remote: "Este Codigo ya existe...",
+                    remote: "Esta marca ya fue creada...",
                     email: "Por favor, escribe una dirección de correo válida",
                     url: "Por favor, escribe una URL válida.",
                     date: "Por favor, escribe una fecha válida.",
@@ -452,6 +469,10 @@
                     return (value != '');
                 }, "Por favor, seleciona una opcion.");
 
+                $.validator.addMethod("regx", function(value, element, regexpr) {
+                    return regexpr.test(value);
+                }, "El nombre debe empezar con una letra.");
+
                 $("#NewRequerimentForm").validate({
                     rules: {
                         NewRequirementNameClient:{
@@ -463,9 +484,14 @@
                         NewRequirementNewInfo: {
                             required: true
                         },
+                        CodReqDescription: {
+                        	required: true
+                        }
                     },
                     messages: {
-                        NewRequirementNameMarca: " "
+                        NewRequirementNameMarca: " ",
+                        CodReqDescription: " "
+
                     },
                     submitHandler: function (form) {
                         $('#NewRequerimientoSave').html('Guardando...');
@@ -474,6 +500,7 @@
                         var producto = $('#CodReqDescription').val();
                         var vendedor = $('#NewRequirementVendedor').val();
                         var informacion = $('#NewRequirementNewInfo').val();
+                        var medida = producto.split(" ");
 
                         $.ajaxSetup({
                             headers: {
@@ -489,7 +516,8 @@
                                 Vendedor: vendedor,
                                 Informacion: informacion,
                                 Render: render,
-                                Creado: Username
+                                Creado: Username,
+                                Medida: medida[4]
                             },
                             url: "/NewRequerimiento",
                             type: "POST",
@@ -524,6 +552,80 @@
                         $(element).closest('.form-control').removeClass('is-invalid');
                     },
                 });
+
+                $('#NewMarcaForm').validate({
+                    rules: {
+                        NewRequirementNewMarcaName: {
+                        	required: true,
+                            regx: /^([A-Z]{1,2})/i,
+                            minlength: 5,
+                            remote: {
+                                url: '/UniqueMarca',
+                                type: 'POST',
+                                async: false,
+                            },
+                        },
+                        TypeMarca:{
+                            selectcheck: true
+                        },
+                        NewRequirementNewMarcaDescription: {
+                        	required: true,
+                            minlength: 10
+                        }
+                    },
+                    submitHandler: function (form) {
+                        $('#NewRequerimientoMedidaSave').html('Guardando...');
+                        var name = $('#NewRequirementNewMarcaName').val();
+                        var type = $('#TypeMarca').val();
+                        var comment = $('#NewRequirementNewMarcaDescription').val();
+                        var createdby = Username;
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            data: {
+                                name: name,
+                                type: type,
+                                comment: comment,
+                                createdby: createdby,
+                            },
+                            url: "/SaveMarca",
+                            type: "POST",
+                            dataType: 'json',
+                            success: function () {
+                                $('#NewRequerimientoMedidaSave').trigger("reset");
+                                $('#CreateMedidaModal ').modal('hide');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Guardado!',
+                                    text: 'Medida creada con exito!',
+                                    showCancelButton: false,
+                                    confirmButtonText: 'ok!',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                });
+                                $(this).html('Crear');
+                            },
+                            error: function (data) {
+                                console.log('Error:', data);
+                                $('#NewRequerimientoMedidaSave').html('Reintentar');
+                            }
+                        });
+                        return false; // required to block normal submit since you used ajax
+                    },
+                    highlight: function (element) {
+                        $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+                    },
+                    unhighlight: function (element) {
+                        $(element).closest('.form-control').removeClass('is-invalid');
+                    },
+                });
+
 
                 $('body').on('click', '#NewRequirementNewDescription', function() {
                     $('#CodificadorModal').modal('show');

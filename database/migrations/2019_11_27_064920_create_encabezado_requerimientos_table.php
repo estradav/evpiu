@@ -19,6 +19,7 @@ class CreateEncabezadoRequerimientosTable extends Migration
             $table->string('informacion');
             $table->string('cliente');
             $table->string('marca');
+            $table->string('medida');
             $table->string('usuario');
             $table->string('estado');
             $table->string('render');

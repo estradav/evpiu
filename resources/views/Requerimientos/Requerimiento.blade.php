@@ -28,7 +28,7 @@
                         <a class="nav-link Asignados" href="javascript:void(0)" id="4">INICIADO</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link Iniciados" href="javascript:void(0)" id="5">CERRADO</a>
+                        <a class="nav-link Iniciados" href="javascript:void(0)" id="5">FINALIZADO</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link Renderizando" href="javascript:void(0)" id="6">ANULADO DISEÑO</a>
@@ -67,7 +67,7 @@
                                         <th>INFORMACION</th>
                                         <th>CREADO POR</th>
                                         <th>DISEÑADOR</th>
-                                        <th>ESTADO</th>
+                                        <th>MARCA</th>
                                         <th>FECHA CREACION</th>
                                         <th>ULTIMA ACTUALIZACION</th>
                                         <th>OPCIONES</th>
@@ -138,10 +138,10 @@
                         columns: [
                             {data: 'id', name: 'id', orderable: false, searchable: true},
                             {data: 'producto', name: 'producto', orderable: false, searchable: true},
-                            {data: 'informacion', name: 'informacion', orderable: false, searchable: false},
-                            {data: 'usuario', name: 'usuario', orderable: false, searchable: false},
+                            {data: 'informacion', name: 'informacion', orderable: false, searchable: true},
+                            {data: 'usuario', name: 'usuario', orderable: false, searchable: true},
                             {data: 'diseñador_id', name: 'diseñador_id', orderable: false, searchable: false},
-                            {data: 'estado', name: 'estado', orderable: false, searchable: false},
+                            {data: 'marca', name: 'marca', orderable: true, searchable: true},
                             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
                             {data: 'updated_at', name: 'updated_at', orderable: false, searchable: false},
                             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
@@ -172,23 +172,27 @@
                         rowCallback: function (row, data, index) {
                         	console.log(data);
                             if (data.diseñador_id == null) {
-                                $(row).find('td:eq(4)').html('<label class="alert-light">Sin asingar</label>');
+                                $(row).find('td:eq(4)').html('<label class="text-dark">SIN ASIGNAR</label>');
                             }
-                            if (data.estado == '1') {
-                                $(row).find('td:eq(5)').html('<label class="alert-light">Render</label>');
+                            /*if (data.estado == '1') {
+                                $(row).find('td:eq(5)').html('<label class="text-dark">RENDER</label>');
                             }
                             if (data.estado == '2') {
-                                $(row).find('td:eq(5)').html('<label class="alert-light">Por revisar</label>');
+                                $(row).find('td:eq(5)').html('<label class="text-dark">POR REVISAR</label>');
                             }
                             if (data.estado == '3') {
-                                $(row).find('td:eq(5)').html('<label class="alert-light">Asignado</label>');
+                                $(row).find('td:eq(5)').html('<label class="text-dark">ASIGNADO</label>');
                             }
+                            if(data.estado == '5') {
+                                $(row).find('td:eq(5)').html('<label class="text-dark">FINALIZADO</label>');
+                            }
+
                             if (data.estado == '6') {
-                                $(row).find('td:eq(5)').html('<label class="alert-light">Anulado Diseño</label>');
+                                $(row).find('td:eq(5)').html('<label class="text-dark">ANULADO DISEÑO</label>');
                             }
                             if (data.estado == '7') {
-                                $(row).find('td:eq(5)').html('<label class="alert-light">Sin aprobar</label>');
-                            }
+                                $(row).find('td:eq(5)').html('<label class="text-dark">SIN APROBAR</label>');
+                            }*/
                         }
                     })
                 }

@@ -463,28 +463,24 @@ $(document).ready(function () {
                 data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
                 url: '/FacturaElectronicaWebService',
                 success: function ( data) {
+                    console.log(data);
                     sweetAlert.close();
-                    Swal.fire({
-                        title: 'Terminado!',
-                        html: 'XML generado con exito!.',
-                        icon: 'success',
-                        confirmButtonText: 'Aceptar',
-                    });
-                    // preventDefault();  //stop the browser from following
-                   /* var req = new XMLHttpRequest();
-                    req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
-                    req.responseType = "blob";
-                    console.log(req);
-                    req.onload = function (event) {
-                        var blob = req.response;
-                        var link=document.createElement('a');
-                        link.href=window.URL.createObjectURL(blob);
-                        let current_datetime = new Date();
-                        let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
-                        link.download="Factura_Electronica_" + formatted_date + "_.xml";
-                        link.click();
-                    };
-                    req.send();*/
+                    if (data.success == false){
+                        Swal.fire({
+                            title: 'Error!',
+                            html: data.msg,
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                        });
+                    }else{
+                        Swal.fire({
+                            title: 'Terminado!',
+                            html: 'Facturas enviadas con exito!.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                        });
+                    }
+
                 },
                 error: function () {
                     Swal.fire({

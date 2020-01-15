@@ -32,9 +32,9 @@ class FeNotasCreditoController extends Controller
                         'CIEV_V_FE_FacturasTotalizadas.motivo',
                         'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente',
                         'CIEV_V_FE.codigo_alterno as cod_alter')
-                    ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CR')
+                    ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc','=','CR')
                     ->whereBetween('fecha', array($request->from_date, $request->to_date))
-                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')
+                    ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')
                     ->get();
             }else {
                 $data = DB::connection('MAX')
@@ -458,14 +458,17 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
 
-                $objetoXML->startElement("correoscopia");
+                if($enc->correoscopia != null){
+                    $objetoXML->startElement("correoscopia");
 
-                foreach (explode(";",$enc->correoscopia) as $Arraycc){
-                    $objetoXML->startElement("correocopia");
-                    $objetoXML->text($Arraycc);
+                    foreach (explode(";",$enc->correoscopia) as $Arraycc){
+                        $objetoXML->startElement("correocopia");
+                        $objetoXML->text($Arraycc);
+                        $objetoXML->endElement();
+                    }
                     $objetoXML->endElement();
                 }
-                $objetoXML->endElement();
+
 
                 $objetoXML->startElement("items");
 
@@ -473,9 +476,6 @@ class FeNotasCreditoController extends Controller
 
                     $valor_item = $dNc->precio * $dNc->cantidad;
                     //$impuestos_item = $it->
-
-                    // valida si el item es comprado o se da como regalo
-                    // valida si el item es comprado o se da como regalo
                     $regalo = null;
                     if ($valor_item == 0)
                     {$regalo = 1;}
