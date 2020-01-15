@@ -38,7 +38,7 @@
             <span><input type="button" class="btn btn-primary btn-sm" id="WebService" value="Enviar via WebService"></span>
         </div>
     </div>
-    <div class="test" id="test" name="test">
+    <div class="test" id="test" name="test" style="display: none !important;">
 
     </div>
     <div class="row">

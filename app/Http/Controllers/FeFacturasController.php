@@ -1045,17 +1045,19 @@ class FeFacturasController extends Controller
         $Facturas_Seleccionadas = json_decode($Facturas_Seleccionadas);
 
         // Estructura del XML
-        $objetoXML = new XMLWriter();
-        $objetoXML->openURI("XML/Facturacion_electronica_Facturas.xml");
-        $objetoXML->openMemory();
-        $objetoXML->setIndent(true);
-        $objetoXML->setIndentString("\t");
-        $objetoXML->startDocument('1.0', 'utf-8');
-
-        //Elemento Raiz del XML
-        $objetoXML->startElement("root");
-
+        $resultados = [];
         foreach ($Facturas_Seleccionadas as $Factura_seleccionada) {
+            $objetoXML = new XMLWriter();
+            $objetoXML->openURI("XML/Facturacion_electronica_Facturas.xml");
+            $objetoXML->openMemory();
+            $objetoXML->setIndent(true);
+            $objetoXML->setIndentString("\t");
+            $objetoXML->startDocument('1.0', 'utf-8');
+
+            //Elemento Raiz del XML
+            $objetoXML->startElement("root");
+
+
             $NumeroFactura = $Factura_seleccionada->numero;
 
             $Encabezado_Factura = DB::connection('MAX')->table('CIEV_V_FE')
@@ -1750,50 +1752,55 @@ class FeFacturasController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement(); // Final del nodo raíz, "documento"
             }
+            $objetoXML->endDocument();  // Final del documento
+
+            $cadenaXML = $objetoXML->outputMemory();
+
+            file_put_contents('XML/Facturacion_electronica_Facturas.xml', $cadenaXML);
+
+            $file = file_get_contents('XML/Facturacion_electronica_Facturas.xml');
+
+            $Base_64 = base64_encode($cadenaXML);
+
+
+            /* se comienza con el web service */
+
+
+            $login1 = "jacanasv";
+            $password = "Menteslocas0906*";
+            $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+            $client = new SoapClient($wsdl_url);
+            $client->__setLocation($wsdl_url);
+
+            // Inicio de sesion
+            $params = array(
+                'login' => $login1,
+                'password' => $password
+            );
+
+
+            $auth = $client->autenticar($params);
+            $respuesta = json_decode($auth->return);
+            $token = $respuesta->data->salida;
+
+
+
+            // Lista los  tipos de persona de la DIAN
+            $params = array(
+                'token'                 => $token,
+                'base64XML'             => strval($Base_64),
+                'obtenerDatosTecnicos'  => true
+            );
+            $return = $client->registrarDocumentoElectronico_Generar_FuenteXML($params);
+
+
+          //  $resultados = json_decode($return->return);
+
+            $resultados[] = json_decode($return->return);
+
+
+
         }
-
-        $objetoXML->endDocument();  // Final del documento
-
-        $cadenaXML = $objetoXML->outputMemory();
-
-        file_put_contents('XML/Facturacion_electronica_Facturas.xml', $cadenaXML);
-
-        $file = file_get_contents('XML/Facturacion_electronica_Facturas.xml');
-
-        $Base_64 = base64_encode($cadenaXML);
-
-
-        /* se comienza con el web service */
-
-
-        $login1 = "jacanasv";
-        $password = "Menteslocas0906*";
-        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
-        $client = new SoapClient($wsdl_url);
-        $client->__setLocation($wsdl_url);
-
-        // Inicio de sesion
-        $params = array(
-            'login' => $login1,
-            'password' => $password
-        );
-
-
-        $auth = $client->autenticar($params);
-        $respuesta = json_decode($auth->return);
-        $token = $respuesta->data->salida;
-
-
-
-        // Lista los  tipos de persona de la DIAN
-        $params = array(
-            'token'                 => $token,
-            'base64XML'             => strval($Base_64),
-            'obtenerDatosTecnicos'  => true
-        );
-        $return = $client->registrarDocumentoElectronico_Generar_FuenteXML($params);
-
-        $resultados = json_decode($return->return);
 
         return response()->json($resultados);
     }
