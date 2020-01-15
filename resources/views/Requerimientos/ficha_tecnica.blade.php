@@ -11,6 +11,7 @@
 @stop--}}
 
 @section('content')
+    @inject('Lineas','App\Services\Lineas')
     @can('show_requerimientos.view')
         <div class="row">
             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
@@ -98,16 +99,16 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="text-center col-12">
+                                <button class="btn btn-light SubirArchiv">SUBIR ARCHIVOS</button>
                                 <button class="btn btn-light EnvRender" id="{{ $var }}">ENVIAR A RENDER </button>
                                 <button class="btn btn-light CambEstreq" id="{{ $var }}">CAMBIAR ESTADO</button>
-                                <button class="btn btn-light anularreq" id="{{ $var }}">ANULAR</button>
-                                <button class="btn btn-light FinalizarReq" id="{{ $var }}">FINALIZAR</button>
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="text-center col-12">
-                                <button class="btn btn-light SubirArchiv">SUBIR ARCHIVOS</button>
+                                <button class="btn btn-light anularreq" id="{{ $var }}">ANULAR</button>
+                                <button class="btn btn-light FinalizarReq" id="{{ $var }}">FINALIZAR</button>
                                 <button class="btn btn-light CambiarDiseñador" id="{{ $var }}">ASIGNAR/CAMBIAR DISEÑADOR</button>
                             </div>
                         </div>
@@ -216,15 +217,14 @@
                                     <div class="col-sm-6 invoice-col text-left">
                                         <address>
                                             <b>ARTICULO:</b> <label id="PDFarticulo"></label> <br>
-                                            <b>TAMAÑO:</b> <label id="PDFtamaño"></label><br>
                                             <b>RELIEVE:</b> <label id="PDFrelieve"></label> <br>
-                                            <b>MARCA:</b> <label id="PDFmarca"></label>
+                                            <b>MARCA:</b> <label id="PDFmarca"></label> <br>
+                                            <b>MEDIDA:</b> <a href="javascript:void(0)" id="PDFMedida"></a>
                                         </address>
                                     </div>
                                     <div class="col-sm-6 invoice-col text-left">
                                         <address>
                                             <b>VENDEDOR:</b> <label id="PDFvendedor"></label> <br>
-                                            <b>MATERIAL:</b> <label id="PDFmaterial"></label><br>
                                             <b>DISEÑADOR:</b> <label id="PDFdiseñador"></label> <br>
                                             <b>FECHA:</b> <label id="PDFfecha"></label>
                                         </address>
@@ -259,7 +259,7 @@
                                                     <b>PLANO  <a href="javascript:void(0)" class="UploadPlanoProp"> <i class="fas fa-file-upload"></i></a></b>
                                                 </td>
                                                 <td>
-                                                    <b>CARACTERISTICAS </b>
+                                                    <b>CARACTERISTICAS <a href="javascript:void(0)" class="Add_Caracteristicas"> <i class="fas fa-comment"></i></a></b>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -279,12 +279,130 @@
                             </section>
                         </div>
                     </div>
-                    <div class="modal-footer text-center">
-                        <button type="button" class="btn btn-light AprobarProp">Aprobar</button>
-                        <button type="button" class="btn btn-light RechazarProp">Rechazar</button>
-                        <button type="button" class="btn btn-light ImprimirPdf" id="ImprimirPdf">Imprimir</button>
+                    <div class="modal-footer">
+
+                        <div class="dropdown mr-1">
+                            <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
+                            <div class="dropdown-menu" aria-labelledby="Opciones_reque">
+                                <a class="dropdown-item AprobarProp" href="javascript:void(0);">Aprobar</a>
+                                <a class="dropdown-item RechazarProp" href="javascript:void(0);">Rechazar</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item FinalizarProp" href="javascript:void(0);">Finalizar</a>
+                                <a class="dropdown-item CrearMedida" href="javascript:void(0);">Crear Medida</a>
+                                <a class="dropdown-item EnviarParaAprobacion" href="javascript:void(0);">Enviar para aprobacion</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item ImprimirPdf" href="javascript:void(0);">Imprimir</a>
+                            </div>
+                        </div>
+
+
+
                         <button type="button" class="btn btn-light Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
+                        <div class="btn-group">
+                            <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a  href="javascript:void(0)" class="AprobarProp">Aprobar</a></li>
+                                <button type="button" class="btn btn-light AprobarProp">Aprobar</button>
+                                <button type="button" class="btn btn-light RechazarProp">Rechazar</button>
+                                <button type="button" class="btn btn-light FinalizarProp">Finalizar</button>
+                                <button type="button" class="btn btn-light CrearMedida">Crear Medida</button>
+                                <button type="button" class="btn btn-light ImprimirPdf" id="ImprimirPdf">Imprimir</button>
+                            </ul>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bd-example-modal-lg" id="medidamodal" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modelHeading"> </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="medidaForm" name="medidaForm" class="form-horizontal">
+                        <div class="modal-body">
+                            <input type="hidden" name="medida_id" id="medida_id">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-6 control-label">Linea:</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control" name="med_lineas_id" id="med_lineas_id">
+                                                @foreach ( $Lineas->get() as $index => $Linea)
+                                                    <option value="{{ $index }}" {{ old('med_lineas_id') == $index ? 'selected' : ''}}>
+                                                        {{ $Linea }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-3 control-label">Sublinea:</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control" name="med_sublineas_id" id="med_sublineas_id"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-6 control-label">Codigo:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="cod" name="cod" value=""  onkeyup="this.value=this.value.toUpperCase();">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="mm2" class="col-sm-6 control-label">Milimetros²:</label>
+                                        <div class="col-sm-12">
+                                            <input type="number" class="form-control" id="mm2" name="mm2" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="denominacion" class="col-sm-6 control-label">Denominacion:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="denominacion" name="denominacion" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="denominacion" class="col-sm-12 control-label">Unidad Medida:</label>
+                                        <div class="col-sm-12">
+                                            <select name="UndMedida" id="UndMedida" class="form-control UndMedida">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" id="campos" name="campos">
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-12 control-label">Comentarios:</label>
+                                        <div class="col-sm-12">
+                                            <textarea id="coments" name="coments" placeholder="Comentarios" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -320,8 +438,6 @@
                 var id = @json( $var );
                 var Username = @json( Auth::user()->name );
                 var Roll = @json( Auth::user()->app_roll );
-
-                console.log($('#Vendedor').html());
 
                 $('body').on('click','.newcoment',function () {
                     var id = $(this).attr('id');
@@ -679,7 +795,7 @@
                         },
                         rowCallback: function( row, data, index ) {
                             if (data.estado == 1) {
-                                $(row).find('td:eq(3)').html('Creada');
+                                $(row).find('td:eq(3)').html('Propuesta Creada');
                             }
                             if (data.estado == 2) {
                                 $(row).find('td:eq(3)').html('Enviado aprobacion');
@@ -885,6 +1001,7 @@
                             {
                                 html: '<form action="" id="FormTest"><label>Articulo:</label><br>' +
                                     '<input type="text" class="form-control" id="NewPropArticulo" placeholder="Escribe para buscar un articulo..."><br>' +
+                                    '<input type="hidden" class="form-control" id="NewPropArticuloDesc">' +
                                     '<label>Relieve:</label><br>' +
                                     '<select name="NewPropRelieve" id="NewPropRelieve" class="form-control">' +
                                     '<option value="" selected>Seleccione...</option>' +
@@ -904,6 +1021,7 @@
                                 preConfirm: function () {
                                     var array = {
                                         'Articulo': document.getElementById("NewPropArticulo").value,
+                                        'Cod_Art':  document.getElementById("NewPropArticuloDesc").value,
                                         'Relieve': document.getElementById("NewPropRelieve").value,
                                     };
                                     return array;
@@ -914,6 +1032,10 @@
                             },
                         ]).then((result) => {
                             if (result.value) {
+                            	var medida = result.value[0].Articulo;
+                                medida = medida.split(" ");
+                            	medida = medida[4];
+
                                 $.ajaxSetup({
                                     headers: {
                                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -923,7 +1045,7 @@
                                     url: '/GuardarPropuestaReq',
                                     type: 'post',
                                     data: {
-                                        result, id, Username, Nombre_vendedor
+                                        result, id, Username, Nombre_vendedor, medida
                                     },
                                     success: function () {
                                         $('.table').DataTable().destroy();
@@ -978,6 +1100,13 @@
                                 }
                             })
                         },
+                        focus: function (event, ui) {
+                            $('#NewPropArticuloDesc').val([ui.item.Cod_Art]);
+                          return true;
+                        },
+                        select: function (event, ui) {
+                            $('#NewPropArticuloDesc').val([ui.item.Cod_Art]);
+                        },
                         minlength: 2
                     });
                 });
@@ -1023,7 +1152,10 @@
                                     data: formData,
                                     processData: false,
                                     contentType: false,
-                                    success: function (resp) {
+                                    success: function (data) {
+                                        $('#PDFdibujo3d').html('');
+                                        console.log(data);
+                                        $('#PDFdibujo3d').append('<img src="../../'+ data.url + data.archivo + '" style="height: 240px; width: 331px">');
                                         Swal.fire('Subidos', 'Archivo subido con exito!', 'success');
                                     },
                                     error: function() {
@@ -1083,7 +1215,16 @@
                                     data: formData,
                                     processData: false,
                                     contentType: false,
-                                    success: function (resp) {
+                                    success: function (data) {
+                                        $('#PDFplano').html('');
+
+                                        if(data.archivo.substr(-3) == 'png'){
+                                            $('#PDFplano').append('<img src="../../'+ data.url + data.archivo + '" style="height: 240px; width: 331px">')
+                                        }
+                                        else{
+                                            $('#PDFplano').append('<a href="javascript:void(0)" id="'+data.archivo+'" class="VerPlanoPdfMod" ><i class="far fa-file-pdf fa-10x"></i><br><b><label for="">Clic para ver</label></b></a>');
+                                        }
+                                        console.log(data);
                                         Swal.fire('Subidos', 'Archivo subido con exito!', 'success');
                                     },
                                     error: function () {
@@ -1142,7 +1283,10 @@
                                     data: formData,
                                     processData: false,
                                     contentType: false,
-                                    success: function (resp) {
+                                    success: function (data) {
+                                        $('#PDFdibujo2d').html('');
+                                    	console.log(data);
+                                        $('#PDFdibujo2d').append('<img src="../../'+ data.url + data.archivo + '" style="height: 240px; width: 331px">');
                                         Swal.fire('Subido', 'Archivo subido con exito!', 'success');
                                     },
                                     error: function() {
@@ -1281,6 +1425,8 @@
                 });
 
                 var Prop;
+                var Codigo_base_propuesta = null;
+                var Descripcion_Producto = null;
                 $('body').on('click','.VerPropuest', function () {
                     Prop = $(this).attr('id');
                 	$.ajax({
@@ -1295,7 +1441,10 @@
                             $('#PDFnumeroprop').html(Prop);
                             $('#PDFarticulo').html(data.propuesta[0].articulo);
                             $('#PDFrelieve').html(data.propuesta[0].relieve);
+                            Codigo_base_propuesta =  data.propuesta[0].codigo_base;
+                            Descripcion_Producto = data.propuesta[0].articulo
                             $('#PDFmarca').html(data.encabezado[0].marca);
+                            $('#PDFMedida').html(data.propuesta[0].medida);
                             $('#PDFvendedor').html(data.vendedor_id[0].name);
                             $('#PDFdiseñador').html(data.diseñador_id[0].name);
                             $('#PDFfecha').html(data.encabezado[0].created_at);
@@ -1540,7 +1689,6 @@
                             	id: id
                             },
                             success: function (data) {
-                            	console.log(data.cant_prop);
                                 if(data.cant_prop == 0){
                                     Swal.fire(
                                         '¡Error!',
@@ -1551,7 +1699,7 @@
                                 else if(data.cant_prop_rec_apr != 0){
                                     Swal.fire(
                                         '¡Error!',
-                                        'Para poder finalizar este requerimiento todas las propuestas deben estar aprobadas o rechazadas.',
+                                        'Para poder finalizar este requerimiento todas las propuestas deben estar Finalizadas o Rechazadas.',
                                         'error'
                                     )
                                 }else{
@@ -1618,129 +1766,765 @@
                 });
 
                 $('.EnvRender').on('click', function () {
-                    $.ajax({
-                        type: 'get',
-                        url: '/ComprobarRender',
-                        data: {
-                        	id: id
-                        },
-                        success: function (data) {
-                            if(data[0].render == 1 && data[0].estado == 4){
-                                Swal.fire({
-                                    title: '¿Enviar a renderizar?',
-                                    text: "¡Este requerimiento sera enviado al area de renderizado..!",
-                                    icon: 'question',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                    cancelButtonColor: '#d33',
-                                    confirmButtonText: 'Si, enviar!',
-                                    cancelButtonText: 'Cancelar'
-                                }).then((result) => {
-                                    if (result.value) {
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                            }
-                                        });
-                                        $.ajax({
-                                            type: "post",
-                                            url: "/EnviarRender",
-                                            data: id,
-                                            success: function () {
-                                                Obtenerdatos();
-                                                Swal.fire({
-                                                    title: 'Enviado!',
-                                                    text: 'El requerimiento fue enviado a renderizar!.',
-                                                    icon: 'success',
-                                                });
-                                                table.draw();
-                                            },
-                                            error: function (data) {
-                                                Swal.fire(
-                                                    'Error!',
-                                                    'Hubo un error al enviar.',
-                                                    'error'
-                                                )
-                                            }
-                                        });
-                                    }else {
-                                        result.dismiss === Swal.DismissReason.cancel
-                                    }
-                                })
-                            }else if(data[0].render == 0 && data[0].estado == 4){
-                                Swal.fire({
-                                    title: '¿Esta seguro de enviar a renderizar?',
-                                    html: "El vendedor que creo este requerimiento no definio que debia llevar renderizado. <br>   ¿Esta seguro que desea continuar..?",
-                                    icon: 'question',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                    cancelButtonColor: '#d33',
-                                    confirmButtonText: 'Estoy seguro, enviar!',
-                                    cancelButtonText: 'Cancelar'
-                                }).then((result) => {
-                                    if (result.value) {
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                            }
-                                        });
-                                        $.ajax({
-                                            type: "post",
-                                            url: "/EnviarRender",
-                                            data: id,
-                                            success: function () {
-                                                Obtenerdatos();
-                                                Swal.fire({
-                                                    title: 'Enviado!',
-                                                    text: 'El requerimiento fue enviado a renderizar!.',
-                                                    icon: 'success',
-                                                });
-                                                table.draw();
-                                            },
-                                            error: function (data) {
-                                                Swal.fire(
-                                                    'Error!',
-                                                    'Hubo un error al enviar.',
-                                                    'error'
-                                                )
-                                            }
-                                        });
-                                    }else {
-                                        result.dismiss === Swal.DismissReason.cancel
-                                    }
-                                })
-                            }else{
-                                Swal.fire(
-                                    'Error!',
-                                    'No puedes enviar a renderizar un requerimiento si ya esta en estado "en render" o esta en un estado diferente a iniciado.',
-                                    'error'
-                                )
+                    if(Roll == 'admin_evpiu' || Roll == 'diseñador' && Username == $('#Vendedor').html()){
+                        $.ajax({
+                            type: 'get',
+                            url: '/ComprobarRender',
+                            data: {
+                                id: id
+                            },
+                            success: function (data) {
+                                if(data[0].render == 1 && data[0].estado == 4){
+                                    Swal.fire({
+                                        title: '¿Enviar a renderizar?',
+                                        text: "¡Este requerimiento sera enviado al area de renderizado..!",
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Si, enviar!',
+                                        cancelButtonText: 'Cancelar'
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            $.ajaxSetup({
+                                                headers: {
+                                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                }
+                                            });
+                                            $.ajax({
+                                                type: "post",
+                                                url: "/EnviarRender",
+                                                data: {id: id},
+                                                success: function () {
+                                                    Obtenerdatos();
+                                                    Swal.fire({
+                                                        title: 'Enviado!',
+                                                        text: 'El requerimiento fue enviado a renderizar!.',
+                                                        icon: 'success',
+                                                    });
+                                                    table.draw();
+                                                },
+                                                error: function (data) {
+                                                    Swal.fire(
+                                                        'Error!',
+                                                        'Hubo un error al enviar.',
+                                                        'error'
+                                                    )
+                                                }
+                                            });
+                                        }else {
+                                            result.dismiss === Swal.DismissReason.cancel
+                                        }
+                                    })
+                                }else if(data[0].render == 0 && data[0].estado == 4){
+                                    Swal.fire({
+                                        title: '¿Esta seguro de enviar a renderizar?',
+                                        html: "El vendedor que creo este requerimiento no definio que debia llevar renderizado. <br>   ¿Esta seguro que desea continuar..?",
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Estoy seguro, enviar!',
+                                        cancelButtonText: 'Cancelar'
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            $.ajaxSetup({
+                                                headers: {
+                                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                }
+                                            });
+                                            $.ajax({
+                                                type: "post",
+                                                url: "/EnviarRender",
+                                                data: {
+                                                    id: id
+                                                },
+                                                success: function () {
+                                                    Obtenerdatos();
+                                                    Swal.fire({
+                                                        title: 'Enviado!',
+                                                        text: 'El requerimiento fue enviado a renderizar!.',
+                                                        icon: 'success',
+                                                    });
+                                                    table.draw();
+                                                },
+                                                error: function (data) {
+                                                    Swal.fire(
+                                                        'Error!',
+                                                        'Hubo un error al enviar.',
+                                                        'error'
+                                                    )
+                                                }
+                                            });
+                                        }else {
+                                            result.dismiss === Swal.DismissReason.cancel
+                                        }
+                                    })
+                                }else{
+                                    Swal.fire(
+                                        'Error!',
+                                        'No puedes enviar a renderizar un requerimiento si ya esta en estado "en render" o esta en un estado diferente a iniciado.',
+                                        'error'
+                                    )
+                                }
                             }
-                        }
-                    })
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
+
+                $('.FinalizarProp').on('click',function () {
+                    if(Roll == 'admin_evpiu' || Roll == 'diseñador' && Username == $('#Diseñador').html()){
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            type: 'get',
+                            url: '/ComprobarEstadoPropuesta',
+                            data: {Prop: Prop},
+                            success: function (data) {
+                                if(data[0].estado == 4){
+                                    Swal.fire({
+                                        title: '¿Esta seguro de finalizar esta propuesta?',
+                                        html: "Se creará un nuevo arte y producto, esta acción es irreversible <br> ¿Esta seguro de continuar?",
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Estoy seguro!',
+                                        cancelButtonText: 'Cancelar'
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            $.ajaxSetup({
+                                                headers: {
+                                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                }
+                                            });
+                                            $.ajax({
+                                                type: "post",
+                                                url: "/FinalizaPropuesta",
+                                                data: {
+                                                    id: id
+                                                },
+                                                success: function () {
+                                                    Obtenerdatos();
+                                                    Swal.fire({
+                                                        title: 'Enviado!',
+                                                        text: 'La propuesta fue finalizada con exito!.',
+                                                        icon: 'success',
+                                                    });
+                                                    table.draw();
+                                                },
+                                                error: function (data) {
+                                                    Swal.fire(
+                                                        'Error!',
+                                                        'Hubo un error al enviar.',
+                                                        'error'
+                                                    )
+                                                }
+                                            });
+                                        }else {
+                                            result.dismiss === Swal.DismissReason.cancel
+                                        }
+                                    })
+                                }else{
+                                    Swal.fire(
+                                        'Error!',
+                                        'Solo puedes finalizar propuestas aprobadas por el vendedor.',
+                                        'error'
+                                    )
+                                }
+                            },
+                            error: function () {
+                                //
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
+
+                $('#PDFMedida').on('click', function () {
+                    if(Roll == 'admin_evpiu' || Roll == 'diseñador' && Username == $('#Diseñador').html()) {
+                        $.ajax({
+                            url: '/ObtenerMediasPorCodigoBase',
+                            tyoe: 'get',
+                            data: {
+                                Codigo_base_propuesta: Codigo_base_propuesta
+                            },
+                            success: function (data) {
+                                swal.fire({
+                                    icon: 'question',
+                                    title: '¿Cambiar Medida?',
+                                    text: 'Seleccione una medida',
+                                    input: 'select',
+                                    confirmButtonText: 'Aceptar',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    buttonsStyling: true,
+                                    showCancelButton: true,
+                                    inputOptions: data,
+                                    inputPlaceholder: 'Seleccione...',
+                                    inputValidator: function (value) {
+                                        if (value == '') {
+                                            return 'Debes seleccionar una opcion...'
+                                        }
+                                    },
+                                    preConfirm: function (value) {
+                                        return value;
+                                    },
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $.ajaxSetup({
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            }
+                                        });
+                                        $.ajax({
+                                            url: '/CambiarMedidaPropuesta',
+                                            type: 'post',
+                                            data: {
+                                                result, Prop, Descripcion_Producto
+                                            },
+                                            success: function (data) {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Guardardo',
+                                                    text: 'Medida cambiada con exito!',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Aceptar',
+                                                });
+                                                $('#PDFMedida').html(data.medida);
+                                                $('#PDFarticulo').html(data.producto);
+                                            },
+                                            error: function () {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error!',
+                                                    text: 'La solicitud no pudo ser procesada!',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Aceptar',
+                                                })
+                                            }
+                                        });
+                                    } else {
+                                        result.dismiss === Swal.DismissReason.cancel
+                                    }
+                                })
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
+
+                $('.CrearMedida').click(function () {
+                	alert('test');
+                    $('#saveBtn').val("create-medida");
+                    $('#medida_id').val('');
+                    $('#medidaForm').trigger("reset");
+                    $('#modelHeading').html("Nuevo");
+                    $('#medidamodal').modal('show');
+                    document.getElementById("cod").readOnly = true;
+                    document.getElementById("mm2").readOnly = true;
+                    document.getElementById("denominacion").readOnly = true;
+                });
+
+                $('#med_lineas_id').on('change', function () {
+                    var lineas_id = $(this).val();
+                    console.log(lineas_id);
+                    if ($.trim(lineas_id) != ''){
+                    	$.ajax({
+                            type: 'get',
+                            url: '/getsublineas',
+                            data: {
+                                lineas_id: lineas_id
+                            },
+                            success: function (data) {
+                                $('#med_sublineas_id').empty();
+                                $('#med_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
+                                $.each(data, function (index, value) {
+                                    $('#med_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
+                                })
+                            }
+                        });
+                    }
+                });
+
+                $('#med_sublineas_id').on('change', function () {
+                    var sublineas_id = $(this).val();
+                    $('#campos').html('');
+                    if ($.trim(sublineas_id) != ''){
+
+                        $.ajax({
+                            type: 'get',
+                            url: '/getCaractUnidadMedidas',
+                            data: {
+                                sublineas_id: sublineas_id
+                            },
+                            success: function (data) {
+                            	console.log(data);
+                                $('#campos').append("<div class='col-sm-6'> <div class='form-group'>" +
+                                    "<label for='"+ data +"' class='col-sm-6 control-label'>"+ data +":</label>" +
+                                    "<div class='col-sm-12'>" +
+                                    "<input type='text' class='form-control "+ data +"' id='"+ data +"' name='"+ data +"' value='' onkeyup='this.value=this.value.toUpperCase();'>" +
+                                    "</div></div></div>"
+                                );
+
+                            }
+                        });
+
+                        $.ajax({
+                            type: 'get',
+                            url: '/getUnidadMedidasMed',
+                            data: {
+                                Sub_id: sublineas_id
+                            },
+                            success: function (data) {
+                                $('#UndMedida').empty();
+                                $('#UndMedida').append("<option value=''>Seleccionar una Medida...</option>");
+                                $.each(data, function (index, value) {
+                                    $('#UndMedida').append("<option value='" + index + "'>"+ value +"</option>")
+
+                                })
+                            }
+                        });
+                    }
+                });
+
+                jQuery.extend(jQuery.validator.messages, {
+                    required: "Este campo es obligatorio.",
+                    remote: "Este codigo ya existe.",
+                    email: "Por favor, escribe una dirección de correo válida",
+                    url: "Por favor, escribe una URL válida.",
+                    date: "Por favor, escribe una fecha válida.",
+                    dateISO: "Por favor, escribe una fecha (ISO) válida.",
+                    number: "Por favor, escribe un número entero válido.",
+                    digits: "Por favor, escribe sólo dígitos.",
+                    creditcard: "Por favor, escribe un número de tarjeta válido.",
+                    equalTo: "Por favor, escribe el mismo valor de nuevo.",
+                    accept: "Por favor, escribe un valor con una extensión aceptada.",
+                    maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+                    minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+                    rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+                    range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+                    max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+                    min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
+                    selectcheck: "Por favor seleccione una opcion!"
+                });
+
+                jQuery.validator.addMethod("selectcheck", function(value){
+                    return (value != '');
+                }, "Por favor, seleciona una opcion.");
+
+                $("#medidaForm").validate({
+                    ignore: "",
+                    rules: {
+                        med_lineas_id:{
+                            selectcheck: true
+                        },
+                        med_sublineas_id:{
+                            selectcheck: true
+                        },
+                        cod: {
+                            remote: {
+                                url: '/GetUniqueCodMed',
+                                type: 'POST',
+                                async: false,
+                            },
+                            minlength: 2,
+                            maxlength: 2,
+                            required: true
+                        },
+                        denominacion: "required",
+                    },
+                    highlight: function (element) {
+                        // Only validation controls
+                        $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+                    },
+                    unhighlight: function (element) {
+                        // Only validation controls
+                        $(element).closest('.form-control').removeClass('is-invalid');
+                    },
+                    submitHandler: function (form) {
+                        $.ajax({
+                            data: $('#medidaForm').serialize(),
+                            url: "/MedidasPost",
+                            type: "POST",
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#medidaForm').trigger("reset");
+                                $('#medidamodal').modal('hide');
+                                table.draw();
+                                toastr.success("Registro Guardado con Exito!");
+                            },
+                            error: function (data) {
+                                $('#saveBtn').html('Guardar Cambios');
+                            }
+                        });
+                    }
+                });
+
+                $('#medidamodal').on('show.bs.modal', function (event) {
+                    $('#saveBtn').html('Guardar');
+                    $('.form-control').removeClass('is-invalid');
+                    $('.error').remove();
+                    $('#campos').html('');
 
                 });
-                ComprobarButtons();
-                function ComprobarButtons(){
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                function calcular(){
+
+                    var diametro = $('#Diametro').val();
+                    var Umedida = $('#UndMedida').val();
+                    var Altura = $('#Altura').val();
+                    var Base = $('#Base').val();
+                    var resultado = 0;
+                    var sub;
+                    var totalMayor;
+                    var totalMenor;
+
+                    if (diametro != null && Umedida == 'mm'){
+                        resultado =  Math.floor(diametro * diametro);
+                        sub = resultado.toString().substr(-2);
+                        totalMayor = (resultado - sub) + 100;
+                        totalMenor = resultado - sub;
+
+                        if (resultado < 100){
+                            $('#mm2').val(100);
                         }
-                    });
-                    $.ajax({
-                        type: 'get',
-                        url: '/ComprobarRender',
-                        data: {
-                            id: id
-                        },
+                        if (resultado > 100 && sub < 50){
+                            $('#mm2').val(totalMenor);
+                        }
+                        if (resultado > 100 && sub > 50){
+                            $('#mm2').val(totalMayor);
+                        }
+                    }
+
+                    if (diametro != null && Umedida == 'l'){
+                        var suma2 = ((diametro * 0.64) * (diametro * 0.64)) * 2 ;
+                        resultado = Math.floor(suma2);
+                        sub = resultado.toString().substr(-2);
+                        totalMayor = (resultado - sub) + 100;
+                        totalMenor = resultado - sub;
+
+                        if (resultado < 100){
+                            $('#mm2').val(100);
+                        }
+                        if (resultado > 100 && sub < 50){
+                            $('#mm2').val(totalMenor);
+                        }
+                        if (resultado > 100 && sub > 50){
+                            $('#mm2').val(totalMayor);
+                        }
+                    }
+
+                    if (diametro != null && Umedida == 'un'){
+                        var suma3 = ((diametro * 25.40) * (diametro * 25.40)) * 2 ;
+                        resultado = Math.floor(suma3);
+                        sub = resultado.toString().substr(-2);
+                        totalMayor = (resultado - sub) + 100;
+                        totalMenor = resultado - sub;
+
+                        if (resultado < 100){
+                            $('#mm2').val(100);
+                        }
+                        if (resultado > 100 && sub < 50){
+                            $('#mm2').val(totalMenor);
+                        }
+                        if (resultado > 100 && sub > 50){
+                            $('#mm2').val(totalMayor);
+                        }
+                    }
+
+
+                    if (Altura != null  && Base != null &&  diametro == null && Umedida == 'mm'){
+                        resultado =  Math.floor(Base * Altura);
+                        sub = resultado.toString().substr(-2);
+                        totalMayor = (resultado - sub) + 100;
+                        totalMenor = resultado - sub;
+
+                        if (resultado < 100){
+                            $('#mm2').val(100);
+                        }
+                        if (resultado > 100 && sub < 50){
+                            $('#mm2').val(totalMenor);
+                        }
+                        if (resultado > 100 && sub > 50){
+                            $('#mm2').val(totalMayor);
+                        }
+                    }
+
+                    if (Altura != null  && Base != null &&  diametro == null && Umedida == 'l'){
+                        var suma5 = ((Base * 0.64) * (Altura * 0.64)) * 2;
+                        resultado = Math.floor(suma5);
+                        sub = resultado.toString().substr(-2);
+                        totalMayor = (resultado - sub) + 100;
+                        totalMenor = resultado - sub;
+
+                        if (resultado < 100){
+                            $('#mm2').val(100);
+                        }
+                        if (resultado > 100 && sub < 50){
+                            $('#mm2').val(totalMenor);
+                        }
+                        if (resultado > 100 && sub > 50){
+                            $('#mm2').val(totalMayor);
+                        }
+                    }
+
+                    if (Altura != null  && Base != null &&  diametro == null && Umedida == 'un'){
+                        var suma6 = ((Base * 25.40) * (Altura * 25.40)) * 2;
+                        resultado = Math.floor(suma6);
+                        sub = resultado.toString().substr(-2);
+                        totalMayor = (resultado - sub) + 100;
+                        totalMenor = resultado - sub;
+
+                        if (resultado < 100){
+                            $('#mm2').val(100);
+                        }
+                        if (resultado > 100 && sub < 50){
+                            $('#mm2').val(totalMenor);
+                        }
+                        if (resultado > 100 && sub > 50){
+                            $('#mm2').val(totalMayor);
+                        }
+                    }
+                }
+
+                function denominacion(){
+                    var Diametro = $('#Diametro').val();
+                    var Perforacion = $('#Perforacion').val();
+                    var Lado = $('#Lado').val();
+                    var Espesor = $('#Espesor').val();
+
+                    var Base = $('#Base').val();
+                    var Altura = $('#Altura').val();
+                    var Pestaña = $('#Pestaña').val();
+                    var medida = $('#UndMedida').val();
+
+                    var D = null;
+                    var B = null;
+
+                    /*DIAMETRO*/
+                    if (Diametro != null && Base == null && Altura == null){
+                        D = 'D:'+Diametro +medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO PERFORACION*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion != null){
+                        D = 'D:'+Diametro+'P:'+Perforacion+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO PERFORACION LADO*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion != null && Lado != null){
+                        D = 'D:'+Diametro+'P:'+Perforacion+'L:'+Lado+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO PERFORACION LADO ESPESOR*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion != null && Lado != null && Espesor != null){
+                        D = 'D:'+Diametro+'P:'+Perforacion+'L:'+Lado+'E:'+Espesor+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO PERFORACION LADO ESPESOR PESTAÑA*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion != null && Lado != null && Espesor != null && Pestaña != null){
+                        D = 'D:'+Diametro+'P:'+Perforacion+'L:'+Lado+'E:'+Espesor+'PS:'+Pestaña+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO LADO */
+                    if (Diametro != null && Base == null && Altura == null && Perforacion == null && Lado != null && Espesor == null){
+                        D = 'D:'+Diametro+'L:'+Lado+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO LADO ESPESOR*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion == null && Lado != null && Espesor != null){
+                        D = 'D:'+Diametro+'L:'+Lado+'E:'+Espesor+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO LADO ESPESOR PESTAÑA*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion == null && Lado != null && Espesor != null && Pestaña != null){
+                        D = 'D:'+Diametro+'L:'+Lado+'E:'+Espesor+'PS:'+Pestaña+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO ESPESOR*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion == null && Lado == null && Espesor != null){
+                        D = 'D:'+Diametro+'E:'+Espesor+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO ESPESOR PESTAÑA*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion == null && Lado == null && Espesor != null && Pestaña != null){
+                        D = 'D:'+Diametro+'E:'+Espesor+'PS:'+Pestaña+medida;
+                    }
+
+                    /*DIAMETRO PESTAÑA*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion == null && Lado == null && Espesor == null && Pestaña != null){
+                        D = 'D:'+Diametro+'PS:'+Pestaña+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO PERFORACION ESPESOR*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion != null && Lado == null && Espesor != null && Pestaña == null){
+                        D = 'D:'+Diametro+'P:'+Perforacion+'PS:'+Espesor+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    /*DIAMETRO PERFORACION ESPESOR  PESTAÑA*/
+                    if (Diametro != null && Base == null && Altura == null && Perforacion != null && Lado == null && Espesor != null && Pestaña != null){
+                        D = 'D:'+Diametro+'P:'+Perforacion+'E:'+Espesor+'PS:'+Pestaña+medida;
+                        $('#denominacion').val(D);
+                    }
+
+                    if (Diametro == null && Base != null && Altura != null){
+                        B = 'B:'+Base+'A:'+Altura+medida;
+                        $('#denominacion').val(B);
+                    }
+
+                    if (Diametro == null && Base != null && Altura != null && Espesor != null){
+                        B = 'B:'+Base+'A:'+Altura+'E:'+Espesor+medida;
+                        $('#denominacion').val(B);
+                    }
+
+                    if (Diametro == null && Base != null && Altura != null && Espesor != null && Pestaña != null){
+                        B = 'B:'+Base+'A:'+Altura+'E:'+Espesor+'PS:'+Pestaña+medida;
+                        $('#denominacion').val(B);
+                    }
+
+                    if (Diametro == null && Base != null && Altura != null && Espesor == null && Pestaña != null){
+                        B = 'B:'+Base+'A:'+Altura+'PS:'+Pestaña+medida;
+                        $('#denominacion').val(B);
+                    }
+                }
+
+                $('body').on("keyup",'.Base', function(){
+                    calcular();
+                    denominacion();
+                });
+
+                $('body').on("keyup",'.Altura', function(){
+                    calcular();
+                    denominacion();
+                });
+
+                $('body').on("keyup",'.Diametro', function(){
+                    calcular();
+                    denominacion();
+                });
+
+                $('body').on("keyup",'.Perforacion', function(){
+                    denominacion();
+                });
+
+                $('body').on("keyup",'.Pestaña', function(){
+                    denominacion();
+                });
+
+                $('body').on("change",'.UndMedida', function(){
+                    ObtenerCodid();
+                    denominacion();
+                    calcular();
+
+
+                });
+
+                var datos;
+
+                function ObtenerDatos(){
+                    jQuery.ajax({
+                        url: "/sublineasUltimoId",
+                        type: "get",
+                        dataType: 'json',
                         success: function (data) {
-                        	console.log(data[0].estado);
-                            if(data[0].estado == 4){
-                                document.getElementsByClassName('.EnvRender').style.visibility = 'hidden';
-                            }
-                        }
+                            datos = [data][0];
+                            OriginalValue();
+                        },
                     });
                 }
+
+                var codID;
+
+                function ObtenerCodid(){
+                    jQuery.ajax({
+                        url: "/UltimoCodId",
+                        type: "get",
+                        dataType: 'json',
+                        success: function (data) {
+                            codID = [data][0];
+                            ObtenerDatos();
+                        },
+                    });
+                }
+
+                function OriginalValue(){
+                    var incremental     = 0;
+                    var charStringRange = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var vectorc         = [];
+                    var t1              = 0;
+                    var numerof         = 0;
+                    var OriginalProductCodes =  datos;
+                    var OriginalProductCodes2 = codID;
+
+                    for (var f = 0; f < OriginalProductCodes.length; f++) {
+
+                        if (OriginalProductCodes2  == OriginalProductCodes[f] && OriginalProductCodes[f]){
+                            var cadena = OriginalProductCodes[f];
+
+                            var text2  = cadena.split('').reverse().join('');
+                            text2      = text2.split('');
+
+                            for (var v2 = 0; v2 < 2; v2++) {
+                                for (var i = 0; i < 36; i++) {
+                                    if (text2[v2] == charStringRange[i]) {
+                                        break;
+                                    }
+                                }
+                                numerof += i*Math.pow(36,v2);
+                            }
+                            vectorc[t1] = numerof;
+                            t1++;
+                            numerof = 0;
+                        }
+                    }
+
+                    maxvector = Math.max.apply(Math,vectorc); //saca el valor maximo de un arreglo
+                    if (maxvector >= 0) {
+                        incremental = maxvector + 1;
+                    }
+                    var text = '';
+                    var incretemp = incremental;
+                    for (var i = 0; i < 2; i++){
+                        incretemp = Math.floor(incretemp)/36;
+                        text += charStringRange.charAt(Math.round((incretemp - Math.floor(incretemp))*36));
+                    }
+                    text = text.split('').reverse().join('');
+                    $('#cod').val(text);
+                }
+
+                $('#Opciones_reque').dropdown();
             });
         </script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>

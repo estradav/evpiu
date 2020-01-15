@@ -256,6 +256,11 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/EnviarRender','RequerimientosController@EnviarRender');
 
 
+    Route::get('/ComprobarEstadoPropuesta','RequerimientosController@ComprobarEstadoPropuesta');
+    Route::post('/FinalizaPropuesta','RequerimientosController@FinalizaPropuesta');
+    Route::get('/ObtenerMediasPorCodigoBase','RequerimientosController@ObtenerMediasPorCodigoBase');
+    Route::post('/CambiarMedidaPropuesta','RequerimientosController@CambiarMedidaPropuesta');
+
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/
 
 

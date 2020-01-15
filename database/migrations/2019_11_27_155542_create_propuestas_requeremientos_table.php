@@ -17,7 +17,9 @@ class CreatePropuestasRequeremientosTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('idRequerimiento');
             $table->string('articulo');
+            $table->string('codigo_base');
             $table->string('relieve');
+            $table->string('medida');
             $table->string('usuario');
             $table->string('estado');
             $table->unsignedBigInteger('diseñador_id')->index()->nullable();

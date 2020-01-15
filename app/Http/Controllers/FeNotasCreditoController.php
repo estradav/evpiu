@@ -32,9 +32,9 @@ class FeNotasCreditoController extends Controller
                         'CIEV_V_FE_FacturasTotalizadas.motivo',
                         'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente',
                         'CIEV_V_FE.codigo_alterno as cod_alter')
-                    ->where('CIEV_V_FacturasTotalizadas.tipodoc','=','CR')
+                    ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc','=','CR')
                     ->whereBetween('fecha', array($request->from_date, $request->to_date))
-                    ->orderBy('CIEV_V_FacturasTotalizadas.numero', 'asc')
+                    ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')
                     ->get();
             }else {
                 $data = DB::connection('MAX')

@@ -500,6 +500,7 @@
                         var producto = $('#CodReqDescription').val();
                         var vendedor = $('#NewRequirementVendedor').val();
                         var informacion = $('#NewRequirementNewInfo').val();
+                        var medida = producto.split(" ");
 
                         $.ajaxSetup({
                             headers: {
@@ -515,7 +516,8 @@
                                 Vendedor: vendedor,
                                 Informacion: informacion,
                                 Render: render,
-                                Creado: Username
+                                Creado: Username,
+                                Medida: medida[4]
                             },
                             url: "/NewRequerimiento",
                             type: "POST",
