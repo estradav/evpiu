@@ -462,27 +462,38 @@ $(document).ready(function () {
                 dataType: 'json', // importante para que
                 data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
                 url: '/FacturaElectronicaWebService',
-                success: function ( data) {
-                    console.log(data);
+                success: function (data) {
+                    $('#test').html('');
+                    var i = 0;
+                    $(data).each(function () {
+                        console.log(data);
+                        var estado;
+
+                        if (data[i].success == true){
+                            estado = '<label class="text-success">Cargado con exito!</label>'
+                        }else{
+                            estado = '<label class="text-danger"> Con errores </label>'
+                        }
+
+                        $('#test').append('<b><label>Estado de carga: </label></b>  <label>'+ estado +'</label> <br>' +
+                            '<b><label>Mensaje: </label></b>  <label>'+ data[i].msg +'</label>');
+                        i++;
+                    });
+
+
                     sweetAlert.close();
-                    if (data.success == false){
-                        Swal.fire({
-                            title: 'Error!',
-                            html: data.msg,
-                            icon: 'success',
-                            confirmButtonText: 'Aceptar',
-                        });
-                    }else{
-                        Swal.fire({
-                            title: 'Terminado!',
-                            html: 'Facturas enviadas con exito!.',
-                            icon: 'success',
-                            confirmButtonText: 'Aceptar',
-                        });
-                    }
+
+                    Swal.fire({
+                        backdrop: true,
+                        title: 'Terminado!',
+                        html: $('#test').html(),
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                    })
+
 
                 },
-                error: function () {
+                error: function (data) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
