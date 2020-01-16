@@ -237,6 +237,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
     Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
     Route::post('/FacturaElectronicaWebService','FeFacturasController@FacturasWebService');
+    Route::post('/DescargarVersionGrafica','FeFacturasController@DescargarVersionGrafica');
+
 
 
     Route::post('/RechazarPropuesta','RequerimientosController@RechazarPropuesta');
@@ -260,6 +262,7 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/FinalizaPropuesta','RequerimientosController@FinalizaPropuesta');
     Route::get('/ObtenerMediasPorCodigoBase','RequerimientosController@ObtenerMediasPorCodigoBase');
     Route::post('/CambiarMedidaPropuesta','RequerimientosController@CambiarMedidaPropuesta');
+
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/
 

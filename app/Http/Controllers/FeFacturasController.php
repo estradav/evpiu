@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use XMLWriter;
@@ -66,7 +67,8 @@ class FeFacturasController extends Controller
             }
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/fe/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>'.'</div>';
+                    $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/fe/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>';
+                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download-vg" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>'.'</div>';
                     return $btn;
                 })
                 ->addColumn('selectAll', function($row){
@@ -1756,9 +1758,6 @@ class FeFacturasController extends Controller
 
             $cadenaXML = $objetoXML->outputMemory();
 
-            file_put_contents('XML/Facturacion_electronica_Facturas.xml', $cadenaXML);
-
-            $file = file_get_contents('XML/Facturacion_electronica_Facturas.xml');
 
             $Base_64 = base64_encode($cadenaXML);
 
@@ -1799,9 +1798,79 @@ class FeFacturasController extends Controller
             $resultados[] = json_decode($return->return);
 
 
+            $params = array(
+                'token' => $token
+            );
+
+            $logout = $client->cerrarSesion($params);
+            $respuesta = json_decode($logout->return);
 
         }
 
+
+        foreach ($resultados as $result){
+            if ($result->success == true){
+                DB::table('registro_facturacion_electronica')->updateOrInsert(['numero_factura'    => $result->data[0]->numero,],[
+                    'numero_factura'    => $result->data[0]->numero,
+                    'id_factible'       => $result->data[0]->idDocumentoElectronico,
+                    'usuario'           => $request->username,
+                    'created_at'        => Carbon::now(),
+                    'updated_at'        => Carbon::now()
+                ]);
+            }
+        }
+
         return response()->json($resultados);
+    }
+
+    public function DescargarVersionGrafica(Request $request)
+    {
+        $Numero_Factura = $request->id;
+
+        $idDocumentoElectronico = DB::table('registro_facturacion_electronica')
+            ->where('numero_factura','=',$Numero_Factura)
+            ->select('id_factible')->get();
+
+
+        $login1 = "jacanasv";
+        $password = "Menteslocas0906*";
+        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+        $client = new SoapClient($wsdl_url);
+        $client->__setLocation($wsdl_url);
+
+        // Inicio de sesion
+        $params = array(
+            'login' => $login1,
+            'password' => $password
+        );
+
+
+        $auth = $client->autenticar($params);
+        $respuesta = json_decode($auth->return);
+        $token = $respuesta->data->salida;
+
+
+
+        // Lista los  tipos de persona de la DIAN
+        $params = array(
+            'token'                     => $token,
+            'iddocumentoelectronico'    => $idDocumentoElectronico[0]->id_factible,
+        );
+
+        $return = $client->descargarDocumentoElectronico_VersionGrafica($params);
+
+
+        $resultados = json_decode($return->return);
+
+
+        //cerramos sesion
+        $params = array(
+            'token' => $token
+        );
+        $logout = $client->cerrarSesion($params);
+        $respuesta = json_decode($logout->return);
+
+        return response()->json($resultados->data->salida);
+
     }
 }
