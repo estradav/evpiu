@@ -282,7 +282,7 @@
                     <div class="modal-footer">
 
                         <div class="dropdown mr-1">
-                            <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
+                            <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-primary dropdown-toggle">Opciones <span class="caret"></span></button>
                             <div class="dropdown-menu" aria-labelledby="Opciones_reque">
                                 <a class="dropdown-item AprobarProp" href="javascript:void(0);">Aprobar</a>
                                 <a class="dropdown-item RechazarProp" href="javascript:void(0);">Rechazar</a>
@@ -298,7 +298,7 @@
 
 
                         <button type="button" class="btn btn-light Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
-                        <div class="btn-group">
+                        <div class="btn-group" style="display: none !important;">
                             <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                                 <li><a  href="javascript:void(0)" class="AprobarProp">Aprobar</a></li>
@@ -435,6 +435,11 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
                 var id = @json( $var );
                 var Username = @json( Auth::user()->name );
                 var Roll = @json( Auth::user()->app_roll );
@@ -2035,7 +2040,6 @@
                 });
 
                 $('.CrearMedida').click(function () {
-                	alert('test');
                     $('#saveBtn').val("create-medida");
                     $('#medida_id').val('');
                     $('#medidaForm').trigger("reset");
@@ -2163,6 +2167,11 @@
                         $(element).closest('.form-control').removeClass('is-invalid');
                     },
                     submitHandler: function (form) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
                         $.ajax({
                             data: $('#medidaForm').serialize(),
                             url: "/MedidasPost",

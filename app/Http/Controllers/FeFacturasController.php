@@ -14,6 +14,9 @@ class FeFacturasController extends Controller
 {
     public function index(Request $request)
     {
+        $fromdate = Carbon::now()->format('Y-m-d 00:00:00');
+        $todate = Carbon::now()->format('Y-m-d 23:59:59');
+
         if (request()->ajax()) {
             if (!empty($request->from_date)) {
                 $data = DB::connection('MAX')->table('CIEV_V_FE_FacturasTotalizadas')
@@ -62,7 +65,9 @@ class FeFacturasController extends Controller
                         'CIEV_V_FE.apellidos as apellidos',
                         'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente')
                     ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc', '=', 'CU')
-                    ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')->take(100)
+                    ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')
+                    ->whereBetween('fecha', array($fromdate, $todate))
+
                     ->get();
             }
             return datatables::of($data)
@@ -1807,7 +1812,6 @@ class FeFacturasController extends Controller
 
         }
 
-
         foreach ($resultados as $result){
             if ($result->success == true){
                 DB::table('registro_facturacion_electronica')->updateOrInsert(['numero_factura'    => $result->data[0]->numero,],[
@@ -1819,7 +1823,6 @@ class FeFacturasController extends Controller
                 ]);
             }
         }
-
         return response()->json($resultados);
     }
 
@@ -1844,11 +1847,9 @@ class FeFacturasController extends Controller
             'password' => $password
         );
 
-
         $auth = $client->autenticar($params);
         $respuesta = json_decode($auth->return);
         $token = $respuesta->data->salida;
-
 
 
         // Lista los  tipos de persona de la DIAN
@@ -1859,9 +1860,7 @@ class FeFacturasController extends Controller
 
         $return = $client->descargarDocumentoElectronico_VersionGrafica($params);
 
-
         $resultados = json_decode($return->return);
-
 
         //cerramos sesion
         $params = array(
