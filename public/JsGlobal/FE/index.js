@@ -286,7 +286,6 @@ $(document).ready(function () {
                     var req = new XMLHttpRequest();
                     req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
                     req.responseType = "blob";
-                    console.log(req);
                     req.onload = function (event) {
                         var blob = req.response;
                         var link=document.createElement('a');
@@ -319,7 +318,7 @@ $(document).ready(function () {
         $(".test").prop("checked", this.checked);
     });
 
-// if all checkbox are selected, check the selectall checkbox and viceversa
+    // if all checkbox are selected, check the selectall checkbox and viceversa
     $(".test").on("click", function() {
         if ($(".test").length == $(".test:checked").length) {
             $("#selectAll").prop("checked", true);
@@ -460,13 +459,14 @@ $(document).ready(function () {
                 cache: false,
                 type: 'post',
                 dataType: 'json', // importante para que
-                data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
+                data: {
+                    selected: JSON.stringify(selected),
+                }, // jQuery convierta el array a JSON
                 url: '/FacturaElectronicaWebService',
                 success: function (data) {
                     $('#test').html('');
                     var i = 0;
                     $(data).each(function () {
-                        console.log(data);
                         var estado;
 
                         if (data[i].success == true){
@@ -508,6 +508,53 @@ $(document).ready(function () {
                 text: 'Debes seleccionar al menos una factura...!',
             });
         return false;
+    });
+
+    $('body').on('click','.download-vg', function () {
+        var id = this.id;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'post',
+            url: '/DescargarVersionGrafica',
+            data: {
+               id: id
+            },
+            success: function (data) {
+                var base64str = data;
+
+                // decode base64 string, remove space for IE compatibility
+                var binary = atob(base64str.replace(/\s/g, ''));
+                var len = binary.length;
+                var buffer = new ArrayBuffer(len);
+                var view = new Uint8Array(buffer);
+                for (var i = 0; i < len; i++) {
+                    view[i] = binary.charCodeAt(i);
+                }
+
+                // create the blob object with content-type "application/pdf"
+                var blob = new Blob( [view], { type: "application/pdf" });
+                var link=document.createElement('a');
+                link.href=window.URL.createObjectURL(blob);
+                let current_datetime = new Date();
+               // let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
+                link.download="Factura_Electronica.pdf";
+                link.click();
+
+
+            },
+            error: function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error en la Descarga...',
+                    text: 'Hubo un error al descargar el pdf de esta factura...!',
+                });
+            }
+        });
     })
 });
 
