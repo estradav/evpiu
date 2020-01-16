@@ -262,6 +262,11 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/FinalizaPropuesta','RequerimientosController@FinalizaPropuesta');
     Route::get('/ObtenerMediasPorCodigoBase','RequerimientosController@ObtenerMediasPorCodigoBase');
     Route::post('/CambiarMedidaPropuesta','RequerimientosController@CambiarMedidaPropuesta');
+    Route::post('/EnviarAprobarPropuesta','RequerimientosController@EnviarAprobarPropuesta');
+    Route::get('/ObtenerUltimoArte','RequerimientosController@ObtenerUltimoArte');
+    Route::get('/ObtenerArtes','RequerimientosController@ObtenerArtes');
+
+
 
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/

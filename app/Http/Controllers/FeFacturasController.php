@@ -195,8 +195,6 @@ class FeFacturasController extends Controller
                $id_total_impuesto_iva   = null;
                $factor_total            = null;
                $tarifa_unitaria_total   = null;
-               $total_valor_iva         = $subtotal_factura * 0.19;
-               $total_item_valor        = $subtotal_factura + $total_valor_iva;
                $Regalos                 = [];
                $RegalosString           = '';
 
@@ -219,7 +217,13 @@ class FeFacturasController extends Controller
                    $total_cargos        = number_format($encabezado->fletes,2,'.','') + number_format($encabezado->seguros,2,'.','');
                    $totalpagar          = (number_format($encabezado->bruto,2,'.','') - number_format($encabezado->descuento,2,'.','')) + number_format( $encabezado->iva,2,'.','');
                }
+
+
+
                $DescuentoTotalFactura   = ($descuento_factura / $bruto_factura )* 100;
+               $total_valor_iva         = $subtotal_factura * 0.19;
+               $total_item_valor        = $subtotal_factura + $total_valor_iva;
+
 
                //determina si la factura es exportacion o para venta nacional
 
@@ -1157,8 +1161,6 @@ class FeFacturasController extends Controller
                 $id_total_impuesto_iva   = null;
                 $factor_total            = null;
                 $tarifa_unitaria_total   = null;
-                $total_valor_iva         = $subtotal_factura * 0.19;
-                $total_item_valor        = $subtotal_factura + $total_valor_iva;
                 $Regalos                 = [];
                 $RegalosString           = '';
 
@@ -1182,7 +1184,8 @@ class FeFacturasController extends Controller
                     $totalpagar          = (number_format($encabezado->bruto,2,'.','') - number_format($encabezado->descuento,2,'.','')) + number_format( $encabezado->iva,2,'.','');
                 }
                 $DescuentoTotalFactura   = ($descuento_factura / $bruto_factura )* 100;
-
+                $total_valor_iva         = $subtotal_factura * 0.19;
+                $total_item_valor        = $subtotal_factura + $total_valor_iva;
                 //determina si la factura es exportacion o para venta nacional
 
                 if($encabezado->motivo == 27) {$tipo_fac_en = '02';}// exportaciones 27

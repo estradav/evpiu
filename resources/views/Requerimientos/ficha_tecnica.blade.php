@@ -443,6 +443,7 @@
                 var id = @json( $var );
                 var Username = @json( Auth::user()->name );
                 var Roll = @json( Auth::user()->app_roll );
+                var Url = window.location.href;
 
                 $('body').on('click','.newcoment',function () {
                     var id = $(this).attr('id');
@@ -1432,6 +1433,7 @@
                 var Prop;
                 var Codigo_base_propuesta = null;
                 var Descripcion_Producto = null;
+                var Value_Marca = null;
                 $('body').on('click','.VerPropuest', function () {
                     Prop = $(this).attr('id');
                 	$.ajax({
@@ -1447,7 +1449,8 @@
                             $('#PDFarticulo').html(data.propuesta[0].articulo);
                             $('#PDFrelieve').html(data.propuesta[0].relieve);
                             Codigo_base_propuesta =  data.propuesta[0].codigo_base;
-                            Descripcion_Producto = data.propuesta[0].articulo
+                            Descripcion_Producto = data.propuesta[0].articulo;
+                            Value_Marca = data.encabezado[0].marca
                             $('#PDFmarca').html(data.encabezado[0].marca);
                             $('#PDFMedida').html(data.propuesta[0].medida);
                             $('#PDFvendedor').html(data.vendedor_id[0].name);
@@ -1883,6 +1886,7 @@
                     }
                 });
 
+                var CodigoArte = null;
                 $('.FinalizarProp').on('click',function () {
                     if(Roll == 'admin_evpiu' || Roll == 'diseñador' && Username == $('#Diseñador').html()){
                         $.ajaxSetup({
@@ -1890,6 +1894,7 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         });
+                        ObtenerTodosLosArtes();
                         $.ajax({
                             type: 'get',
                             url: '/ComprobarEstadoPropuesta',
@@ -1916,10 +1921,9 @@
                                                 type: "post",
                                                 url: "/FinalizaPropuesta",
                                                 data: {
-                                                    id: id
+                                                    id, Prop, Username, CodigoArte
                                                 },
                                                 success: function () {
-                                                    Obtenerdatos();
                                                     Swal.fire({
                                                         title: 'Enviado!',
                                                         text: 'La propuesta fue finalizada con exito!.',
@@ -2456,8 +2460,6 @@
                     ObtenerCodid();
                     denominacion();
                     calcular();
-
-
                 });
 
                 var datos;
@@ -2475,7 +2477,6 @@
                 }
 
                 var codID;
-
                 function ObtenerCodid(){
                     jQuery.ajax({
                         url: "/UltimoCodId",
@@ -2534,6 +2535,133 @@
                 }
 
                 $('#Opciones_reque').dropdown();
+
+
+                $('.EnviarParaAprobacion').on('click', function () {
+                    if(Roll == 'admin_evpiu' || Roll == 'super_diseño' || Roll == 'diseñador' && Username == $('#Diseñador').html()){
+                        var id = $(this).attr('id');
+                        Swal.fire({
+                            title: '¿Enviar a aprobar?',
+                            text: "¡Esta propuesta sera enviada al vendedor para su aprobacion!",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Si, enviar!',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/EnviarAprobarPropuesta',
+                                    data:{ Prop, Nombre_vendedor, Username, Url, id},
+                                    success: function () {
+                                        // Obtenerdatos();
+                                        Swal.fire({
+                                            title: 'Completado!',
+                                            text: 'Propuesta enviada con exito.',
+                                            icon: 'success',
+                                        });
+                                        table.draw();
+                                    },
+                                    error: function () {
+                                        Swal.fire(
+                                            'Error al anular!',
+                                            'Hubo un error al anular.',
+                                            'error'
+                                        )
+                                    }
+                                });
+                            }else {
+                                result.dismiss === Swal.DismissReason.cancel
+                            }
+                        });
+                    }
+                    else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
+
+                var UltimoArte;
+                function ObtenerUltimoArte(){
+                    jQuery.ajax({
+                        url: "/ObtenerUltimoArte",
+                        type: "get",
+                        dataType: 'json',
+                        success: function (data) {
+                            UltimoArte = [data][0];
+                            GenerarConsecutivo();
+                        },
+                    });
+                }
+
+                var All_Artes;
+                function ObtenerTodosLosArtes(){
+                    jQuery.ajax({
+                        url: "/ObtenerArtes",
+                        type: "get",
+                        dataType: 'json',
+                        success: function (data) {
+                            All_Artes = [data][0];
+                            ObtenerUltimoArte();
+                        },
+                    });
+                }
+                function GenerarConsecutivo(){
+                    var incremental             = 0;
+                    var charStringRange         = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var vectorc                 = [];
+                    var t1                      = 0;
+                    var numerof                 = 0;
+                    var OriginalProductCodes    = All_Artes;
+                    var OriginalProductCodes2   = UltimoArte;
+
+                    for (var f = 0; f < OriginalProductCodes.length; f++) {
+                        if (OriginalProductCodes2  == OriginalProductCodes[f] && OriginalProductCodes[f]){
+                            var cadena = OriginalProductCodes[f];
+                            console.log(cadena);
+                            var text2  = cadena.split('').reverse().join('');
+                            text2      = text2.split('');
+
+                            for (var v2 = 0; v2 < 5; v2++) {
+                                for (var i = 0; i < 36; i++) {
+                                    if (text2[v2] == charStringRange[i]) {
+                                        break;
+                                    }
+                                }
+                                numerof += i*Math.pow(36,v2);
+                            }
+                            vectorc[t1] = numerof;
+                            t1++;
+                            numerof = 0;
+                        }
+                    }
+
+                    maxvector = Math.max.apply(Math,vectorc); //saca el valor maximo de un arreglo
+                    if (maxvector >= 0) {
+                        incremental = maxvector + 1;
+                    }
+                    var text = '';
+                    var incretemp = incremental;
+                    for (var i = 0; i < 5; i++){
+                        incretemp = Math.floor(incretemp)/36;
+                        text += charStringRange.charAt(Math.round((incretemp - Math.floor(incretemp))*36));
+                    }
+                    text = text.split('').reverse().join('');
+
+                    CodigoArte = Value_Marca.substr(0,1)+text
+                }
+
+
             });
         </script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
