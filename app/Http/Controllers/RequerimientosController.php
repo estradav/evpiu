@@ -716,9 +716,25 @@ class RequerimientosController extends Controller
 
     public function FinalizaPropuesta(Request $request)
     {
-        // pendientes: hay que permitir cambiar el producto en las propuestas
-        // almacenar el tañaño y poder editarlo
-        //
+        $Req = DB::table('encabezado_requerimientos')
+            ->where('id','=',$request->id)
+            ->get();
+
+
+        $Prop = DB::table('propuestas_requerimientos')
+            ->where('id','=', $request->Prop)
+            ->get();
+
+        DB::table('artes')->updateOrInsert(['codigo'   => $request->CodigoArte],[
+            'codigo'        => $request->CodigoArte,
+            'marca'         => $Req[0]->marca,
+            'producto'      => $Prop[0]->articulo,
+            'diseñador'     => $Req[0]->diseñador_id,
+            'vendedor'      => $Req[0]->vendedor_id,
+            'propuesta'     => $request->Prop,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now()
+        ]);
 
     }
 
@@ -764,11 +780,48 @@ class RequerimientosController extends Controller
         return response()->json(['medida' => $value, 'producto' =>  $Descripcion_Producto_String]);
     }
 
-    public function ObtenerImagenesIndividuales(Request $request)
+    public function EnviarAprobarPropuesta(Request $request)
     {
-        if ($request->Tipo_img == '2D'){
+        DB::table('propuestas_requerimientos')
+            ->where('idRequerimiento','=', $request->id)
+            ->where('id','=',$request->Prop)
+            ->update([
+                'estado' => '2'
+            ]);
 
+
+        $subject = "TIENE UNA PROPUESTA PENDIENTE POR APROBAR";
+        $for = "dcorrea@estradavelasquez.com";
+        Mail::send('mails.NewPropuestaMail',$request->all(), function($msj) use($subject,$for){
+            $msj->from("dcorrea@estradavelasquez.com","Test EV-PIU");
+            $msj->subject($subject);
+            $msj->to($for);
+        });
+    }
+
+
+    public function ObtenerUltimoArte(Request $request)
+    {
+        $value1 = DB::table('artes')->max('id');
+
+        $value = DB::table('artes')->where('id','=',$value1)->select('codigo')->get();
+        $Array =[];
+        foreach ($value as $v) {
+            $Array[] = $v->codigo;
         }
 
+        return response()->json($Array);
+    }
+
+    public function ObtenerArtes( Request $request)
+    {
+        if ($request->ajax()) {
+            $var = DB::table('artes')->select('codigo')->get();
+            $Array =[];
+            foreach ($var as $v) {
+                $Array[] = $v->codigo;
+            }
+            return response()->json($Array);
+        }
     }
 }
