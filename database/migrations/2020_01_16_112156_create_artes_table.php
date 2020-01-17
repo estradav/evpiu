@@ -18,6 +18,10 @@ class CreateArtesTable extends Migration
             $table->string('codigo');
             $table->string('marca');
             $table->string('producto');
+            $table->string('caracteristicas');
+            $table->string('2d');
+            $table->string('3d');
+            $table->string('plano');
             $table->string('diseñador');
             $table->string('vendedor');
             $table->string('propuesta');

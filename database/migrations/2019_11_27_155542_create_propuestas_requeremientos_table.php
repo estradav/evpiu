@@ -20,6 +20,7 @@ class CreatePropuestasRequeremientosTable extends Migration
             $table->string('codigo_base');
             $table->string('relieve');
             $table->string('medida');
+            $table->string('caracteristicas');
             $table->string('usuario');
             $table->string('estado');
             $table->unsignedBigInteger('diseñador_id')->index()->nullable();

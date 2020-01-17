@@ -62,6 +62,7 @@
                                     <th>Descuento</th>
                                     <th>IVA</th>
                                     <th>Motivo</th>
+                                    <th>Estado DIAN</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -130,6 +131,17 @@
             to {
                 transform: rotate(360deg);
             }
+        }
+
+        .preloader_datatable {
+            width: 35px;
+            height: 35px;
+            border: 7px solid #eee;
+            border-top: 7px solid #008000;
+            border-radius: 50%;
+            animation-name: girar;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
         }
     </style>
 

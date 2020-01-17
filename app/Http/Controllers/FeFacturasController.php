@@ -80,7 +80,11 @@ class FeFacturasController extends Controller
                     $btn = '<input type="checkbox" class="checkboxes test" id="'.$row->id.'" name="'.$row->id.'">';
                     return $btn;
                 })
-                ->rawColumns(['opciones','selectAll'])
+                ->addColumn('EstadoDian',function($row){
+                    $div = '<div class="container" style="align-items: center !important; margin-left: 2px; margin-right: 2px"><div class="preloader_datatable"></div>';
+                    return $div;
+                })
+                ->rawColumns(['opciones','selectAll','EstadoDian'])
                 ->make(true);
         }
         return view('FacturacionElectronica.Facturas.index');
@@ -1253,7 +1257,6 @@ class FeFacturasController extends Controller
                 $objetoXML->text($Configuracion[0]->fac_idreporte); // sumistrado por fenalco para version grafica
                 $objetoXML->endElement();
 
-
                 $objetoXML->startElement("fechadocumento");
                 $objetoXML->text($encabezado->fechadocumento);
                 $objetoXML->endElement();
@@ -1855,7 +1858,6 @@ class FeFacturasController extends Controller
         $token = $respuesta->data->salida;
 
 
-        // Lista los  tipos de persona de la DIAN
         $params = array(
             'token'                     => $token,
             'iddocumentoelectronico'    => $idDocumentoElectronico[0]->id_factible,
@@ -1874,5 +1876,52 @@ class FeFacturasController extends Controller
 
         return response()->json($resultados->data->salida);
 
+    }
+
+
+    public  function EstadoEnvioDianFacturacionElectronica(Request $request)
+    {
+        $Numero_Factura = $request->id;
+
+
+        $idDocumentoElectronico = DB::table('registro_facturacion_electronica')
+            ->where('numero_factura','=',$Numero_Factura)
+            ->select('id_factible')->get();
+
+
+        $login1 = "jacanasv";
+        $password = "Menteslocas0906*";
+        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+        $client = new SoapClient($wsdl_url);
+        $client->__setLocation($wsdl_url);
+
+
+        $params = array(
+            'login' => $login1,
+            'password' => $password
+        );
+
+        $auth = $client->autenticar($params);
+        $respuesta = json_decode($auth->return);
+        $token = $respuesta->data->salida;
+
+
+        $params = array(
+            'token'                     => $token,
+            'iddocumentoelectronico'    => $idDocumentoElectronico[0]->id_factible,
+        );
+
+        $return = $client->obtenerEnvioDian($params);
+
+        $resultados = json_decode($return->return);
+
+        //cerramos sesion
+        $params = array(
+            'token' => $token
+        );
+        $logout = $client->cerrarSesion($params);
+        $respuesta = json_decode($logout->return);
+
+        return response()->json($resultados);
     }
 }
