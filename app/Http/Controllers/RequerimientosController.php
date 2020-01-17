@@ -714,30 +714,6 @@ class RequerimientosController extends Controller
         return response()->json($var);
     }
 
-    public function FinalizaPropuesta(Request $request)
-    {
-        $Req = DB::table('encabezado_requerimientos')
-            ->where('id','=',$request->id)
-            ->get();
-
-
-        $Prop = DB::table('propuestas_requerimientos')
-            ->where('id','=', $request->Prop)
-            ->get();
-
-        DB::table('artes')->updateOrInsert(['codigo'   => $request->CodigoArte],[
-            'codigo'        => $request->CodigoArte,
-            'marca'         => $Req[0]->marca,
-            'producto'      => $Prop[0]->articulo,
-            'diseñador'     => $Req[0]->diseñador_id,
-            'vendedor'      => $Req[0]->vendedor_id,
-            'propuesta'     => $request->Prop,
-            'created_at'    => Carbon::now(),
-            'updated_at'    => Carbon::now()
-        ]);
-
-    }
-
     public function ObtenerMediasPorCodigoBase(Request $request)
     {
         $Codigo_Base = $request->Codigo_base_propuesta;
@@ -790,15 +766,14 @@ class RequerimientosController extends Controller
             ]);
 
 
-        $subject = "TIENE UNA PROPUESTA PENDIENTE POR APROBAR";
+        /*$subject = "TIENE UNA PROPUESTA PENDIENTE POR APROBAR";
         $for = "dcorrea@estradavelasquez.com";
         Mail::send('mails.NewPropuestaMail',$request->all(), function($msj) use($subject,$for){
             $msj->from("dcorrea@estradavelasquez.com","Test EV-PIU");
             $msj->subject($subject);
             $msj->to($for);
-        });
+        });*/
     }
-
 
     public function ObtenerUltimoArte(Request $request)
     {
@@ -816,12 +791,76 @@ class RequerimientosController extends Controller
     public function ObtenerArtes( Request $request)
     {
         if ($request->ajax()) {
-            $var = DB::table('artes')->select('codigo')->get();
+            $var = DB::table('artes')
+                ->where('codigo','like',$request->Value_Marca.'%')
+                ->select('codigo')
+                ->get();
             $Array =[];
             foreach ($var as $v) {
                 $Array[] = $v->codigo;
             }
             return response()->json($Array);
         }
+    }
+
+    public function FinalizaPropuesta(Request $request)
+    {
+        $Req = DB::table('encabezado_requerimientos')
+            ->where('id','=',$request->id)
+            ->get();
+
+        $Prop = DB::table('propuestas_requerimientos')
+            ->where('id','=', $request->Prop)
+            ->get();
+
+        $Arch_Plano = [];
+        $Arch_3D = [];
+        $Arch_2D = [];
+
+        $Arch = DB::table('adjuntos_propuestas_requerimientos')
+            ->where('idPropuesta','=',$request->Prop)
+            ->get();
+
+        foreach ($Arch as $Arc){
+            if ($Arc->tipo == 'plano'){
+                $Arch_Plano[] = $Arc;
+            }
+            if ($Arc->tipo == '3D'){
+                $Arch_3D[] = $Arc;
+            }
+            if ($Arc->tipo == '2D'){
+                $Arch_2D[] = $Arc;
+            }
+        }
+
+
+
+        DB::table('artes')->updateOrInsert(['codigo'   => $request->CodigoArte],[
+            'codigo'            => $request->CodigoArte,
+            'marca'             => $Req[0]->marca,
+            'producto'          => $Prop[0]->articulo,
+            'caracteristicas'   => $Prop[0]->caracteristicas,
+            '2d'                => $Arch_2D[0]->url.$Arch_2D[0]->archivo,
+            '3d'                => $Arch_3D[0]->url.$Arch_3D[0]->archivo,
+            'plano'             => $Arch_Plano[0]->url.$Arch_Plano[0]->archivo,
+            'diseñador'         => $Req[0]->diseñador_id,
+            'vendedor'          => $Req[0]->vendedor_id,
+            'propuesta'         => $request->Prop,
+            'created_at'        => Carbon::now(),
+            'updated_at'        => Carbon::now(),
+        ]);
+
+    }
+
+    public function AgregarCaracteristicaPropuesta(Request $request)
+    {
+        DB::table('propuestas_requerimientos')->where('id','=',$request->prop)->update([
+           'caracteristicas'    => $request->coments
+        ]);
+
+        $var = $request->coments;
+
+        return response()->json($var);
+
     }
 }

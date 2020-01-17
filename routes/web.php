@@ -265,9 +265,11 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/EnviarAprobarPropuesta','RequerimientosController@EnviarAprobarPropuesta');
     Route::get('/ObtenerUltimoArte','RequerimientosController@ObtenerUltimoArte');
     Route::get('/ObtenerArtes','RequerimientosController@ObtenerArtes');
+    Route::post('/AgregarCaracteristicaPropuesta','RequerimientosController@AgregarCaracteristicaPropuesta');
 
 
 
+    Route::get('/EstadoEnvioDianFacturacionElectronica','FeFacturasController@EstadoEnvioDianFacturacionElectronica');
 
     /*    Route::get('/VerRequerimiento','RequerimientosController@VerRequerimiento');*/
 

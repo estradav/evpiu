@@ -4,12 +4,6 @@
 
 @section('module_title', 'Requerimiento #'.$var )
 
-{{--@section('subtitle', 'Modulo de administracion de requerimientos.')--}}
-{{--
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('fact_electr_facturas') }}
-@stop--}}
-
 @section('content')
     @inject('Lineas','App\Services\Lineas')
     @can('show_requerimientos.view')
@@ -280,7 +274,6 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-
                         <div class="dropdown mr-1">
                             <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-primary dropdown-toggle">Opciones <span class="caret"></span></button>
                             <div class="dropdown-menu" aria-labelledby="Opciones_reque">
@@ -294,8 +287,6 @@
                                 <a class="dropdown-item ImprimirPdf" href="javascript:void(0);">Imprimir</a>
                             </div>
                         </div>
-
-
 
                         <button type="button" class="btn btn-light Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
                         <div class="btn-group" style="display: none !important;">
@@ -455,7 +446,7 @@
                             input: 'textarea',
                             icon: 'info',
                             inputAttributes: {
-                                autocapitalize: 'off'
+                                autocapitalize: 'on'
                             },
                             showCancelButton: true,
                             confirmButtonText: 'Guardar!',
@@ -1160,7 +1151,6 @@
                                     contentType: false,
                                     success: function (data) {
                                         $('#PDFdibujo3d').html('');
-                                        console.log(data);
                                         $('#PDFdibujo3d').append('<img src="../../'+ data.url + data.archivo + '" style="height: 240px; width: 331px">');
                                         Swal.fire('Subidos', 'Archivo subido con exito!', 'success');
                                     },
@@ -1195,7 +1185,7 @@
                             showCancelButton: true,
                             input: 'file',
                             inputAttributes: {
-                                accept: 'image/*,application/pdf'
+                                accept: 'image/*'
                             },
                             onBeforeOpen: () => {
                                 $(".swal2-file").change(function () {
@@ -1230,7 +1220,6 @@
                                         else{
                                             $('#PDFplano').append('<a href="javascript:void(0)" id="'+data.archivo+'" class="VerPlanoPdfMod" ><i class="far fa-file-pdf fa-10x"></i><br><b><label for="">Clic para ver</label></b></a>');
                                         }
-                                        console.log(data);
                                         Swal.fire('Subidos', 'Archivo subido con exito!', 'success');
                                     },
                                     error: function () {
@@ -1291,7 +1280,6 @@
                                     contentType: false,
                                     success: function (data) {
                                         $('#PDFdibujo2d').html('');
-                                    	console.log(data);
                                         $('#PDFdibujo2d').append('<img src="../../'+ data.url + data.archivo + '" style="height: 240px; width: 331px">');
                                         Swal.fire('Subido', 'Archivo subido con exito!', 'success');
                                     },
@@ -1383,26 +1371,26 @@
                         	id: id
                         },
                         success: function (data) {
-                        	var Array = data;
                         	var i = 0;
                         	if(data[i] == null){
                                 $('#ArchivosDeSoporte').append('<div class="alert alert-danger" role="alert">Aun no se ha añadido ningun archivo</div>');
-                            }else{
-                        		if(Username != Nombre_vendedor ){
-                                    $(data).each(function () {
-                                        $('#ArchivosDeSoporte').append('<div class="col-sm-4">'+
-                                            '<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a> '+'</div>');
-                                        i++;
-                                    })
-                                }else{
-                                    $(data).each(function () {
-                                        $('#ArchivosDeSoporte').append('<div class="col-sm-4">'+
-                                            '<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a> ' +
-                                            ' <a href="javascript:void(0)" id="'+data[i].archivo+'" class="DeleteImgReq">' +
-                                            '<i class="fas fa-trash"></i></a>'+'</div>');
-                                        i++;
-                                    })
-                                }
+                            }
+                        	else if(Roll == 'admin_evpiu' || Roll == 'vendedor' && Username == $('#Vendedor').html() ) {
+                                $(data).each(function () {
+                                    $('#ArchivosDeSoporte').append('<div class="col-sm-4">'+
+                                        '<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a> '+'</div>');
+                                    i++;
+                                })
+                            }
+                        	else{
+                                $(data).each(function () {
+                                    $('#ArchivosDeSoporte').append('<div class="col-sm-4">'+
+                                        '<a href="javascript:void(0)" id="'+data[i].archivo+'" class="ViewImgReq">'+data[i].archivo+'</a> ' +
+                                        ' <a href="javascript:void(0)" id="'+data[i].archivo+'" class="DeleteImgReq">' +
+                                        '<i class="fas fa-trash"></i></a>'+'</div>');
+                                    i++;
+                                })
+
                             }
                             sweetAlert.close();
                         }
@@ -1450,12 +1438,14 @@
                             $('#PDFrelieve').html(data.propuesta[0].relieve);
                             Codigo_base_propuesta =  data.propuesta[0].codigo_base;
                             Descripcion_Producto = data.propuesta[0].articulo;
-                            Value_Marca = data.encabezado[0].marca
+                            Value_Marca = data.encabezado[0].marca;
+                            Value_Marca = Value_Marca.substr(0,1);
                             $('#PDFmarca').html(data.encabezado[0].marca);
                             $('#PDFMedida').html(data.propuesta[0].medida);
                             $('#PDFvendedor').html(data.vendedor_id[0].name);
                             $('#PDFdiseñador').html(data.diseñador_id[0].name);
                             $('#PDFfecha').html(data.encabezado[0].created_at);
+                            $('#PDFcaracteristicas').append('<br><label>'+ data.propuesta[0].caracteristicas+'</label>');
                             var i = 0;
                             $(data.archivos).each(function () {
                                 if(data.archivos[i].tipo == '2D'){
@@ -1505,56 +1495,64 @@
                 });
 
                 $('body').on('click','.DeleteImgReq', function () {
-                    var file = $(this).attr('id');
-                    Swal.fire({
-                        title: '¿Eliminar archivo?',
-                        html: '<label for="">Añade una justificacion para eliminar este archivo</label> ',
-                        input: 'textarea',
-                        icon: 'question',
-                        inputAttributes: {
-                            autocapitalize: 'off'
-                        },
-                        showCancelButton: true,
-                        confirmButtonText: 'Si, eliminar!',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        showLoaderOnConfirm: true,
-                        allowOutsideClick: () => !Swal.isLoading(),
-                        inputValidator: (value) => {
-                            return !value && 'Debes escribir una justificacion para poder eliminar el archivo'
-                        }
-                    }).then((result) => {
-                        if (result.value) {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-                            $.ajax({
-                                type: "post",
-                                url: '/DeleteFileFromPropuesta',
-                                data: {
-                                    idReq: id,
-                                    file: file,
-                                    coments: result.value,
-                                    user: Username
-                                },
-                                success: function () {
-                                	$('#ArchivosDeSoporte').html('');
-                                    ObtenerArchivosRequerimiento();
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Eliminado!',
-                                        text: 'El archivo fue eliminado con exito!',
-                                        confirmButtonText: 'Aceptar',
-                                    })
-                                }
-                            });
-                        } else {
-                            result.dismiss === Swal.DismissReason.cancel
-                        }
-                    })
+                    if(Roll == 'admin_evpiu' || Roll == 'vendedor' && Username == $('#Vendedor').html()) {
+                        var file = $(this).attr('id');
+                        Swal.fire({
+                            title: '¿Eliminar archivo?',
+                            html: '<label for="">Añade una justificacion para eliminar este archivo</label> ',
+                            input: 'textarea',
+                            icon: 'question',
+                            inputAttributes: {
+                                autocapitalize: 'off'
+                            },
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, eliminar!',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            showLoaderOnConfirm: true,
+                            allowOutsideClick: () => !Swal.isLoading(),
+                            inputValidator: (value) => {
+                                return !value && 'Debes escribir una justificacion para poder eliminar el archivo'
+                            }
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    type: "post",
+                                    url: '/DeleteFileFromPropuesta',
+                                    data: {
+                                        idReq: id,
+                                        file: file,
+                                        coments: result.value,
+                                        user: Username
+                                    },
+                                    success: function () {
+                                        $('#ArchivosDeSoporte').html('');
+                                        ObtenerArchivosRequerimiento();
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Eliminado!',
+                                            text: 'El archivo fue eliminado con exito!',
+                                            confirmButtonText: 'Aceptar',
+                                        })
+                                    }
+                                });
+                            } else {
+                                result.dismiss === Swal.DismissReason.cancel
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
                 });
 
                 $('.AprobarProp').on('click',function () {
@@ -1685,10 +1683,11 @@
                     $('#PDFdibujo2d').html('');
                     $('#PDFdibujo3d').html('');
                     $('#PDFplano').html('');
+                    $('#PDFcaracteristicas').html('');
                 });
 
                 $('.FinalizarReq').on('click', function () {
-                    if(Roll == 'admin_evpiu' || Roll == 'vendedor' && Username == $('#Vendedor').html()){
+                    if(Roll == 'admin_evpiu' || Roll == 'super_diseño' || Roll == 'vendedor' && Username == $('#Vendedor').html()){
 
                     	$.ajax({
                             type: "get",
@@ -1774,7 +1773,7 @@
                 });
 
                 $('.EnvRender').on('click', function () {
-                    if(Roll == 'admin_evpiu' || Roll == 'diseñador' && Username == $('#Vendedor').html()){
+                    if(Roll == 'admin_evpiu' || Roll == 'super_diseño' || Roll == 'diseñador' && Username == $('#Vendedor').html()){
                         $.ajax({
                             type: 'get',
                             url: '/ComprobarRender',
@@ -1887,8 +1886,9 @@
                 });
 
                 var CodigoArte = null;
+
                 $('.FinalizarProp').on('click',function () {
-                    if(Roll == 'admin_evpiu' || Roll == 'diseñador' && Username == $('#Diseñador').html()){
+                    if(Roll == 'admin_evpiu' || Roll == 'super_diseño' || Roll == 'diseñador' && Username == $('#Diseñador').html()){
                         $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1965,7 +1965,7 @@
                 });
 
                 $('#PDFMedida').on('click', function () {
-                    if(Roll == 'admin_evpiu' || Roll == 'diseñador' && Username == $('#Diseñador').html()) {
+                    if(Roll == 'admin_evpiu' || Roll == 'super_diseño' || Roll == 'diseñador' && Username == $('#Diseñador').html()) {
                         $.ajax({
                             url: '/ObtenerMediasPorCodigoBase',
                             tyoe: 'get',
@@ -2056,7 +2056,6 @@
 
                 $('#med_lineas_id').on('change', function () {
                     var lineas_id = $(this).val();
-                    console.log(lineas_id);
                     if ($.trim(lineas_id) != ''){
                     	$.ajax({
                             type: 'get',
@@ -2087,7 +2086,6 @@
                                 sublineas_id: sublineas_id
                             },
                             success: function (data) {
-                            	console.log(data);
                                 $('#campos').append("<div class='col-sm-6'> <div class='form-group'>" +
                                     "<label for='"+ data +"' class='col-sm-6 control-label'>"+ data +":</label>" +
                                     "<div class='col-sm-12'>" +
@@ -2477,6 +2475,7 @@
                 }
 
                 var codID;
+
                 function ObtenerCodid(){
                     jQuery.ajax({
                         url: "/UltimoCodId",
@@ -2536,7 +2535,6 @@
 
                 $('#Opciones_reque').dropdown();
 
-
                 $('.EnviarParaAprobacion').on('click', function () {
                     if(Roll == 'admin_evpiu' || Roll == 'super_diseño' || Roll == 'diseñador' && Username == $('#Diseñador').html()){
                         var id = $(this).attr('id');
@@ -2591,31 +2589,23 @@
                     }
                 });
 
-                var UltimoArte;
-                function ObtenerUltimoArte(){
-                    jQuery.ajax({
-                        url: "/ObtenerUltimoArte",
-                        type: "get",
-                        dataType: 'json',
-                        success: function (data) {
-                            UltimoArte = [data][0];
-                            GenerarConsecutivo();
-                        },
-                    });
-                }
-
                 var All_Artes;
+                var Ultimo;
+
                 function ObtenerTodosLosArtes(){
                     jQuery.ajax({
                         url: "/ObtenerArtes",
                         type: "get",
                         dataType: 'json',
+                        data: {Value_Marca: Value_Marca},
                         success: function (data) {
                             All_Artes = [data][0];
-                            ObtenerUltimoArte();
+                            Ultimo = All_Artes[All_Artes.length -1]
+                            GenerarConsecutivo();
                         },
                     });
                 }
+
                 function GenerarConsecutivo(){
                     var incremental             = 0;
                     var charStringRange         = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -2623,12 +2613,12 @@
                     var t1                      = 0;
                     var numerof                 = 0;
                     var OriginalProductCodes    = All_Artes;
-                    var OriginalProductCodes2   = UltimoArte;
+                    var OriginalProductCodes2   = Ultimo;
+
 
                     for (var f = 0; f < OriginalProductCodes.length; f++) {
                         if (OriginalProductCodes2  == OriginalProductCodes[f] && OriginalProductCodes[f]){
                             var cadena = OriginalProductCodes[f];
-                            console.log(cadena);
                             var text2  = cadena.split('').reverse().join('');
                             text2      = text2.split('');
 
@@ -2657,11 +2647,70 @@
                         text += charStringRange.charAt(Math.round((incretemp - Math.floor(incretemp))*36));
                     }
                     text = text.split('').reverse().join('');
-
-                    CodigoArte = Value_Marca.substr(0,1)+text
+                    CodigoArte = Value_Marca+text;
                 }
 
+                $('body').on('click','.Add_Caracteristicas', function () {
+                    if(Roll == 'admin_evpiu' || Roll == 'super_diseño' || Roll == 'diseñador' && Username == $('#Diseñador').html()) {
+                        Swal.fire({
+                            title: 'Caracteristicas',
+                            html: '<label>Escribe informacion inportante para esta propuesta, la informacion, si habia informacion guardada sera reemplazada por la informacion que ingreses a continuacion</label>',
+                            input: 'textarea',
+                            icon: 'info',
+                            inputAttributes: {
+                                autocapitalize: 'off'
+                            },
+                            showCancelButton: true,
+                            confirmButtonText: 'Guardar',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            showLoaderOnConfirm: true,
+                            allowOutsideClick: () => !Swal.isLoading(),
+                            inputValidator: (value) => {
+                                return !value && 'Por favor, escribe algo antes de guardar...'
+                            }
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    type: "post",
+                                    url: '/AgregarCaracteristicaPropuesta',
+                                    data: {
+                                        prop: Prop,
+                                        coments: result.value,
+                                    },
+                                    success: function (data) {
+                                        $('#PDFcaracteristicas').html('');
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Guardado!',
+                                            text: 'las caracteristicas fueron guardadas con exito!',
+                                            confirmButtonText: 'Aceptar',
+                                        });
+                                        $('#PDFcaracteristicas').append('<br><label>' + data + '</label>')
+                                    }
+                                });
+                            } else {
+                                result.dismiss === Swal.DismissReason.cancel
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
 
+                $('#PdfView').on('shown.bs.modal', function() {
+                    $(document).off('focusin.modal');
+                });
             });
         </script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>

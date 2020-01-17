@@ -94,6 +94,7 @@ $(document).ready(function () {
                 {data: 'desc', name: 'desc', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
                 {data: 'valor_iva', name: 'valor_iva', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
                 {data: 'motivo', name: 'motivo', orderable: false, searchable: true},
+                {data: 'EstadoDian',name: 'EstadoDian',orderable: true, searchable: true},
                 {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
 
             ],
@@ -121,6 +122,34 @@ $(document).ready(function () {
                 }
             },
             rowCallback: function( row, data, index ) {
+                var id = data.id;
+                $.ajax({
+                    url: '/EstadoEnvioDianFacturacionElectronica',
+                    type: 'get',
+                    data: {id:id},
+                    success: function (data) {
+
+                        console.log(data);
+                        var n = data.data.comments;
+                        var Procesado_correctamente = n.search('Procesado Correctamente');
+                        var Procesado_conErrores = n.search('Validación contiene errores');
+
+                        console.log('valor: '+Procesado_correctamente);
+                        if (Procesado_correctamente == 0){
+                            $(row).find('td:eq(13)').html('<label class="text-success">Correcto</label>')
+                        }
+                        if(Procesado_conErrores == 0){
+                            $(row).find('td:eq(13)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger ErrorDianFac">ERROR DIAN</a>')
+                        }
+                        if (n.trim() == ''){
+                            $(row).find('td:eq(13)').html('<label class="text-success">Listo para enviar</label>')
+                        }
+                    },
+                    error: function () {
+                        $(row).find('td:eq(13)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger ErrorEstDianFac">Pendiente</a>')
+                    }
+                });
+
                 if ( data.fecha == null ) {
                     $(row).find('td:eq(3)').css('color', 'red');
                 }
@@ -555,6 +584,41 @@ $(document).ready(function () {
                 });
             }
         });
-    })
+    });
+
+
+    $('body').on('click', '.ErrorEstDianFac', function () {
+        var id = this.id;
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'La  Factura '+id+'  no ha sido subida a Factible!',
+        });
+    });
+
+    $('body').on('click','.ErrorDianFac', function () {
+        var id =  this.id
+
+
+        $.ajax({
+            url: '/EstadoEnvioDianFacturacionElectronica',
+            type: 'get',
+            data: {id: id},
+            success: function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Esta factura tiene errores !',
+                    html: '<label>La  Factura '+id+'  no ha podido ser enviarda a la DIAN!</label><br>' +
+                        '<label> <b>Error: </b> '+data.data.comments+'</label>',
+                });
+
+            }
+        });
+
+    });
+
+
+
+
 });
 
