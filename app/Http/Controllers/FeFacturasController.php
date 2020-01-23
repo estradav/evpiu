@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use XMLWriter;
 use Yajra\DataTables\DataTables;
 use SoapClient;
-
 
 class FeFacturasController extends Controller
 {
@@ -158,7 +158,9 @@ class FeFacturasController extends Controller
                    'CIEV_V_FacturasDetalladas.item',
                    'CIEV_V_FacturasDetalladas.cantidad',
                    'CIEV_V_FacturasDetalladas.precio',
+                   'CIEV_V_FacturasDetalladas.precioUSD',
                    'CIEV_V_FacturasDetalladas.totalitem',
+                   'CIEV_V_FacturasDetalladas.totalitemUSD',
                    'CIEV_V_FacturasDetalladas.iva as iva_item',
                    'CIEV_V_FacturasDetalladas.valormercancia',
                    'CIEV_V_FacturasDetalladas.Desc_Item',
@@ -186,7 +188,7 @@ class FeFacturasController extends Controller
 
                $bruto_factura           = null;
                $subtotal_factura        = null;
-               $brutomasiva_factura     =  null;
+               $brutomasiva_factura     = null;
                $descuento_factura       = null;
                $total_cargos            = null;
                $totalpagar              = null;
@@ -535,7 +537,7 @@ class FeFacturasController extends Controller
                $objetoXML->startElement("items");
 
                foreach ($items_Normales as $it) {
-                   $valor_item = $it->precio * $it->cantidad;
+                   $valor_item = null;
                    $subtotal_item = null;
                    $brutomasiva =  null;
                    $descuento_item = null;
@@ -547,17 +549,22 @@ class FeFacturasController extends Controller
                    $id_impuesto = null;
                    $factor = null;
                    $umed = null;
+                   $precio_unitario = null;
                    ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
                    ///
                    if($encabezado->tipo_cliente  == 'EX'){
                        $subtotal_item = $it->bruto_usd ;
                        $total_valor_item_iva = $subtotal_item * 0.19;
                        $DescuentoPorItem = 0;
+                       $valor_item = $it->precioUSD * $it->cantidad;
+                       $precio_unitario = $it-> precioUSD;
 
                    }else{
                        $subtotal_item = $it->totalitem - $it->Desc_Item;
                        $total_valor_item_iva = $subtotal_item * 0.19;
                        $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
+                       $valor_item = $it->precio * $it->cantidad;
+                       $precio_unitario = $it-> precio;
                    }
 
                    // valida si el item es comprado o se da como regalo
@@ -570,20 +577,6 @@ class FeFacturasController extends Controller
 
                /*    // valida el tipo de codigo 020 posicion alacelaria o 999 adopcion del contribuyente
 
-                   /*if ($tipo_fac_en == 02) {
-                       $id_estandar = '999';
-                   } else {
-                       $id_estandar = 999;
-                   }*/
-
-                   // valida nombre estandar del codigo
-
-                  /* if ($id_estandar <> 999) {
-                       $nombre_estandar = null;
-                   } else {
-                       $nombre_estandar = ;
-                   }*/
-
                    // valida el id impuesto por item*/
 
                    if ($it->iva_item != 0) {
@@ -593,7 +586,6 @@ class FeFacturasController extends Controller
                    // porcentaje de impuesto
 
                    if ($id_impuesto == '01') {$factor = '19';}
-
 
                    if ($it->UM == 'UN') {$umed = '94';}
                    else {$umed = 'KGM';}
@@ -610,7 +602,6 @@ class FeFacturasController extends Controller
                    if ($id_item_iva == '0'.'1') {
                        $tarifa_item_unitaria = '0';
                    }
-
 
                    $objetoXML->startElement("item");
 
@@ -645,7 +636,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("preciounitario");
-                   $objetoXML->text(number_format($it->precio, 2, '.', ''));
+                   $objetoXML->text(number_format($precio_unitario, 2, '.', ''));
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("unidaddemedida");
@@ -1124,7 +1115,9 @@ class FeFacturasController extends Controller
                     'CIEV_V_FacturasDetalladas.item',
                     'CIEV_V_FacturasDetalladas.cantidad',
                     'CIEV_V_FacturasDetalladas.precio',
+                    'CIEV_V_FacturasDetalladas.precioUSD',
                     'CIEV_V_FacturasDetalladas.totalitem',
+                    'CIEV_V_FacturasDetalladas.totalitemUSD',
                     'CIEV_V_FacturasDetalladas.iva as iva_item',
                     'CIEV_V_FacturasDetalladas.valormercancia',
                     'CIEV_V_FacturasDetalladas.Desc_Item',
@@ -1167,6 +1160,8 @@ class FeFacturasController extends Controller
                 $tarifa_unitaria_total   = null;
                 $Regalos                 = [];
                 $RegalosString           = '';
+                $precio_unitario         = null;
+
 
                 ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
                 ///
@@ -1437,7 +1432,7 @@ class FeFacturasController extends Controller
                     $objetoXML->text($id_total_impuesto_iva);
                     $objetoXML->endElement();
                     $objetoXML->startElement("base");
-                    $objetoXML->text(number_format($subtotal_factura,2,'.',''));
+                    $objetoXML->text(number_format($subtotal_factura,2,'.','')); ///corregir
                     $objetoXML->endElement();
                     $objetoXML->startElement("factor");
                     $objetoXML->text($factor_total);
@@ -1495,7 +1490,6 @@ class FeFacturasController extends Controller
                 $objetoXML->startElement("items");
 
                 foreach ($items_Normales as $it) {
-                    $valor_item = $it->precio * $it->cantidad;
                     $subtotal_item = null;
                     $brutomasiva =  null;
                     $descuento_item = null;
@@ -1507,17 +1501,22 @@ class FeFacturasController extends Controller
                     $id_impuesto = null;
                     $factor = null;
                     $umed = null;
+                    $valor_item = null;
+                    $precio_unitario = null;
                     ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
                     ///
                     if($encabezado->tipo_cliente  == 'EX'){
                         $subtotal_item = $it->bruto_usd ;
                         $total_valor_item_iva = $subtotal_item * 0.19;
                         $DescuentoPorItem = 0;
-
+                        $valor_item = $it->precioUSD * $it->cantidad;
+                        $precio_unitario = $it-> precioUSD;
                     }else{
                         $subtotal_item = $it->totalitem - $it->Desc_Item;
                         $total_valor_item_iva = $subtotal_item * 0.19;
+                        $valor_item = $it->precio * $it->cantidad;
                         $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
+                        $precio_unitario = $it-> precio;
                     }
 
                     // valida si el item es comprado o se da como regalo
@@ -1528,32 +1527,13 @@ class FeFacturasController extends Controller
                         $regalo = 0;
                     }
 
-                    /*    // valida el tipo de codigo 020 posicion alacelaria o 999 adopcion del contribuyente
-
-                        /*if ($tipo_fac_en == 02) {
-                            $id_estandar = '999';
-                        } else {
-                            $id_estandar = 999;
-                        }*/
-
-                    // valida nombre estandar del codigo
-
-                    /* if ($id_estandar <> 999) {
-                         $nombre_estandar = null;
-                     } else {
-                         $nombre_estandar = ;
-                     }*/
-
                     // valida el id impuesto por item*/
-
                     if ($it->iva_item != 0) {
                         $id_impuesto = '01';
                     }
 
                     // porcentaje de impuesto
-
                     if ($id_impuesto == '01') {$factor = '19';}
-
 
                     if ($it->UM == 'UN') {$umed = '94';}
                     else {$umed = 'KGM';}
@@ -1605,7 +1585,7 @@ class FeFacturasController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("preciounitario");
-                    $objetoXML->text(number_format($it->precio, 2, '.', ''));
+                    $objetoXML->text(number_format($precio_unitario, 2, '.', ''));
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("unidaddemedida");
@@ -1769,12 +1749,10 @@ class FeFacturasController extends Controller
 
             $cadenaXML = $objetoXML->outputMemory();
 
-
             $Base_64 = base64_encode($cadenaXML);
 
 
             /* se comienza con el web service */
-
 
             $login1 = "jacanasv";
             $password = "Menteslocas0906*";
@@ -1794,7 +1772,6 @@ class FeFacturasController extends Controller
             $token = $respuesta->data->salida;
 
 
-
             // Lista los  tipos de persona de la DIAN
             $params = array(
                 'token'                 => $token,
@@ -1803,11 +1780,9 @@ class FeFacturasController extends Controller
             );
             $return = $client->registrarDocumentoElectronico_Generar_FuenteXML($params);
 
-
           //  $resultados = json_decode($return->return);
 
             $resultados[] = json_decode($return->return);
-
 
             $params = array(
                 'token' => $token
@@ -1878,8 +1853,7 @@ class FeFacturasController extends Controller
 
     }
 
-
-    public  function EstadoEnvioDianFacturacionElectronica(Request $request)
+    public function EstadoEnvioDianFacturacionElectronica(Request $request)
     {
         $Numero_Factura = $request->id;
 
@@ -1924,4 +1898,146 @@ class FeFacturasController extends Controller
 
         return response()->json($resultados);
     }
+
+    public function AuditoriaDian(Request $request)
+    {
+        $login1 = "jacanasv";
+        $password = "Menteslocas0906*";
+        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+        $client = new SoapClient($wsdl_url);
+        $client->__setLocation($wsdl_url);
+
+
+        $params = array(
+            'login' => $login1,
+            'password' => $password
+        );
+
+        $auth = $client->autenticar($params);
+        $respuesta = json_decode($auth->return);
+        $token = $respuesta->data->salida;
+
+
+        $params = array(
+            'token' => $token,
+            'iddocumentoelectronico'      => 654925
+        );
+
+        $return = $client->obtenerTrazaSealMailCliente($params);
+
+        dd($return);
+    }
+
+    public function ReenviarFacturas(Request $request)
+    {
+        $Facturas_Seleccionadas = $request->selected;
+
+
+        $Archivos_pdf = [];
+
+
+        foreach ($Facturas_Seleccionadas as $factura){
+
+            $idDocumentoElectronico = DB::table('registro_facturacion_electronica')
+                ->where('numero_factura','=',$factura)
+                ->select('id_factible','numero_factura')->get();
+
+            $login1 = "jacanasv";
+            $password = "Menteslocas0906*";
+            $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+            $client = new SoapClient($wsdl_url);
+            $client->__setLocation($wsdl_url);
+
+
+            $params = array(
+                'login' => $login1,
+                'password' => $password
+            );
+
+            $auth = $client->autenticar($params);
+            $respuesta = json_decode($auth->return);
+            $token = $respuesta->data->salida;
+
+
+            $params = array(
+                'token'                     => $token,
+                'iddocumentoelectronico'    => $idDocumentoElectronico[0]->id_factible,
+            );
+
+            $Version_grafica = $client->descargarDocumentoElectronico_VersionGrafica($params);
+            $Version_xml = $client->descargarDocumentoElectronico_XML($params);
+
+            $Version_grafica = json_decode($Version_grafica->return);
+            $Version_xml = json_decode($Version_xml->return);
+
+            $Version_grafica = $Version_grafica->data->salida;
+
+
+
+        /*    $nomPdf = '';
+            $nomPdf .= "Factura_electronica_".$idDocumentoElectronico[0]->numero_factura.".pdf";
+            $nomPdf = (string)$nomPdf;
+            $Version_grafica = trim(str_replace('data:application/pdf;base64,', "", $Version_grafica) );
+            $Version_grafica = str_replace( ' ', '+', $Version_grafica);
+            $decodPdf = base64_decode($Version_grafica);
+            file_put_contents($nomPdf, $decodPdf);*/
+
+
+        /*    $decoded = base64_decode($Version_grafica);
+            $file = public_path('Facturacion_electronica/'.$file);
+            file_put_contents($file, $decoded);
+
+            if (file_exists($file)) {
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename="' . $file . '"');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($file));
+            }*/
+
+            $decoded = base64_decode($Version_grafica);
+            $file = "Factura_electronica_".$idDocumentoElectronico[0]->numero_factura.".pdf";
+            $file = public_path('Facturacion_electronica/'.$file);
+
+            file_put_contents($file,$decoded);
+
+            $Archivos_pdf[] = $file;
+
+        }
+
+
+
+        $subject = "TIENE UNA PROPUESTA PENDIENTE POR APROBAR";
+        $for = "strike970124@gmail.com";
+          /* Mail::send('mails.Facturacion_Electronica_Mail',$request->all(), function($msj) use($Archivos_pdf, $subject,$for){
+            $msj->from("strike970124@gmail.com","Test EV-PIU");
+            $msj->subject($subject);
+            $msj->to($for);
+            foreach($Archivos_pdf as $filePath){
+                $msj->attach($filePath);
+            }*/
+
+            Mail::send('mails.Facturacion_Electronica_Mail',$Archivos_pdf, function($msj) use($Archivos_pdf, $subject,$for){
+                $msj->to($for);
+                $msj->subject($subject);
+                $msj->from("strike970124@gmail.com","NombreQueApareceráComoEmisor");
+                $size = sizeOf($Archivos_pdf);
+                for($i=0; $i < $size; $i++){
+                    $msj->attach($Archivos_pdf[$i], [
+                        'as' => 'name',
+                        'mime' => $Archivos_pdf[$i]->getMimeType()
+                    ]);
+                }
+            });
+
+
+
+
+
+
+
+    }
+
 }

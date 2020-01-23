@@ -69,13 +69,8 @@ $(document).ready(function () {
         table =  $('#tfac').DataTable({
             processing: true,
             serverSide: true,
-            responsive: true,
-            autoWidth: true,
-            scrollY: false,
-            scrollX: false,
-            scrollCollapse: true,
-            paging: true,
-            fixedColumns: true,
+            responsive: false,
+            autoWidth: false,
             ajax: {
                 url:'/FacturasIndex',
                 data:{from_date:from_date, to_date:to_date}
@@ -450,8 +445,6 @@ $(document).ready(function () {
         if (count == 0) {
             resultado = '<label class="alert-success">Factura OK</label><br>';
         }
-
-
         return  'Detalle de Factura : '+d.id+' <br>'+ resultado ;
     }
 
@@ -541,7 +534,6 @@ $(document).ready(function () {
 
     $('body').on('click','.download-vg', function () {
         var id = this.id;
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -573,8 +565,6 @@ $(document).ready(function () {
                // let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
                 link.download="Factura_Electronica.pdf";
                 link.click();
-
-
             },
             error: function () {
                 Swal.fire({
@@ -586,7 +576,6 @@ $(document).ready(function () {
         });
     });
 
-
     $('body').on('click', '.ErrorEstDianFac', function () {
         var id = this.id;
         Swal.fire({
@@ -597,9 +586,7 @@ $(document).ready(function () {
     });
 
     $('body').on('click','.ErrorDianFac', function () {
-        var id =  this.id
-
-
+        var id =  this.id;
         $.ajax({
             url: '/EstadoEnvioDianFacturacionElectronica',
             type: 'get',
@@ -611,14 +598,142 @@ $(document).ready(function () {
                     html: '<label>La  Factura '+id+'  no ha podido ser enviarda a la DIAN!</label><br>' +
                         '<label> <b>Error: </b> '+data.data.comments+'</label>',
                 });
-
             }
         });
+    });
 
+    $('body').on('click','#testAuditoria',function () {
+        var id =  this.id;
+        $.ajax({
+            url: '/AuditoriaDian',
+            type: 'get',
+            success: function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Esta factura tiene errores !',
+                    html: 'test',
+                });
+            }
+        });
+    });
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    $('body').on('click','#ReenviarFacturas', function () {
+        var selected = [];
+        $(".checkboxes").each(function () {
+            if (this.checked) {
+                var numero = this.id;
+                var factura ={
+                    "numero":numero,
+                };
+                selected.push(factura);
+            }
+        });
+        if (selected.length) {
+            swal.mixin({
+                icon: 'question',
+                text: '¿Reenviar facturas?',
+                title: 'Por favor, escriba los correos a los que quiere reenviar las facturas seleccionadas',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                buttonsStyling: true,
+                showCancelButton: true,
+                input: 'text',
+                onOpen: () => {
+                    $('.WebSCorreosCopia').select2({
+                        createTag: function(term, data) {
+                            var value = term.term;
+                            if(validateEmail(value)) {
+                                return {
+                                    id: value,
+                                    text: value
+
+                                };
+                            }
+                            return null;
+                        },
+                        appendTo: $(".swal2-popup"),
+                        width: '100%',
+                        placeholder: "Escribe uno o varios email..",
+                        tags: true,
+                        tokenSeparators: [',', ' ',';'],
+
+                    });
+                    console.log(document.getElementById("WebSCorreosCopia").value);
+
+                },
+            }).queue([
+                {
+                    html: '<select class="js-example-basic-multiple form-control WebSCorreosCopia" name="WebSCorreosCopia" id="WebSCorreosCopia" multiple="multiple" style="width: 100%">',
+                    inputValidator: () => {
+                        if (document.getElementById('WebSCorreosCopia').value == '') {
+                            return 'Debes escribir al menos una direccion de correo...';
+                        }
+                    },
+                    preConfirm: function () {
+                        var array = {
+                            'email': $("#WebSCorreosCopia").val(),
+                        };
+                        return array;
+                    },
+                    onBeforeOpen: function (dom) {
+                        swal.getInput().style.display = 'none';
+                    }
+                },
+            ]).then((result) => {
+                if (result.value) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '/ReenviarFacturas',
+                        type: 'post',
+                        data: {
+                            result, selected
+                        },
+                        success: function () {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Guardardo',
+                                text: '!',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Aceptar',
+                            })
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'La solicitud no pudo ser procesada!',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Aceptar',
+                            })
+                        }
+                    });
+                }else {
+                    result.dismiss === Swal.DismissReason.cancel
+                }
+            })
+        }else
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Debes seleccionar al menos una factura...!',
+            });
+        return false;
     });
 
 
-
-
+   /* $(document).find( ".WebSCorreosCopia" ).select2({
+        tags: true,
+        tokenSeparators: [',', ' ']
+    })*/
 });
 
