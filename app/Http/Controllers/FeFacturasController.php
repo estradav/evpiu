@@ -138,6 +138,8 @@ class FeFacturasController extends Controller
                    'CIEV_V_FE_FacturasTotalizadas.seguros_usd',
                    'CIEV_V_FE_FacturasTotalizadas.iva',
                    'CIEV_V_FE_FacturasTotalizadas.fletes',
+                   'CIEV_V_FE_FacturasTotalizadas.RTEFTE',
+                   'CIEV_V_FE_FacturasTotalizadas.RTEIVA',
                    'CIEV_V_FE_FacturasTotalizadas.seguros',
                    'CIEV_V_FE_FacturasTotalizadas.moneda',
                    'CIEV_V_FE_FacturasTotalizadas.ov',
@@ -150,26 +152,27 @@ class FeFacturasController extends Controller
                ->where('CIEV_V_FE.numero', '=', $NumeroFactura)->take(1)->get();
 
            // esta consulta muestra el detalle de los items de cada factura
-           $Items_Factura = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
-               ->select('CIEV_V_FacturasDetalladas.factura',
-                   'CIEV_V_FacturasDetalladas.codigoproducto',
-                   'CIEV_V_FacturasDetalladas.descripcionproducto',
-                   'CIEV_V_FacturasDetalladas.OC',
-                   'CIEV_V_FacturasDetalladas.item',
-                   'CIEV_V_FacturasDetalladas.cantidad',
-                   'CIEV_V_FacturasDetalladas.precio',
-                   'CIEV_V_FacturasDetalladas.precioUSD',
-                   'CIEV_V_FacturasDetalladas.totalitem',
-                   'CIEV_V_FacturasDetalladas.totalitemUSD',
-                   'CIEV_V_FacturasDetalladas.iva as iva_item',
-                   'CIEV_V_FacturasDetalladas.valormercancia',
-                   'CIEV_V_FacturasDetalladas.Desc_Item',
-                   'CIEV_V_FacturasDetalladas.UM',
-                   'CIEV_V_FacturasDetalladas.base',
-                   'CIEV_V_FacturasDetalladas.bruto_usd',
-                   'CIEV_V_FacturasDetalladas.fletes_usd',
-                   'CIEV_V_FacturasDetalladas.seguros_usd')
-               ->where('CIEV_V_FacturasDetalladas.factura', '=', $NumeroFactura)->get();
+           $Items_Factura = DB::connection('MAX')->table('CIEV_V_FE_FacturasDetalladas')
+               ->select('CIEV_V_FE_FacturasDetalladas.factura',
+                   'CIEV_V_FE_FacturasDetalladas.codigoproducto',
+                   'CIEV_V_FE_FacturasDetalladas.descripcionproducto',
+                   'CIEV_V_FE_FacturasDetalladas.OC',
+                   'CIEV_V_FE_FacturasDetalladas.item',
+                   'CIEV_V_FE_FacturasDetalladas.cantidad',
+                   'CIEV_V_FE_FacturasDetalladas.precio',
+                   'CIEV_V_FE_FacturasDetalladas.precioUSD',
+                   'CIEV_V_FE_FacturasDetalladas.totalitem',
+                   'CIEV_V_FE_FacturasDetalladas.totalitemUSD',
+                   'CIEV_V_FE_FacturasDetalladas.iva as iva_item',
+                   'CIEV_V_FE_FacturasDetalladas.valormercancia',
+                   'CIEV_V_FE_FacturasDetalladas.Desc_Item',
+                   'CIEV_V_FE_FacturasDetalladas.UM',
+                   'CIEV_V_FE_FacturasDetalladas.base',
+                   'CIEV_V_FE_FacturasDetalladas.bruto_usd',
+                   'CIEV_V_FE_FacturasDetalladas.posicionarancelaria',
+                   'CIEV_V_FE_FacturasDetalladas.fletes_usd',
+                   'CIEV_V_FE_FacturasDetalladas.seguros_usd')
+               ->where('CIEV_V_FE_FacturasDetalladas.factura', '=', $NumeroFactura)->get();
 
            $Configuracion = DB::table('fe_configs')->take(1)->get();
 
@@ -758,6 +761,28 @@ class FeFacturasController extends Controller
                    }
 
                    $objetoXML->endElement();
+
+
+                   $objetoXML->startElement("datosextra");
+                   /*COMIENZO DATO EXTRA*/
+                   $objetoXML->startElement("datoextra");
+                   $objetoXML->startElement("tipo");
+                   $objetoXML->text('1');
+                   $objetoXML->endElement();
+
+                   $objetoXML->startElement("clave");
+                   $objetoXML->text('PA');
+                   $objetoXML->endElement();
+
+                   $objetoXML->startElement("valor");
+                   $objetoXML->text(trim($it->posicionarancelaria));
+                   $objetoXML->endElement();
+                   $objetoXML->endElement();
+                   /*Fin Dato extra*/
+
+                   $objetoXML->endElement();
+
+
                    $objetoXML->endElement(); // cierra item
                }
                    $objetoXML->endElement(); // cierra items
@@ -792,6 +817,39 @@ class FeFacturasController extends Controller
                    $objetoXML->text($encabezado->codigocliente);
                    $objetoXML->endElement();
                    $objetoXML->endElement();
+
+
+                   /*COMIENZO DATO EXTRA*/
+                   $objetoXML->startElement("datoextra");
+                   $objetoXML->startElement("tipo");
+                   $objetoXML->text('1');
+                   $objetoXML->endElement();
+
+                   $objetoXML->startElement("clave");
+                   $objetoXML->text('RTEFTE');
+                   $objetoXML->endElement();
+
+                   $objetoXML->startElement("valor");
+                   $objetoXML->text(trim($encabezado->RTEFTE));
+                   $objetoXML->endElement();
+                   $objetoXML->endElement();
+                   /*Fin Dato extra*/
+
+                   /*COMIENZO DATO EXTRA*/
+                   $objetoXML->startElement("datoextra");
+                   $objetoXML->startElement("tipo");
+                   $objetoXML->text('1');
+                   $objetoXML->endElement();
+
+                   $objetoXML->startElement("clave");
+                   $objetoXML->text('RTEIVA');
+                   $objetoXML->endElement();
+
+                   $objetoXML->startElement("valor");
+                   $objetoXML->text(trim($encabezado->RTEIVA));
+                   $objetoXML->endElement();
+                   $objetoXML->endElement();
+                   /*Fin Dato extra*/
 
                    $objetoXML->endElement();
                $objetoXML->endElement(); // Final del nodo raíz, "documento"
@@ -1095,6 +1153,8 @@ class FeFacturasController extends Controller
                     'CIEV_V_FE_FacturasTotalizadas.seguros_usd',
                     'CIEV_V_FE_FacturasTotalizadas.iva',
                     'CIEV_V_FE_FacturasTotalizadas.fletes',
+                    'CIEV_V_FE_FacturasTotalizadas.RTEFTE',
+                    'CIEV_V_FE_FacturasTotalizadas.RTEIVA',
                     'CIEV_V_FE_FacturasTotalizadas.seguros',
                     'CIEV_V_FE_FacturasTotalizadas.moneda',
                     'CIEV_V_FE_FacturasTotalizadas.ov',
@@ -1107,26 +1167,27 @@ class FeFacturasController extends Controller
                 ->where('CIEV_V_FE.numero', '=', $NumeroFactura)->take(1)->get();
 
             // esta consulta muestra el detalle de los items de cada factura
-            $Items_Factura = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
-                ->select('CIEV_V_FacturasDetalladas.factura',
-                    'CIEV_V_FacturasDetalladas.codigoproducto',
-                    'CIEV_V_FacturasDetalladas.descripcionproducto',
-                    'CIEV_V_FacturasDetalladas.OC',
-                    'CIEV_V_FacturasDetalladas.item',
-                    'CIEV_V_FacturasDetalladas.cantidad',
-                    'CIEV_V_FacturasDetalladas.precio',
-                    'CIEV_V_FacturasDetalladas.precioUSD',
-                    'CIEV_V_FacturasDetalladas.totalitem',
-                    'CIEV_V_FacturasDetalladas.totalitemUSD',
-                    'CIEV_V_FacturasDetalladas.iva as iva_item',
-                    'CIEV_V_FacturasDetalladas.valormercancia',
-                    'CIEV_V_FacturasDetalladas.Desc_Item',
-                    'CIEV_V_FacturasDetalladas.UM',
-                    'CIEV_V_FacturasDetalladas.base',
-                    'CIEV_V_FacturasDetalladas.bruto_usd',
-                    'CIEV_V_FacturasDetalladas.fletes_usd',
-                    'CIEV_V_FacturasDetalladas.seguros_usd')
-                ->where('CIEV_V_FacturasDetalladas.factura', '=', $NumeroFactura)->get();
+            $Items_Factura = DB::connection('MAX')->table('CIEV_V_FE_FacturasDetalladas')
+                ->select('CIEV_V_FE_FacturasDetalladas.factura',
+                    'CIEV_V_FE_FacturasDetalladas.codigoproducto',
+                    'CIEV_V_FE_FacturasDetalladas.descripcionproducto',
+                    'CIEV_V_FE_FacturasDetalladas.OC',
+                    'CIEV_V_FE_FacturasDetalladas.item',
+                    'CIEV_V_FE_FacturasDetalladas.cantidad',
+                    'CIEV_V_FE_FacturasDetalladas.precio',
+                    'CIEV_V_FE_FacturasDetalladas.precioUSD',
+                    'CIEV_V_FE_FacturasDetalladas.totalitem',
+                    'CIEV_V_FE_FacturasDetalladas.totalitemUSD',
+                    'CIEV_V_FE_FacturasDetalladas.iva as iva_item',
+                    'CIEV_V_FE_FacturasDetalladas.valormercancia',
+                    'CIEV_V_FE_FacturasDetalladas.Desc_Item',
+                    'CIEV_V_FE_FacturasDetalladas.UM',
+                    'CIEV_V_FE_FacturasDetalladas.base',
+                    'CIEV_V_FE_FacturasDetalladas.posicionarancelaria',
+                    'CIEV_V_FE_FacturasDetalladas.bruto_usd',
+                    'CIEV_V_FE_FacturasDetalladas.fletes_usd',
+                    'CIEV_V_FE_FacturasDetalladas.seguros_usd')
+                ->where('CIEV_V_FE_FacturasDetalladas.factura', '=', $NumeroFactura)->get();
 
             $Configuracion = DB::table('fe_configs')->take(1)->get();
 
@@ -1707,13 +1768,35 @@ class FeFacturasController extends Controller
                     }
 
                     $objetoXML->endElement();
+                    $objetoXML->startElement("datosextra");
+                    /*COMIENZO DATO EXTRA*/
+                    $objetoXML->startElement("datoextra");
+                    $objetoXML->startElement("tipo");
+                    $objetoXML->text('1');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("clave");
+                    $objetoXML->text('PA');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text(trim($it->posicionarancelaria));
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
+                    /*Fin Dato extra*/
+
+                    $objetoXML->endElement();
+
                     $objetoXML->endElement(); // cierra item
                 }
+
+
                 $objetoXML->endElement(); // cierra items
 
-                $objetoXML->startElement("datosextra");
-                $objetoXML->startElement("datoextra");
 
+                $objetoXML->startElement("datosextra");
+                /*COMIENZO DATO EXTRA*/
+                $objetoXML->startElement("datoextra");
                 $objetoXML->startElement("tipo");
                 $objetoXML->text('1');
                 $objetoXML->endElement();
@@ -1725,9 +1808,10 @@ class FeFacturasController extends Controller
                 $objetoXML->startElement("valor");
                 $objetoXML->text(trim($encabezado->plazo));
                 $objetoXML->endElement();
-
                 $objetoXML->endElement();
+                /*Fin Dato extra*/
 
+                /*COMIENZO DATO EXTRA*/
                 $objetoXML->startElement("datoextra");
                 $objetoXML->startElement("tipo");
                 $objetoXML->text('1');
@@ -1741,6 +1825,42 @@ class FeFacturasController extends Controller
                 $objetoXML->text($encabezado->codigocliente);
                 $objetoXML->endElement();
                 $objetoXML->endElement();
+                /*Fin Dato extra*/
+
+                /*COMIENZO DATO EXTRA*/
+                $objetoXML->startElement("datoextra");
+                $objetoXML->startElement("tipo");
+                $objetoXML->text('1');
+                $objetoXML->endElement();
+
+                $objetoXML->startElement("clave");
+                $objetoXML->text('RTEFTE');
+                $objetoXML->endElement();
+
+                $objetoXML->startElement("valor");
+                $objetoXML->text(trim($encabezado->RTEFTE));
+                $objetoXML->endElement();
+                $objetoXML->endElement();
+                /*Fin Dato extra*/
+
+                /*COMIENZO DATO EXTRA*/
+                $objetoXML->startElement("datoextra");
+                $objetoXML->startElement("tipo");
+                $objetoXML->text('1');
+                $objetoXML->endElement();
+
+                $objetoXML->startElement("clave");
+                $objetoXML->text('RTEIVA');
+                $objetoXML->endElement();
+
+                $objetoXML->startElement("valor");
+                $objetoXML->text(trim($encabezado->RTEIVA));
+                $objetoXML->endElement();
+                $objetoXML->endElement();
+                /*Fin Dato extra*/
+
+
+
 
                 $objetoXML->endElement();
                 $objetoXML->endElement(); // Final del nodo raíz, "documento"
