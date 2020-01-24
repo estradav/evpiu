@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Swift_Attachment;
+use Swift_Preferences;
 use XMLWriter;
 use Yajra\DataTables\DataTables;
 use SoapClient;
@@ -67,13 +70,13 @@ class FeFacturasController extends Controller
                     ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc', '=', 'CU')
                     ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')
                     ->whereBetween('fecha', array($fromdate, $todate))
-
                     ->get();
             }
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
                     $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/fe/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>';
-                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download-vg" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>'.'</div>';
+                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download-vg" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>';
+                    $btn = $btn.'<button class="btn btn-sm btn-outline-light info_ws" id="'.$row->id.'"><i class="fas fa-info-circle"></i></button>'.'</div>';
                     return $btn;
                 })
                 ->addColumn('selectAll', function($row){
@@ -2053,7 +2056,7 @@ class FeFacturasController extends Controller
         $Facturas_Seleccionadas = $request->selected;
 
 
-        $Archivos_pdf = [];
+        $Archivos_pdf;
 
 
         foreach ($Facturas_Seleccionadas as $factura){
@@ -2123,7 +2126,10 @@ class FeFacturasController extends Controller
 
             file_put_contents($file,$decoded);
 
-            $Archivos_pdf[] = $file;
+            $realpath = '/Facturacion_electronica/'."Factura_electronica_".$idDocumentoElectronico[0]->numero_factura.".pdf";
+
+            $Archivos_pdf = $realpath;
+
 
         }
 
@@ -2138,26 +2144,107 @@ class FeFacturasController extends Controller
             foreach($Archivos_pdf as $filePath){
                 $msj->attach($filePath);
             }*/
-
-            Mail::send('mails.Facturacion_Electronica_Mail',$Archivos_pdf, function($msj) use($Archivos_pdf, $subject,$for){
-                $msj->to($for);
-                $msj->subject($subject);
-                $msj->from("strike970124@gmail.com","NombreQueApareceráComoEmisor");
-                $size = sizeOf($Archivos_pdf);
-                for($i=0; $i < $size; $i++){
-                    $msj->attach($Archivos_pdf[$i], [
-                        'as' => 'name',
-                        'mime' => $Archivos_pdf[$i]->getMimeType()
-                    ]);
-                }
-            });
+        Swift_Preferences::getInstance()->setCacheType('disk')->setTempDir('/tmp');
 
 
+     /*   Mail::queue('emails.shop_invoice', function($message) {
+            try {
+                $file = Config::get('invoice.path') . '/39/company/1/invoice/' . 'invoice27' . '.pdf';
+                $message->attach($file, array('as' => 'invoice', 'mime' => 'application/pdf'));
+
+                $message->to('myemail@gmail.com')->subject('test');
+            } catch (Exception $e) {
+
+            }
+        });*/
 
 
 
 
 
+        Mail::send('mails.Facturacion_Electronica_Mail',$request->all(), function($msj) use($Archivos_pdf, $subject,$for){
+            $msj->to($for);
+            $msj->subject($subject);
+            $msj->from("strike970124@gmail.com","NombreQueApareceráComoEmisor");
+            $msj->attach(Swift_Attachment::fromPath(public_path().$Archivos_pdf,'application/pdf'), array('as' => 'invoice', 'mime' => 'application/pdf'));
+
+        });
+
+
+
+
+
+
+
+    }
+
+    public function InfoFacturaWebService(Request $request)
+    {
+
+
+        $Numero_Factura = $request->id;
+
+        $idDocumentoElectronico = DB::table('registro_facturacion_electronica')
+            ->where('numero_factura','=',$Numero_Factura)
+            ->select('id_factible')->get();
+
+
+
+        $login1 = "jacanasv";
+        $password = "Menteslocas0906*";
+        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+        $client = new SoapClient($wsdl_url);
+        $client->__setLocation($wsdl_url);
+
+
+        $params = array(
+            'login' => $login1,
+            'password' => $password
+        );
+
+        $auth = $client->autenticar($params);
+        $respuesta = json_decode($auth->return);
+        $token = $respuesta->data->salida;
+
+
+        /*$params = array(
+            'token'                     =>  $token,
+            'iddocumentoelectronico'    =>  740295 //$idDocumentoElectronico[0]->id_factible,
+        );
+
+        $return = $client->obtenerEnvioCliente($params);*/
+
+
+        $params = array(
+            'token'                     => $token,
+            'idEmpresa'                 => '',
+            'idUsuario'                 => '',
+            'idEstadoEnvioCliente'      => '',
+            'idEstadoEnvioDian'         => '',
+            'fechaInicial'              => '2020-01-22',
+            'fechaFinal'                => '2020-01-23',
+            'fechaInicialReg'           => '',
+            'fechaFinalReg'             => '',
+            'idEstadoGeneracion'        => '',
+            'idTipoDocElectronico'      => '',
+            'numeroInicial'             => '',
+            'numeroFinal'               => '',
+            'idnumeracion'              => '',
+            'estadoAcuse'               => '',
+            'razonSocial'               => '',
+            'mulCodEstDian'             => '',
+            'tipoDocumento'             => '',
+            'idDocumento'               => '',
+            'idVerficacionFuncional'    => ''
+
+
+        );
+
+        $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+
+        $return = json_decode($return->return);
+
+        dd($return);
     }
 
 }
