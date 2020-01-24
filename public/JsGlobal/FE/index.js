@@ -22,7 +22,8 @@ $(document).ready(function () {
     })
     .on( "change", function() {
         to.datepicker( "option", "minDate", getDate( this ) );
-    }),
+    }).datepicker('widget').wrap('<div class="ll-skin-nigran"/>'),
+
     to = $( "#to_date" ).datepicker({
         dateFormat: "yy-mm-dd 23:59:59",
         changeMonth: true,
@@ -123,21 +124,10 @@ $(document).ready(function () {
                     type: 'get',
                     data: {id:id},
                     success: function (data) {
-
-                        console.log(data);
-                        var n = data.data.comments;
-                        var Procesado_correctamente = n.search('Procesado Correctamente');
-                        var Procesado_conErrores = n.search('Validación contiene errores');
-
-                        console.log('valor: '+Procesado_correctamente);
-                        if (Procesado_correctamente == 0){
-                            $(row).find('td:eq(13)').html('<label class="text-success">Correcto</label>')
-                        }
-                        if(Procesado_conErrores == 0){
-                            $(row).find('td:eq(13)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger ErrorDianFac">ERROR DIAN</a>')
-                        }
-                        if (n.trim() == ''){
-                            $(row).find('td:eq(13)').html('<label class="text-success">Listo para enviar</label>')
+                        if (data != ''){
+                            $(row).find('td:eq(13)').html('<label id="'+id+'" class="text-success">'+data+'</label>')
+                        }else{
+                            $(row).find('td:eq(13)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger">Error</a>')
                         }
                     },
                     error: function () {
@@ -731,9 +721,6 @@ $(document).ready(function () {
     });
 
 
-   /* $(document).find( ".WebSCorreosCopia" ).select2({
-        tags: true,
-        tokenSeparators: [',', ' ']
-    })*/
+
 });
 

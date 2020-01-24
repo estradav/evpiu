@@ -75,8 +75,7 @@ class FeFacturasController extends Controller
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
                     $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/fe/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>';
-                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download-vg" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>';
-                    $btn = $btn.'<button class="btn btn-sm btn-outline-light info_ws" id="'.$row->id.'"><i class="fas fa-info-circle"></i></button>'.'</div>';
+                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download-vg" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>'.'</div>';
                     return $btn;
                 })
                 ->addColumn('selectAll', function($row){
@@ -1978,13 +1977,60 @@ class FeFacturasController extends Controller
 
     public function EstadoEnvioDianFacturacionElectronica(Request $request)
     {
-        $Numero_Factura = $request->id;
+        $id = $request->id;
+
+        if (request()->ajax()) {
+            $login1 = "jacanasv";
+            $password = "Menteslocas0906*";
+            $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+            $client = new SoapClient($wsdl_url);
+            $client->__setLocation($wsdl_url);
+
+            $params = array(
+                'login' => $login1,
+                'password' => $password
+            );
+
+            $auth = $client->autenticar($params);
+            $respuesta = json_decode($auth->return);
+            $token = $respuesta->data->salida;
+
+            $params = array(
+                'token' => $token,
+                'idEmpresa' => '',
+                'idUsuario' => '',
+                'idEstadoEnvioCliente' => '',
+                'idEstadoEnvioDian' => '',
+                'fechaInicial' => '',
+                'fechaFinal' => '',
+                'fechaInicialReg' => '',
+                'fechaFinalReg' => '',
+                'idEstadoGeneracion' => '',
+                'idTipoDocElectronico' => '',
+                'numeroInicial' => $id,
+                'numeroFinal' => $id,
+                'idnumeracion' => '',
+                'estadoAcuse' => '',
+                'razonSocial' => '',
+                'mulCodEstDian' => '',
+                'tipoDocumento' => '',
+                'idDocumento' => '',
+                'idVerficacionFuncional' => ''
+            );
+            $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+            $return = json_decode($return->return);
+
+            $values = $return->data[0]->descestadoenviodian;
 
 
-        $idDocumentoElectronico = DB::table('registro_facturacion_electronica')
+            return response()->json($values);
+
+        }
+
+
+        /*$idDocumentoElectronico = DB::table('registro_facturacion_electronica')
             ->where('numero_factura','=',$Numero_Factura)
             ->select('id_factible')->get();
-
 
         $login1 = "jacanasv";
         $password = "Menteslocas0906*";
@@ -2019,7 +2065,7 @@ class FeFacturasController extends Controller
         $logout = $client->cerrarSesion($params);
         $respuesta = json_decode($logout->return);
 
-        return response()->json($resultados);
+        return response()->json($resultados);*/
     }
 
     public function AuditoriaDian(Request $request)
