@@ -13,7 +13,9 @@
 @section('content')
     @can('facturacion.view')
     <div class="col-12">
-        <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda <br> o seleccione una o varias facturas para generar un archivo XML.</h3>
+        <div class="row">
+            <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda o seleccione una o varias facturas para generar un archivo XML.</h3>
+        </div>
     </div>
     <br>
     <div class="form-group">
@@ -32,12 +34,11 @@
         </div>
     </div>
     <br>
-    <div class="col-lg-4">
-        <div class="form-group">
-            <span><input type="button" class="btn btn-primary btn-sm" id="CrearXml" value="Crear XML"></span>
-            <span><input type="button" class="btn btn-primary btn-sm" id="WebService" value="Enviar via WebService"></span>
-        </div>
+    <div class="form-group">
+        <span><input type="button" class="btn btn-primary btn-sm" id="CrearXml" value="Crear XML"></span>
+        <span><input type="button" class="btn btn-primary btn-sm" id="WebService" value="Enviar via WebService"></span>
     </div>
+
     <div class="test" id="test" name="test" style="display: none !important;">
 
     </div>
@@ -94,6 +95,38 @@
         </div>
     </div>
 
+
+    <div role="dialog" tabindex="-1" class="modal fade bd-example-modal-xl" style="margin: -10px;" id="InfoWsInvoice">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-left">
+                    <h4 class="modal-title">Informacion de Factura #</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-body"><label style="font-size: 20px;"></label>
+                    <div class="row" style="margin-right: 1% !important; margin-left: 1% !important;">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Estado envio Cliente</h4>
+                                    <h6 class="text-muted card-subtitle mb-2">Informacion sobre el estado de envio al cliente</h6><label>Estado:</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body" id="testionwsda">
+                                    <h4 class="card-title">Estado envio Cliente</h4>
+                                    <h6 class="text-muted card-subtitle mb-2">Informacion sobre el estado de envio al cliente</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar las Facturas.
@@ -146,6 +179,9 @@
     </style>
 
 @push('javascript')
+    <script>
+			var Username = @json( Auth::user()->username);
+    </script>
     <script type="text/javascript" src="/JsGlobal/FE/index.js" ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -163,5 +199,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
 @endpush
 @stop
