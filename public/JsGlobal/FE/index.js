@@ -120,6 +120,7 @@ $(document).ready(function () {
             },
             rowCallback: function( row, data, index ) {
                 var id = data.id;
+                console.log(id);
                 $.ajax({
                     url: '/EstadoEnvioDianFacturacionElectronica',
                     type: 'get',
