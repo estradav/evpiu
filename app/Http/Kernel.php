@@ -19,9 +19,6 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        //\App\Http\Middleware\AuthLock::class,
-
-
     ];
 
     /**
@@ -40,7 +37,14 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             //'App\Http\Middleware\AuthLock'
 
+        ],
 
+        'auth' => [
+            \App\Http\Middleware\Authenticate::class,
+        ],
+
+        'auth.lock' => [
+            'App\Http\Middleware\AuthLock'
         ],
 
         'api' => [
