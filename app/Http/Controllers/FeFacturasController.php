@@ -2082,7 +2082,7 @@ class FeFacturasController extends Controller
             $return = json_decode($return->return);
 
             $values = $return->data[0]->descestadoenviodian;
-            
+
             return response()->json($values);
         }
 
