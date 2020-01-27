@@ -1954,45 +1954,85 @@ class FeFacturasController extends Controller
     {
         $Numero_Factura = $request->id;
 
-        $idDocumentoElectronico = DB::table('registro_facturacion_electronica')
-            ->where('numero_factura','=',$Numero_Factura)
-            ->select('id_factible')->get();
+        if (request()->ajax()) {
+            $login1 = $request->Username;
+            $password = "FE2020ev*";
+            $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+            $client = new SoapClient($wsdl_url);
+            $client->__setLocation($wsdl_url);
+
+            $params = array(
+                'login' => $login1,
+                'password' => $password
+            );
+
+            $auth = $client->autenticar($params);
+            $respuesta = json_decode($auth->return);
+            $token = $respuesta->data->salida;
 
 
-        $login1 = $request->Username;
-        $password = "FE2020ev*";
-        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
-        $client = new SoapClient($wsdl_url);
-        $client->__setLocation($wsdl_url);
+            $params = array(
+                'token' => $token,
+                'idEmpresa' => '',
+                'idUsuario' => '',
+                'idEstadoEnvioCliente' => '',
+                'idEstadoEnvioDian' => '',
+                'fechaInicial' => '',
+                'fechaFinal' => '',
+                'fechaInicialReg' => '',
+                'fechaFinalReg' => '',
+                'idEstadoGeneracion' => '',
+                'idTipoDocElectronico' => '',
+                'numeroInicial' => $Numero_Factura,
+                'numeroFinal' => $Numero_Factura,
+                'idnumeracion' => '',
+                'estadoAcuse' => '',
+                'razonSocial' => '',
+                'mulCodEstDian' => '',
+                'tipoDocumento' => '',
+                'idDocumento' => '',
+                'idVerficacionFuncional' => ''
+            );
+            $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+            $return = json_decode($return->return);
 
-        // Inicio de sesion
-        $params = array(
-            'login' => $login1,
-            'password' => $password
-        );
+            $id_factible = $return->data[0]->DT_RowId;
 
-        $auth = $client->autenticar($params);
-        $respuesta = json_decode($auth->return);
-        $token = $respuesta->data->salida;
+            $login1 = $request->Username;
+            $password = "FE2020ev*";
+            $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+            $client = new SoapClient($wsdl_url);
+            $client->__setLocation($wsdl_url);
 
+            // Inicio de sesion
+            $params = array(
+                'login' => $login1,
+                'password' => $password
+            );
 
-        $params = array(
-            'token'                     => $token,
-            'iddocumentoelectronico'    => $idDocumentoElectronico[0]->id_factible,
-        );
+            $auth = $client->autenticar($params);
+            $respuesta = json_decode($auth->return);
+            $token = $respuesta->data->salida;
 
-        $return = $client->descargarDocumentoElectronico_VersionGrafica($params);
+            $params = array(
+                'token'                     => $token,
+                'iddocumentoelectronico'    => $id_factible,
+            );
 
-        $resultados = json_decode($return->return);
+            $return = $client->descargarDocumentoElectronico_VersionGrafica($params);
 
-        //cerramos sesion
-        $params = array(
-            'token' => $token
-        );
-        $logout = $client->cerrarSesion($params);
-        $respuesta = json_decode($logout->return);
+            $resultados = json_decode($return->return);
 
-        return response()->json($resultados->data->salida);
+            //cerramos sesion
+            $params = array(
+                'token' => $token
+            );
+            $logout = $client->cerrarSesion($params);
+            $respuesta = json_decode($logout->return);
+
+            return response()->json($resultados->data->salida);
+
+        }
 
     }
 
@@ -2042,10 +2082,8 @@ class FeFacturasController extends Controller
             $return = json_decode($return->return);
 
             $values = $return->data[0]->descestadoenviodian;
-
-
+            
             return response()->json($values);
-
         }
 
 
