@@ -421,7 +421,10 @@
                     $.ajax({
                         type: 'get',
                         url: '/GestionFacturacionElectronica_InfoWs',
-                        data: {id : id},
+                        data: {
+                        	id : id,
+                            Username: Username
+                        },
                         success: function (data) {
                             $('#nombreAdquiriente').html(data.nombreAdquiriente);
                             $('#identificacionAdquiriente').html(data.identificacionAdquiriente);
