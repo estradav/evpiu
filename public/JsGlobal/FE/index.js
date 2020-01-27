@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     var from = $( "#from_date" )
     .datepicker({
         dateFormat: "yy-mm-dd 00:00:00",
@@ -122,7 +123,10 @@ $(document).ready(function () {
                 $.ajax({
                     url: '/EstadoEnvioDianFacturacionElectronica',
                     type: 'get',
-                    data: {id:id},
+                    data: {
+                        id:id,
+                        Username: Username
+                    },
                     success: function (data) {
                         if (data != ''){
                             $(row).find('td:eq(13)').html('<label id="'+id+'" class="text-success">'+data+'</label>')
@@ -473,6 +477,7 @@ $(document).ready(function () {
                 dataType: 'json', // importante para que
                 data: {
                     selected: JSON.stringify(selected),
+                    Username: Username
                 }, // jQuery convierta el array a JSON
                 url: '/FacturaElectronicaWebService',
                 success: function (data) {
@@ -491,8 +496,6 @@ $(document).ready(function () {
                             '<b><label>Mensaje: </label></b>  <label>'+ data[i].msg +'</label>');
                         i++;
                     });
-
-
                     sweetAlert.close();
 
                     Swal.fire({
@@ -502,8 +505,6 @@ $(document).ready(function () {
                         icon: 'success',
                         confirmButtonText: 'Aceptar',
                     })
-
-
                 },
                 error: function (data) {
                     Swal.fire({
@@ -533,7 +534,8 @@ $(document).ready(function () {
             type: 'post',
             url: '/DescargarVersionGrafica',
             data: {
-               id: id
+                id: id,
+                Username: Username
             },
             success: function (data) {
                 var base64str = data;

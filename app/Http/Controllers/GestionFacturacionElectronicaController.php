@@ -11,15 +11,13 @@ class GestionFacturacionElectronicaController extends Controller
 {
     public function index(Request $request)
     {
-
         $fromdate = Carbon::now()->format('Y-m-d');
         $todate = Carbon::now()->format('Y-m-d');
 
-
         if (request()->ajax()) {
-            if (!empty($request->from_date) || !empty($request->fe_start)) {
-                $login1 = "jacanasv";
-                $password = "Menteslocas0906*";
+            if (!empty($request->from_date) || !empty($requsalidaest->fe_start)) {
+                $login1 = $request->Username;
+                $password = "FE2020ev*";
                 $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
                 $client = new SoapClient($wsdl_url);
                 $client->__setLocation($wsdl_url);
@@ -55,15 +53,14 @@ class GestionFacturacionElectronicaController extends Controller
                     'idDocumento'           => '',
                     'idVerficacionFuncional'=> ''
                 );
+
                 $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
                 $return = json_decode($return->return);
-
-
                 $values = $return->data;
 
             }else{
-                $login1 = "jacanasv";
-                $password = "Menteslocas0906*";
+                $login1 = $request->Username;
+                $password = "FE2020ev*";
                 $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
                 $client = new SoapClient($wsdl_url);
                 $client->__setLocation($wsdl_url);
@@ -119,8 +116,8 @@ class GestionFacturacionElectronicaController extends Controller
     {
         $Numero_Factura = $request->id;
 
-        $login1 = "jacanasv";
-        $password = "Menteslocas0906*";
+        $login1 = $request->Username;
+        $password = "FE2020ev*";
         $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
         $client = new SoapClient($wsdl_url);
         $client->__setLocation($wsdl_url);
@@ -134,7 +131,6 @@ class GestionFacturacionElectronicaController extends Controller
         $auth = $client->autenticar($params);
         $respuesta = json_decode($auth->return);
         $token = $respuesta->data->salida;
-
 
         $params = array(
             'token'                     => $token,
@@ -160,8 +156,8 @@ class GestionFacturacionElectronicaController extends Controller
         $id = $request->id;
 
         if (request()->ajax()) {
-            $login1 = "jacanasv";
-            $password = "Menteslocas0906*";
+            $login1 = $request->Username;
+            $password = "FE2020ev*";
             $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
             $client = new SoapClient($wsdl_url);
             $client->__setLocation($wsdl_url);
@@ -214,8 +210,8 @@ class GestionFacturacionElectronicaController extends Controller
 
         if (request()->ajax()) {
             if (!empty($request->from_date) || !empty($request->fe_start)) {
-                $login1 = "jacanasv";
-                $password = "Menteslocas0906*";
+                $login1 = $request->Username;
+                $password = "FE2020ev*";
                 $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
                 $client = new SoapClient($wsdl_url);
                 $client->__setLocation($wsdl_url);
@@ -227,7 +223,10 @@ class GestionFacturacionElectronicaController extends Controller
 
                 $auth = $client->autenticar($params);
                 $respuesta = json_decode($auth->return);
+
                 $token = $respuesta->data->salida;
+
+
 
                 $params = array(
                     'token' => $token,
@@ -258,8 +257,8 @@ class GestionFacturacionElectronicaController extends Controller
                 return response()->json($values);
 
             } else {
-                $login1 = "jacanasv";
-                $password = "Menteslocas0906*";
+                $login1 = $request->Username;
+                $password = "FE2020ev*";
                 $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
                 $client = new SoapClient($wsdl_url);
                 $client->__setLocation($wsdl_url);

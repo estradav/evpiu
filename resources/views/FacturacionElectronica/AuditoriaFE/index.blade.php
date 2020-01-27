@@ -220,6 +220,9 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
+
+                var Username = @json( Auth::user()->username);
+
                 var from = $( "#from_date" ).datepicker({
                     dateFormat: "yy-mm-dd",
                     changeMonth: true,
@@ -299,7 +302,8 @@
                                 to_date:to_date,
                                 fe_start:fe_start,
                                 fe_end:fe_end,
-                                type_doc:type_doc
+                                type_doc:type_doc,
+                                Username:Username
                             }
                         },
                         columns: [
@@ -381,7 +385,8 @@
                         type: 'post',
                         url: '/GestionFacturacionElectronica_DownloadPdf',
                         data: {
-                            id: id
+                            id: id,
+                            Username: Username
                         },
                         success: function (data) {
                             var base64str = data;
@@ -475,7 +480,8 @@
                             to_date:to_date,
                             fe_start:fe_start,
                             fe_end:fe_end,
-                            type_doc:type_doc
+                            type_doc:type_doc,
+                            Username: Username
                         },
                         success: function (data) {
                         	var array = [];

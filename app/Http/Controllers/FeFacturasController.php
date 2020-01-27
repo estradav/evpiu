@@ -131,6 +131,7 @@ class FeFacturasController extends Controller
                    'CIEV_V_FE.fechadocumento',
                    'CIEV_V_FE.nombres',
                    'CIEV_V_FE.fechavencimiento',
+                   'CIEV_V_FE_FacturasTotalizadas.OV',
                    'CIEV_V_FE_FacturasTotalizadas.bruto',
                    'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social',
                    'CIEV_V_FE_FacturasTotalizadas.descuento',
@@ -348,6 +349,21 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
 
+               $objetoXML->startElement("ordendedespacho");
+               $objetoXML->startElement("codigo");
+               $objetoXML->text(trim($encabezado->OV));
+               $objetoXML->endElement();
+               $objetoXML->startElement("fechageneracion");
+               $objetoXML->text('');
+               $objetoXML->endElement();
+               $objetoXML->startElement("base64");
+               $objetoXML->text('');
+               $objetoXML->endElement();
+               $objetoXML->startElement("nombrearchivo");
+               $objetoXML->text(' ');
+               $objetoXML->endElement();
+               $objetoXML->endElement();
+
                $objetoXML->startElement("adquiriente"); // falta
                $objetoXML->startElement("idtipopersona"); // falta
                $objetoXML->text('');
@@ -540,7 +556,6 @@ class FeFacturasController extends Controller
 
 
                $objetoXML->startElement("items");
-
                foreach ($items_Normales as $it) {
                    $valor_item = null;
                    $subtotal_item = null;
@@ -567,8 +582,8 @@ class FeFacturasController extends Controller
                    }else{
                        $subtotal_item = $it->totalitem - $it->Desc_Item;
                        $total_valor_item_iva = $subtotal_item * 0.19;
-                       $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
                        $valor_item = $it->precio * $it->cantidad;
+                       $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
                        $precio_unitario = $it-> precio;
                    }
 
@@ -580,8 +595,7 @@ class FeFacturasController extends Controller
                        $regalo = 0;
                    }
 
-               /*    // valida el tipo de codigo 020 posicion alacelaria o 999 adopcion del contribuyente
-
+                    /*// valida el tipo de cooigo 020 posicion alacelaria o 999 adopcion del contribuyente
                    // valida el id impuesto por item*/
 
                    if ($it->iva_item != 0) {
@@ -879,8 +893,6 @@ class FeFacturasController extends Controller
             $Configuracions = DB::table('fe_configs')->get();
                 return response()->json($Configuracions);
         }
-
-
         return view('FacturacionElectronica.Configuracion.index');
     }
 
@@ -891,7 +903,6 @@ class FeFacturasController extends Controller
             'fac_idambiente'    => $request->fac_idambiente,
             'fac_idreporte'     => $request->fac_idreporte
         ]);
-
         return response()->json(['ok']);
     }
 
@@ -902,7 +913,6 @@ class FeFacturasController extends Controller
             'nc_idambiente'    => $request->nc_idambiente,
             'nc_idreporte'     => $request->nc_idreporte
         ]);
-
         return response()->json(['ok']);
     }
 
@@ -945,7 +955,6 @@ class FeFacturasController extends Controller
              'CIEV_V_FE.OC')
          ->where('CIEV_V_FE.numero', '=', $request->numero)->get();
 
-
          $detalle = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
              ->select('CIEV_V_FacturasDetalladas.factura',
                  'CIEV_V_FacturasDetalladas.descripcionproducto',
@@ -982,7 +991,6 @@ class FeFacturasController extends Controller
         ->where('DAYS_36','=', $request->encabezado[0]['condicionpago'])->select('CODE_36')->get();
 
         $Numero_de_factura = '00'.$request->encabezado[0]['Numero_factura'];
-
         $Detalle = $request->Items;
         $ConIVA = [];
         $SinIVA = [];
@@ -995,8 +1003,6 @@ class FeFacturasController extends Controller
                 $SinIVA[] = $dest;
             }
         }
-
-
 
         if($ConIVA != null && $SinIVA == null) {
             DB::beginTransaction();
@@ -1022,7 +1028,6 @@ class FeFacturasController extends Controller
                 foreach ($ConIVA as $Det) {
                     $limnnum = substr($Det['item'], 0, 2);
                     $delnum = substr($Det['item'], 2, 4);
-
 
 
                     DB::connection('MAXP')->table('Invoice_detail')
@@ -1123,7 +1128,6 @@ class FeFacturasController extends Controller
             //Elemento Raiz del XML
             $objetoXML->startElement("root");
 
-
             $NumeroFactura = $Factura_seleccionada->numero;
 
             $Encabezado_Factura = DB::connection('MAX')->table('CIEV_V_FE')
@@ -1146,6 +1150,7 @@ class FeFacturasController extends Controller
                     'CIEV_V_FE.fechadocumento',
                     'CIEV_V_FE.nombres',
                     'CIEV_V_FE.fechavencimiento',
+                    'CIEV_V_FE_FacturasTotalizadas.OV',
                     'CIEV_V_FE_FacturasTotalizadas.bruto',
                     'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social',
                     'CIEV_V_FE_FacturasTotalizadas.descuento',
@@ -1227,7 +1232,6 @@ class FeFacturasController extends Controller
 
 
                 ////////////////// CAlCULOS Y VALIDACIONES PARA EL ENCABEZADO DE LAS FACTURAS  ////////////////////////////
-                ///
                 if($encabezado->tipo_cliente  == 'EX'){
                     $bruto_factura       = $encabezado->bruto_usd;
                     $subtotal_factura    = $encabezado->bruto_usd;
@@ -1358,6 +1362,23 @@ class FeFacturasController extends Controller
                 $objetoXML->text(' ');
                 $objetoXML->endElement();
                 $objetoXML->endElement();
+
+
+                $objetoXML->startElement("ordendedespacho");
+                $objetoXML->startElement("codigo");
+                $objetoXML->text(trim($encabezado->OV));
+                $objetoXML->endElement();
+                $objetoXML->startElement("fechageneracion");
+                $objetoXML->text('');
+                $objetoXML->endElement();
+                $objetoXML->startElement("base64");
+                $objetoXML->text('');
+                $objetoXML->endElement();
+                $objetoXML->startElement("nombrearchivo");
+                $objetoXML->text(' ');
+                $objetoXML->endElement();
+                $objetoXML->endElement();
+
 
                 $objetoXML->startElement("adquiriente"); // falta
                 $objetoXML->startElement("idtipopersona"); // falta
@@ -1876,8 +1897,8 @@ class FeFacturasController extends Controller
 
             /* se comienza con el web service */
 
-            $login1 = "jacanasv";
-            $password = "Menteslocas0906*";
+            $login1 = $request->Username;
+            $password = "FE2020ev*";
             $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
             $client = new SoapClient($wsdl_url);
             $client->__setLocation($wsdl_url);
@@ -1938,8 +1959,8 @@ class FeFacturasController extends Controller
             ->select('id_factible')->get();
 
 
-        $login1 = "jacanasv";
-        $password = "Menteslocas0906*";
+        $login1 = $request->Username;
+        $password = "FE2020ev*";
         $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
         $client = new SoapClient($wsdl_url);
         $client->__setLocation($wsdl_url);
@@ -1980,8 +2001,8 @@ class FeFacturasController extends Controller
         $id = $request->id;
 
         if (request()->ajax()) {
-            $login1 = "jacanasv";
-            $password = "Menteslocas0906*";
+            $login1 = $request->Username;
+            $password = "FE2020ev*";
             $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
             $client = new SoapClient($wsdl_url);
             $client->__setLocation($wsdl_url);
@@ -2070,8 +2091,8 @@ class FeFacturasController extends Controller
 
     public function AuditoriaDian(Request $request)
     {
-        $login1 = "jacanasv";
-        $password = "Menteslocas0906*";
+        $login1 = $request->Username;
+        $password = "FE2020ev*";
         $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
         $client = new SoapClient($wsdl_url);
         $client->__setLocation($wsdl_url);
@@ -2111,8 +2132,8 @@ class FeFacturasController extends Controller
                 ->where('numero_factura','=',$factura)
                 ->select('id_factible','numero_factura')->get();
 
-            $login1 = "jacanasv";
-            $password = "Menteslocas0906*";
+            $login1 = $request->Username;
+            $password = "FE2020ev*";
             $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
             $client = new SoapClient($wsdl_url);
             $client->__setLocation($wsdl_url);
@@ -2236,8 +2257,8 @@ class FeFacturasController extends Controller
 
 
 
-        $login1 = "jacanasv";
-        $password = "Menteslocas0906*";
+        $login1 = $request->Username;
+        $password = "FE2020ev*";
         $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
         $client = new SoapClient($wsdl_url);
         $client->__setLocation($wsdl_url);
