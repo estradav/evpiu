@@ -14,8 +14,13 @@ class AddForeignkeyToEncabezadoRequerimientos extends Migration
     public function up()
     {
         Schema::table('encabezado_requerimientos', function (Blueprint $table) {
-            $table->foreign('vendedor_id')->references('codvendedor')->on('users');
-            $table->foreign('diseñador_id')->references('cod_designer')->on('users');
+            $table->foreign('vendedor_id')->references('id')->on('users');
+            $table->foreign('diseñador_id')->references('id')->on('users');
+            $table->foreign('usuario_id')->references('id')->on('users');
+            $table->foreign('producto')->references('id')->on('cod_codigos');
+            $table->foreign('marca')->references('id')->on('marcas');
+
+
         });
     }
 

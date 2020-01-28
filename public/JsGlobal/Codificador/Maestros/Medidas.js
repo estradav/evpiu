@@ -1,5 +1,7 @@
 $(document).ready(function(){
     var table;
+    var lineas_id = $('#med_lineas_id').val();
+    var sublineas_id = $('#med_sublineas_id').val();
     $(function () {
         $.ajaxSetup({
             headers: {
@@ -218,6 +220,10 @@ $(document).ready(function(){
         return (value != '');
     }, "Por favor, seleciona una opcion.");
 
+
+
+    console.log(sublineas_id,lineas_id);
+
     $("#medidaForm").validate({
         ignore: "",
         rules: {
@@ -237,7 +243,19 @@ $(document).ready(function(){
                 maxlength: 2,
                 required: true
             },
-            denominacion: "required",
+            denominacion: {
+                remote: {
+                    url: '/UniqueDenominacion',
+                    type: 'POST',
+                    data: {
+                        lineas_id, sublineas_id
+
+                    },
+                    async: true,
+                },
+                minlength: 2,
+                required : true,
+            }
         },
         highlight: function (element) {
             // Only validation controls

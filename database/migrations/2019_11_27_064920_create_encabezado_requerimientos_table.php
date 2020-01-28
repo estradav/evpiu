@@ -15,16 +15,16 @@ class CreateEncabezadoRequerimientosTable extends Migration
     {
         Schema::create('encabezado_requerimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('producto');
+            $table->unsignedBigInteger('producto')->nullable();
             $table->string('informacion');
             $table->string('cliente');
-            $table->string('marca');
+            $table->unsignedBigInteger('marca')->nullable();
             $table->string('medida');
-            $table->string('usuario');
+            $table->unsignedBigInteger('usuario_id')->nullable();
             $table->string('estado');
             $table->string('render');
-            $table->unsignedBigInteger('vendedor_id')->index()->nullable();
-            $table->unsignedBigInteger('diseñador_id')->index()->nullable();
+            $table->unsignedBigInteger('vendedor_id')->nullable();
+            $table->unsignedBigInteger('diseñador_id')->nullable();
 
             $table->timestamps();
         });

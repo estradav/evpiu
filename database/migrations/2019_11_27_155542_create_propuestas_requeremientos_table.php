@@ -16,19 +16,17 @@ class CreatePropuestasRequeremientosTable extends Migration
         Schema::create('propuestas_requerimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('idRequerimiento');
-            $table->string('articulo');
+            $table->unsignedBigInteger('articulo')->nullable();
             $table->string('codigo_base');
             $table->string('relieve');
             $table->string('medida');
             $table->string('caracteristicas');
-            $table->string('usuario');
+            $table->unsignedBigInteger('usuario_id')->nullable();
             $table->string('estado');
-            $table->unsignedBigInteger('diseñador_id')->index()->nullable();
+            $table->unsignedBigInteger('diseñador_id')->nullable();
             $table->timestamps();
         });
-        Schema::table('propuestas_requerimientos', function($table) {
-            $table->foreign('idRequerimiento')->references('id')->on('encabezado_requerimientos');
-        });
+
     }
 
     /**
