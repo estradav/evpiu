@@ -242,6 +242,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
         Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
         Route::post('/FacturaElectronicaWebService','FeFacturasController@FacturasWebService');
+        Route::post('/NotasCreditoWebService','FeNotasCreditoController@NotasCreditoWebService');
         Route::post('/DescargarVersionGrafica','FeFacturasController@DescargarVersionGrafica');
 
 
@@ -279,11 +280,14 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/AuditoriaDian','FeFacturasController@AuditoriaDian');
         Route::get('/InfoFacturaWebService','FeFacturasController@InfoFacturaWebService');
 
+
+
         Route::resource('GestionFacturacionElectronica','GestionFacturacionElectronicaController');
         Route::get('/GestionFacturacionElectronica_data','GestionFacturacionElectronicaController@index');
         Route::post('/GestionFacturacionElectronica_DownloadPdf','GestionFacturacionElectronicaController@DownloadPdf');
         Route::get('/GestionFacturacionElectronica_InfoWs','GestionFacturacionElectronicaController@InfoWs');
         Route::get('/GestionFacturacionElectronica_ListadeFacturas','GestionFacturacionElectronicaController@ListadeFacturas');
+        Route::get('/GestionFacturacionElectronica_ObtenerCuidades','GestionFacturacionElectronicaController@ObtenerCuidades');
 
 
     });

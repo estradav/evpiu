@@ -49,7 +49,7 @@ class PedidoController extends Controller
     public function GetUsers(Request $request)
     {
         if ($request->ajax()){
-          $User =  DB::table('users')->where('codvendedor','<>',null)->get();
+          $User =  DB::table('users')->where('app_roll','=','vendedor')->get();
         }
         return response()->json($User);
     }

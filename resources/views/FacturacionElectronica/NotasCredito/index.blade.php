@@ -12,7 +12,11 @@
 
 @section('content')
 @can('notascredito.view')
-    <div class="col-12"><h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda.</h3></div>
+    <div class="col-12">
+        <div class="row">
+            <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda.</h3>
+        </div>
+    </div>
     <br>
     <div class="form-group">
         <div class="input-group">
@@ -33,8 +37,12 @@
     <br>
     <div class="col-lg-4">
         <div class="form-group">
-            <span><input type="button" class="btn btn-primary btn-sm" id="CrearXml" value="Crear XML"></span>
+            <span><input type="button" class="btn btn-primary btn-sm" id="CrearXml" value="Descargar XML"></span>
+            <span><input type="button" class="btn btn-primary btn-sm" id="WebService" value="Enviar via WebService"></span>
         </div>
+    </div>
+
+    <div class="DatosWebServ" id="DatosWebServ" name="DatosWebServ" style="display: none !important;">
     </div>
 
     <div class="row">
@@ -57,6 +65,7 @@
                                     <th>Descuento</th>
                                     <th>IVA</th>
                                     <th>Motivo</th>
+                                    <th>Estado DIAN</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -100,6 +109,18 @@
                 transform: rotate(360deg);
             }
         }
+
+        .preloader_datatable {
+            width: 35px;
+            height: 35px;
+            border: 7px solid #eee;
+            border-top: 7px solid #008000;
+            border-radius: 50%;
+            animation-name: girar;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
     </style>
 @else
     <div class="alert alert-danger" role="alert">
@@ -109,6 +130,8 @@
 @push('javascript')
     <script>
         $(document).ready(function () {
+            var Username = @json( Auth::user()->username);
+
             var from = $( "#from_date" )
             .datepicker({
                 dateFormat: "yy-mm-dd 00:00:00",
@@ -202,6 +225,7 @@
                         {data: 'desc', name: 'desc', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
                         {data: 'valor_iva', name: 'valor_iva', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
                         {data: 'motivo', name: 'motivo', orderable: false, searchable: true},
+                        {data: 'EstadoDian',name: 'EstadoDian',orderable: true, searchable: true},
                         {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
                     ],
 
@@ -239,13 +263,32 @@
                         }
                     },
                     rowCallback: function (row, data, index) {
-                        if (data.fecha == null) {
-                            $(row).find('td:eq(3)').css('color', 'red');
-                        }
 
-                        if (data.plazo == null) {
+                        var id = data.id;
+                        console.log(id);
+                        $.ajax({
+                            url: '/EstadoEnvioDianFacturacionElectronica',
+                            type: 'get',
+                            data: {
+                                id:id,
+                                Username: Username
+                            },
+                            success: function (data) {
+                                if (data != ''){
+                                    $(row).find('td:eq(12)').html('<label id="'+id+'" class="text-success">'+data+'</label>')
+                                }else{
+                                    $(row).find('td:eq(12)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger">Error</a>')
+                                }
+                            },
+                            error: function () {
+                                $(row).find('td:eq(12)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger ErrorEstDianFac">Pendiente</a>')
+                            }
+                        });
+
+                        if (data.fecha == null) {
                             $(row).find('td:eq(4)').css('color', 'red');
                         }
+
 
                         if (data.razon_social == null) {
                             $(row).find('td:eq(5)').css('color', 'red');
@@ -260,20 +303,20 @@
                         }
 
                         if (data.bruto == null) {
-                            $(row).find('td:eq(9)').css('color', 'red');
+                            $(row).find('td:eq(8)').css('color', 'red');
                         }
 
 
                         if (data.bruto <= 3000) {
-                            $(row).find('td:eq(9)').css('color', 'red');
+                            $(row).find('td:eq(8)').css('color', 'red');
                         }
 
                         if (data.bruto >= 20000000) {
-                            $(row).find('td:eq(9)').css('color', 'red');
+                            $(row).find('td:eq(8)').css('color', 'red');
                         }
 
                         if ((data.desc / data.bruto) * 100 >= 20) {
-                            $(row).find('td:eq(9)').css('color', 'red');
+                            $(row).find('td:eq(8)').css('color', 'red');
                         }
 
                         var porc_iva = (data.valor_iva / data.subtotal) * 100;
@@ -510,6 +553,134 @@
 
                 return  'Detalle de Nota credito : '+d.id+' <br>'+ resultado ;
             }
+
+
+            $('#WebService').on('click',function () {
+                var selected = [];
+                $(".checkboxes").each(function () {
+                    if (this.checked) {
+                        var numero = this.id;
+                        var factura ={
+                            "numero":numero,
+                        };
+                        selected.push(factura);
+                    }
+                });
+                if (selected.length) {
+                    Swal.fire({
+                        icon: false,
+                        title: 'Enviando Facturas seleccionadas a traves de WebService, un momento por favor...',
+                        html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        cache: false,
+                        type: 'post',
+                        dataType: 'json', // importante para que
+                        data: {
+                            selected: JSON.stringify(selected),
+                            Username: Username
+                        }, // jQuery convierta el array a JSON
+                        url: '/NotasCreditoWebService',
+                        success: function (data) {
+                            $('#DatosWebServ').html('');
+                            var i = 0;
+                            $(data).each(function () {
+                                var estado;
+
+                                if (data[i].success == true){
+                                    estado = '<label class="text-success">Cargado con exito!</label>'
+                                }else{
+                                    estado = '<label class="text-danger"> Con errores </label>'
+                                }
+
+                                $('#DatosWebServ').append('<b><label>Estado de carga: </label></b>  <label>'+ estado +'</label> <br>' +
+                                    '<b><label>Mensaje: </label></b>  <label>'+ data[i].msg +'</label>');
+                                i++;
+                            });
+                            sweetAlert.close();
+
+                            Swal.fire({
+                                backdrop: true,
+                                title: 'Terminado!',
+                                html: $('#DatosWebServ').html(),
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar',
+                            })
+                        },
+                        error: function (data) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Hubo un error al enviar los datos por WebService..!',
+                            });
+                        }
+                    });
+                } else
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Debes seleccionar al menos una factura...!',
+                    });
+                return false;
+            });
+
+
+
+            $('body').on('click','.download-vg', function () {
+                var id = this.id;
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'post',
+                    url: '/DescargarVersionGrafica',
+                    data: {
+                        id: id,
+                        Username: Username
+                    },
+                    success: function (data) {
+                        var base64str = data;
+
+                        // decode base64 string, remove space for IE compatibility
+                        var binary = atob(base64str.replace(/\s/g, ''));
+                        var len = binary.length;
+                        var buffer = new ArrayBuffer(len);
+                        var view = new Uint8Array(buffer);
+                        for (var i = 0; i < len; i++) {
+                            view[i] = binary.charCodeAt(i);
+                        }
+
+                        // create the blob object with content-type "application/pdf"
+                        var blob = new Blob( [view], { type: "application/pdf" });
+                        var link=document.createElement('a');
+                        link.href=window.URL.createObjectURL(blob);
+                        let current_datetime = new Date();
+                        // let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
+                        link.download="Nota_Credito_"+id+".pdf";
+                        link.click();
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error en la Descarga...',
+                            text: 'Hubo un error al descargar el pdf de esta factura...!',
+                        });
+                    }
+                });
+            });
 
         });
     </script>

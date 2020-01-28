@@ -18,8 +18,12 @@ class CreateMarcasTable extends Migration
             $table->string('name');
             $table->string('comments');
             $table->string('type');
-            $table->string('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('marcas', function($table) {
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

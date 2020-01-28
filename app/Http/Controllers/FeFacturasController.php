@@ -1936,17 +1936,7 @@ class FeFacturasController extends Controller
 
         }
 
-        foreach ($resultados as $result){
-            if ($result->success == true){
-                DB::table('registro_facturacion_electronica')->updateOrInsert(['numero_factura'    => $result->data[0]->numero,],[
-                    'numero_factura'    => $result->data[0]->numero,
-                    'id_factible'       => $result->data[0]->idDocumentoElectronico,
-                    'usuario'           => $request->username,
-                    'created_at'        => Carbon::now(),
-                    'updated_at'        => Carbon::now()
-                ]);
-            }
-        }
+
         return response()->json($resultados);
     }
 
@@ -2285,14 +2275,7 @@ class FeFacturasController extends Controller
 
     public function InfoFacturaWebService(Request $request)
     {
-
-
         $Numero_Factura = $request->id;
-
-        $idDocumentoElectronico = DB::table('registro_facturacion_electronica')
-            ->where('numero_factura','=',$Numero_Factura)
-            ->select('id_factible')->get();
-
 
 
         $login1 = $request->Username;

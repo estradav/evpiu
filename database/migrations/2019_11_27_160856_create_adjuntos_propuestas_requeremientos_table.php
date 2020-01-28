@@ -17,7 +17,8 @@ class CreateAdjuntosPropuestasRequeremientosTable extends Migration
             $table->unsignedBigInteger('idRequerimiento');
             $table->unsignedBigInteger('idPropuesta');
             $table->string('archivo');
-            $table->string('usuario');
+            $table->string('url');
+            $table->unsignedBigInteger('usuario_id');
             $table->string('tipo');
             $table->timestamps();
         });
@@ -25,6 +26,7 @@ class CreateAdjuntosPropuestasRequeremientosTable extends Migration
         Schema::table('adjuntos_propuestas_requerimientos', function($table) {
             $table->foreign('idRequerimiento')->references('id')->on('encabezado_requerimientos');
             $table->foreign('idPropuesta')->references('id')->on('propuestas_requerimientos');
+            $table->foreign('usuario_id')->references('id')->on('users');
         });
     }
 

@@ -556,7 +556,7 @@ $(document).ready(function () {
                 link.href=window.URL.createObjectURL(blob);
                 let current_datetime = new Date();
                // let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
-                link.download="Factura_Electronica.pdf";
+                link.download="Factura_Electronica_"+id+".pdf";
                 link.click();
             },
             error: function () {
@@ -595,20 +595,7 @@ $(document).ready(function () {
         });
     });
 
-    $('body').on('click','#testAuditoria',function () {
-        var id =  this.id;
-        $.ajax({
-            url: '/AuditoriaDian',
-            type: 'get',
-            success: function (data) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Esta factura tiene errores !',
-                    html: 'test',
-                });
-            }
-        });
-    });
+
     function validateEmail(email) {
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);

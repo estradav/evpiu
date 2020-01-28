@@ -17,12 +17,13 @@ class CreateTransaccionesRequeremientosTable extends Migration
             $table->unsignedBigInteger('idReq');
             $table->string('tipo');
             $table->string('descripcion');
-            $table->string('usuario');
+            $table->unsignedBigInteger('usuario_id')->index()->nullable();
             $table->timestamps();
         });
 
         Schema::table('transacciones_requerimientos', function($table) {
             $table->foreign('idReq')->references('id')->on('encabezado_requerimientos');
+            $table->foreign('usuario_id')->references('id')->on('users');
         });
     }
 

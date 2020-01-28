@@ -14,7 +14,10 @@ class AddForeignkeyToPropuestasRequerimientos extends Migration
     public function up()
     {
         Schema::table('propuestas_requerimientos', function (Blueprint $table) {
-            $table->foreign('diseñador_id')->references('cod_designer')->on('users');
+            $table->foreign('idRequerimiento')->references('id')->on('encabezado_requerimientos');
+            $table->foreign('articulo')->references('id')->on('cod_codigos');
+            $table->foreign('usuario_id')->references('id')->on('users');
+            $table->foreign('diseñador_id')->references('id')->on('users');
         });
 
 

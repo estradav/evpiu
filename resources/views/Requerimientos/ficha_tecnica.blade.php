@@ -9,7 +9,7 @@
     @can('show_requerimientos.view')
         <div class="row">
             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
-                <div class="card">
+                <div class="card testvisual">
                     <div class="card-header">
                         INFORMACION GENERAL
                     </div>
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                <div class="card">
+                <div class="card testvisual">
                     <div class="card-header">
                         ARCHIVOS DE SOPORTE
                     </div>
@@ -68,8 +68,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
-                <div class="card">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
+                <div class="card testvisual">
                     <div class="card-header">
                         DETALLE REQUERIMIENTO
                     </div>
@@ -85,25 +85,29 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
-                <div class="card">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
+                <div class="card testvisual">
                     <div class="card-header">
                         OPCIONES
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="text-center col-12">
-                                <button class="btn btn-light SubirArchiv">SUBIR ARCHIVOS</button>
-                                <button class="btn btn-light EnvRender" id="{{ $var }}">ENVIAR A RENDER </button>
-                                <button class="btn btn-light CambEstreq" id="{{ $var }}">CAMBIAR ESTADO</button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="text-center col-12">
-                                <button class="btn btn-light anularreq" id="{{ $var }}">ANULAR</button>
-                                <button class="btn btn-light FinalizarReq" id="{{ $var }}">FINALIZAR</button>
-                                <button class="btn btn-light CambiarDiseñador" id="{{ $var }}">ASIGNAR/CAMBIAR DISEÑADOR</button>
+                            <div class="text-center col-13" style="margin-left: 10px; margin-right: 10px">
+                                <br>
+                                <button class="btn btn-light SubirArchiv" id="{{ $var }}" style="width: 90px; height: 80px;"><i class="fa fa-file"></i>
+                                    <br>Subir archivos</button>
+                                <button class="btn btn-light EnvRender" id="{{ $var }}" style="width: 90px; height: 80px;"><i class="far fa-paper-plane"></i>
+                                    <br>Enviar a render</button>
+                                <button class="btn btn-light CambEstreq" id="{{ $var }}" style="width: 90px; height: 80px;"><i class="fas fa-exchange-alt"></i>
+                                    <br>Cambiar estado</button>
+                                <button class="btn btn-light anularreq" id="{{ $var }}" style="width: 90px; height: 80px;"><i class="fas fa-ban"></i>
+                                    <br>Anular</button>
+                                <button class="btn btn-light FinalizarReq" id="{{ $var }}" style="width: 90px; height: 80px;"><i class="fas fa-check-double"></i>
+                                    <br>Finalizar</button>
+                                <button class="btn btn-light CambiarDiseñador" id="{{ $var }}" style="width: 97px; height: 80px; cursor: pointer"><i class="fas fa-exchange-alt"></i>
+                                    <br>Cambiar diseñador</button>
+                                <button class="btn btn-light EnvDiseño" id="{{ $var }}" style="width: 90px; height: 80px;"><i class="fas fa-pencil-ruler"></i>
+                                    <br>Enviar a diseño</button>
                             </div>
                         </div>
                     </div>
@@ -426,6 +430,20 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
+
+                var altura_arr = [];//CREAMOS UN ARREGLO VACIO
+                $('.testvisual').each(function(){//RECORREMOS TODOS LOS CONTENEDORES DE LAS IMAGENES, DEBEN TENER LA MISMA CLASE
+                    var altura = $(this).height(); //LES SACAMOS LA ALTURA
+                    altura_arr.push(altura);//METEMOS LA ALTURA AL ARREGLO
+                });
+                altura_arr.sort(function(a, b){return b-a}); //ACOMODAMOS EL ARREGLO EN ORDEN DESCENDENTE
+                $('.testvisual').each(function(){//RECORREMOS DE NUEVO LOS CONTENEDORES
+                    $(this).css('height',altura_arr[0]);//LES PONEMOS A TODOS LOS CONTENEDORES EL PRIMERO ELEMENTO DE ALTURA DEL ARREGLO, QUE ES EL MAS GRANDE.
+                });
+
+
+
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -433,8 +451,12 @@
                 });
                 var id = @json( $var );
                 var Username = @json( Auth::user()->name );
+                var Username_id = @json( Auth::user()->id );
                 var Roll = @json( Auth::user()->app_roll );
                 var Url = window.location.href;
+                var New_reque_Producto;
+
+                console.log(id);
 
                 $('body').on('click','.newcoment',function () {
                     var id = $(this).attr('id');
@@ -471,7 +493,7 @@
                                     data: {
                                         idReq: id,
                                         coments: result.value,
-                                        user: Username
+                                        user: Username_id
                                     },
                                     success: function () {
                                         Swal.fire({
@@ -511,6 +533,7 @@
                             $('#InfoInfo').html(data.encabezado[0].informacion);
                             $('#InfoMarca').html(data.encabezado[0].marca);
                             $('#InfoDate').html(data.encabezado[0].created_at);
+                            console.log(data.Datos);
 
                             $(data.Datos).each(function () {
                                 if (i % 2 == 0)
@@ -534,7 +557,7 @@
                                         '<div class="card border-success shadow">' +
                                         '<div class="card-body">' +
                                         '<div class="float-right text-primary small">'+ data.Datos[i].created_at +'</div>' +
-                                        '<h4 class="card-title text-primary">'+ data.Datos[i].usuario +'</h4>' +
+                                        '<h4 class="card-title text-primary">'+ data.Datos[i].name +'</h4>' +
                                         '<p class="card-text">'+ data.Datos[i].descripcion +'</p>' +
                                         '</div></div>' +
                                         '</div></div>'
@@ -546,7 +569,7 @@
                                         '<div class="card border-success shadow">' +
                                         '<div class="card-body">' +
                                         '<div class="float-right text-primary small">'+ data.Datos[i].created_at +'</div>' +
-                                        '<h4 class="card-title text-primary">'+ data.Datos[i].usuario +'</h4>' +
+                                        '<h4 class="card-title text-primary">'+ data.Datos[i].name +'</h4>' +
                                         '<p class="card-text">'+ data.Datos[i].descripcion +'</p>' +
                                         '</div>' +
                                         '</div>' +
@@ -612,7 +635,7 @@
                                     type: "post",
                                     url: "/MisRequerimientosAnular",
                                     data: {
-                                        id, Username
+                                        id, Username, Username_id
                                     },
                                     success: function () {
                                         Obtenerdatos();
@@ -758,7 +781,7 @@
                         },
                         columns: [
                             {data: 'id', name: 'id', orderable: false, searchable: false},
-                            {data: 'articulo', name: 'articulo', orderable: false, searchable: false},
+                            {data: 'descripcion', name: 'descripcion', orderable: false, searchable: false},
                             {data: 'relieve', name: 'relieve', orderable: false, searchable: false},
                             {data: 'estado', name: 'estado', orderable: false, searchable: false},
                             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
@@ -791,6 +814,7 @@
                             }
                         },
                         rowCallback: function( row, data, index ) {
+                        	console.log(data);
                             if (data.estado == 1) {
                                 $(row).find('td:eq(3)').html('Propuesta Creada');
                             }
@@ -867,7 +891,7 @@
                                     url: '/CambiarEstadoRequeEd',
                                     type: 'post',
                                     data: {
-                                        result, id, Username
+                                        result, id, Username_id
                                     },
                                     success: function () {
                                         $('#Detalles').html('');
@@ -943,7 +967,7 @@
                                             url: '/CambiarDiseñadorRequeEd',
                                             type: 'post',
                                             data: {
-                                                result, Username, id
+                                                result, Username_id, id
                                             },
                                             success: function () {
                                                 $('#Detalles').html('');
@@ -1042,13 +1066,12 @@
                                     url: '/GuardarPropuestaReq',
                                     type: 'post',
                                     data: {
-                                        result, id, Username, Nombre_vendedor, medida
+                                        result, id, Username_id, Nombre_vendedor, medida, New_reque_Producto
                                     },
                                     success: function () {
                                         $('.table').DataTable().destroy();
                                         loadtable();
                                         table.draw();
-                                        Obtenerdatos();
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Guardardo',
@@ -1099,10 +1122,14 @@
                         },
                         focus: function (event, ui) {
                             $('#NewPropArticuloDesc').val([ui.item.Cod_Art]);
-                          return true;
+                            New_reque_Producto = ui.item.id
+                            console.log(New_reque_Producto);
+
+                            return true;
                         },
                         select: function (event, ui) {
                             $('#NewPropArticuloDesc').val([ui.item.Cod_Art]);
+                            New_reque_Producto = ui.item.id
                         },
                         minlength: 2
                     });
@@ -1141,7 +1168,7 @@
                                 formData.append("fileToUpload", file);
                                 formData.append("Numero",id);
                                 formData.append("Prop",idProp);
-                                formData.append("Usuario",Username);
+                                formData.append("Usuario",Username_id);
                                 $.ajax({
                                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                                     method: 'post',
@@ -1203,7 +1230,7 @@
                                 formData.append("fileToUpload", file);
                                 formData.append("Numero", id);
                                 formData.append("Prop", idProp);
-                                formData.append("Usuario", Username);
+                                formData.append("Usuario", Username_id);
                                 $.ajax({
                                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                     method: 'post',
@@ -1270,7 +1297,7 @@
                                 formData.append("fileToUpload", file);
                                 formData.append("Numero",id);
                                 formData.append("Prop", idProp);
-                                formData.append("Usuario",Username);
+                                formData.append("Usuario",Username_id);
                                 $.ajax({
                                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                                     method: 'post',
@@ -1334,7 +1361,7 @@
                                     formData.append("fileToUpload[]", file[x]);
                                 }
                                 formData.append("Numero", id);
-                                formData.append("Usuario", Username);
+                                formData.append("Usuario", Username_id);
 
                                 $.ajax({
                                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -1373,7 +1400,7 @@
                         success: function (data) {
                         	var i = 0;
                         	if(data[i] == null){
-                                $('#ArchivosDeSoporte').append('<div class="alert alert-danger" role="alert">Aun no se ha añadido ningun archivo</div>');
+                                $('#ArchivosDeSoporte').append('<div class="alert alert-danger text-center" role="alert">Aun no se ha añadido ningun archivo</div>');
                             }
                         	else if(Roll == 'admin_evpiu' || Roll == 'vendedor' && Username == $('#Vendedor').html() ) {
                                 $(data).each(function () {
@@ -1432,6 +1459,8 @@
                             Prop: Prop
                         },
                         success: function (data) {
+                        	console.log(data.archivos);
+
                             $('#PDFnumeroreq').html(id);
                             $('#PDFnumeroprop').html(Prop);
                             $('#PDFarticulo').html(data.propuesta[0].articulo);
@@ -1577,10 +1606,12 @@
                                     type: "post",
                                     url: "/AprobarPropuesta",
                                     data: {
-                                        id, Username, Prop
+                                        id, Username_id, Prop
                                     },
                                     success: function (data) {
-                                        Obtenerdatos();
+                                        $('.table').DataTable().destroy();
+                                        loadtable();
+                                        table.draw();
                                         Swal.fire({
                                             title: 'Aprobado!',
                                             text: 'La propuesta fue aprobada con exito!.',
@@ -1634,13 +1665,14 @@
                                         id, Username, Prop
                                     },
                                     success: function (data) {
-                                        Obtenerdatos();
+                                        $('.table').DataTable().destroy();
+                                        loadtable();
+                                        table.draw();
                                         Swal.fire({
                                             title: 'Rechazado!',
                                             text: 'La propuesta fue rechazada!.',
                                             icon: 'success',
                                         });
-                                        table.draw();
                                     },
                                     error: function (data) {
                                         Swal.fire(
@@ -1908,7 +1940,7 @@
                                         showCancelButton: true,
                                         confirmButtonColor: '#3085d6',
                                         cancelButtonColor: '#d33',
-                                        confirmButtonText: 'Estoy seguro!',
+                                        confirmButtonText: 'Estoy seguro',
                                         cancelButtonText: 'Cancelar'
                                     }).then((result) => {
                                         if (result.value) {
@@ -2558,19 +2590,20 @@
                                     type: 'post',
                                     url: '/EnviarAprobarPropuesta',
                                     data:{ Prop, Nombre_vendedor, Username, Url, id},
-                                    success: function () {
-                                        // Obtenerdatos();
+                                    success: function (data) {
+                                        $('.table').DataTable().destroy();
+                                        loadtable();
+                                        table.draw();
                                         Swal.fire({
                                             title: 'Completado!',
                                             text: 'Propuesta enviada con exito.',
                                             icon: 'success',
                                         });
-                                        table.draw();
                                     },
                                     error: function () {
                                         Swal.fire(
-                                            'Error al anular!',
-                                            'Hubo un error al anular.',
+                                            'Error al aprobar!',
+                                            'Hubo un error al aprobar.',
                                             'error'
                                         )
                                     }
@@ -2711,6 +2744,62 @@
                 $('#PdfView').on('shown.bs.modal', function() {
                     $(document).off('focusin.modal');
                 });
+
+                $('.EnvDiseño').on('click',function () {
+                    if(Roll == 'admin_evpiu' || Roll == 'render') {
+                        Swal.fire({
+                            title: '¿Enviar a diseño?',
+                            text: "¡Recuerda enviar a diseño solo cuando hayas terminado el render de todas las propuestas..!",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Enviar!',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    type: "post",
+                                    url: "/EnviaraDiseño",
+                                    data: {
+                                        id, Username_id
+                                    },
+                                    success: function (data) {
+                                        Obtenerdatos();
+                                        Swal.fire({
+                                            title: 'Finalizado!',
+                                            text: 'El requerimiento fue finalizado!.',
+                                            icon: 'success',
+                                        });
+                                        table.draw();
+                                    },
+                                    error: function (data) {
+                                        Swal.fire(
+                                            'Error!',
+                                            'Hubo un error al rechazar la propuesta.',
+                                            'error'
+                                        )
+                                    }
+                                });
+                            } else {
+                                result.dismiss === Swal.DismissReason.cancel
+                            }
+                        })
+                    }else{
+                        Swal.fire(
+                            '¡Error!',
+                            'No tienes permisos suficientes para realizar esta accion.',
+                            'error'
+                        )
+                    }
+                });
+
+
             });
         </script>
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>

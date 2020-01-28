@@ -241,6 +241,9 @@
                     }
                 });
                 var Username = @json( Auth::user()->name );
+                var Username_id = @json( Auth::user()->id );
+                var New_reque_Producto;
+                var New_reque_Marca;
 
             	var table = $('#table').DataTable({
                     processing: true,
@@ -255,14 +258,14 @@
                     ajax: {
                         url: '/misrequerimientos',
                         data: {
-                            Username: Username
+                            Username: Username_id
                         }
                     },
                     columns: [
                         {data: 'id', name: 'id', orderable: false, searchable: true},
                         {data: 'producto', name: 'producto', orderable: false, searchable: true},
                         {data: 'informacion', name: 'informacion', orderable: false, searchable: false},
-                        {data: 'usuario', name: 'usuario', orderable: false, searchable: false},
+                        {data: 'usuario_id', name: 'usuario_id', orderable: false, searchable: false},
                         {data: 'name', name: 'name', orderable: false, searchable: false},
                         {data: 'estado', name: 'estado', orderable: false, searchable: false},
                         {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
@@ -339,7 +342,7 @@
                         success: function (data) {
                             var i = 0;
                             $(data).each(function () {
-                                $('#NewRequirementVendedor').append('<option value="'+data[i].codvendedor +'">'+data[i].name+' - '+ data[i].codvendedor +'</option>');
+                                $('#NewRequirementVendedor').append('<option value="'+data[i].id +'">'+data[i].name+'</option>');
                                 i++;
                             });
                         }
@@ -386,8 +389,17 @@
                                 });
                                 console.log(data);
                                 response(resp);
-                            }
+                            },
                         })
+                    },
+                    focus: function (event, ui) {
+                        New_reque_Marca = ui.item.id;
+                        console.log(New_reque_Marca);
+                        return true;
+                    },
+                    select: function (event, ui) {
+                        New_reque_Marca = ui.item.id;
+
                     },
                     minlength: 1
                 });
@@ -414,6 +426,14 @@
                                 response(resp);
                             }
                         })
+                    },
+                    focus: function (event, ui) {
+                        New_reque_Producto = ui.item.id;
+                        console.log(New_reque_Producto);
+                        return true;
+                    },
+                    select: function (event, ui) {
+                        New_reque_Producto = ui.item.id;
                     },
                     minlength: 2
                 });
@@ -496,11 +516,12 @@
                     submitHandler: function (form) {
                         $('#NewRequerimientoSave').html('Guardando...');
                         var cliente = $('#NewRequirementNameClient').val();
-                        var marca = $('#NewRequirementNameMarca').val();
-                        var producto = $('#CodReqDescription').val();
+                        var marca = New_reque_Marca;
+                        var producto = New_reque_Producto;
+                        var des_prod = $('#CodReqDescription').val();
                         var vendedor = $('#NewRequirementVendedor').val();
                         var informacion = $('#NewRequirementNewInfo').val();
-                        var medida = producto.split(" ");
+                        var medida = des_prod.split(" ");
 
                         $.ajaxSetup({
                             headers: {
@@ -516,7 +537,7 @@
                                 Vendedor: vendedor,
                                 Informacion: informacion,
                                 Render: render,
-                                Creado: Username,
+                                Creado: Username_id,
                                 Medida: medida[4]
                             },
                             url: "/NewRequerimiento",
@@ -578,7 +599,7 @@
                         var name = $('#NewRequirementNewMarcaName').val();
                         var type = $('#TypeMarca').val();
                         var comment = $('#NewRequirementNewMarcaDescription').val();
-                        var createdby = Username;
+                        var createdby = Username_id;
 
                         $.ajaxSetup({
                             headers: {

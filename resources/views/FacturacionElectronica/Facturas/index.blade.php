@@ -14,7 +14,7 @@
     @can('facturacion.view')
     <div class="col-12">
         <div class="row">
-            <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda o seleccione una o varias facturas para generar un archivo XML.</h3>
+            <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda o seleccione una o varias facturas para generar un archivo XML o enviar via Webservice</h3>
         </div>
     </div>
     <br>

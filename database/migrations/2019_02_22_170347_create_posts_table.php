@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->string('slug', 100);
             $table->text('body');
             $table->boolean('status')->default(0)->nullable();
-            $table->integer('posted_by')->unsigned();
+            $table->unsignedBigInteger('posted_by');
             $table->string('image');
             $table->foreign('posted_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
