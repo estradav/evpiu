@@ -290,6 +290,10 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/GestionFacturacionElectronica_ObtenerCuidades','GestionFacturacionElectronicaController@ObtenerCuidades');
 
 
+        Route::resource('GestionClientes','GestionClientesController');
+        Route::get('GestionClientes_Index','GestionClientesController@index');
+
+
     });
 });
 

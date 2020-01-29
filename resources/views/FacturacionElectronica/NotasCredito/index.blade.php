@@ -289,7 +289,6 @@
                             $(row).find('td:eq(4)').css('color', 'red');
                         }
 
-
                         if (data.razon_social == null) {
                             $(row).find('td:eq(5)').css('color', 'red');
                         }
