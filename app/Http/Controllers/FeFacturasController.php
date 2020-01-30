@@ -199,7 +199,7 @@ class FeFacturasController extends Controller
                $total_cargos            = null;
                $totalpagar              = null;
                $tipo_fac_en             = null;
-               $tipo_operacion          = null;
+               $tipo_operacion          = '10';
                $metodo_pago             = null;
                $medio_pago              = null;
                $tipo_documento_ide      = null;
@@ -244,9 +244,9 @@ class FeFacturasController extends Controller
 
                 // determina si el tipo de operacion
 
-                if($tipo_fac_en == 02) {$tipo_operacion = '04';}
+                /*if($tipo_fac_en == 02) {$tipo_operacion = '04';}
                 if($tipo_fac_en == 01) {$tipo_operacion = '05';}
-                if($encabezado->iva == 0) {$tipo_operacion = '03';}
+                if($encabezado->iva == 0) {$tipo_operacion = '03';}*/
 
                 //Determina si la factura es a contado o a credito
 
@@ -1218,7 +1218,7 @@ class FeFacturasController extends Controller
                 $total_cargos            = null;
                 $totalpagar              = null;
                 $tipo_fac_en             = null;
-                $tipo_operacion          = null;
+                $tipo_operacion          = '10';
                 $metodo_pago             = null;
                 $medio_pago              = null;
                 $tipo_documento_ide      = null;
@@ -1259,9 +1259,9 @@ class FeFacturasController extends Controller
 
                 // determina si el tipo de operacion
 
-                if($tipo_fac_en == 02) {$tipo_operacion = '04';}
+             /*   if($tipo_fac_en == 02) {$tipo_operacion = '04';}
                 if($tipo_fac_en == 01) {$tipo_operacion = '05';}
-                if($encabezado->iva == 0) {$tipo_operacion = '03';}
+                if($encabezado->iva == 0) {$tipo_operacion = '03';}*/
 
                 //Determina si la factura es a contado o a credito
 

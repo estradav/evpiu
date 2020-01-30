@@ -57,7 +57,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID Factible</th>
-                                        <th>Factura / Nota #</th>
+                                        <th>Factura/Nota</th>
                                         <th>Tipo</th>
                                         <th>Adquiriente</th>
                                         <th>Fecha Generacion</th>

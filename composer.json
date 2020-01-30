@@ -19,6 +19,7 @@
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "doctrine/dbal": "2.9.3",
         "fideloper/proxy": "^4.0",
+        "genealabs/laravel-caffeine": "^1.0",
         "laravel/framework": "6.12.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "6.0.*",
