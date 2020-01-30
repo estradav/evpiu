@@ -136,4 +136,20 @@ class ProdCievCodMedidaController extends Controller
 
         return response()->json($Array);
     }
+
+
+    public function UniqueDenominacion(Request $request)
+    {
+        dd($request);
+
+        $UniqueCod = DB::table('cod_medidas')
+            ->where('med_lineas_id','=',$request->lineas_id)
+            ->where('med_lineas_id','=',$request->sublineas_id)
+            ->where('cod','=',$request->cod)
+            ->count();
+        if($UniqueCod == 0)
+        {echo "true";}
+        else
+        {echo "false";}
+    }
 }

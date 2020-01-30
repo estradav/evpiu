@@ -454,7 +454,7 @@ class FeNotasCreditoController extends Controller
                 $objetoXML->text(number_format($enc->descuento,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("totalcargos");
-                $objetoXML->text($total_cargos);
+                $objetoXML->text(number_format($total_cargos,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("totalanticipos");
                 $objetoXML->text('');
@@ -765,7 +765,7 @@ class FeNotasCreditoController extends Controller
                     'CIEV_V_FacturasDetalladas.totalitem',
                     'CIEV_V_FacturasDetalladas.iva as iva_item',
                     'CIEV_V_FacturasDetalladas.valormercancia',
-                    'CIEV_V_FacturasDetalladas.descuento')
+                    'CIEV_V_FacturasDetalladas.desc_item as descuento')
                 ->where('CIEV_V_FacturasDetalladas.factura', '=', $num)->get();
 
             $Config = DB::table('fe_configs')->take(1)->get();
@@ -1309,6 +1309,7 @@ class FeNotasCreditoController extends Controller
             $objetoXML->endDocument();  // Final del documento
 
             $cadenaXML = $objetoXML->outputMemory();
+
 
             $Base_64 = base64_encode($cadenaXML);
 
