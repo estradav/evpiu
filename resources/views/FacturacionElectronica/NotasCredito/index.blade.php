@@ -59,6 +59,7 @@
                                     <th>Factura Ref</th>
                                     <th>Fecha</th>
                                     <th>Razon Social</th>
+                                    <th>Nit</th>
                                     <th>Tipo Cliente</th>
                                     <th>Vendedor</th>
                                     <th>Valor bruto</th>
@@ -219,6 +220,7 @@
                         {data: 'OC', name: 'OC', orderable: false, searchable: true},
                         {data: 'fecha', name: 'fecha', orderable: false, searchable: false},
                         {data: 'razon_social', name: 'razon_social'},
+                        {data: 'nit_cliente', name: 'nit_cliente'},
                         {data: 'tipo_cliente', name: 'tipo_cliente', orderable: false, searchable: true},
                         {data: 'vendedor', name: 'vendedor'},
                         {data: 'bruto', name:'bruto', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
@@ -275,13 +277,13 @@
                             },
                             success: function (data) {
                                 if (data != ''){
-                                    $(row).find('td:eq(12)').html('<label id="'+id+'" class="text-success">'+data+'</label>')
+                                    $(row).find('td:eq(13)').html('<label id="'+id+'" class="text-success">'+data+'</label>')
                                 }else{
-                                    $(row).find('td:eq(12)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger">Error</a>')
+                                    $(row).find('td:eq(13)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger">Error</a>')
                                 }
                             },
                             error: function () {
-                                $(row).find('td:eq(12)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger ErrorEstDianFac">Pendiente</a>')
+                                $(row).find('td:eq(13)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger ErrorEstDianFac">Pendiente</a>')
                             }
                         });
 
@@ -294,33 +296,33 @@
                         }
 
                         if (data.tipo_cliente == null) {
-                            $(row).find('td:eq(6)').css('color', 'red');
-                        }
-
-                        if (data.vendedor == null) {
                             $(row).find('td:eq(7)').css('color', 'red');
                         }
 
-                        if (data.bruto == null) {
+                        if (data.vendedor == null) {
                             $(row).find('td:eq(8)').css('color', 'red');
+                        }
+
+                        if (data.bruto == null) {
+                            $(row).find('td:eq(9)').css('color', 'red');
                         }
 
 
                         if (data.bruto <= 3000) {
-                            $(row).find('td:eq(8)').css('color', 'red');
+                            $(row).find('td:eq(9)').css('color', 'red');
                         }
 
                         if (data.bruto >= 20000000) {
-                            $(row).find('td:eq(8)').css('color', 'red');
+                            $(row).find('td:eq(9)').css('color', 'red');
                         }
 
                         if ((data.desc / data.bruto) * 100 >= 20) {
-                            $(row).find('td:eq(8)').css('color', 'red');
+                            $(row).find('td:eq(9)').css('color', 'red');
                         }
 
                         var porc_iva = (data.valor_iva / data.subtotal) * 100;
                         if (data.motivo != 27 && porc_iva <= 18.95 || porc_iva >= 19.05) {
-                            $(row).find('td:eq(10)').css('color', 'red');
+                            $(row).find('td:eq(11)').css('color', 'red');
                         }
 
                         if (data.cod_alter == null) {
@@ -328,7 +330,7 @@
                         }
 
                         if (data.motivo == null) {
-                            $(row).find('td:eq(11)').css('color', 'red');
+                            $(row).find('td:eq(12)').css('color', 'red');
                         }
 
                         if (data.email == null) {

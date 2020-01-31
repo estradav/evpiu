@@ -60,6 +60,7 @@
                                         <th>Factura/Nota</th>
                                         <th>Tipo</th>
                                         <th>Adquiriente</th>
+                                        <th>Nit/CC</th>
                                         <th>Fecha Generacion</th>
                                         <th>Fecha Registro</th>
                                         <th>Estado DIAN</th>
@@ -306,6 +307,7 @@
                             {data: 'numero', name: 'numero', orderable: true, searchable: true},
                             {data: 'desctipodocumentoelectronico', name: 'desctipodocumentoelectronico', orderable: false, searchable: false},
                             {data: 'nombreAdquiriente',name: 'nombreAdquiriente'},
+                            {data: 'identificacionAdquiriente',name: 'identificacionAdquiriente'},
                             {data: 'fechageneracion',name: 'fechageneracion'},
                             {data: 'fecharegistro',name: 'fecharegistro'},
                             {data: 'descestadoenviodian',name: 'descestadoenviodian'},
