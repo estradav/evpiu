@@ -57,6 +57,7 @@
                                     <th>Fecha</th>
                                     <th>Plazo</th>
                                     <th>Razon Social</th>
+                                    <th>Nit</th>
                                     <th>Tipo Cliente</th>
                                     <th>Vendedor</th>
                                     <th>Valor bruto</th>
