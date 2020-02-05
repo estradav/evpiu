@@ -25,10 +25,11 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('login/locked', 'Auth\LoginController@locked')->middleware('auth')->name('login.locked');
-Route::post('login/locked', 'Auth\LoginController@unlock')->name('login.unlock');
 
 Route::group(['middleware' => ['caffeinated']], function () {
+    Route::get('login/locked', 'Auth\LoginController@locked')->middleware('auth')->name('login.locked');
+    Route::post('login/locked', 'Auth\LoginController@unlock')->name('login.unlock');
+
     Route::middleware(['auth'])->group(function() {
         Route::middleware(['auth.lock'])->group(function() {
             Route::get('/home', 'HomeController@index')
@@ -154,6 +155,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/PronosticosCantCompr','PronosticoController@CantCompro');
             Route::get('/PronosticosDetailsLots','PronosticoController@DetailsLots');
             Route::get('/PronosticosPronostics','PronosticoController@Pronostics');
+            Route::get('/Pronostico_para_cerrar','PronosticoController@Pronostico_para_cerrar');
+            Route::post('/cerrar_pronosticos','PronosticoController@cerrar_pronosticos');
+
 
             Route::resource('pedidos','PedidoController');
             Route::get('/PedidosIndex','PedidoController@index');
@@ -275,11 +279,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('/EnviaraDiseño','RequerimientosController@EnviaraDiseño');
 
 
-
             Route::get('/EstadoEnvioDianFacturacionElectronica','FeFacturasController@EstadoEnvioDianFacturacionElectronica');
             Route::get('/AuditoriaDian','FeFacturasController@AuditoriaDian');
             Route::get('/InfoFacturaWebService','FeFacturasController@InfoFacturaWebService');
-
 
 
             Route::resource('GestionFacturacionElectronica','GestionFacturacionElectronicaController');
@@ -292,6 +294,14 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
             Route::resource('GestionClientes','GestionClientesController');
             Route::get('GestionClientes_Index','GestionClientesController@index');
+            Route::get('/FormaEnvio','GestionClientesController@FormaEnvio');
+            Route::get('/get_paises','GestionClientesController@Paises');
+            Route::get('/get_departamentos','GestionClientesController@Departamentos');
+            Route::get('/get_ciudades','GestionClientesController@Ciudades');
+            Route::get('/get_tipo_cliente','GestionClientesController@TipoCliente');
+            Route::get('/view_client','GestionClientesController@Show');
+
+
 
 
         });

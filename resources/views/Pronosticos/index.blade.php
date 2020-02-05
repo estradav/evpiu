@@ -21,6 +21,9 @@
                 <span><input type="button" class="btn btn-primary btn-sm" id="OpenBtn" value="¿Mostrar Abiertos?"></span>
                 <span><input type="button" class="btn btn-primary btn-sm" id="OpenAndClose" value="¿Mostrar Completados?"></span>
                 <span><input type="button" class="btn btn-danger btn-sm" id="CloseAnulBtn" value="¿Mostrar Cerrados y Anulados?"></span>
+                @can('cerrar_pronosticos')
+                <button class="btn btn-primary btn-sm" id="cerrar_pronosticos">Cerrar Pronosticos</button>
+                @endcan
             </div>
         </div>
         <div class="row">
@@ -156,8 +159,8 @@
             </div>
         </div>
 
-        <div class="modal fade bd-modal-lg" id="DetallePronostico" tabindex="-1" role="dialog" aria-labelledby="DetallePronostico" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+        <div class="modal fade bd-modal-xl" id="DetallePronostico" tabindex="-1" role="dialog" aria-labelledby="DetallePronostico" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="PronosticoTitle"></h5>
@@ -165,41 +168,37 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form id="PronosticoForm" name="PronosticoForm" class="form-horizontal">
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row" id="">
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label for="name" class="control-label" ><b>Vendedor:&nbsp;&nbsp; </b></label>
-                                                        <label class="control-label" id="Vendedor"></label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label for="name" class="control-label" ><b>Cliente:&nbsp;&nbsp; </b></label>
-                                                        <label class="control-label" id="Cliente"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row" id="data">
+                    <div class="modal-body" id="data">
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @can('pronosticos.close')
-                                        <button class="btn btn-danger btn-sm" disabled>Cerrar Pronostico</button>
-                                    @endcan
-                                </div>
-                            </div>
-                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        @can('pronosticos.close')
+                            <button class="btn btn-danger btn-sm" disabled>Cerrar Pronostico</button>
+                        @endcan
                     </div>
                 </div>
             </div>
         </div>
+        <style>
+            .preloader {
+                width: 140px;
+                height: 140px;
+                border: 20px solid #eee;
+                border-top: 20px solid #008000;
+                border-radius: 50%;
+                animation-name: girar;
+                animation-duration: 1s;
+                animation-iteration-count: infinite;
+            }
+            @keyframes girar {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar los pronosticos.
@@ -210,6 +209,12 @@
     @push('javascript')
         <script>
             $(document).ready(function(){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 load_data();
                 var table;
 
@@ -459,71 +464,196 @@
                     }
                 });
 
-            $('body').on('click', '.btnNum', function () {
-                var value = $(this).val();
-                $.ajax({
-                    type: "get",
-                    url: '/PronosticosPronostics',
-                    data: {Numero: value},
-                    success: function (data) {
-                    	console.log(data);
-                        $('#PronosticoTitle').html('Seguimiento pronostico: ' + value);
-                        $('#DetallePronostico').modal('show');
-                        $('#Vendedor').html(data[0].vendedor);
-                        $('#Cliente').html(data[0].cliente);
+                $('body').on('click', '.btnNum', function () {
+                    var value = $(this).val();
+                    $('#data').append('<div class="container" style="align-items: center !important; margin-left: 40%; ">' +
+                      '<div class="preloader">' +
+                      '</div>' +
+                      '<br>' +
+                      '</div>'+
+                      '<div class="text-center"><h3>Cargando Informacion un momento por favor....</h3></div>'
+                    );
 
-                        var i = 0;
-                        $(data).each(function () {
-                            $('#data').append(' <div class="col-sm-4"><div class="form-group">' +
-                              '<label for="name" class="control-label"><b>Orden de Produccion:&nbsp;&nbsp;</b></label>' +
-                              '<label class="control-label" id="">'+ data[i].NumOrdProduct +'</label>' +
-                              '</div></div><div class="col-sm-4"><div class="form-group">' +
-                              '<label for="name" class="control-label"><b>Fecha de liberacion:&nbsp;&nbsp;</b></label>' +
-                              '<label class="control-label" id="">'+ data[i].fechaliberacion +'</label>' +
-                              '</div></div><div class="col-sm-4"><div class="form-group">' +
-                              '<label for="name" class="control-label" ><b>Producto:&nbsp;&nbsp;</b></label>' +
-                              '<label class="control-label" id="">'+ data[i].producto +'</label>' +
-                              '</div></div><div class="col-sm-4"><div class="form-group">' +
-                              '<label for="name" class="control-label" ><b>Estado de la Orden:&nbsp;&nbsp;</b></label>' +
-                              '<label class="control-label" id="Estado"></label>' +
-                              '</div></div><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">' +
-                              '<div class="card"><div class="card-body"><div class="table-responsive">' +
-                              '<table class="table table-responsive table-striped" id="">' +
-                              '<thead><tr>' +
-                              '<th>Operacion</th>' +
-                              '<th>Proceso</th>' +
-                              '<th>Cant. en Proceso</th>' +
-                              '<th>Completada</th>' +
-                              '<th>Desechada</th>' +
-                              '<th>Salida</th>' +
-                              '<th>Entrega/Max</th>' +
-                              '<th>Estado</th>' +
-                              '</tr></thead>' +
-                              '<tbody><tr>' +
-                              '<td>'+ data[i].operacion +'</td>' +
-                              '<td>'+ data[i].proceso +'</td>' +
-                              '<td>'+ data[i].cantProceso +'</td>' +
-                              '<td>'+ data[i].cantCompletada +'</td>' +
-                              '<td>'+ data[i].cantDesechada +'</td>' +
-                              '<td>'+ data[i].salida +'</td>' +
-                              '<td>'+ data[i].entrega +'</td>' +
-                              '<td>'+ data[i].estado +'</td>' +
-                              '</tr> </tbody>' +
-                              '</table></div>' +
-                              '</div></div></div>');
+                    $('#DetallePronostico').modal('show');
+                    $.ajax({
+                        type: "get",
+                        url: '/PronosticosPronostics',
+                        data: {Numero: value},
+                        success: function (data) {
+                            $('#data').html('');
+                            console.log(data);
+                            $('#PronosticoTitle').html('PRONOSTICO: ' + value);
+                            if(data != ''){
+                                var i = 0;
+                                $(data.pronostico).each(function () {
+                                    $('#data').append(`
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <b>ORDEN DE PRODUCCION:</b> <label>` + data.pronostico[i].NumOrdProduct + `</label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <b>FECHA DE LIBERACION:</b> <label>` + data.pronostico[i].fechaliberacion + `</label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <b>PRODUCTO:</b> <label>` + data.pronostico[i].producto + `</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-responsive table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Operacion</th>
+                                                                    <th>Proceso</th>
+                                                                    <th>Cant. en Proceso</th>
+                                                                    <th>Completada</th>
+                                                                    <th>Desechada</th>
+                                                                    <th>Salida</th>
+                                                                    <th>Entrega/Max</th>
+                                                                    <th>Estado</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="datos_tabla_`+ data.pronostico[i].NumOrdProduct +`">
 
-                            i++;
-                        });
-                        $('#Descripcion').html();
-                        $('#CantDisp').html();
-                        $('#Total').html();
-                    }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br><hr><br>
+                                    `);
+                                    recorer();
+                                    i++;
+                                });
+
+                                function recorer(){
+                                    var v = 0;
+                                    $(data.ordenes[i]).each(function () {
+                                        if( data.ordenes[i][v].CTActual.trim() == 'Y'){
+                                            $('.datos_tabla_'+data.pronostico[i].NumOrdProduct).append('<tr>' +
+                                                '<td>'+ data.ordenes[i][v].WRKCTR_14 +'</td>'+
+                                                '<td style="color: red">'+ data.ordenes[i][v].OPRDES_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].QTYREM_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].QTYCOM_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].Desecho +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].REVDTE_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].MOVDTE_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].STATUS_10 +'</td>'+
+                                                '</tr>'
+                                            );
+                                        }else{
+                                            $('.datos_tabla_'+data.pronostico[i].NumOrdProduct).append('<tr>' +
+                                                '<td>'+ data.ordenes[i][v].WRKCTR_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].OPRDES_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].QTYREM_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].QTYCOM_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].Desecho +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].REVDTE_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].MOVDTE_14 +'</td>'+
+                                                '<td>'+ data.ordenes[i][v].STATUS_10 +'</td>'+
+                                                '</tr>'
+                                            );
+                                        }
+
+                                        v++;
+                                    });
+                                }
+                                $('#Descripcion').html();
+                                $('#CantDisp').html();
+                                $('#Total').html();
+                            }else{
+                                $('#DetallePronostico').modal('show');
+                                $('#data').append('<div class="col-sm-12"><div class="alert alert-danger" role="alert"> No hay informacion disponible. </div></div> ')
+                            }
+
+                        }
+                    });
                 });
-            });
                 $('#Inventario').on('show.bs.modal', function (event) {
                     document.getElementById('CantCompromet').style.display = "none";
                     document.getElementById('InvlotBod').style.display = "none";
+                    $('#data').html('');
                 });
+
+
+                $('#cerrar_pronosticos').on('click',function () {
+                    Swal.fire({
+                        icon: false,
+                        title: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
+                        html: '<h2>Buscando pronosticos <br> Un momento por favor...</h2> ',
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+                    $.ajax({
+                        url: '/Pronostico_para_cerrar',
+                        type: 'get',
+                        success: function (data) {
+                            sweetAlert.close();
+                        	if(data.Cantidad > 0){
+                                Swal.fire({
+                                    title: '¿Cerrar Pronosticos?',
+                                    html: '<h3> Se encontraron '+ data.Cantidad +' pronosticos disponibles para cerrar.</h3><h3> ¿Desea Cerrarlos? </h3>',
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Si, Cerrar!',
+                                    cancelButtonText: 'Cancelar',
+                                    showLoaderOnConfirm: true,
+                                    preConfirm: function() {
+                                        return new Promise(function(resolve, reject) {
+                                            $.ajaxSetup({
+                                                headers: {
+                                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                }
+                                            });
+                                            $.ajax({
+                                                type: "post",
+                                                url: "/cerrar_pronosticos",
+                                                data: {
+                                                    pronosticos: data.Pronosticos
+                                                },
+                                                success: function () {
+                                                    Swal.fire({
+                                                        title: 'Cerrado!',
+                                                        text: 'Todo los pronosticos fueron cerrados con exito!',
+                                                        icon: 'success',
+                                                    });
+                                                    table.draw();
+                                                },
+                                                error: function () {
+                                                    Swal.fire(
+                                                        'Opss!',
+                                                        'Hubo un error al cerrar los pronosticos.',
+                                                        'error'
+                                                    )
+                                                }
+                                            });
+                                        });
+                                    },
+                                });
+                            }else{
+                                Swal.fire(
+                                    'Todo en orden',
+                                    'No hay pronosticos para cerrar en este momento.',
+                                    'success'
+                                )
+                            }
+                        },
+                        error: function () {
+                            Swal.fire(
+                                'Opss!',
+                                'Hubo un error al cargar la informacion de pronosticos.',
+                                'error'
+                            )
+                        }
+                    })
+                })
             });
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
@@ -531,5 +661,7 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     @endpush
 @stop
