@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\DeclareDeclare;
+use PhpParser\Node\Stmt\Foreach_;
 use Yajra\DataTables\DataTables;
 
 class PronosticoController extends Controller
@@ -48,7 +50,7 @@ class PronosticoController extends Controller
         return view('Pronosticos.index');
     }
 
-    public function Inventory (Request $request)
+    public function Inventory(Request $request)
     {
         if ($request->ajax()) {
             if (!empty($request->Valor)) {
@@ -65,7 +67,7 @@ class PronosticoController extends Controller
         }
     }
 
-    Public  function CantCompro (Request $request)
+    Public function CantCompro(Request $request)
     {
         if ($request->ajax()) {
             if (!empty($request->Comprmetida)) {
@@ -85,7 +87,7 @@ class PronosticoController extends Controller
         }
     }
 
-    Public  function DetailsLots (Request $request)
+    Public function DetailsLots(Request $request)
     {
         if ($request->ajax()) {
             if (!empty($request->Detalle)) {
@@ -101,37 +103,92 @@ class PronosticoController extends Controller
         }
     }
 
-
-
-
-
-
-    public function Pronostics (Request $request)
+    public function Pronostics(Request $request)
     {
         if ($request->ajax()) {
             if (!empty($request->Numero)) {
-                $var = DB::connection('MAX')->table('CIEV_V_EstadoOP')
-                   /* ->join('CIEV_V_EstadoOP','CIEV_V_OP_Pronosticos.pronostico','like','CIEV_V_EstadoOP.ov')*/
+                $var = DB::connection('MAX')
+                    ->table('CIEV_V_OP_Pronosticos_v1')
+                    ->where('CIEV_V_OP_Pronosticos_v1.pronostico', '=', $request->Numero)
+                    ->select('CIEV_V_OP_Pronosticos_v1.OP as NumOrdProduct',
+                        'CIEV_V_OP_Pronosticos_v1.fechaOP as fechaliberacion',
+                        'CIEV_V_OP_Pronosticos_v1.Referencia as producto',
+                        'CIEV_V_OP_Pronosticos_v1.TipoOP as TipoOP',
+                        'CIEV_V_OP_Pronosticos_v1.CantActual as cantProceso',
+                        'CIEV_V_OP_Pronosticos_v1.Arte as arte',
+                        'CIEV_V_OP_Pronosticos_v1.DiasOP as dias',
+                        'CIEV_V_OP_Pronosticos_v1.EstadoOP as estado')
+                    ->get();
 
-                    ->join('CIEV_V_OP_Pronosticos', 'CIEV_V_EstadoOP.ov', 'like', 'CIEV_V_OP_Pronosticos.pronostico')
-                    ->where('CIEV_V_EstadoOP.ov', 'like', $request->Numero . '%')
-                    ->select('CIEV_V_OP_Pronosticos.NombreVendedor as vendedor',
-                        'CIEV_V_OP_Pronosticos.RazonSocial as cliente',
-                        'CIEV_V_EstadoOP.ordnum_14 as NumOrdProduct',
-                        'CIEV_V_EstadoOP.rlsdte_14 as fechaliberacion',
-                        'CIEV_V_EstadoOP.pmdes1_01 as producto',
-                        'CIEV_V_EstadoOP.prtnum_14 as numproducto',
-                        'CIEV_V_EstadoOP.oprdes_14 as operacion',
-                        'CIEV_V_EstadoOP.wrkctr_14 as proceso',
-                        'CIEV_V_EstadoOP.qtyrem_14 as cantProceso',
-                        'CIEV_V_EstadoOP.qtycom_14 as cantCompletada',
-                        'CIEV_V_EstadoOP.movday_14 as cantDesechada',
-                        'CIEV_V_EstadoOP.movdte_14 as salida',
-                        'CIEV_V_EstadoOP.curcom_14 as entrega',
-                        'CIEV_V_EstadoOP.ctactual as estado'
-                    )->get();
+                $Orden = [];
+                foreach($var as $v){
+                    $Orden [] = DB::connection('MAX')
+                        ->table('CIEV_V_EstadoOP')
+                        ->where('Expr1','=',$v->NumOrdProduct)
+                        ->get();
+                }
             }
-            return response()->json($var);
+            return response()->json(['pronostico' => $var, 'ordenes' => $Orden]);
+        }
+    }
+
+    public function Pronostico_para_cerrar(Request $request)
+    {
+        $Pronosticos = DB::connection('MAX')
+            ->table('CIEV_V_Pronosticos')
+            ->where('Estado','=','3')->pluck('NumeroPronostico');
+
+        $EstadoOp =[];
+        foreach($Pronosticos as $pronostico){
+            $EstadoOp[$pronostico] = DB::connection('MAX')
+                ->table('CIEV_V_OP_Pronosticos_v1')
+                ->where('Pronostico','=',$pronostico)
+                ->select('Pronostico','EstadoOP')->get();
+        }
+
+        $recuento = [];
+        foreach ($EstadoOp as $OP){
+            if (count($OP) != 0){
+                $bandera = 1;
+
+                foreach ($OP as $p){
+                    if (trim($p->EstadoOP) == 3 ){
+                        $bandera = 0;
+                    }
+
+                }
+                if ($bandera == 1){
+                    $recuento[] = $OP[0]->Pronostico;
+                }
+            }
+        }
+        return response()->json(['Cantidad' => count($recuento), 'Pronosticos' => $recuento]);
+    }
+
+    public function cerrar_pronosticos(Request $request)
+    {
+        foreach ($request->pronosticos as $pronostico){
+            DB:: beginTransaction();
+
+            try{
+                DB::connection('MAX')->table('Order_Master')->where('ORDNUM_10','=',$pronostico)->update([
+                    'STATUS_10' => '4'
+                ]);
+
+                DB::connection('MAX')->table('Requirement_Detail')->where('ORDNUM_11','=',$pronostico)->update([
+                    'STATUS_11' => '4'
+                ]);
+            }
+            catch (\Exception $e){
+                DB::rollback();
+                echo json_encode(array(
+                    'error' => array(
+                        'msg' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                        'code2' =>$e->getLine(),
+                    ),
+                ));
+            }
         }
     }
 }

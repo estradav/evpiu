@@ -13,10 +13,8 @@
 @section('content')
     @can('gestion_clientes.view')
         <div class="form-group">
-            <button type="button" class="btn btn-primary" id="NewCustomer">Crear Cliente</button>
-           {{-- <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#submitModal">Open modal</button>--}}
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                Launch demo modal
+                Crear Cliente
             </button>
         </div>
         <br>
@@ -60,143 +58,553 @@
         </div>
 
 
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal fade bd-example-modal-xl" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Registrar Usuario</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="regForm" action="">
-                            <!-- One "tab" for each step in the form: -->
-                            <div class="tab">
-                                <h2>Informacion de facturacion</h2>
+                        <form id="example-advanced-form" action="#">
+                            <h3>Cliente</h3>
+                            <fieldset>
+                                <div class="row">
+                                    <legend style="margin-left: 17px !important;">Informacion del cliente</legend>
+                                    <div class="col-sm-3">
+                                        <label for="M_nombre">Nombre: *</label>
+                                        <input id="M_nombre" name="M_nombre" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Razon_comercial">Razon comercial:</label>
+                                        <input id="M_Razon_comercial" name="M_Razon_comercial" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_direccion1">Direccion 1:</label>
+                                        <input id="M_direccion1" name="M_direccion1" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_direccion2">Direccion 2:</label>
+                                        <input id="M_direccion2" name="M_direccion2" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                </div>
                                 <br>
-                                <label for="">Razon Social:</label>
-                                <p><input type="text" class="form-control" id="Modal_Razon_Social" placeholder="Razon Social" oninput="this.className = 'form-control'"></p>
-                                <label for="">Nit/CC:</label>
-                                <p><input type="number" class="form-control" id="Modal_Razon_Social" placeholder="Nit" oninput="this.className = 'form-control'"></p>
-                                <label for="">Direccion 1:</label>
-                                <p><input type="text" class="form-control" id="Modal_Razon_Social" placeholder="Direccion 1" oninput="this.className = 'form-control'"></p>
-                                <label for="">Direccion 2:</label>
-                                <p><input type="text" class="form-control" id="Modal_Razon_Social" placeholder="Direccion 2" oninput="this.className = 'form-control'"></p>
-                                <label for="">Codigo Postal:</label>
-                                <p><input type="number" class="form-control" id="Modal_Razon_Social" placeholder="Codigo Postal" oninput="this.className = 'form-control'"></p>
-                                <label for="">Razon Comercial:</label>
-                                <p><input type="text" class="form-control" id="Modal_Razon_Social" placeholder="Razon Comercial"></p>
-                            </div>
-
-                            <div class="tab">
-                                <h2>Informacion de facturacion</h2>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="M_Pais">Pais:</label>
+                                        <select id="M_Pais" name="M_Pais" class="form-control"></select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Departamento">Departamento:</label>
+                                        <select id="M_Departamento" name="M_Departamento" class="form-control"></select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Ciudad">Ciudad:</label>
+                                        <select id="M_Ciudad" name="M_Ciudad" class="form-control"></select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Codigo_postal">Codigo postal:</label>
+                                        <input id="M_Codigo_postal" name="M_Codigo_postal" type="number" class="form-control required" >
+                                    </div>
+                                </div>
                                 <br>
-                                <label for="">Pais:</label>
-                                <p><input type="text" class="form-control" id="Modal_Razon_Social" placeholder="Pais">
-                                <label for="">Cuidad:</label>
-                                <p><input type="text" class="form-control" id="Modal_Razon_Social" placeholder="Ciudad">
-                                <label for="">Contacto:</label>
-                                <p><input type="text" class="form-control" id="Modal_Razon_Social" placeholder="Nombre de Contacto">
-                                <label for="">Telefono:</label>
-                                <p><input type="number" class="form-control" id="Modal_Razon_Social" placeholder="Telefono">
-                                <label for="">Telefono 2:</label>
-                                <p><input type="text" class="form-control" id="Modal_Razon_Social" placeholder="Telefono 2">
-                                <label for="">E-mail Contacto:</label>
-                                <input type="email" class="form-control" id="Modal_Razon_Social" placeholder="E-mail Contacto">
-                            </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="M_Contacto">Contacto:</label>
+                                        <input id="M_Contacto" name="M_Contacto" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Telefono">Telefono:</label>
+                                        <input id="M_Telefono" name="M_Telefono" type="number" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Telefono2">Telefono 2:</label>
+                                        <input id="M_Telefono2" name="M_Telefono2" type="number" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Celular">Celular:</label>
+                                        <input id="M_Celular" name="M_Celular" type="number" class="form-control required">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label for="M_Email_contacto">E-mail contacto:</label>
+                                        <input id="M_Email_contacto" name="M_Email_contacto" type="email" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="M_Email_facturacion">E-mail Facturacion:</label>
+                                        <input id="M_Email_facturacion" name="M_Email_facturacion" type="email" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <h3>Informacion adicional</h3>
+                            <fieldset>
+                                <div class="row">
+                                    <legend style="margin-left: 17px !important;">Informacion adicional</legend>
+                                    <div class="col-sm-3">
+                                        <label for="M_Forma_envio">Forma de envio:</label>
+                                        <select name="M_Forma_envio" id="M_Forma_envio" class="form-control">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_FOB">FOB:</label>
+                                        <input id="M_FOB" name="M_FOB" type="text" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Enviar_a:">Enviar a:</label>
+                                        <input id="M_Enviar_a" name="M_Enviar_a" type="text" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Enviar_a_travez_de:">Enviar a travez de:</label>
+                                        <input id="M_Enviar_a_travez_de" name="M_Enviar_a_travez_de" type="text" class="form-control required">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <legend style="margin-left: 17px !important;">Informacion fiscal</legend>
+                                    <div class="col-sm-3">
+                                        <label for="M_Gravado">Gravado:</label>
+                                        <select name="M_Gravado" id="M_Gravado" class="form-control">
+                                            <option value="" selected>Seleccione...</option>
+                                            <option value="Y">Si</option>
+                                            <option value="N">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Codigo_fiscal_1">Codigo fiscal 1:</label>
+                                        <input id="M_Codigo_fiscal_1" name="M_Codigo_fiscal_1" type="number" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Codigo_fiscal_2">Codigo fiscal 2:</label>
+                                        <input id="M_Codigo_fiscal_2" name="M_Codigo_fiscal_2" type="number" class="form-control required">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Nit_cc">NIT/CC:</label>
+                                        <div class="input-group">
+                                            <input id="M_Nit_cc" name="M_Nit_cc" type="number" class="form-control required" style="width: 60%">
+                                            <input id="M_Nit_cc_dg" name="M_Nit_cc_dg" type="number" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <legend style="margin-left: 17px !important;">Finanzas</legend>
+                                    <div class="col-sm-3">
+                                        <label for="M_Plazo">Plazo:</label>
+                                        <select name="M_Plazo" id="M_Plazo" class="form-control">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Porcentaje_descuento">Porcentaje descuento:</label>
+                                        <input id="M_Porcentaje_descuento" name="M_Porcentaje_descuento" type="number" class="form-control required">
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <h3>Informacion tributaria</h3>
+                            <fieldset>
+                                <div class="row">
+                                    <legend style="margin-left: 17px !important;">Informacion tributaria</legend>
+                                    <div class="col-sm-3">
+                                        <input id="M_rut_entregado" name="M_rut_entregado" type="checkbox" class="custom-checkbox"> <label for="M_rut_entregado">¿RUT Entregado?</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input id="M_gran_contribuyente" name="M_gran_contribuyente" type="checkbox" class="custom-checkbox"> <label for="M_gran_contribuyente">Gran contribuyente</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input id="M_responsable_iva" name="M_responsable_iva" type="checkbox" class="custom-checkbox"> <label for="M_responsable_iva">Responsable IVA</label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="M_responsable_fe">Responsable FE:</label>
+                                        <input id="M_responsable_fe" name="M_responsable_fe" type="text" class="form-control">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_telefono_fe">Telefono FE:</label>
+                                        <input id="M_telefono_fe" name="M_telefono_fe" type="number" class="form-control">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_codigo_ciudad_ext">Codigo de Ciudad Ext.:</label>
+                                        <input id="M_codigo_ciudad_ext" name="M_codigo_ciudad_ext" type="text" class="form-control">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_grupo_economico">Grupo Economico:</label>
+                                        <input id="M_grupo_economico" name="M_grupo_economico" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label for="M_Moneda">Moneda:</label>
+                                        <select id="M_Moneda" name="M_Moneda" class="form-control">
+                                            <option value="">Seleccione...</option>
+                                            <option value="USD">USD</option>
+                                            <option value="COP">COP</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_Tipo_cliente">Tipo Cliente:</label>
+                                        <select id="M_Tipo_cliente" name="M_Tipo_cliente" class="form-control"></select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label for="M_correos_copia">Correos Copia:</label> <br>
+                                        <select name="M_correos_copia" id="M_correos_copia" multiple="multiple" class="form-control" style="width: 100%"></select>
+                                    </div>
+                                </div>
+                            </fieldset>
 
 
-                            <div class="tab">Contact Info:
-                                <p><input placeholder="E-mail..." oninput="this.className = ''"></p>
-                                <p><input placeholder="Phone..." oninput="this.className = ''"></p>
-                            </div>
+                            <h3>Terminar registro</h3>
+                            <fieldset>
+                                <div class="row">
+                                    <legend style="margin-left: 17px !important;">Informacion Importante!</legend>
+                                    <div class="col-sm-12">
+                                        <h3>Los datos ingresados seran guardados en las plataformas MAX y DMS , antes de finalizar verifique que toda la informacion proporcionada es veridica y esta correctamente digilenciada:</h3>
+                                        <h3 class="text-danger">Esta accion no es reversible !</h3>
+                                    </div>
+                                </div>
 
-                            <div class="tab">Birthday:
-                                <p><input placeholder="dd" oninput="this.className = ''"></p>
-                                <p><input placeholder="mm" oninput="this.className = ''"></p>
-                                <p><input placeholder="yyyy" oninput="this.className = ''"></p>
-                            </div>
-
-                            <div class="tab">Login Info:
-                                <p><input placeholder="Username..." oninput="this.className = ''"></p>
-                                <p><input placeholder="Password..." oninput="this.className = ''"></p>
-                            </div>
-
-
-                            <!-- Circles which indicates the steps of the form: -->
-                            <div style="text-align:center;margin-top:40px;">
-                                <span class="step"></span>
-                                <span class="step"></span>
-                                <span class="step"></span>
-                                <span class="step"></span>
-                                <span class="step"></span>
-                            </div>
+                                <input id="acceptTerms-2" name="acceptTerms" type="checkbox" class="custom-checkbox required"> <label for="acceptTerms-2">He digilenciado la informacion correctamente.</label>
+                            </fieldset>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <div style="overflow:auto;">
-                            <div style="float:right;">
-                                <button type="button" id="prevBtn" class="btn btn-primary" onclick="nextPrev(-1)">Anterior</button>
-                                <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextPrev(1)">Siguiente</button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <style>
-            #regForm {
-                background-color: #ffffff;
-                margin: 0px auto;
-                padding: 10px;
-                width: 80%;
-                min-width: 300px;
-            }
-
-            /* Style the input fields */
-            input {
-                padding: 10px;
+            .wizard,
+            .tabcontrol {
+                display: block;
                 width: 100%;
-                font-size: 17px;
-                font-family: Raleway, serif;
-                border: 1px solid #aaaaaa;
+                overflow: hidden;
             }
 
-            /* Mark input boxes that gets an error on validation: */
-            input.invalid {
-                background-color: #ffdddd;
+            .wizard a,
+            .tabcontrol a {
+                outline: 0;
             }
 
-            /* Hide all steps by default: */
-            .tab {
-                display: none;
+            .wizard ul,
+            .tabcontrol ul {
+                list-style: none !important;
+                padding: 0;
+                margin: 0;
             }
 
-            /* Make circles that indicate the steps of the form: */
-            .step {
-                height: 15px;
-                width: 15px;
-                margin: 0 2px;
-                background-color: #bbbbbb;
-                border: none;
-                border-radius: 50%;
+            .wizard ul > li,
+            .tabcontrol ul > li {
+                display: block;
+                padding: 0;
+            }
+
+
+            /* Accessibility */
+
+            .wizard > .steps .current-info,
+            .tabcontrol > .steps .current-info {
+                position: absolute;
+                left: -999em;
+            }
+
+            .wizard > .content > .title,
+            .tabcontrol > .content > .title {
+                position: absolute;
+                left: -999em;
+            }
+
+
+            /*
+                Wizard
+            */
+
+            .wizard > .steps {
+                position: relative;
+                display: block;
+                width: 100%;
+            }
+
+            .wizard.vertical > .steps {
+                display: inline;
+                float: left;
+                width: 30%;
+            }
+
+            .wizard > .steps .number {
+                font-size: 1.429em;
+            }
+
+            .wizard > .steps > ul > li {
+                width: 25%;
+            }
+
+            .wizard > .steps > ul > li,
+            .wizard > .actions > ul > li {
+                float: left;
+            }
+
+            .wizard.vertical > .steps > ul > li {
+                float: none;
+                width: 100%;
+            }
+
+            .wizard > .steps a,
+            .wizard > .steps a:hover,
+            .wizard > .steps a:active {
+                display: block;
+                width: auto;
+                margin: 0 0.5em 0.5em;
+                padding: 1em 1em;
+                text-decoration: none;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+            }
+
+            .wizard > .steps .disabled a,
+            .wizard > .steps .disabled a:hover,
+            .wizard > .steps .disabled a:active {
+                background: #eee;
+                color: #aaa;
+                cursor: default;
+            }
+
+            .wizard > .steps .current a,
+            .wizard > .steps .current a:hover,
+            .wizard > .steps .current a:active {
+                background: #110f2c;
+                color: #fff;
+                cursor: default;
+            }
+
+            .wizard > .steps .done a,
+            .wizard > .steps .done a:hover,
+            .wizard > .steps .done a:active {
+                background: #424d90;
+                color: #fff;
+            }
+
+            .wizard > .steps .error a,
+            .wizard > .steps .error a:hover,
+            .wizard > .steps .error a:active {
+                background: #8a1f11;
+                color: #fff;
+            }
+
+            .wizard > .content {
+                background: #eee;
+                display: block;
+                margin: 0.5em;
+                min-height: 35em;
+                overflow: hidden;
+                position: relative;
+                width: auto;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+            }
+
+            .wizard.vertical > .content {
+                display: inline;
+                float: left;
+                margin: 0 2.5% 0.5em 2.5%;
+                width: 65%;
+            }
+
+            .wizard > .content > .body {
+                float: left;
+                position: relative;
+                width: 95%;
+                height: 95%;
+                padding: 2.5%;
+            }
+
+            .wizard > .content > .body ul {
+                list-style: disc !important;
+            }
+
+            .wizard > .content > .body ul > li {
+                display: list-item;
+            }
+
+            .wizard > .content > .body > iframe {
+                border: 0 none;
+                width: 100%;
+                height: 100%;
+            }
+
+            .wizard > .content > .body input {
+                display: block;
+                border: 1px solid #ccc;
+            }
+
+            .wizard > .content > .body input[type="checkbox"] {
                 display: inline-block;
-                opacity: 0.5;
             }
 
-            /* Mark the active step: */
-            .step.active {
-                opacity: 1;
+            .wizard > .content > .body input.error {
+                background: rgb(251, 227, 228);
+                border: 1px solid #fbc2c4;
+                color: #8a1f11;
             }
 
-            /* Mark the steps that are finished and valid: */
-            .step.finish {
-                background-color: #4CAF50;
+            .wizard > .content > .body label {
+                display: inline-block;
+                margin-bottom: 0.5em;
+            }
+
+            .wizard > .content > .body label.error {
+                color: #8a1f11;
+                display: -moz-inline-block;
+                margin-left: 0.1em;
+            }
+
+            .wizard > .actions {
+                position: relative;
+                display: block;
+                text-align: right;
+                width: 100%;
+            }
+
+            .wizard.vertical > .actions {
+                display: inline;
+                float: right;
+                margin: 0 2.5%;
+                width: 95%;
+            }
+
+            .wizard > .actions > ul {
+                display: inline-block;
+                text-align: right;
+            }
+
+            .wizard > .actions > ul > li {
+                margin: 0 0.5em;
+            }
+
+            .wizard.vertical > .actions > ul > li {
+                margin: 0 0 0 1em;
+            }
+
+            .wizard > .actions a,
+            .wizard > .actions a:hover,
+            .wizard > .actions a:active {
+                background: #110f2c;
+                color: #fff;
+                display: block;
+                padding: 0.5em 1em;
+                text-decoration: none;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+            }
+
+            .wizard > .actions .disabled a,
+            .wizard > .actions .disabled a:hover,
+            .wizard > .actions .disabled a:active {
+                background: #eee;
+                color: #aaa;
+            }
+
+            .wizard > .loading {}
+
+            .wizard > .loading .spinner {}
+
+
+            /*
+                Tabcontrol
+            */
+
+            .tabcontrol > .steps {
+                position: relative;
+                display: block;
+                width: 100%;
+            }
+
+            .tabcontrol > .steps > ul {
+                position: relative;
+                margin: 6px 0 0 0;
+                top: 1px;
+                z-index: 1;
+            }
+
+            .tabcontrol > .steps > ul > li {
+                float: left;
+                margin: 5px 2px 0 0;
+                padding: 1px;
+                -webkit-border-top-left-radius: 5px;
+                -webkit-border-top-right-radius: 5px;
+                -moz-border-radius-topleft: 5px;
+                -moz-border-radius-topright: 5px;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+            }
+
+            .tabcontrol > .steps > ul > li:hover {
+                background: #edecec;
+                border: 1px solid #bbb;
+                padding: 0;
+            }
+
+            .tabcontrol > .steps > ul > li.current {
+                background: #fff;
+                border: 1px solid #bbb;
+                border-bottom: 0 none;
+                padding: 0 0 1px 0;
+                margin-top: 0;
+            }
+
+            .tabcontrol > .steps > ul > li > a {
+                color: #5f5f5f;
+                display: inline-block;
+                border: 0 none;
+                margin: 0;
+                padding: 10px 30px;
+                text-decoration: none;
+            }
+
+            .tabcontrol > .steps > ul > li > a:hover {
+                text-decoration: none;
+            }
+
+            .tabcontrol > .steps > ul > li.current > a {
+                padding: 15px 30px 10px 30px;
+            }
+
+            .tabcontrol > .content {
+                position: relative;
+                display: inline-block;
+                width: 100%;
+                height: 35em;
+                overflow: hidden;
+                border-top: 1px solid #bbb;
+                padding-top: 20px;
+            }
+
+            .tabcontrol > .content > .body {
+                float: left;
+                position: absolute;
+                width: 95%;
+                height: 95%;
+                padding: 2.5%;
+            }
+
+            .tabcontrol > .content > .body ul {
+                list-style: disc !important;
+            }
+
+            .tabcontrol > .content > .body ul > li {
+                display: list-item;
             }
         </style>
+
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar los clientes.
@@ -204,81 +612,6 @@
     @endcan
     @push('javascript')
         <script>
-
-            var currentTab = 0; // Current tab is set to be the first tab (0)
-            showTab(currentTab); // Display the current tab
-
-            function showTab(n) {
-                // This function will display the specified tab of the form ...
-                var x = document.getElementsByClassName("tab");
-                x[n].style.display = "block";
-                // ... and fix the Previous/Next buttons:
-                if (n == 0) {
-                    document.getElementById("prevBtn").style.display = "none";
-                } else {
-                    document.getElementById("prevBtn").style.display = "inline";
-                }
-                if (n == (x.length - 1)) {
-                    document.getElementById("nextBtn").innerHTML = "Finalizar";
-                } else {
-                    document.getElementById("nextBtn").innerHTML = "Siguiente";
-                }
-                // ... and run a function that displays the correct step indicator:
-                fixStepIndicator(n)
-            }
-
-            function nextPrev(n) {
-                // This function will figure out which tab to display
-                var x = document.getElementsByClassName("tab");
-                // Exit the function if any field in the current tab is invalid:
-                if (n == 1 && !validateForm()) return false;
-                // Hide the current tab:
-                x[currentTab].style.display = "none";
-                // Increase or decrease the current tab by 1:
-                currentTab = currentTab + n;
-                // if you have reached the end of the form... :
-                if (currentTab >= x.length) {
-                    //...the form gets submitted:
-                    document.getElementById("regForm").submit();
-                    return false;
-                }
-                // Otherwise, display the correct tab:
-                showTab(currentTab);
-            }
-
-            function validateForm() {
-                // This function deals with validation of the form fields
-                var x, y, i, valid = true;
-                x = document.getElementsByClassName("tab");
-                y = x[currentTab].getElementsByTagName("input");
-                // A loop that checks every input field in the current tab:
-                for (i = 0; i < y.length; i++) {
-                    // If a field is empty...
-                    if (y[i].value == "") {
-                        // add an "invalid" class to the field:
-                        y[i].className += " invalid";
-                        // and set the current valid status to false:
-                        valid = false;
-                    }
-                }
-                // If the valid status is true, mark the step as finished and valid:
-                if (valid) {
-                    document.getElementsByClassName("step")[currentTab].className += " finish";
-                }
-                return valid; // return the valid status
-            }
-
-            function fixStepIndicator(n) {
-                // This function removes the "active" class of all steps...
-                var i, x = document.getElementsByClassName("step");
-                for (i = 0; i < x.length; i++) {
-                    x[i].className = x[i].className.replace(" active", "");
-                }
-                //... and adds the "active" class to the current step:
-                x[n].className += " active";
-            }
-
-
             $(document).ready(function () {
                 $.ajaxSetup({
                     headers: {
@@ -288,8 +621,8 @@
                 $('.CustomerTable').DataTable({
                     processing: true,
                     serverSide: true,
-                    responsive: false,
-                    autoWidth: false,
+                    responsive: true,
+                    autoWidth: true,
                     ajax: {
                         url: '/GestionClientes_Index'
                     },
@@ -325,12 +658,352 @@
                             sortAscending: ": Activar para ordenar la columna de manera ascendente",
                             sortDescending: ": Activar para ordenar la columna de manera descendente"
                         }
+                    },
+                    rowCallback: function (row, data, index) {
+                        if(data.estado == 'R'){
+                            $(row).find('td:eq(5)').html('<label class="text-danger">Retenido</label>');
+                        }else{
+                            $(row).find('td:eq(5)').html('<label class="text-success">Liberado</label>');
+                        }
                     }
                 });
 
                 $('.InfoCustomersTooltip').tooltip();
 
 
+
+                var form = $("#example-advanced-form");
+                $.extend($.validator.messages, {
+                    required: "Este campo es obligatorio.",
+                    remote: "Por favor, rellena este campo.",
+                    email: "Por favor, escribe una dirección de correo válida.",
+                    url: "Por favor, escribe una URL válida.",
+                    date: "Por favor, escribe una fecha válida.",
+                    dateISO: "Por favor, escribe una fecha (ISO) válida.",
+                    number: "Por favor, escribe un número válido.",
+                    digits: "Por favor, escribe sólo dígitos.",
+                    creditcard: "Por favor, escribe un número de tarjeta válido.",
+                    equalTo: "Por favor, escribe el mismo valor de nuevo.",
+                    extension: "Por favor, escribe un valor con una extensión aceptada.",
+                    maxlength: $.validator.format( "Por favor, no escribas más de {0} caracteres." ),
+                    minlength: $.validator.format( "Por favor, no escribas menos de {0} caracteres." ),
+                    rangelength: $.validator.format( "Por favor, escribe un valor entre {0} y {1} caracteres." ),
+                    range: $.validator.format( "Por favor, escribe un valor entre {0} y {1}." ),
+                    max: $.validator.format( "Por favor, escribe un valor menor o igual a {0}." ),
+                    min: $.validator.format( "Por favor, escribe un valor mayor o igual a {0}." ),
+                    nifES: "Por favor, escribe un NIF válido.",
+                    nieES: "Por favor, escribe un NIE válido.",
+                    cifES: "Por favor, escribe un CIF válido."
+                });
+
+                form.steps({
+                    labels: {
+                    	next: "Siguiente",
+                        previous: "Anterior",
+                        loading: "Cargando...",
+                        finish: "Guardar Cliente"
+                    },
+                    headerTag: "h3",
+                    bodyTag: "fieldset",
+                    transitionEffect: "fade",
+                    onStepChanging: function (event, currentIndex, newIndex)
+                    {
+                        // Allways allow previous action even if the current form is not valid!
+                        if (currentIndex > newIndex)
+                        {
+                            return true;
+                        }
+                        // Forbid next action on "Warning" step if the user is to young
+                        if (newIndex === 3 && Number($("#age-2").val()) < 18)
+                        {
+                            return false;
+                        }
+                        // Needed in some cases if the user went back (clean up)
+                        if (currentIndex < newIndex)
+                        {
+                            // To remove error styles
+                            form.find(".body:eq(" + newIndex + ") label.error").remove();
+                            console.log(newIndex);
+                            form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+                        }
+                        form.validate().settings.ignore = ":disabled,:hidden";
+                        return form.valid();
+                    },
+                    onStepChanged: function (event, currentIndex, priorIndex)
+                    {
+                        // Used to skip the "Warning" step if the user is old enough.
+                        if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
+                        {
+                            form.steps("next");
+                        }
+                        // Used to skip the "Warning" step if the user is old enough and wants to the previous step.
+                        if (currentIndex === 2 && priorIndex === 3)
+                        {
+                            form.steps("previous");
+                        }
+                    },
+                    onFinishing: function (event, currentIndex)
+                    {
+                        form.validate().settings.ignore = ":disabled";
+                        return form.valid();
+                    },
+                    onFinished: function (event, currentIndex)
+                    {
+                    	var fob = $('#M_FOB').val();
+                        alert('Este es el valor de Fob: '+fob)
+                    }
+                }).validate({
+                    errorPlacement: function errorPlacement(error, element)
+                    { element.after(error); },
+                    rules: {
+                        M_nombre: {
+                            required: true,
+                            minlength: 4,
+                            maxlength: 60,
+                        },
+                        M_direccion1: {
+                        	required: true,
+                            minlength: 8,
+                            maxlength: 60
+                        },
+                        M_direccion2: {
+                            required: false,
+                            minlength: 8,
+                            maxlength: 60
+                        },
+                        M_Codigo_postal: {
+                        	required: false,
+                            minlength: 4,
+                            maxlength: 9
+                        },
+                        M_Pais: {
+                            selectcheck: true
+                        },
+                        M_Departamento: {
+                            selectcheck: true
+                        },
+                        M_Ciudad: {
+                            selectcheck: true
+                        },
+                        M_Contacto: {
+                            required: true,
+                            minlength: 4,
+                            maxlength: 40,
+                        },
+                        M_Telefono: {
+                            required: true,
+                            minlength: 4,
+                            maxlength: 20,
+                            digits: true
+                        },
+                        M_Telefono2: {
+                            required: false,
+                            minlength: 4,
+                            maxlength: 20,
+                            digits: true
+                        },
+                        M_Celular: {
+                            required: false,
+                            minlength: 4,
+                            maxlength: 20,
+                            digits: true
+                        },
+                        M_Email_contacto: {
+                            Emailcheck: true
+                        },
+                        M_Email_facturacion: {
+                            Emailcheck: true
+                        },
+                        M_FOB: {
+                        	required: false,
+                        },
+                        M_Porcentaje_descuento: {
+                            digits: true,
+                            max: 100,
+                            min: 0
+                        },
+                        M_Enviar_a: {
+                        	required: false
+                        },
+                        M_Enviar_a_travez_de: {
+                            required: false
+                        },
+                        M_Codigo_fiscal_1: {
+                        	required: true,
+                            maxlength: 7,
+                            minlength: 3
+                        },
+                        M_Codigo_fiscal_2: {
+                            required: false,
+                            maxlength: 7,
+                            minlength: 3
+                        },
+                        M_Nit_cc: {
+                        	minlength: 5,
+                            required: true
+                        },
+                        M_Forma_envio: {
+                            selectcheck: true
+                        },
+                        M_Plazo: {
+                            selectcheck: true
+                        },
+                        M_Gravado: {
+                            selectcheck: true
+                        },
+                        M_Moneda: {
+                            selectcheck: true
+                        },
+                        M_Tipo_cliente: {
+                            selectcheck: true
+                        }
+
+                    },
+                    messages:{
+                        M_Nit_cc: "",
+                        M_Nit_cc_dg: ""
+                    },
+                    errorElement: 'label',
+                    errorLabelContainer: '.errorTxt'
+                });
+                getPlazo();
+                getFormaEnvio();
+                function getPlazo(){
+                    $.ajax({
+                        type: "get",
+                        url: 'PedidosGetCondicion',
+                        success: function (data) {
+                            var i = 0;
+                            $('#M_Plazo').append('<option value="" >Seleccione...</option>');
+                            $(data).each(function (){
+                                $('#M_Plazo').append('<option value="'+ data[i].DESC_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
+                                i++
+                            });
+                        }
+                    })
+                }
+
+                function getFormaEnvio(){
+                    $.ajax({
+                        type: "get",
+                        url: '/FormaEnvio',
+                        success: function (data) {
+                            var i = 0;
+                            $('#M_Forma_envio').append('<option value="" >Seleccione...</option>');
+                            $(data).each(function (){
+                                $('#M_Forma_envio').append('<option value="'+ data[i].DESC_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
+                                i++
+                            });
+                        }
+                    })
+                }
+
+                $('#M_correos_copia').select2({
+                    createTag: function(term, data) {
+                        var value = term.term;
+                        if(validateEmail(value)) {
+                            return {
+                                id: value,
+                                text: value
+
+                            };
+                        }
+                        return null;
+                    },
+                    placeholder: "Escribe uno o varios email..",
+                    tags: true,
+                    tokenSeparators: [',', ' ',';'],
+                    width: '100%',
+                });
+
+
+                function get_paises(){
+                    $.ajax({
+                        type: "get",
+                        url: '/get_paises',
+                        success: function (data) {
+                            var i = 0;
+                            $('#M_Pais').append('<option value="">Seleccione...</option>');
+                            $(data).each(function () {
+                                $('#M_Pais').append('<option value="'+data[i].pais +'">'+data[i].descripcion+'</option>');
+                                i++;
+                            });
+                        }
+                    })
+                }
+
+                get_paises();
+
+                function validateEmail(email) {
+                    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                }
+
+                jQuery.validator.addMethod("selectcheck", function(value){
+                    return (value != '');
+                }, "Por favor, seleciona una opcion.");
+
+                jQuery.validator.addMethod("Emailcheck", function (value) {
+                    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(value);
+                }, "Por favor, escribe una dirección de correo válida.");
+
+                $('#M_Pais').on( "change", function() {
+                    $('#M_Departamento').html('');
+                    $('#M_Ciudad').html('');
+                    var id_pais = $('#M_Pais').val();
+                    $.ajax({
+                        type: "get",
+                        url: '/get_departamentos',
+                        data: {id_pais: id_pais},
+                        success: function (data) {
+                            var i = 0;
+                            $('#M_Departamento').append('<option value="">Seleccione...</option>');
+                            $(data).each(function () {
+                                $('#M_Departamento').append('<option value="'+data[i].departamento +'">'+data[i].descripcion+'</option>');
+                                i++;
+                            });
+                        }
+                    })
+                });
+
+                $('#M_Departamento').on("change", function () {
+                    $('#M_Ciudad').html('');
+                    var id_pais = $('#M_Pais').val();
+                    var id_departamento = $('#M_Departamento').val();
+                    $.ajax({
+                        type: "get",
+                        url: '/get_ciudades',
+                        data: {
+                            id_pais: id_pais,
+                            id_departamento: id_departamento
+                        },
+                        success: function (data) {
+                            var i = 0;
+                            $('#M_Ciudad').append('<option value="">Seleccione...</option>');
+                            $(data).each(function () {
+                                $('#M_Ciudad').append('<option value="'+data[i].ciudad +'">'+data[i].descripcion+'</option>');
+                                i++;
+                            });
+                        }
+                    })
+                });
+                tipo_cliente();
+
+                function tipo_cliente() {
+                    $.ajax({
+                        type: "get",
+                        url: '/get_tipo_cliente',
+                        success: function (data) {
+                            var i = 0;
+                            $('#M_Tipo_cliente').append('<option value="">Seleccione...</option>');
+                            $(data).each(function () {
+                                $('#M_Tipo_cliente').append('<option value="'+data[i].CUSTYP_62 +'">'+data[i].DESC_62+'</option>');
+                                i++;
+                            });
+                        }
+                    })
+                }
             });
         </script>
 
@@ -347,9 +1020,16 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" ></script>
         <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+
+        <script src="/jquery-steps/jquery.steps.js"></script>
 
 
 
