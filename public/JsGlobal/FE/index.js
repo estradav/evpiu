@@ -73,6 +73,8 @@ $(document).ready(function () {
             serverSide: true,
             responsive: false,
             autoWidth: false,
+            start: '0',
+            length: '10',
             ajax: {
                 url:'/FacturasIndex',
                 data:{from_date:from_date, to_date:to_date}
@@ -311,8 +313,8 @@ $(document).ready(function () {
                         var link=document.createElement('a');
                         link.href=window.URL.createObjectURL(blob);
                         let current_datetime = new Date();
-                        let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
-                        link.download="Factura_Electronica_" + formatted_date + "_.xml";
+                        let formatted_date = current_datetime.getDate() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getFullYear();
+                        link.download="FE_" + formatted_date + "_.xml";
                         link.click();
                     };
                     req.send();

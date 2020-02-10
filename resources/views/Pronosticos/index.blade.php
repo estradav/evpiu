@@ -248,8 +248,8 @@
                                 return '<button  value="'+data+'" class="btn btn-link btn-sm btnRef" id="Ref" >' + data + '</button>';}
                             },
                             {data: 'descrip', name: 'descrip', orderable: false, searchable: false},
-                            {data: 'detail', name: 'detail', orderable: false, searchable: false},
-                            {data: 'acabado', name: 'acabado', orderable: false, searchable: false},
+                            {data: 'detail', name: 'detail', orderable: false, searchable: true},
+                            {data: 'acabado', name: 'acabado', orderable: false, searchable: true},
                             {data: 'cant', name: 'cant', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 0, '')},
                             {data: 'NumeroCli', name: 'NumeroCli', orderable: false, searchable: true},
                             {data: 'NombreCli', name: 'NombreCli', orderable: false, searchable: true},

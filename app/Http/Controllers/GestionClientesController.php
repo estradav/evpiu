@@ -12,25 +12,22 @@ class GestionClientesController extends Controller
     {
         if (request()->ajax()) {
             $data = DB::connection('MAX')
-                ->table('CIEV_V_Clientes')
-                ->select('CIEV_V_Clientes.CUSTID_23 as codigo_cliente',
-                    'CIEV_V_Clientes.NAME_23 as razon_social',
-                    'CIEV_V_Clientes.NIT as nit',
-                    'CIEV_V_Clientes.CITY_23 as ciudad',
-                    //'CIEV_V_Clientes.CNTRY_23 as pais',
-                    //'CIEV_V_Clientes.CUSTYP_23 as tipo_cliente',
-                    'CIEV_V_Clientes.NIT as id',
-                    'CIEV_V_Clientes.STATUS_23 as estado'
+                ->table('CIEV_V_ClientesMAXDMS')
+                ->select('CodigoMAX',
+                    'CodigoDMS',
+                    'NITMAX',
+                    'NombreMAX',
+                    'EstadoMAX'
                 )
                 ->get();
 
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->codigo_cliente).'/edit" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/edit" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
                     return $btn;
                 })
                 ->addColumn('info', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->codigo_cliente).'/edit" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/edit" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
                     return $btn;
                 })
                 ->rawColumns(['opciones','info'])
@@ -107,4 +104,31 @@ class GestionClientesController extends Controller
     {
         return view('GestionClientes.show');
     }
+
+    public function ClientesFaltantesDMS(Request $request)
+    {
+        if (request()->ajax()) {
+            $data = DB::connection('MAX')
+                ->table('CIEV_V_ClientesMAX_DMS')
+                ->where('CodigoDMS','=',null)
+                ->select('CodigoMAX',
+                    'CodigoDMS',
+                    'NITMAX',
+                    'NombreMAX',
+                    'EstadoMAX'
+                )
+                ->get();
+
+            return datatables::of($data)
+                ->addColumn('opciones', function($row){
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="javascript:void(0)" class="btn btn-sm btn-outline-light Sync-DMS" id="'.trim($row->CodigoMAX).'"><i class="fas fa-sync-alt"></i> Sync</a>';
+                    return $btn;
+                })
+
+                ->rawColumns(['opciones'])
+                ->make(true);
+        }
+    }
+
+
 }

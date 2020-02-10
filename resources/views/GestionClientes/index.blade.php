@@ -12,36 +12,32 @@
 
 @section('content')
     @can('gestion_clientes.view')
-        <div class="form-group">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                Crear Cliente
-            </button>
-        </div>
-        <br>
-
         <div class="card">
             <div class="card-header">
                 Clientes
-                <a class="right InfoCustomersTooltip" title="" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Esta tabla muestra los clientes que existen tanto en max como en DMS">
+                <a class="right InfoCustomersTooltip" title="" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Esta tabla muestra los clientes que existen tanto en MAX como en DMS">
                   <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                 </a>
+
+                <div class="col-md-0 float-right">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" style="align-items: flex-end">
+                        <i class="fas fa-user-plus"></i>  Crear Cliente
+                    </button>
+                </div>
+
             </div>
             <div class="card-body">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table-responsive table-striped CustomerTable" id="CustomerTable">
+                                <table class="table table-responsive table-striped CustomerTable" id="CustomerTable">
                                     <thead>
                                         <tr>
-                                            <th>Razon social</th>
-                                            <th>NIT</th>
                                             <th>Codigo Cliente</th>
-                                            <th>Ciudad</th>
-                                            <th>Pais</th>
+                                            <th>Razon social</th>
+                                            <th>Nit/CC</th>
                                             <th>Estado</th>
-                                            <th>Tipo Cliente</th>
-                                            <th>Info</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </thead>
@@ -54,6 +50,77 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Clientes MAX
+                        <a class="right InfoCustomersTooltip" title="" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Esta tabla muestra los clientes que solo existen en MAX">
+                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-responsive table-striped ClientsMax" id="ClientsMax">
+                                            <thead>
+                                            <tr>
+                                                <th>Codigo</th>
+                                                <th>Razon social</th>
+                                                <th>Nit/CC</th>
+                                                <th>Estado</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Clientes DMS
+                        <a class="right InfoCustomersTooltip" title="" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Esta tabla muestra los clientes que solo existen en DMS">
+                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-responsive table-striped ClientsMax" id="ClientsMax">
+                                            <thead>
+                                            <tr>
+                                                <th>Codigo</th>
+                                                <th>Razon social</th>
+                                                <th>Nit/CC</th>
+                                                <th>Estado</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div id="submitModal" class="multi-step">
         </div>
 
@@ -621,21 +688,24 @@
                 $('.CustomerTable').DataTable({
                     processing: true,
                     serverSide: true,
-                    responsive: true,
-                    autoWidth: true,
+                    responsive: false,
+                    autoWidth: false,
+                    width:"100%",
                     ajax: {
                         url: '/GestionClientes_Index'
                     },
                     columns: [
-                        {data: 'razon_social', name:'razon_social'},
-                        {data: 'nit', name: 'nit'},
-                        {data: 'codigo_cliente', name: 'codigo_cliente'},
-                        {data: 'ciudad', name: 'ciudad'},
-                        {data: 'pais', name: 'pais'},
-                        {data: 'estado', name: 'estado', orderable: false, searchable: false},
-                        {data: 'tipo_cliente', name: 'tipo_cliente', orderable: false, searchable: false},
-                        {data: 'info', name: 'info', orderable: false, searchable: false},
-                        {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+                        {data:'CodigoMAX', name:'CodigoMAX'},
+                        {data:'NombreMAX', name:'NombreMAX'},
+                        {data:'NITMAX', name:'NITMAX'},
+                        {data:'EstadoMAX', name:'EstadoMAX', orderable:false, searchable:false},
+                        {data:'opciones', name:'opciones', orderable:false, searchable:false},
+                    ],
+                    columnDefs: [
+                        {
+                        	width: "25%",
+                            targets: 0
+                        }
                     ],
                     language: {
                         processing: "Procesando...",
@@ -661,9 +731,9 @@
                     },
                     rowCallback: function (row, data, index) {
                         if(data.estado == 'R'){
-                            $(row).find('td:eq(5)').html('<label class="text-danger">Retenido</label>');
+                            $(row).find('td:eq(3)').html('<label class="text-danger">Retenido</label>');
                         }else{
-                            $(row).find('td:eq(5)').html('<label class="text-success">Liberado</label>');
+                            $(row).find('td:eq(3)').html('<label class="text-success">Liberado</label>');
                         }
                     }
                 });
@@ -1003,6 +1073,63 @@
                             });
                         }
                     })
+                }
+							loadClientesFaltantesDms();
+
+                function loadClientesFaltantesDms()
+                {
+                    $('.ClientsMax').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        responsive: false,
+                        autoWidth: false,
+                        width:"100%",
+                        ajax: {
+                            url: '/ClientesFaltantesDMS'
+                        },
+                        columns: [
+                            {data:'CodigoMAX', name:'CodigoMAX'},
+                            {data:'NombreMAX', name:'NombreMAX'},
+                            {data:'NITMAX', name:'NITMAX'},
+                            {data:'EstadoMAX', name:'EstadoMAX', orderable:false, searchable:false},
+                            {data:'opciones', name:'opciones', orderable:false, searchable:false},
+                        ],
+                        columnDefs: [
+                            {
+                                width: "25%",
+                                targets: 0
+                            }
+                        ],
+                        language: {
+                            processing: "Procesando...",
+                            search: "Buscar&nbsp;:",
+                            lengthMenu: "Mostrar _MENU_ registros",
+                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                            infoPostFix: "",
+                            loadingRecords: "Cargando...",
+                            zeroRecords: "No se encontraron resultados",
+                            emptyTable: "Ningún registro disponible en esta tabla :C",
+                            paginate: {
+                                first: "Primero",
+                                previous: "Anterior",
+                                next: "Siguiente",
+                                last: "Ultimo"
+                            },
+                            aria: {
+                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                                sortDescending: ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
+                        rowCallback: function (row, data, index) {
+                            if(data.estado == 'R'){
+                                $(row).find('td:eq(3)').html('<label class="text-danger">Retenido</label>');
+                            }else{
+                                $(row).find('td:eq(3)').html('<label class="text-success">Liberado</label>');
+                            }
+                        }
+                    });
                 }
             });
         </script>

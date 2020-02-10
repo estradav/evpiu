@@ -18,30 +18,27 @@
         </div>
     </div>
     <br>
-    <div class="form-group">
-        <div class="input-group">
-            <div class="row input-daterange">
-                <div class="col-md-4">
-                    <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
-                </div>
-                <div class="col-md-4">
-                    <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
-                </div>
-                <div class="col-md-4">
-                    <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm">Buscar</button>
-                </div>
+
+    <div class="row">
+        <div class="col-3">
+            <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
+        </div>
+        <div class="col-3">
+            <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
+        </div>
+        <div class="col-3">
+            <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm btn-block">Buscar</button>
+        </div>
+        <div class="col-3">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary btn-sm " id="CrearXml">Descargar XML</button>
+                <button type="button" class="btn btn-primary btn-sm" id="WebService">Subir via WebService</button>
             </div>
         </div>
     </div>
+
+
     <br>
-    <div class="form-group">
-        <span><input type="button" class="btn btn-primary btn-sm" id="CrearXml" value="Crear XML"></span>
-        <span><input type="button" class="btn btn-primary btn-sm" id="WebService" value="Enviar via WebService"></span>
-    </div>
-
-    <div class="test" id="test" name="test" style="display: none !important;">
-
-    </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
@@ -69,7 +66,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <input class="test" type="hidden" id="test" name="test" style="display: none">
+                                 <input class="test" type="hidden" id="test" name="test" style="display: none">
                             </tbody>
                         </table>
                     </div>
