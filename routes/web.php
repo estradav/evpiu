@@ -300,8 +300,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/get_ciudades','GestionClientesController@Ciudades');
             Route::get('/get_tipo_cliente','GestionClientesController@TipoCliente');
             Route::get('/view_client','GestionClientesController@Show');
-
-
+            Route::get('/ClientesFaltantesDMS','GestionClientesController@ClientesFaltantesDMS');
 
 
         });

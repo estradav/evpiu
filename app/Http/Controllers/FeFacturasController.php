@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -121,6 +120,7 @@ class FeFacturasController extends Controller
                    'CIEV_V_FE.direccion',
                    'CIEV_V_FE.emailentrega',
                    'CIEV_V_FE.digito_verificador',
+                   'CIEV_V_FE.idtipodocumento',
                    'CIEV_V_FE.telefono',
                    'CIEV_V_FE.notas',
                    'CIEV_V_FE.OC',
@@ -259,9 +259,16 @@ class FeFacturasController extends Controller
                 else { $medio_pago = 10;}
 
                 // valida el tipo de documento de identidad
-                if ($encabezado->digito_verificador != null )
-                {$tipo_documento_ide = 31;}
-                else{$tipo_documento_ide = 13;}
+                if ($encabezado->idtipodocumento == 31 )
+                {
+                    $tipo_documento_ide = 31;
+                }
+                if ($encabezado->idtipodocumento == 22){
+                    $tipo_documento_ide = 42;
+                }
+                else{
+                    $tipo_documento_ide = 13;
+                }
 
 
                if ($encabezado->iva != null) {
@@ -301,7 +308,12 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
 
                $objetoXML->startElement("idreporte");
-               $objetoXML->text($Configuracion[0]->fac_idreporte); // sumistrado por fenalco para version grafica
+               if($encabezado->tipo_cliente == 'EX'){
+                   $objetoXML->text('1560'); // sumistrado por fenalco para version grafica
+               }else{
+                   $objetoXML->text($Configuracion[0]->fac_idreporte); // sumistrado por fenalco para version grafica
+               }
+
                $objetoXML->endElement();
 
 
@@ -309,7 +321,7 @@ class FeFacturasController extends Controller
                $objetoXML->text($encabezado->fechadocumento);
                $objetoXML->endElement();
 
-               $objetoXML->startElement("fechavencabezadoimiento"); // pendiente
+               $objetoXML->startElement("fechavencimiento"); // pendiente
                $objetoXML->text($encabezado->fechavencimiento.' '.'00:00:00');
                $objetoXML->endElement();
 
@@ -321,9 +333,11 @@ class FeFacturasController extends Controller
                $objetoXML->text($tipo_operacion);
                $objetoXML->endElement();
 
-               $objetoXML->startElement("notas"); // ok
-               $objetoXML->text('COMPLEMENTO: '. $RegalosString);
-               $objetoXML->endElement();
+               if ($encabezado->tipo_cliente != 'EX'){
+                   $objetoXML->startElement("notas"); // ok
+                   $objetoXML->text('COMPLEMENTO: '. $RegalosString);
+                   $objetoXML->endElement();
+               }
 
                $objetoXML->startElement("fechaimpuestos"); // fecha de pago de impuestos ?
                $objetoXML->text('');
@@ -333,36 +347,42 @@ class FeFacturasController extends Controller
                $objetoXML->text($encabezado->moneda);
                $objetoXML->endElement();
 
+                if(trim($encabezado->OC)!= '' || trim($encabezado->OC) != null)
+                {
+                    $objetoXML->startElement("ordendecompra");
+                    $objetoXML->startElement("codigo");
+                    $objetoXML->text(trim($encabezado->OC));
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("fechageneracion");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("base64");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("nombrearchivo");
+                    $objetoXML->text(' ');
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
+                }
 
-               $objetoXML->startElement("ordendecompra");
-               $objetoXML->startElement("codigo");
-               $objetoXML->text(trim($encabezado->OC));
-               $objetoXML->endElement();
-               $objetoXML->startElement("fechageneracion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("base64");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombrearchivo");
-               $objetoXML->text(' ');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
 
-               $objetoXML->startElement("ordendedespacho");
-               $objetoXML->startElement("codigo");
-               $objetoXML->text(trim($encabezado->OV));
-               $objetoXML->endElement();
-               $objetoXML->startElement("fechageneracion");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("base64");
-               $objetoXML->text('');
-               $objetoXML->endElement();
-               $objetoXML->startElement("nombrearchivo");
-               $objetoXML->text(' ');
-               $objetoXML->endElement();
-               $objetoXML->endElement();
+               if(trim($encabezado->OV)!= '' || trim($encabezado->OV) != null){
+                   $objetoXML->startElement("ordendedespacho");
+                   $objetoXML->startElement("codigo");
+                   $objetoXML->text(trim($encabezado->OV));
+                   $objetoXML->endElement();
+                   $objetoXML->startElement("fechageneracion");
+                   $objetoXML->text('');
+                   $objetoXML->endElement();
+                   $objetoXML->startElement("base64");
+                   $objetoXML->text('');
+                   $objetoXML->endElement();
+                   $objetoXML->startElement("nombrearchivo");
+                   $objetoXML->text(' ');
+                   $objetoXML->endElement();
+                   $objetoXML->endElement();
+               }
+
 
                $objetoXML->startElement("adquiriente"); // falta
                $objetoXML->startElement("idtipopersona"); // falta
@@ -393,7 +413,11 @@ class FeFacturasController extends Controller
                $objetoXML->text($tipo_documento_ide);
                $objetoXML->endElement();
                $objetoXML->startElement("digitoverificacion");
-               $objetoXML->text($encabezado->digito_verificador);
+               if($encabezado->tipo_cliente == 'EX' || $encabezado->tipo_cliente == 'PN' ){
+                   $objetoXML->text('');
+               }else{
+                   $objetoXML->text($encabezado->digito_verificador);
+               }
                $objetoXML->endElement();
                $objetoXML->startElement("identificacion");
                $objetoXML->text($encabezado->nit_cliente);
@@ -450,57 +474,89 @@ class FeFacturasController extends Controller
                $objetoXML->endElement();
                $objetoXML->endElement();
 
-               $objetoXML->startElement("cargos");
-               $objetoXML->startElement("cargo");
-               $objetoXML->startElement("idconcepto");
-               $objetoXML->text('01');
-               $objetoXML->endElement();
-               $objetoXML->startElement("escargo");
-               $objetoXML->text('0');
-               $objetoXML->endElement();
-               $objetoXML->startElement("descripcion");
-               $objetoXML->text('Descuento general');
-               $objetoXML->endElement();
-               $objetoXML->startElement("porcentaje");
-               $objetoXML->text(number_format($DescuentoTotalFactura,2,'.',''));
-               $objetoXML->endElement();
-               $objetoXML->startElement("base");
-               $objetoXML->text($bruto_factura);
-               $objetoXML->endElement();
-               $objetoXML->startElement("valor");
-               $objetoXML->text($descuento_factura);
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-               $objetoXML->endElement();
-
-
-               $objetoXML->startElement("impuestos");
-               if($encabezado->iva == 0 || $encabezado->tipo_cliente == 'EX')
-               {
-                   $objetoXML->startElement("impuesto");
-                   $objetoXML->startElement("idimpuesto");
-                   $objetoXML->text('');
+               if ($encabezado->tipo_cliente != 'EX' &&  $DescuentoTotalFactura !=  0){
+                   $objetoXML->startElement("cargos");
+                   $objetoXML->startElement("cargo");
+                   $objetoXML->startElement("idconcepto");
+                   $objetoXML->text('01');
+                   $objetoXML->endElement();
+                   $objetoXML->startElement("escargo");
+                   $objetoXML->text('0');
+                   $objetoXML->endElement();
+                   $objetoXML->startElement("descripcion");
+                   $objetoXML->text('Descuento general');
+                   $objetoXML->endElement();
+                   $objetoXML->startElement("porcentaje");
+                   $objetoXML->text(number_format($DescuentoTotalFactura,2,'.',''));
                    $objetoXML->endElement();
                    $objetoXML->startElement("base");
-                   $objetoXML->text('');
-                   $objetoXML->endElement();
-                   $objetoXML->startElement("factor");
-                   $objetoXML->text('');
-                   $objetoXML->endElement();
-                   $objetoXML->startElement("estarifaunitaria");
-                   $objetoXML->text('');
+                   $objetoXML->text($bruto_factura);
                    $objetoXML->endElement();
                    $objetoXML->startElement("valor");
-                   $objetoXML->text('');
+                   $objetoXML->text($descuento_factura);
                    $objetoXML->endElement();
                    $objetoXML->endElement();
-               }else{
+                   $objetoXML->endElement();
+               }else if($encabezado->tipo_cliente == 'EX' && $encabezado->fletes_usd != 0 || $encabezado->seguros_usd != 0 ){
+                   $objetoXML->startElement("cargos");
+                   if (trim($encabezado->fletes_usd) != 0){
+                       $objetoXML->startElement("cargo");
+                       $objetoXML->startElement("idconcepto");
+                       $objetoXML->text('');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("escargo");
+                       $objetoXML->text('1');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("descripcion");
+                       $objetoXML->text('Fletes');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("porcentaje");
+                       $objetoXML->text(number_format((($encabezado->fletes_usd / $bruto_factura) * 100),2,'.',''));
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("base");
+                       $objetoXML->text($bruto_factura);
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("valor");
+                       $objetoXML->text($encabezado->fletes_usd);
+                       $objetoXML->endElement();
+                       $objetoXML->endElement();
+                   }
+                   if (trim($encabezado->seguros_usd) != 0 ){
+                       $objetoXML->startElement("cargo");
+                       $objetoXML->startElement("idconcepto");
+                       $objetoXML->text('');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("escargo");
+                       $objetoXML->text('1');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("descripcion");
+                       $objetoXML->text('Seguros');
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("porcentaje");
+                       $objetoXML->text(number_format((($encabezado->seguros_usd / $bruto_factura) * 100),2,'.',''));
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("base");
+                       $objetoXML->text($bruto_factura);
+                       $objetoXML->endElement();
+                       $objetoXML->startElement("valor");
+                       $objetoXML->text($encabezado->seguros_usd);
+                       $objetoXML->endElement();
+                       $objetoXML->endElement();
+                   }
+
+                   $objetoXML->endElement();
+               }
+
+
+
+               if($encabezado->tipo_cliente != 'EX' && $encabezado->iva != 0) {
+                   $objetoXML->startElement("impuestos");
                    $objetoXML->startElement("impuesto");
                    $objetoXML->startElement("idimpuesto");
                    $objetoXML->text($id_total_impuesto_iva);
                    $objetoXML->endElement();
                    $objetoXML->startElement("base");
-                   $objetoXML->text(number_format($subtotal_factura,2,'.',''));
+                   $objetoXML->text(number_format($subtotal_factura, 2, '.', ''));
                    $objetoXML->endElement();
                    $objetoXML->startElement("factor");
                    $objetoXML->text($factor_total);
@@ -509,11 +565,12 @@ class FeFacturasController extends Controller
                    $objetoXML->text($tarifa_unitaria_total);
                    $objetoXML->endElement();
                    $objetoXML->startElement("valor");
-                   $objetoXML->text(number_format(abs($total_valor_iva),2,'.',''));
+                   $objetoXML->text(number_format(abs($total_valor_iva), 2, '.', ''));
+                   $objetoXML->endElement();
                    $objetoXML->endElement();
                    $objetoXML->endElement();
                }
-               $objetoXML->endElement();
+
 
 
                $objetoXML->startElement("totales");
@@ -521,7 +578,11 @@ class FeFacturasController extends Controller
                $objetoXML->text(number_format($bruto_factura,2,'.',''));
                $objetoXML->endElement();
                $objetoXML->startElement("baseimponible");
-               $objetoXML->text(number_format($subtotal_factura,2,'.',''));
+               if($encabezado->iva != 0){
+                   $objetoXML->text(number_format($subtotal_factura,2,'.',''));
+               }else{
+                   $objetoXML->text('');
+               }
                $objetoXML->endElement();
                $objetoXML->startElement("totalbrutoconimpuestos");
                $objetoXML->text(number_format($brutomasiva_factura,2,'.',''));
@@ -557,6 +618,7 @@ class FeFacturasController extends Controller
 
                $objetoXML->startElement("items");
                foreach ($items_Normales as $it) {
+
                    $valor_item = null;
                    $subtotal_item = null;
                    $brutomasiva =  null;
@@ -577,7 +639,7 @@ class FeFacturasController extends Controller
                        $total_valor_item_iva = $subtotal_item * 0.19;
                        $DescuentoPorItem = 0;
                        $valor_item = $it->precioUSD * $it->cantidad;
-                       $precio_unitario = $it-> precioUSD;
+                       $precio_unitario = $it->precioUSD;
 
                    }else{
                        $subtotal_item = $it->totalitem - $it->Desc_Item;
@@ -655,7 +717,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("preciounitario");
-                   $objetoXML->text(number_format($precio_unitario, 2, '.', ''));
+                   $objetoXML->text(number_format($precio_unitario, 3, '.', ''));
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("unidaddemedida");
@@ -698,62 +760,46 @@ class FeFacturasController extends Controller
                    $objetoXML->text(number_format($valor_item, 2, '.', ''));
                    $objetoXML->endElement();
 
-                   $objetoXML->startElement("cargos");
-                   $objetoXML->startElement("cargo");
+                   if($valorDescItem != 0){
+                       $objetoXML->startElement("cargos");
 
-                   $objetoXML->startElement("idconcepto");
-                   $objetoXML->text('01');
-                   $objetoXML->endElement();
+                       $objetoXML->startElement("cargo");
 
-                   $objetoXML->startElement("escargo");
-                   $objetoXML->text('0');
-                   $objetoXML->endElement();
+                       $objetoXML->startElement("idconcepto");
+                       $objetoXML->text('01');
+                       $objetoXML->endElement();
 
-                   $objetoXML->startElement("descripcion");
-                   $objetoXML->text('Descuento general');
-                   $objetoXML->endElement();
+                       $objetoXML->startElement("escargo");
+                       $objetoXML->text('0');
+                       $objetoXML->endElement();
 
-                   $objetoXML->startElement("porcentaje");
-                   $objetoXML->text(number_format($DescuentoPorItem,2,'.',''));
-                   $objetoXML->endElement();
+                       $objetoXML->startElement("descripcion");
+                       $objetoXML->text('Descuento general');
+                       $objetoXML->endElement();
 
-                   $objetoXML->startElement("base");
-                   $objetoXML->text($valor_item);
-                   $objetoXML->endElement();
-
-                   $objetoXML->startElement("valor");
-                   $objetoXML->text($valorDescItem);
-                   $objetoXML->endElement();
-
-                   $objetoXML->endElement();
-                   $objetoXML->endElement();
-
-                   $objetoXML->startElement("impuestos");
-
-                   if($it->iva_item == 0 || $it->iva_item == null || $it->iva_item == '' || $encabezado->tipo_cliente == 'EX'){
-                       $objetoXML->startElement("impuesto");
-                       $objetoXML->startElement("idimpuesto");
-                       $objetoXML->text('');
+                       $objetoXML->startElement("porcentaje");
+                       $objetoXML->text(number_format($DescuentoPorItem,2,'.',''));
                        $objetoXML->endElement();
 
                        $objetoXML->startElement("base");
-                       $objetoXML->text('');
-                       $objetoXML->endElement();
-
-                       $objetoXML->startElement("factor");
-                       $objetoXML->text('');
-                       $objetoXML->endElement();
-
-                       $objetoXML->startElement("estarifaunitaria");
-                       $objetoXML->text('');
+                       $objetoXML->text($valor_item);
                        $objetoXML->endElement();
 
                        $objetoXML->startElement("valor");
-                       $objetoXML->text('');
+                       $objetoXML->text($valorDescItem);
+                       $objetoXML->endElement();
+
                        $objetoXML->endElement();
                        $objetoXML->endElement();
-                   }else{
+
+                   }
+
+
+
+                   if($encabezado->tipo_cliente != 'EX' && $it->iva_item != 0){
+                       $objetoXML->startElement("impuestos");
                        $objetoXML->startElement("impuesto");
+
                        $objetoXML->startElement("idimpuesto");
                        $objetoXML->text($id_item_iva);
                        $objetoXML->endElement();
@@ -773,107 +819,104 @@ class FeFacturasController extends Controller
                        $objetoXML->startElement("valor");
                        $objetoXML->text(number_format(abs($total_valor_item_iva), 2, '.', ''));
                        $objetoXML->endElement();
+
+                       $objetoXML->endElement();
                        $objetoXML->endElement();
                    }
 
-                   $objetoXML->endElement();
+                   if (trim($it->posicionarancelaria) != ''){
+                       $objetoXML->startElement("datosextra");
+                       /*COMIENZO DATO EXTRA*/
+                       $objetoXML->startElement("datoextra");
 
+                       $objetoXML->startElement("tipo");
+                       $objetoXML->text('1');
+                       $objetoXML->endElement();
 
-                   $objetoXML->startElement("datosextra");
-                   /*COMIENZO DATO EXTRA*/
-                   $objetoXML->startElement("datoextra");
-                   $objetoXML->startElement("tipo");
-                   $objetoXML->text('1');
-                   $objetoXML->endElement();
+                       $objetoXML->startElement("clave");
+                       $objetoXML->text('PA');
+                       $objetoXML->endElement();
 
-                   $objetoXML->startElement("clave");
-                   $objetoXML->text('PA');
-                   $objetoXML->endElement();
+                       $objetoXML->startElement("valor");
+                       $objetoXML->text(trim($it->posicionarancelaria));
+                       $objetoXML->endElement();
 
-                   $objetoXML->startElement("valor");
-                   $objetoXML->text(trim($it->posicionarancelaria));
-                   $objetoXML->endElement();
-                   $objetoXML->endElement();
+                       $objetoXML->endElement();
+                       /*Fin Dato extra*/
+                       $objetoXML->endElement();
+                   }
                    /*Fin Dato extra*/
 
                    $objetoXML->endElement();
 
-
-                   $objetoXML->endElement(); // cierra item
                }
-                   $objetoXML->endElement(); // cierra items
+               $objetoXML->endElement(); // cierra item
 
-                   $objetoXML->startElement("datosextra");
-                   $objetoXML->startElement("datoextra");
+               $objetoXML->startElement("datosextra");
 
-                   $objetoXML->startElement("tipo");
-                   $objetoXML->text('1');
-                   $objetoXML->endElement();
+               $objetoXML->startElement("datoextra");
+               $objetoXML->startElement("tipo");
+               $objetoXML->text('1');
+               $objetoXML->endElement();
+               $objetoXML->startElement("clave");
+               $objetoXML->text('CONDICION_PAGO');
+               $objetoXML->endElement();
+               $objetoXML->startElement("valor");
+               $objetoXML->text(trim($encabezado->plazo));
+               $objetoXML->endElement();
+               $objetoXML->endElement();
 
-                   $objetoXML->startElement("clave");
-                   $objetoXML->text('CONDICION_PAGO');
-                   $objetoXML->endElement();
-
-                   $objetoXML->startElement("valor");
-                   $objetoXML->text(trim($encabezado->plazo));
-                   $objetoXML->endElement();
-
-                   $objetoXML->endElement();
-
-                   $objetoXML->startElement("datoextra");
-                   $objetoXML->startElement("tipo");
-                   $objetoXML->text('1');
-                   $objetoXML->endElement();
-
-                   $objetoXML->startElement("clave");
-                   $objetoXML->text('CODIGO_CLIENTE');
-                   $objetoXML->endElement();
-
-                   $objetoXML->startElement("valor");
-                   $objetoXML->text($encabezado->codigocliente);
-                   $objetoXML->endElement();
-                   $objetoXML->endElement();
+               $objetoXML->startElement("datoextra");
+               $objetoXML->startElement("tipo");
+               $objetoXML->text('1');
+               $objetoXML->endElement();
+               $objetoXML->startElement("clave");
+               $objetoXML->text('CODIGO_CLIENTE');
+               $objetoXML->endElement();
+               $objetoXML->startElement("valor");
+               $objetoXML->text($encabezado->codigocliente);
+               $objetoXML->endElement();
+               $objetoXML->endElement();
 
 
-                   /*COMIENZO DATO EXTRA*/
+               /*COMIENZO DATO EXTRA*/
+               if ($encabezado->RTEFTE){
                    $objetoXML->startElement("datoextra");
                    $objetoXML->startElement("tipo");
                    $objetoXML->text('1');
                    $objetoXML->endElement();
-
                    $objetoXML->startElement("clave");
                    $objetoXML->text('RTEFTE');
                    $objetoXML->endElement();
-
                    $objetoXML->startElement("valor");
                    $objetoXML->text(trim($encabezado->RTEFTE));
                    $objetoXML->endElement();
                    $objetoXML->endElement();
-                   /*Fin Dato extra*/
+               }
 
-                   /*COMIENZO DATO EXTRA*/
+               /*Fin Dato extra*/
+
+               /*COMIENZO DATO EXTRA*/
+               if($encabezado->RTEIVA != 0){
                    $objetoXML->startElement("datoextra");
                    $objetoXML->startElement("tipo");
                    $objetoXML->text('1');
                    $objetoXML->endElement();
-
                    $objetoXML->startElement("clave");
                    $objetoXML->text('RTEIVA');
                    $objetoXML->endElement();
-
                    $objetoXML->startElement("valor");
                    $objetoXML->text(trim($encabezado->RTEIVA));
                    $objetoXML->endElement();
                    $objetoXML->endElement();
-                   /*Fin Dato extra*/
+               }
 
-                   $objetoXML->endElement();
+               $objetoXML->endElement(); // cierra items
+               $objetoXML->endElement();
                $objetoXML->endElement(); // Final del nodo raíz, "documento"
            }
        }
-
        $objetoXML->endDocument();  // Final del documento
-
        $cadenaXML = $objetoXML->outputMemory();
 
        file_put_contents('XML/Facturacion_electronica_Facturas.xml', $cadenaXML);
@@ -1140,6 +1183,7 @@ class FeFacturasController extends Controller
                     'CIEV_V_FE.direccion',
                     'CIEV_V_FE.emailentrega',
                     'CIEV_V_FE.digito_verificador',
+                    'CIEV_V_FE.idtipodocumento',
                     'CIEV_V_FE.telefono',
                     'CIEV_V_FE.notas',
                     'CIEV_V_FE.OC',
@@ -1249,6 +1293,7 @@ class FeFacturasController extends Controller
                     $total_cargos        = number_format($encabezado->fletes,2,'.','') + number_format($encabezado->seguros,2,'.','');
                     $totalpagar          = (number_format($encabezado->bruto,2,'.','') - number_format($encabezado->descuento,2,'.','')) + number_format( $encabezado->iva,2,'.','');
                 }
+                dd($bruto_factura);
                 $DescuentoTotalFactura   = ($descuento_factura / $bruto_factura )* 100;
                 $total_valor_iva         = $subtotal_factura * 0.19;
                 $total_item_valor        = $subtotal_factura + $total_valor_iva;
@@ -1274,9 +1319,16 @@ class FeFacturasController extends Controller
                 else { $medio_pago = 10;}
 
                 // valida el tipo de documento de identidad
-                if ($encabezado->digito_verificador != null )
-                {$tipo_documento_ide = 31;}
-                else{$tipo_documento_ide = 13;}
+                if ($encabezado->idtipodocumento == 31 )
+                {
+                    $tipo_documento_ide = 31;
+                }
+                if ($encabezado->idtipodocumento == 22){
+                    $tipo_documento_ide = 42;
+                }
+                else{
+                    $tipo_documento_ide = 13;
+                }
 
 
                 if ($encabezado->iva != null) {
@@ -1316,14 +1368,18 @@ class FeFacturasController extends Controller
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("idreporte");
-                $objetoXML->text($Configuracion[0]->fac_idreporte); // sumistrado por fenalco para version grafica
-                $objetoXML->endElement();
+                if($encabezado->tipo_cliente == 'EX'){
+                    $objetoXML->text('1560'); // sumistrado por fenalco para version grafica
+                }else{
+                    $objetoXML->text($Configuracion[0]->fac_idreporte); // sumistrado por fenalco para version grafica
+                }
+
 
                 $objetoXML->startElement("fechadocumento");
                 $objetoXML->text($encabezado->fechadocumento);
                 $objetoXML->endElement();
 
-                $objetoXML->startElement("fechavencabezadoimiento"); // pendiente
+                $objetoXML->startElement("fechavencimiento"); // pendiente
                 $objetoXML->text($encabezado->fechavencimiento.' '.'00:00:00');
                 $objetoXML->endElement();
 
@@ -1335,9 +1391,12 @@ class FeFacturasController extends Controller
                 $objetoXML->text($tipo_operacion);
                 $objetoXML->endElement();
 
-                $objetoXML->startElement("notas"); // ok
-                $objetoXML->text('COMPLEMENTO: '. $RegalosString);
-                $objetoXML->endElement();
+                if ($encabezado->tipo_cliente != 'EX'){
+                    $objetoXML->startElement("notas"); // ok
+                    $objetoXML->text('COMPLEMENTO: '. $RegalosString);
+                    $objetoXML->endElement();
+                }
+
 
                 $objetoXML->startElement("fechaimpuestos"); // fecha de pago de impuestos ?
                 $objetoXML->text('');
@@ -1348,36 +1407,42 @@ class FeFacturasController extends Controller
                 $objetoXML->endElement();
 
 
-                $objetoXML->startElement("ordendecompra");
-                $objetoXML->startElement("codigo");
-                $objetoXML->text(trim($encabezado->OC));
-                $objetoXML->endElement();
-                $objetoXML->startElement("fechageneracion");
-                $objetoXML->text('');
-                $objetoXML->endElement();
-                $objetoXML->startElement("base64");
-                $objetoXML->text('');
-                $objetoXML->endElement();
-                $objetoXML->startElement("nombrearchivo");
-                $objetoXML->text(' ');
-                $objetoXML->endElement();
-                $objetoXML->endElement();
+                if(trim($encabezado->OC)!= '' || trim($encabezado->OC) != null)
+                {
+                    $objetoXML->startElement("ordendecompra");
+                    $objetoXML->startElement("codigo");
+                    $objetoXML->text(trim($encabezado->OC));
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("fechageneracion");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("base64");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("nombrearchivo");
+                    $objetoXML->text(' ');
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
+                }
 
 
-                $objetoXML->startElement("ordendedespacho");
-                $objetoXML->startElement("codigo");
-                $objetoXML->text(trim($encabezado->OV));
-                $objetoXML->endElement();
-                $objetoXML->startElement("fechageneracion");
-                $objetoXML->text('');
-                $objetoXML->endElement();
-                $objetoXML->startElement("base64");
-                $objetoXML->text('');
-                $objetoXML->endElement();
-                $objetoXML->startElement("nombrearchivo");
-                $objetoXML->text(' ');
-                $objetoXML->endElement();
-                $objetoXML->endElement();
+                if(trim($encabezado->OV)!= '' || trim($encabezado->OV) != null){
+                    $objetoXML->startElement("ordendedespacho");
+                    $objetoXML->startElement("codigo");
+                    $objetoXML->text(trim($encabezado->OV));
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("fechageneracion");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("base64");
+                    $objetoXML->text('');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("nombrearchivo");
+                    $objetoXML->text(' ');
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
+                }
+
 
 
                 $objetoXML->startElement("adquiriente"); // falta
@@ -1409,8 +1474,13 @@ class FeFacturasController extends Controller
                 $objetoXML->text($tipo_documento_ide);
                 $objetoXML->endElement();
                 $objetoXML->startElement("digitoverificacion");
-                $objetoXML->text($encabezado->digito_verificador);
+                if($encabezado->tipo_cliente == 'EX' || $encabezado->tipo_cliente == 'PN' ){
+                    $objetoXML->text('');
+                }else{
+                    $objetoXML->text($encabezado->digito_verificador);
+                }
                 $objetoXML->endElement();
+
                 $objetoXML->startElement("identificacion");
                 $objetoXML->text($encabezado->nit_cliente);
                 $objetoXML->endElement();
@@ -1466,57 +1536,88 @@ class FeFacturasController extends Controller
                 $objetoXML->endElement();
                 $objetoXML->endElement();
 
-                $objetoXML->startElement("cargos");
-                $objetoXML->startElement("cargo");
-                $objetoXML->startElement("idconcepto");
-                $objetoXML->text('01');
-                $objetoXML->endElement();
-                $objetoXML->startElement("escargo");
-                $objetoXML->text('0');
-                $objetoXML->endElement();
-                $objetoXML->startElement("descripcion");
-                $objetoXML->text('Descuento general');
-                $objetoXML->endElement();
-                $objetoXML->startElement("porcentaje");
-                $objetoXML->text(number_format($DescuentoTotalFactura,2,'.',''));
-                $objetoXML->endElement();
-                $objetoXML->startElement("base");
-                $objetoXML->text($bruto_factura);
-                $objetoXML->endElement();
-                $objetoXML->startElement("valor");
-                $objetoXML->text($descuento_factura);
-                $objetoXML->endElement();
-                $objetoXML->endElement();
-                $objetoXML->endElement();
-
-
-                $objetoXML->startElement("impuestos");
-                if($encabezado->iva == 0 || $encabezado->tipo_cliente == 'EX')
-                {
-                    $objetoXML->startElement("impuesto");
-                    $objetoXML->startElement("idimpuesto");
-                    $objetoXML->text('');
+                if ($encabezado->tipo_cliente != 'EX' &&  $DescuentoTotalFactura !=  0){
+                    $objetoXML->startElement("cargos");
+                    $objetoXML->startElement("cargo");
+                    $objetoXML->startElement("idconcepto");
+                    $objetoXML->text('01');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("escargo");
+                    $objetoXML->text('0');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("descripcion");
+                    $objetoXML->text('Descuento general');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("porcentaje");
+                    $objetoXML->text(number_format($DescuentoTotalFactura,2,'.',''));
                     $objetoXML->endElement();
                     $objetoXML->startElement("base");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
-                    $objetoXML->startElement("factor");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
-                    $objetoXML->startElement("estarifaunitaria");
-                    $objetoXML->text('');
+                    $objetoXML->text($bruto_factura);
                     $objetoXML->endElement();
                     $objetoXML->startElement("valor");
-                    $objetoXML->text('');
+                    $objetoXML->text($descuento_factura);
                     $objetoXML->endElement();
                     $objetoXML->endElement();
-                }else{
+                    $objetoXML->endElement();
+                }else if($encabezado->tipo_cliente == 'EX' || $encabezado->fletes_usd != 0 || $encabezado->seguros_usd != 0 ){
+                    $objetoXML->startElement("cargos");
+                    if (trim($encabezado->fletes_usd) != 0 || trim($encabezado->fletes_usd) != null ){
+                        $objetoXML->startElement("cargo");
+                        $objetoXML->startElement("idconcepto");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("escargo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("descripcion");
+                        $objetoXML->text('Fletes');
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("porcentaje");
+                        $objetoXML->text(number_format((($encabezado->fletes_usd / $bruto_factura) * 100),2,'.',''));
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("base");
+                        $objetoXML->text($bruto_factura);
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text($encabezado->fletes_usd);
+                        $objetoXML->endElement();
+                        $objetoXML->endElement();
+                    }
+                    if (trim($encabezado->seguros_usd) != 0 || trim($encabezado->seguros_usd) != null ){
+                        $objetoXML->startElement("cargo");
+                        $objetoXML->startElement("idconcepto");
+                        $objetoXML->text('');
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("escargo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("descripcion");
+                        $objetoXML->text('Seguros');
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("porcentaje");
+                        $objetoXML->text(number_format((($encabezado->seguros_usd / $bruto_factura) * 100),2,'.',''));
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("base");
+                        $objetoXML->text($bruto_factura);
+                        $objetoXML->endElement();
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text($encabezado->seguros_usd);
+                        $objetoXML->endElement();
+                        $objetoXML->endElement();
+                    }
+
+                    $objetoXML->endElement();
+                }
+
+
+                if($encabezado->tipo_cliente != 'EX' && $encabezado->iva != 0) {
+                    $objetoXML->startElement("impuestos");
                     $objetoXML->startElement("impuesto");
                     $objetoXML->startElement("idimpuesto");
                     $objetoXML->text($id_total_impuesto_iva);
                     $objetoXML->endElement();
                     $objetoXML->startElement("base");
-                    $objetoXML->text(number_format($subtotal_factura,2,'.','')); ///corregir
+                    $objetoXML->text(number_format($subtotal_factura, 2, '.', ''));
                     $objetoXML->endElement();
                     $objetoXML->startElement("factor");
                     $objetoXML->text($factor_total);
@@ -1525,11 +1626,11 @@ class FeFacturasController extends Controller
                     $objetoXML->text($tarifa_unitaria_total);
                     $objetoXML->endElement();
                     $objetoXML->startElement("valor");
-                    $objetoXML->text(number_format(abs($total_valor_iva),2,'.',''));
+                    $objetoXML->text(number_format(abs($total_valor_iva), 2, '.', ''));
+                    $objetoXML->endElement();
                     $objetoXML->endElement();
                     $objetoXML->endElement();
                 }
-                $objetoXML->endElement();
 
 
                 $objetoXML->startElement("totales");
@@ -1537,7 +1638,11 @@ class FeFacturasController extends Controller
                 $objetoXML->text(number_format($bruto_factura,2,'.',''));
                 $objetoXML->endElement();
                 $objetoXML->startElement("baseimponible");
-                $objetoXML->text(number_format($subtotal_factura,2,'.',''));
+                if($encabezado->iva != 0){
+                    $objetoXML->text(number_format($subtotal_factura,2,'.',''));
+                }else{
+                    $objetoXML->text('');
+                }
                 $objetoXML->endElement();
                 $objetoXML->startElement("totalbrutoconimpuestos");
                 $objetoXML->text(number_format($brutomasiva_factura,2,'.',''));
@@ -1669,7 +1774,7 @@ class FeFacturasController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("preciounitario");
-                    $objetoXML->text(number_format($precio_unitario, 2, '.', ''));
+                    $objetoXML->text(number_format($precio_unitario, 3, '.', ''));
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("unidaddemedida");
@@ -1712,61 +1817,40 @@ class FeFacturasController extends Controller
                     $objetoXML->text(number_format($valor_item, 2, '.', ''));
                     $objetoXML->endElement();
 
-                    $objetoXML->startElement("cargos");
-                    $objetoXML->startElement("cargo");
+                    if($valorDescItem != 0){
+                        $objetoXML->startElement("cargos");
+                        $objetoXML->startElement("cargo");
 
-                    $objetoXML->startElement("idconcepto");
-                    $objetoXML->text('01');
-                    $objetoXML->endElement();
+                        $objetoXML->startElement("idconcepto");
+                        $objetoXML->text('01');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("escargo");
-                    $objetoXML->text('0');
-                    $objetoXML->endElement();
+                        $objetoXML->startElement("escargo");
+                        $objetoXML->text('0');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("descripcion");
-                    $objetoXML->text('Descuento general');
-                    $objetoXML->endElement();
+                        $objetoXML->startElement("descripcion");
+                        $objetoXML->text('Descuento general');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("porcentaje");
-                    $objetoXML->text(number_format($DescuentoPorItem,2,'.',''));
-                    $objetoXML->endElement();
-
-                    $objetoXML->startElement("base");
-                    $objetoXML->text($valor_item);
-                    $objetoXML->endElement();
-
-                    $objetoXML->startElement("valor");
-                    $objetoXML->text($valorDescItem);
-                    $objetoXML->endElement();
-
-                    $objetoXML->endElement();
-                    $objetoXML->endElement();
-
-                    $objetoXML->startElement("impuestos");
-
-                    if($it->iva_item == 0 || $it->iva_item == null || $it->iva_item == '' || $encabezado->tipo_cliente == 'EX'){
-                        $objetoXML->startElement("impuesto");
-                        $objetoXML->startElement("idimpuesto");
-                        $objetoXML->text('');
+                        $objetoXML->startElement("porcentaje");
+                        $objetoXML->text(number_format($DescuentoPorItem,2,'.',''));
                         $objetoXML->endElement();
 
                         $objetoXML->startElement("base");
-                        $objetoXML->text('');
-                        $objetoXML->endElement();
-
-                        $objetoXML->startElement("factor");
-                        $objetoXML->text('');
-                        $objetoXML->endElement();
-
-                        $objetoXML->startElement("estarifaunitaria");
-                        $objetoXML->text('');
+                        $objetoXML->text($valor_item);
                         $objetoXML->endElement();
 
                         $objetoXML->startElement("valor");
-                        $objetoXML->text('');
+                        $objetoXML->text($valorDescItem);
+                        $objetoXML->endElement();
+
                         $objetoXML->endElement();
                         $objetoXML->endElement();
-                    }else{
+                    }
+
+                    if($encabezado->tipo_cliente != 'EX' && $it->iva_item != 0){
+                        $objetoXML->startElement("impuestos");
                         $objetoXML->startElement("impuesto");
                         $objetoXML->startElement("idimpuesto");
                         $objetoXML->text($id_item_iva);
@@ -1788,103 +1872,94 @@ class FeFacturasController extends Controller
                         $objetoXML->text(number_format(abs($total_valor_item_iva), 2, '.', ''));
                         $objetoXML->endElement();
                         $objetoXML->endElement();
+                        $objetoXML->endElement();
                     }
 
-                    $objetoXML->endElement();
-                    $objetoXML->startElement("datosextra");
-                    /*COMIENZO DATO EXTRA*/
-                    $objetoXML->startElement("datoextra");
-                    $objetoXML->startElement("tipo");
-                    $objetoXML->text('1');
-                    $objetoXML->endElement();
+                    if ( trim($it->posicionarancelaria) != ''){
+                        $objetoXML->startElement("datosextra");
+                        /*COMIENZO DATO EXTRA*/
+                        $objetoXML->startElement("datoextra");
+                        $objetoXML->startElement("tipo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("clave");
-                    $objetoXML->text('PA');
-                    $objetoXML->endElement();
+                        $objetoXML->startElement("clave");
+                        $objetoXML->text('PA');
+                        $objetoXML->endElement();
 
-                    $objetoXML->startElement("valor");
-                    $objetoXML->text(trim($it->posicionarancelaria));
-                    $objetoXML->endElement();
-                    $objetoXML->endElement();
-                    /*Fin Dato extra*/
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text(trim($it->posicionarancelaria));
+                        $objetoXML->endElement();
+                        $objetoXML->endElement();
+                        /*Fin Dato extra*/
 
-                    $objetoXML->endElement();
-
+                        $objetoXML->endElement();
+                    }
                     $objetoXML->endElement(); // cierra item
                 }
 
-
                 $objetoXML->endElement(); // cierra items
 
-
                 $objetoXML->startElement("datosextra");
-                /*COMIENZO DATO EXTRA*/
+
                 $objetoXML->startElement("datoextra");
                 $objetoXML->startElement("tipo");
                 $objetoXML->text('1');
                 $objetoXML->endElement();
-
                 $objetoXML->startElement("clave");
                 $objetoXML->text('CONDICION_PAGO');
                 $objetoXML->endElement();
-
                 $objetoXML->startElement("valor");
                 $objetoXML->text(trim($encabezado->plazo));
                 $objetoXML->endElement();
                 $objetoXML->endElement();
-                /*Fin Dato extra*/
 
-                /*COMIENZO DATO EXTRA*/
                 $objetoXML->startElement("datoextra");
                 $objetoXML->startElement("tipo");
                 $objetoXML->text('1');
                 $objetoXML->endElement();
-
                 $objetoXML->startElement("clave");
                 $objetoXML->text('CODIGO_CLIENTE');
                 $objetoXML->endElement();
-
                 $objetoXML->startElement("valor");
                 $objetoXML->text($encabezado->codigocliente);
                 $objetoXML->endElement();
                 $objetoXML->endElement();
+
+
+                /*COMIENZO DATO EXTRA*/
+                if ($encabezado->RTEFTE){
+                    $objetoXML->startElement("datoextra");
+                    $objetoXML->startElement("tipo");
+                    $objetoXML->text('1');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("clave");
+                    $objetoXML->text('RTEFTE');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text(trim($encabezado->RTEFTE));
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
+                }
+
                 /*Fin Dato extra*/
 
                 /*COMIENZO DATO EXTRA*/
-                $objetoXML->startElement("datoextra");
-                $objetoXML->startElement("tipo");
-                $objetoXML->text('1');
-                $objetoXML->endElement();
+                if($encabezado->RTEIVA != 0){
+                    $objetoXML->startElement("datoextra");
+                    $objetoXML->startElement("tipo");
+                    $objetoXML->text('1');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("clave");
+                    $objetoXML->text('RTEIVA');
+                    $objetoXML->endElement();
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text(trim($encabezado->RTEIVA));
+                    $objetoXML->endElement();
+                    $objetoXML->endElement();
+                }
 
-                $objetoXML->startElement("clave");
-                $objetoXML->text('RTEFTE');
-                $objetoXML->endElement();
-
-                $objetoXML->startElement("valor");
-                $objetoXML->text(trim($encabezado->RTEFTE));
-                $objetoXML->endElement();
-                $objetoXML->endElement();
-                /*Fin Dato extra*/
-
-                /*COMIENZO DATO EXTRA*/
-                $objetoXML->startElement("datoextra");
-                $objetoXML->startElement("tipo");
-                $objetoXML->text('1');
-                $objetoXML->endElement();
-
-                $objetoXML->startElement("clave");
-                $objetoXML->text('RTEIVA');
-                $objetoXML->endElement();
-
-                $objetoXML->startElement("valor");
-                $objetoXML->text(trim($encabezado->RTEIVA));
-                $objetoXML->endElement();
-                $objetoXML->endElement();
-                /*Fin Dato extra*/
-
-
-
-
+                $objetoXML->endElement(); // cierra items
                 $objetoXML->endElement();
                 $objetoXML->endElement(); // Final del nodo raíz, "documento"
             }
@@ -1935,8 +2010,6 @@ class FeFacturasController extends Controller
             $respuesta = json_decode($logout->return);
 
         }
-
-
         return response()->json($resultados);
     }
 

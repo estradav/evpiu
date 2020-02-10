@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 return [
@@ -31,7 +32,8 @@ return [
     |
     */
 
-    'lifetime' => env('SESSION_LIFETIME', 60),
+    'lifetime' => env('BLOCK_SESSION_LIFETIME', 32),
+
 
     'expire_on_close' => true,
 
