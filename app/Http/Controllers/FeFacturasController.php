@@ -1293,7 +1293,7 @@ class FeFacturasController extends Controller
                     $total_cargos        = number_format($encabezado->fletes,2,'.','') + number_format($encabezado->seguros,2,'.','');
                     $totalpagar          = (number_format($encabezado->bruto,2,'.','') - number_format($encabezado->descuento,2,'.','')) + number_format( $encabezado->iva,2,'.','');
                 }
-                dd($bruto_factura);
+
                 $DescuentoTotalFactura   = ($descuento_factura / $bruto_factura )* 100;
                 $total_valor_iva         = $subtotal_factura * 0.19;
                 $total_item_valor        = $subtotal_factura + $total_valor_iva;
