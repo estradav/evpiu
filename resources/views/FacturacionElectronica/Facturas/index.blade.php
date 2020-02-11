@@ -125,6 +125,9 @@
             </div>
         </div>
     </div>
+    <div class="Errors" id="Errors" style="display: none !important;">
+
+    </div>
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para visualizar las Facturas.

@@ -1162,7 +1162,7 @@ class FeFacturasController extends Controller
         $resultados = [];
         foreach ($Facturas_Seleccionadas as $Factura_seleccionada) {
             $objetoXML = new XMLWriter();
-            $objetoXML->openURI("XML/Facturacion_electronica_Facturas.xml");
+          //  $objetoXML->openURI("XML/Facturacion_electronica_Facturas.xml");
             $objetoXML->openMemory();
             $objetoXML->setIndent(true);
             $objetoXML->setIndentString("\t");
@@ -1373,6 +1373,7 @@ class FeFacturasController extends Controller
                 }else{
                     $objetoXML->text($Configuracion[0]->fac_idreporte); // sumistrado por fenalco para version grafica
                 }
+                $objetoXML->endElement();
 
 
                 $objetoXML->startElement("fechadocumento");
@@ -1970,6 +1971,7 @@ class FeFacturasController extends Controller
             $Base_64 = base64_encode($cadenaXML);
 
 
+
             /* se comienza con el web service */
 
             $login1 = $request->Username;
@@ -1998,6 +2000,7 @@ class FeFacturasController extends Controller
             );
             $return = $client->registrarDocumentoElectronico_Generar_FuenteXML($params);
 
+
           //  $resultados = json_decode($return->return);
 
             $resultados[] = json_decode($return->return);
@@ -2008,8 +2011,8 @@ class FeFacturasController extends Controller
 
             $logout = $client->cerrarSesion($params);
             $respuesta = json_decode($logout->return);
-
         }
+
         return response()->json($resultados);
     }
 

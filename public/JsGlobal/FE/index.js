@@ -476,7 +476,6 @@ $(document).ready(function () {
             });
 
             $.ajax({
-                cache: false,
                 type: 'post',
                 dataType: 'json', // importante para que
                 data: {
@@ -485,7 +484,8 @@ $(document).ready(function () {
                 }, // jQuery convierta el array a JSON
                 url: '/FacturaElectronicaWebService',
                 success: function (data) {
-                    $('#test').html('');
+                    console.log(data);
+                    $('#Errors').html('');
                     var i = 0;
                     $(data).each(function () {
                         var estado;
@@ -496,7 +496,7 @@ $(document).ready(function () {
                             estado = '<label class="text-danger"> Con errores </label>'
                         }
 
-                        $('#test').append('<b><label>Estado de carga: </label></b>  <label>'+ estado +'</label> <br>' +
+                        $('#Errors').append('<b><label>Estado de carga: </label></b>  <label>'+ estado +'</label> <br>' +
                             '<b><label>Mensaje: </label></b>  <label>'+ data[i].msg +'</label>');
                         i++;
                     });
@@ -505,12 +505,13 @@ $(document).ready(function () {
                     Swal.fire({
                         backdrop: true,
                         title: 'Terminado!',
-                        html: $('#test').html(),
+                        html: $('#Errors').html(),
                         icon: 'success',
                         confirmButtonText: 'Aceptar',
                     })
                 },
                 error: function (data) {
+                    console.log(data);
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
