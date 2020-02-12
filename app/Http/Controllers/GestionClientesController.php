@@ -162,10 +162,56 @@ class GestionClientesController extends Controller
         $dic = 0;
 
         if (request()->ajax()){
-
             if (!empty($request->from_date)) {
+                for ($i = 1; $i <= 12; $i++){
+                    $tendencia_mes = DB::connection('MAX')
+                        ->table('CIEV_V_FacturasDetalladas')
+                        ->where('CodigoCliente','=',$request->cliente)
+                        ->where('Año','=',$request->año)
+                        ->where('Mes','=',$i)
+                        ->select(DB::raw('sum(TotalItem) as Base'))
+                        ->groupBy( 'Mes')
+                        ->get();
 
+                    if ($i == 1){
+                        $ene = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 2){
+                        $feb = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 3){
+                        $mar = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 4){
+                        $abr = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 5){
+                        $may = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 6){
+                        $jun = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 7){
+                        $jul = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 8){
+                        $ago = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 9){
+                        $sep = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 10){
+                        $oct = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 11){
+                        $nov = $tendencia_mes[$i]->Base;
+                    }
+                    if ($i == 12){
+                        $dic = $tendencia_mes[$i]->Base;
+                    }
+                }
             }else{
+                $v = 0;
                 for ($i = 1; $i <= 12; $i++){
                     $tendencia_mes = DB::connection('MAX')
                         ->table('CIEV_V_FacturasDetalladas')
@@ -177,44 +223,46 @@ class GestionClientesController extends Controller
                         ->get();
 
                     if ($i == 1){
-                        $ene = $tendencia_mes[0]->Base;
+                        $ene = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 2){
-                        $feb = $tendencia_mes[0]->Base;
+                        $feb = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 3){
-                        $mar = $tendencia_mes[0]->Base;
+                        $mar = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 4){
-                        $abr = $tendencia_mes[0]->Base;
+                        $abr = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 5){
-                        $may = $tendencia_mes[0]->Base;
+                        $may = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 6){
-                        $jun = $tendencia_mes[0]->Base;
+                        $jun = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 7){
-                        $jul = $tendencia_mes[0]->Base;
+                        $jul = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 8){
-                        $ago = $tendencia_mes[0]->Base;
+                        $ago = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 9){
-                        $sep = $tendencia_mes[0]->Base;
+                        $sep = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 10){
-                        $oct = $tendencia_mes[0]->Base;
+                        $oct = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 11){
-                        $nov = $tendencia_mes[0]->Base;
+                        $nov = $tendencia_mes[$v]->Base;
                     }
                     if ($i == 12){
-                        $dic = $tendencia_mes[0]->Base;
+                        $dic = $tendencia_mes[$v]->Base;
                     }
-
+                    $v++;
                 }
             }
+
+
 
             return response()->json([
                 'ene'   => $ene,
