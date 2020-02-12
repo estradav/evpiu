@@ -27,32 +27,26 @@
 
             </div>
             <div class="card-body">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-responsive table-striped CustomerTable" id="CustomerTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Codigo Cliente</th>
-                                            <th>Razon social</th>
-                                            <th>Nit/CC</th>
-                                            <th>Estado</th>
-                                            <th>Opciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-responsive table-striped CustomerTable" id="CustomerTable">
+                        <thead>
+                            <tr>
+                                <th>Codigo Cliente</th>
+                                <th>Razon social</th>
+                                <th>Nit/CC</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-6 ">
                 <div class="card">
                     <div class="card-header">
                         Clientes MAX
@@ -61,31 +55,25 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-responsive table-striped ClientsMax" id="ClientsMax">
-                                            <thead>
-                                            <tr>
-                                                <th>Codigo</th>
-                                                <th>Razon social</th>
-                                                <th>Nit/CC</th>
-                                                <th>Estado</th>
-                                                <th>Opciones</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-striped ClientsMax" id="ClientsMax">
+                                <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Razon social</th>
+                                    <th>Nit/CC</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 ">
                 <div class="card">
                     <div class="card-header">
                         Clientes DMS
@@ -94,38 +82,27 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-responsive table-striped ClientsMax" id="ClientsMax">
-                                            <thead>
-                                            <tr>
-                                                <th>Codigo</th>
-                                                <th>Razon social</th>
-                                                <th>Nit/CC</th>
-                                                <th>Estado</th>
-                                                <th>Opciones</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-striped ClientsDMS" id="ClientsDMS">
+                                <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Razon social</th>
+                                    <th>Nit/CC</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <div id="submitModal" class="multi-step">
-        </div>
-
-
-        <div class="modal fade bd-example-modal-xl" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade bd-example-modal-xl ModalClient" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,14 +118,23 @@
                                     <legend style="margin-left: 17px !important;">Informacion del cliente</legend>
                                     <div class="col-sm-3">
                                         <label for="M_nombre">Nombre: *</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Nombre del cliente o razon social">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_nombre" name="M_nombre" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_Razon_comercial">Razon comercial:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Nombre como comunmente se conoce a la empresa">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_Razon_comercial" name="M_Razon_comercial" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_direccion1">Direccion 1:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Direccion principal del cliente">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_direccion1" name="M_direccion1" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                     <div class="col-sm-3">
@@ -179,10 +165,16 @@
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <label for="M_Contacto">Contacto:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Nombre de la persona con la que podemos comunicarnos en el futuro">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_Contacto" name="M_Contacto" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_Telefono">Telefono:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Telefono fijo de contacto">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_Telefono" name="M_Telefono" type="number" class="form-control required">
                                     </div>
                                     <div class="col-sm-3">
@@ -198,10 +190,16 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label for="M_Email_contacto">E-mail contacto:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Email al que podemos enviar informacion importante">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_Email_contacto" name="M_Email_contacto" type="email" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="M_Email_facturacion">E-mail Facturacion:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Email principal para envio de facturacion electronica">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_Email_facturacion" name="M_Email_facturacion" type="email" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
@@ -213,6 +211,9 @@
                                     <legend style="margin-left: 17px !important;">Informacion adicional</legend>
                                     <div class="col-sm-3">
                                         <label for="M_Forma_envio">Forma de envio:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Forma en la que sera entregada la mercancia al cliente">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <select name="M_Forma_envio" id="M_Forma_envio" class="form-control">
                                         </select>
                                     </div>
@@ -234,6 +235,9 @@
                                     <legend style="margin-left: 17px !important;">Informacion fiscal</legend>
                                     <div class="col-sm-3">
                                         <label for="M_Gravado">Gravado:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Selecciona 'si' si el cliente es responsable de IVA">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <select name="M_Gravado" id="M_Gravado" class="form-control">
                                             <option value="" selected>Seleccione...</option>
                                             <option value="Y">Si</option>
@@ -242,6 +246,9 @@
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_Codigo_fiscal_1">Codigo fiscal 1:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Codigo fiscal (Se puede consultar de MAX)">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_Codigo_fiscal_1" name="M_Codigo_fiscal_1" type="number" class="form-control required">
                                     </div>
                                     <div class="col-sm-3">
@@ -250,6 +257,9 @@
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_Nit_cc">NIT/CC:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Escribe el nit o numero de cedula del cliente y en la casilla siguiente el digito de verificacion">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <div class="input-group">
                                             <input id="M_Nit_cc" name="M_Nit_cc" type="number" class="form-control required" style="width: 60%">
                                             <input id="M_Nit_cc_dg" name="M_Nit_cc_dg" type="number" class="form-control">
@@ -261,11 +271,17 @@
                                     <legend style="margin-left: 17px !important;">Finanzas</legend>
                                     <div class="col-sm-3">
                                         <label for="M_Plazo">Plazo:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Plazo de pago para las compras">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <select name="M_Plazo" id="M_Plazo" class="form-control">
                                         </select>
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_Porcentaje_descuento">Porcentaje descuento:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Porcentaje de descuento acordado para el cliente">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <input id="M_Porcentaje_descuento" name="M_Porcentaje_descuento" type="number" class="form-control required">
                                     </div>
                                 </div>
@@ -276,13 +292,25 @@
                                 <div class="row">
                                     <legend style="margin-left: 17px !important;">Informacion tributaria</legend>
                                     <div class="col-sm-3">
-                                        <input id="M_rut_entregado" name="M_rut_entregado" type="checkbox" class="custom-checkbox"> <label for="M_rut_entregado">¿RUT Entregado?</label>
+                                        <input id="M_rut_entregado" name="M_rut_entregado" type="checkbox" class="custom-checkbox">
+                                        <label for="M_rut_entregado">¿RUT Entregado?</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Marca esta casilla si el cliente entrego RUT">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                     </div>
                                     <div class="col-sm-3">
-                                        <input id="M_gran_contribuyente" name="M_gran_contribuyente" type="checkbox" class="custom-checkbox"> <label for="M_gran_contribuyente">Gran contribuyente</label>
+                                        <input id="M_gran_contribuyente" name="M_gran_contribuyente" type="checkbox" class="custom-checkbox">
+                                        <label for="M_gran_contribuyente">Gran contribuyente</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Marca esta casilla si el cliente es gran contribuyente">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                     </div>
                                     <div class="col-sm-3">
-                                        <input id="M_responsable_iva" name="M_responsable_iva" type="checkbox" class="custom-checkbox"> <label for="M_responsable_iva">Responsable IVA</label>
+                                        <input id="M_responsable_iva" name="M_responsable_iva" type="checkbox" class="custom-checkbox">
+                                        <label for="M_responsable_iva">Responsable IVA</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Marca esta casilla si el cliente es responsable de IVA">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                     </div>
                                 </div>
                                 <br>
@@ -308,6 +336,9 @@
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <label for="M_Moneda">Moneda:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Moneda en la que se le facturara al cliente 'COP' para ventas nacionales y 'USD' para ventas en el exterior">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <select id="M_Moneda" name="M_Moneda" class="form-control">
                                             <option value="">Seleccione...</option>
                                             <option value="USD">USD</option>
@@ -316,30 +347,36 @@
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_Tipo_cliente">Tipo Cliente:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Selecciona una opcion dependiento del tipo de cliente registrado ante la DIAN (persona natural, exterior, nacional, etc)">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
                                         <select id="M_Tipo_cliente" name="M_Tipo_cliente" class="form-control"></select>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <label for="M_correos_copia">Correos Copia:</label> <br>
+                                        <label for="M_correos_copia">Correos Copia:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Correos a los cuales llegara copia de las facturas emitidas electronicamente. los correos pueden ir separados de coma, punto y coma o espacios y deben ser correos validos.">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
+                                        <br>
                                         <select name="M_correos_copia" id="M_correos_copia" multiple="multiple" class="form-control" style="width: 100%"></select>
                                     </div>
                                 </div>
                             </fieldset>
-
 
                             <h3>Terminar registro</h3>
                             <fieldset>
                                 <div class="row">
                                     <legend style="margin-left: 17px !important;">Informacion Importante!</legend>
                                     <div class="col-sm-12">
-                                        <h3>Los datos ingresados seran guardados en las plataformas MAX y DMS , antes de finalizar verifique que toda la informacion proporcionada es veridica y esta correctamente digilenciada:</h3>
-                                        <h3 class="text-danger">Esta accion no es reversible !</h3>
+                                        <h3>Los datos ingresados seran guardados en las plataformas MAX y DMS , antes de finalizar verifique que toda la informacion proporcionada es veridica y esta correctamente digilenciada.</h3>
+                                        <h3 class="text-danger">¡Alerta: Esta accion no es reversible!</h3>
                                     </div>
                                 </div>
 
-                                <input id="acceptTerms-2" name="acceptTerms" type="checkbox" class="custom-checkbox required"> <label for="acceptTerms-2">He digilenciado la informacion correctamente.</label>
+                                <input id="acceptTerms" name="acceptTerms" type="checkbox" class="custom-checkbox required"> <label for="acceptTerms-2">He digilenciado la informacion correctamente.</label>
                             </fieldset>
                         </form>
                     </div>
@@ -670,6 +707,9 @@
             .tabcontrol > .content > .body ul > li {
                 display: list-item;
             }
+
+
+
         </style>
 
     @else
@@ -739,6 +779,10 @@
                 });
 
                 $('.InfoCustomersTooltip').tooltip();
+
+                $('.ModalTooltip').tooltip({
+                    appendTo: "##exampleModalCenter"
+                });
 
 
 
@@ -931,7 +975,8 @@
                     },
                     messages:{
                         M_Nit_cc: "",
-                        M_Nit_cc_dg: ""
+                        M_Nit_cc_dg: "",
+                        acceptTerms: ""
                     },
                     errorElement: 'label',
                     errorLabelContainer: '.errorTxt'
@@ -1074,7 +1119,19 @@
                         }
                     })
                 }
-							loadClientesFaltantesDms();
+                loadClientesFaltantesDms();
+
+                function IgualarDivs(){
+                    var altura_arr = [];
+                    $('.igualar').each(function(){
+                        var altura = $(this).height();
+                        altura_arr.push(altura);
+                    });
+                    altura_arr.sort(function(a, b){return b-a});
+                    $('.igualar').each(function(){
+                        $(this).css('height',altura_arr[0]);
+                    });
+                }
 
                 function loadClientesFaltantesDms()
                 {
@@ -1094,12 +1151,7 @@
                             {data:'EstadoMAX', name:'EstadoMAX', orderable:false, searchable:false},
                             {data:'opciones', name:'opciones', orderable:false, searchable:false},
                         ],
-                        columnDefs: [
-                            {
-                                width: "25%",
-                                targets: 0
-                            }
-                        ],
+
                         language: {
                             processing: "Procesando...",
                             search: "Buscar&nbsp;:",
@@ -1131,6 +1183,16 @@
                         }
                     });
                 }
+
+                IgualarDivs();
+
+
+                $('.ModalClient a[rel="tooltip"]')
+                    .tooltip({placement: 'right'})
+                    .data('tooltip')
+                    .tip()
+                    .css('z-index',2080);
+
             });
         </script>
 

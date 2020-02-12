@@ -44,6 +44,7 @@
                                         <th>Cod. Cliente</th>
                                         <th>Cliente</th>
                                         <th>Estado</th>
+                                        <th>Vendedor</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -247,13 +248,15 @@
                               render: function ( data, type, row ) {
                                 return '<button  value="'+data+'" class="btn btn-link btn-sm btnRef" id="Ref" >' + data + '</button>';}
                             },
+
                             {data: 'descrip', name: 'descrip', orderable: false, searchable: false},
                             {data: 'detail', name: 'detail', orderable: false, searchable: true},
-                            {data: 'acabado', name: 'acabado', orderable: false, searchable: true},
+                            {data: 'acabado', name: 'acabado', orderable: true, searchable: true},
                             {data: 'cant', name: 'cant', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 0, '')},
-                            {data: 'NumeroCli', name: 'NumeroCli', orderable: false, searchable: true},
-                            {data: 'NombreCli', name: 'NombreCli', orderable: false, searchable: true},
+                            {data: 'NumeroCli', name: 'NumeroCli', orderable: true, searchable: true},
+                            {data: 'NombreCli', name: 'NombreCli', orderable: true, searchable: true},
                             {data: 'estado', name: 'estado', orderable: false, searchable: false},
+                            {data: 'vendedor', name: 'vendedor',orderable: true, searchable: true},
                         ],
                         language: {
                             // traduccion de datatables
