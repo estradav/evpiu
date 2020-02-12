@@ -78,7 +78,7 @@
                                                     <b>DIRECCION 1:</b> <label>{{ $cliente[0]->DIRECCION }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>DIRECCION 2:</b> <label>{{ $cliente[0]->DIRECCION }}</label>
+                                                    <b>DIRECCION 2:</b> <label>{{ $cliente[0]->DIRECCION }}  <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <b>MONEDA:</b>
@@ -93,13 +93,13 @@
                                                     <b>CONTACTO:</b> <label> Marin de jesus</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>TELEFONO 1:</b>
+                                                    <b>TELEFONO 1:</b>  <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>TELEFONO 2:</b>
+                                                    <b>TELEFONO 2:</b>  <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>CELULAR:</b>
+                                                    <b>CELULAR:</b>  <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <b>E-MAIL CONTACTO:</b>
@@ -359,14 +359,6 @@
                             año: Year
                         },
                         success: function (data) {
-
-
-
-
-
-
-
-
 
                             var chartdata = {
                                 labels: labels_ene,

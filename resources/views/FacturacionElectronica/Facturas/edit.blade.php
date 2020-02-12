@@ -305,8 +305,9 @@
                                 i++;
                                 n++;
                             });
-                            Calcular_Valores();
                             sweetAlert.close();
+                            Calcular_Valores();
+
                         },
                         error: function (data) {
                             sweetAlert.close();
@@ -398,7 +399,7 @@
                         });
                     });
 
-                    $('#Total_bruto').val(Subtotal);
+                    $('#Total_bruto').val(TotalSubtotal);
                     $('#Total_iva').val(IVA);
                     console.log(Subtotal);
 
