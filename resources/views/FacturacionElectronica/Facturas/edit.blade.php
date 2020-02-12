@@ -305,9 +305,8 @@
                                 i++;
                                 n++;
                             });
-                            sweetAlert.close();
                             Calcular_Valores();
-
+                            sweetAlert.close();
                         },
                         error: function (data) {
                             sweetAlert.close();
@@ -391,7 +390,7 @@
                     var IVA = 0;
                     var $dataRows=$("#items_factura");
                     $dataRows.each(function() {
-                        $(this).find('.item_preciounitario').each(function(){
+                        $(this).find('.item_preciototal').each(function(){
                             Subtotal+=parseFloat( $(this).val());
                         });
                         $(this).find('.item_iva').each(function(){
@@ -399,7 +398,7 @@
                         });
                     });
 
-                    $('#Total_bruto').val(TotalSubtotal);
+                    $('#Total_bruto').val(Subtotal);
                     $('#Total_iva').val(IVA);
                     console.log(Subtotal);
 
