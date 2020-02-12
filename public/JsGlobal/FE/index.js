@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var from = $( "#from_date" )
     .datepicker({
         dateFormat: "yy-mm-dd 00:00:00",
@@ -713,8 +712,5 @@ $(document).ready(function () {
             });
         return false;
     });
-
-
-
 });
 

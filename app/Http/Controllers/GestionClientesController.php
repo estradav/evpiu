@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -23,11 +24,11 @@ class GestionClientesController extends Controller
 
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/edit" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/show" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
                     return $btn;
                 })
                 ->addColumn('info', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/edit" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/show" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
                     return $btn;
                 })
                 ->rawColumns(['opciones','info'])
@@ -100,9 +101,136 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
     }
 
-    public function Show(Request $request)
+    public function show($numero)
     {
-        return view('GestionClientes.show');
+        $facturas = DB::connection('MAX')
+            ->table('invoice_master')
+            ->where('CUSTID_31','=',$numero)
+            ->where('STYPE_31','=','CU')
+            ->count();
+
+        $notas_credito = DB::connection('MAX')
+            ->table('invoice_master')
+            ->where('CUSTID_31','=',$numero)
+            ->where('STYPE_31','=','CR')
+            ->count();
+
+        $cliente = DB::connection('MAX')
+            ->table('CIEV_V_Clientes')
+            ->where('CODIGO_CLIENTE','=',$numero)
+            ->get();
+
+        $productos_tendencia = DB::connection('MAX')
+            ->table('CIEV_V_FacturasDetalladas')
+            ->where('CodigoCliente','=',$numero)
+            ->select('CodigoProducto',
+                DB::raw('count(*) as Total'),
+                DB::raw('sum(Cantidad) as Comprado'))
+            ->groupBy('CodigoProducto')
+            ->orderBy('Comprado','desc')
+            ->take(5)
+            ->get()
+            ->toArray();
+
+
+        return view('GestionClientes.show')->with([
+            'facturas'          => $facturas,
+            'notas_credito'     => $notas_credito,
+            'cliente'           => $cliente,
+            'productos_tend'    => $productos_tendencia,
+        ]);
+
+
+    }
+
+    public function ProductosEnTendenciaPorMes(Request $request)
+    {
+        $current_year = Carbon::now();
+        $current_year = $current_year->year;
+
+        $ene = 0;
+        $feb = 0;
+        $mar = 0;
+        $abr = 0;
+        $may = 0;
+        $jun = 0;
+        $jul = 0;
+        $ago = 0;
+        $sep = 0;
+        $oct = 0;
+        $nov = 0;
+        $dic = 0;
+
+        if (request()->ajax()){
+
+            if (!empty($request->from_date)) {
+
+            }else{
+                for ($i = 1; $i <= 12; $i++){
+                    $tendencia_mes = DB::connection('MAX')
+                        ->table('CIEV_V_FacturasDetalladas')
+                        ->where('CodigoCliente','=',$request->cliente)
+                        ->where('Año','=',$current_year)
+                        ->where('Mes','=',$i)
+                        ->select(DB::raw('sum(TotalItem) as Base'))
+                        ->groupBy( 'Mes')
+                        ->get();
+
+                    if ($i == 1){
+                        $ene = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 2){
+                        $feb = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 3){
+                        $mar = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 4){
+                        $abr = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 5){
+                        $may = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 6){
+                        $jun = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 7){
+                        $jul = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 8){
+                        $ago = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 9){
+                        $sep = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 10){
+                        $oct = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 11){
+                        $nov = $tendencia_mes[0]->Base;
+                    }
+                    if ($i == 12){
+                        $dic = $tendencia_mes[0]->Base;
+                    }
+
+                }
+            }
+
+            return response()->json([
+                'ene'   => $ene,
+                'feb'   => $feb,
+                'mar'   => $mar,
+                'abr'   => $abr,
+                'may'   => $may,
+                'jun'   => $jun,
+                'jul'   => $jul,
+                'ago'   => $ago,
+                'sep'   => $sep,
+                'oct'   => $oct,
+                'nov'   => $nov,
+                'dic'   => $dic
+            ]);
+        }
     }
 
     public function ClientesFaltantesDMS(Request $request)

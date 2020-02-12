@@ -23,6 +23,7 @@ class PronosticoController extends Controller
                         'CIEV_V_Pronosticos.Acabado as acabado',
                         'CIEV_V_Pronosticos.Cantidad as cant',
                         'CIEV_V_Pronosticos.Cliente as NumeroCli',
+                        'CIEV_V_Pronosticos.Vendedor as vendedor',
                         'CIEV_V_Pronosticos.RazonSocial as NombreCli',
                         'CIEV_V_Pronosticos.Estado as estado')
                     ->where('estado','=',$request->OpenAndClose)
@@ -38,6 +39,7 @@ class PronosticoController extends Controller
                         'CIEV_V_Pronosticos.Acabado as acabado',
                         'CIEV_V_Pronosticos.Cantidad as cant',
                         'CIEV_V_Pronosticos.Cliente as NumeroCli',
+                        'CIEV_V_Pronosticos.Vendedor as vendedor',
                         'CIEV_V_Pronosticos.RazonSocial as NombreCli',
                         'CIEV_V_Pronosticos.Estado as estado')
                     ->where('estado','=','3')
