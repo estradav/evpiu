@@ -148,70 +148,94 @@ class GestionClientesController extends Controller
         $current_year = Carbon::now();
         $current_year = $current_year->year;
 
-        $ene = 0;
-        $feb = 0;
-        $mar = 0;
-        $abr = 0;
-        $may = 0;
-        $jun = 0;
-        $jul = 0;
-        $ago = 0;
-        $sep = 0;
-        $oct = 0;
-        $nov = 0;
-        $dic = 0;
+        $values_peer_months = [];
 
         if (request()->ajax()){
-            if (!empty($request->from_date)) {
+            if (!empty($request->Year)) {
                 for ($i = 1; $i <= 12; $i++){
                     $tendencia_mes = DB::connection('MAX')
                         ->table('CIEV_V_FacturasDetalladas')
                         ->where('CodigoCliente','=',$request->cliente)
-                        ->where('Año','=',$request->año)
+                        ->where('Año','=',$request->Year)
                         ->where('Mes','=',$i)
                         ->select(DB::raw('sum(TotalItem) as Base'))
                         ->groupBy( 'Mes')
-                        ->get();
+                        ->pluck('Base');
 
-                    if ($i == 1){
-                        $ene = $tendencia_mes[$i]->Base;
+
+                    if ($i == 1 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 1){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 2){
-                        $feb = $tendencia_mes[$i]->Base;
+
+                    if ($i == 2 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 2){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 3){
-                        $mar = $tendencia_mes[$i]->Base;
+
+                    if ($i == 3 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 3){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 4){
-                        $abr = $tendencia_mes[$i]->Base;
+
+                    if ($i == 4 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 4){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 5){
-                        $may = $tendencia_mes[$i]->Base;
+
+                    if ($i == 5 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 5){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 6){
-                        $jun = $tendencia_mes[$i]->Base;
+
+                    if ($i == 6 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 6){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 7){
-                        $jul = $tendencia_mes[$i]->Base;
+
+                    if ($i == 7 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 7){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 8){
-                        $ago = $tendencia_mes[$i]->Base;
+
+                    if ($i == 8 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 8){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 9){
-                        $sep = $tendencia_mes[$i]->Base;
+
+                    if ($i == 9 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 9){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 10){
-                        $oct = $tendencia_mes[$i]->Base;
+
+                    if ($i == 10 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 10){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 11){
-                        $nov = $tendencia_mes[$i]->Base;
+
+                    if ($i == 11 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 11){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 12){
-                        $dic = $tendencia_mes[$i]->Base;
+
+                    if ($i == 12 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 12){
+                        array_push($values_peer_months, 0);
                     }
                 }
             }else{
-                $v = 0;
                 for ($i = 1; $i <= 12; $i++){
                     $tendencia_mes = DB::connection('MAX')
                         ->table('CIEV_V_FacturasDetalladas')
@@ -220,63 +244,84 @@ class GestionClientesController extends Controller
                         ->where('Mes','=',$i)
                         ->select(DB::raw('sum(TotalItem) as Base'))
                         ->groupBy( 'Mes')
-                        ->get();
+                        ->pluck('Base');
 
-                    if ($i == 1){
-                        $ene = $tendencia_mes[$v]->Base;
+                    if ($i == 1 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 1){
+                       array_push($values_peer_months, 0);
                     }
-                    if ($i == 2){
-                        $feb = $tendencia_mes[$v]->Base;
+
+                    if ($i == 2 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 2){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 3){
-                        $mar = $tendencia_mes[$v]->Base;
+
+                    if ($i == 3 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 3){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 4){
-                        $abr = $tendencia_mes[$v]->Base;
+
+                    if ($i == 4 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 4){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 5){
-                        $may = $tendencia_mes[$v]->Base;
+
+                    if ($i == 5 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 5){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 6){
-                        $jun = $tendencia_mes[$v]->Base;
+
+                    if ($i == 6 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 6){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 7){
-                        $jul = $tendencia_mes[$v]->Base;
+
+                    if ($i == 7 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 7){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 8){
-                        $ago = $tendencia_mes[$v]->Base;
+
+                    if ($i == 8 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 8){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 9){
-                        $sep = $tendencia_mes[$v]->Base;
+
+                    if ($i == 9 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 9){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 10){
-                        $oct = $tendencia_mes[$v]->Base;
+
+                    if ($i == 10 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 10){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 11){
-                        $nov = $tendencia_mes[$v]->Base;
+
+                    if ($i == 11 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 11){
+                        array_push($values_peer_months, 0);
                     }
-                    if ($i == 12){
-                        $dic = $tendencia_mes[$v]->Base;
+
+                    if ($i == 12 && 1 <= count($tendencia_mes)){
+                        array_push($values_peer_months, $tendencia_mes[0]);
+                    }else if ($i == 12){
+                        array_push($values_peer_months, 0);
                     }
-                    $v++;
                 }
             }
 
-
-
             return response()->json([
-                'ene'   => $ene,
-                'feb'   => $feb,
-                'mar'   => $mar,
-                'abr'   => $abr,
-                'may'   => $may,
-                'jun'   => $jun,
-                'jul'   => $jul,
-                'ago'   => $ago,
-                'sep'   => $sep,
-                'oct'   => $oct,
-                'nov'   => $nov,
-                'dic'   => $dic
+                $values_peer_months
             ]);
         }
     }
