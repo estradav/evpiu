@@ -1,9 +1,6 @@
 @extends('layouts.dashboard')
 
 @section('page_title',  $cliente[0]->RAZON_SOCIAL )
-
-
-
 @section('content')
     @can('gestion_clientes.show')
 
@@ -12,7 +9,9 @@
                 <div class="col-md-3">
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile igualar">
-                            <h3 class="profile-username text-center">{{ $cliente[0]->RAZON_SOCIAL }}</h3>
+                            <h2 class="profile-username text-center">
+                                <i class="far fa-building "></i>  {{ $cliente[0]->RAZON_SOCIAL }}
+                            </h2>
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
@@ -36,7 +35,6 @@
                                     @elseif($cliente[0]->ACTIVO == 'R')
                                         <span class="alert-success">LIBERADO</span>
                                     @endif
-
                                 </p>
                             </ul>
 
@@ -90,22 +88,22 @@
                                             <hr>
                                             <div class="row">
                                                 <div class="col-sm-6">
-                                                    <b>CONTACTO:</b> <label> {{ $cliente[0]->CONTACTO }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>CONTACTO:</b> <label> {{ $cliente[0]->CONTACTO }} <a href="javascript:void(0)" id="change_contacto"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>TELEFONO 1:</b> <label> {{ $cliente[0]->TEL1 }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>TELEFONO 1:</b> <label> {{ $cliente[0]->TEL1 }} <a href="javascript:void(0)" id="change_tel1"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>TELEFONO 2:</b> <label> {{ $cliente[0]->TEL2 }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>TELEFONO 2:</b> <label> {{ $cliente[0]->TEL2 }} <a href="javascript:void(0)" id="change_tel2"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>CELULAR:</b> <label> {{ $cliente[0]->CELULAR }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>CELULAR:</b> <label> {{ $cliente[0]->CELULAR }} <a href="javascript:void(0)" id="change_cel"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>E-MAIL CONTACTO:</b> <label> {{ $cliente[0]->CORREO_CONTACTO }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>E-MAIL CONTACTO:</b> <label> {{ $cliente[0]->CORREO_CONTACTO }} <a href="javascript:void(0)" id="change_email_contact"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>E-MAIL FACTURACION:</b> <label> {{ $cliente[0]->CORREO_FE }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>E-MAIL FACTURACION:</b> <label> {{ $cliente[0]->CORREO_FE }} <a href="javascript:void(0)" id="change_email_fact"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                             </div>
                                             <hr>
@@ -125,13 +123,13 @@
                                                     <b>CODIGO FISCAL:</b> <label> {{ $cliente[0]->IVA }}</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>PLAZO DE PAGO:</b> <label> {{ $cliente[0]->PLAZO }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>PLAZO DE PAGO:</b> <label> {{ $cliente[0]->PLAZO }} <a href="javascript:void(0)" id="change_plazo_pago"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>PORC. DE DESCUENTO:</b> <label> {{ $cliente[0]->DESCUENTO }}% <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>PORC. DE DESCUENTO:</b> <label> {{ $cliente[0]->DESCUENTO }}% <a href="javascript:void(0)" id="change_descuento"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>VENDEDOR:</b>  <label> {{ $cliente[0]->NOMBRE_VENDEDOR }} <a href="javascript:void(0)"><i class="fas fa-pen-square"></i></a></label>
+                                                    <b>VENDEDOR:</b> <label> {{ $cliente[0]->NOMBRE_VENDEDOR }} <a href="javascript:void(0)" id="change_vendedor"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                             </div>
                                             <hr>
@@ -161,7 +159,7 @@
                                             <hr>
                                             <div class="row">
                                                 <div class="col-sm-6">
-                                                    <b>CORREOS COPIA:</b>
+                                                    <b>CORREOS COPIA:</b> <label> {{--{{ $cliente[0]->NOMBRE_VENDEDOR }}--}} <a href="javascript:void(0)" id="change_correos_copia"><i class="fas fa-pen-square"></i></a></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -169,28 +167,24 @@
                                 </div>
 
                                 <div class="tab-pane" id="Facturacion">
-                                    <div class="col-sm-12">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="table-responsive">
-                                                    <table class="table table-responsive table-striped" id="facturas_webservice">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>ID Factible</th>
-                                                                <th>Factura/Nota</th>
-                                                                <th>Tipo</th>
-                                                                <th>Fecha Generacion</th>
-                                                                <th>Fecha Registro</th>
-                                                                <th>Estado DIAN</th>
-                                                                <th>Estado Cliente</th>
-                                                                <th class="text-center">Opciones</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+                                    <div class="table-responsive">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-striped" id="facturacion_electronica">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID Factible</th>
+                                                    <th>Factura/Nota</th>
+                                                    <th>Tipo</th>
+                                                    <th>Fecha Generacion</th>
+                                                    <th>Fecha Registro</th>
+                                                    <th>Estado DIAN</th>
+                                                    <th>Estado Cliente</th>
+                                                    <th class="text-center">Opciones</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -269,7 +263,7 @@
                 $('.igualar').each(function(){
                     $(this).css('height',altura_arr[0]);
                 });
-
+                var Year = new Date().getFullYear();
 
                 function TotalFacAndNotes() {
                     var facturas = [];
@@ -370,8 +364,6 @@
                     });
                 }
 
-                var Year = new Date().getFullYear();
-
                 function TrendsProductsPeerMoth(Year = ''){
                     var cliente = @json($cliente[0]->CODIGO_CLIENTE);
 
@@ -464,7 +456,121 @@
                     return s.join(dec);
                 }
 
-                $('#CambiarAñoGrafico').on('click', function () {
+                function addData(chart, label, color, data) {
+                    chart.data.datasets.push({
+                        label: label,
+                        data: data,
+                        fill: false,
+                        backgroundColor: color,
+                        borderColor: color,
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                    });
+                    chart.update();
+                }
+
+                var nombre_cliente = @json($cliente[0]->RAZON_SOCIAL);
+
+                $('#facturacion_electronica').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    autoWidth: true,
+                    scrollY: 400,
+                    scrollCollapse: true,
+                    paging: false,
+                    ajax: {
+                        url:'/FacturacionElectronicaGc',
+                        data:{
+                            nombre_cliente: nombre_cliente
+                        }
+                    },
+                    columns: [
+                        {data: 'DT_RowId', name: 'DT_RowId', orderable: true, searchable: true},
+                        {data: 'numero', name: 'numero', orderable: true, searchable: true},
+                        {data: 'desctipodocumentoelectronico', name: 'desctipodocumentoelectronico', orderable: false, searchable: false},
+                        {data: 'fechageneracion',name: 'fechageneracion'},
+                        {data: 'fecharegistro',name: 'fecharegistro'},
+                        {data: 'descestadoenviodian',name: 'descestadoenviodian'},
+                        {data: 'descestadoenviocliente',name: 'descestadoenviocliente'},
+                        {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+                    ],
+                    order: [
+                        [ 1, "asc" ]
+                    ],
+                    language: {
+                        // traduccion de datatables
+                        processing: "Cargando Facturas...",
+                        search: "Buscar&nbsp;:",
+                        lengthMenu: "Mostrar _MENU_ Facturas",
+                        info: "Mostrando Facturas del _START_ al _END_ de un total de _TOTAL_ Facturas",
+                        infoEmpty: "Mostrando Facturas del 0 al 0 de un total de 0 Facturas",
+                        infoFiltered: "(filtrado de un total de _MAX_ facturas)",
+                        infoPostFix: "",
+                        loadingRecords: "Cargando...",
+                        zeroRecords: "No se encontraron resultados",
+                        emptyTable: "Ningún registro disponible en esta tabla :C",
+                        paginate: {
+                            first: "Primero",
+                            previous: "Anterior",
+                            next: "Siguiente",
+                            last: "Ultimo"
+                        },
+                        aria: {
+                            sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                            sortDescending: ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                });
+
+
+                $('body').on('click','.download_ws', function () {
+                    var username = 'dcorreah';
+                    var id = this.id;
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        type: 'post',
+                        url: '/GestionFacturacionElectronica_DownloadPdf',
+                        data: {
+                            id: id,
+                            Username: username,
+
+                        },
+                        success: function (data) {
+                            var base64str = data;
+                            // decode base64 string, remove space for IE compatibility
+                            var binary = atob(base64str.replace(/\s/g, ''));
+                            var len = binary.length;
+                            var buffer = new ArrayBuffer(len);
+                            var view = new Uint8Array(buffer);
+                            for (var i = 0; i < len; i++) {
+                                view[i] = binary.charCodeAt(i);
+                            }
+                            var blob = new Blob( [view], { type: "application/pdf" });
+                            var link=document.createElement('a');
+                            link.href=window.URL.createObjectURL(blob);
+                            let current_datetime = new Date();
+                            link.download="FE_"+id+".pdf";
+                            link.click();
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error en la Descarga...',
+                                text: 'Hubo un error al descargar el pdf de esta factura...!',
+                            });
+                        }
+                    });
+                });
+
+
+                $('#CambiarAñoGrafico').on('click',function () {
                     var Year = $('#Valor_año').val();
                     if (Year != ''){
                         graf_prop_est.destroy();
@@ -481,21 +587,6 @@
                         });
                     }
                 });
-
-                function addData(chart, label, color, data) {
-                    chart.data.datasets.push({
-                        label: label,
-                        data: data,
-                        fill: false,
-                        backgroundColor: color,
-                        borderColor: color,
-                        hover: {
-                            mode: 'nearest',
-                            intersect: true
-                        },
-                    });
-                    chart.update();
-                }
 
                 $('#AñadirAñoGrafico').on('click',function () {
                     var Year = $('#Valor_año').val();
@@ -571,7 +662,7 @@
                             },
                             preConfirm: function () {
                                 var array = {
-                                    'state': document.getElementById("state").value,
+                                    'addr1': document.getElementById("addr1").value,
                                     'justify': document.getElementById("justify").value,
                                 };
                                 return array;
@@ -588,7 +679,7 @@
                                 }
                             });
                             $.ajax({
-                                url: '/CambiarEstadoRequeEd',
+                                url: '/',
                                 type: 'post',
                                 data: {
                                     result, cliente, username
@@ -649,7 +740,7 @@
                             },
                             preConfirm: function () {
                                 var array = {
-                                    'state': document.getElementById("state").value,
+                                    'addr2': document.getElementById("addr2").value,
                                     'justify': document.getElementById("justify").value,
                                 };
                                 return array;
@@ -666,7 +757,7 @@
                                 }
                             });
                             $.ajax({
-                                url: '/CambiarEstadoRequeEd',
+                                url: '/',
                                 type: 'post',
                                 data: {
                                     result, cliente, username
@@ -697,7 +788,6 @@
                 });
 
                 $('#change_moneda').on('click',function () {
-                    var moneda = @json($cliente[0]->MONEDA);
                     var username = @json(Auth::user()->name);
                     var cliente = @json($cliente[0]->CODIGO_CLIENTE);
                     swal.mixin({
@@ -779,20 +869,23 @@
                 });
 
                 $('#change_tipo_cliente').on('click',function () {
-                    var moneda = @json($cliente[0]->TIPO_CLIENTE);
                     var username = @json(Auth::user()->name);
                     var cliente = @json($cliente[0]->CODIGO_CLIENTE);
 
-                    function getOptions(){
+                    function getOptionsTipoCliente(){
                         $.ajax({
-                           url: '',
-                           type: 'get',
-                           success: function (data) {
-
-                           }
-                        });
+                            type: "get",
+                            url: '/get_tipo_cliente',
+                            success: function (data) {
+                                var i = 0;
+                                $('#tipo_cliente').append('<option value="">Seleccione...</option>');
+                                $(data).each(function () {
+                                    $('#tipo_cliente').append('<option value="'+data[i].CUSTYP_62 +'">'+data[i].DESC_62+'</option>');
+                                    i++;
+                                });
+                            }
+                        })
                     }
-
 
                     swal.mixin({
                         icon: 'question',
@@ -808,11 +901,7 @@
                     }).queue([
                         {
                             html: '<label>Tipo de Cliente:</label> <br> ' +
-                                '<select name="tipo_cliente" id="tipo_cliente" class="form-control">' +
-                                '<option value="">Seleccione...</option>' +
-                                '<option value="COP">COP</option>' +
-                                '<option value="USD">USD</option>' +
-                                '</select>' +
+                                '<select name="tipo_cliente" id="tipo_cliente" class="form-control">'+ getOptionsTipoCliente() +'</select>' +
                                 '<br>' +
                                 '<label style="text-align: left" >Justificacion:</label> <br>' +
                                 '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
@@ -843,7 +932,7 @@
                                 }
                             });
                             $.ajax({
-                                url: '/CambiarEstadoRequeEd',
+                                url: '/',
                                 type: 'post',
                                 data: {
                                     result, cliente, username
@@ -872,9 +961,758 @@
                         }
                     })
                 });
+
+                $('#change_contacto').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+                    var contacto = @json($cliente[0]->CONTACTO);
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'Contacto',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>Nombre de contacto:</label> <br> ' +
+                                '<input type="text" id="contact" class="form-control" value="'+ contacto +'" ' +
+                                '<br> <br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('contact').value == '') {
+                                    return 'Escribe el nombre de contacto...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'contact': document.getElementById("contact").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
+                $('#change_tel1').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+                    var tel1 = @json($cliente[0]->TEL1);
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'Telefono 1',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>Telefono 1:</label> <br> ' +
+                                '<input type="number" id="tel1" class="form-control" value="'+ parseInt(tel1.trim()) +'" ' +
+                                '<br> <br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('tel1').value == '') {
+                                    return 'Debes escribir un telefono de contacto...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'tel1': document.getElementById("tel1").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
+                $('#change_tel2').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+                    var tel2 = @json($cliente[0]->TEL2);
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'Telefono 2',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>Telefono 2:</label> <br> ' +
+                                '<input type="number" id="tel2" class="form-control" value="'+ parseInt(tel2.trim()) +'" ' +
+                                '<br> <br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('tel2').value == '') {
+                                    return 'Debes escribir un telefono de contacto...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'tel2': document.getElementById("tel2").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
+                $('#change_cel').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+                    var cel = @json($cliente[0]->CELULAR);
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'Celular',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>Celular:</label> <br> ' +
+                                '<input type="number" id="cel" class="form-control" value="'+ parseInt(cel.trim()) +'" ' +
+                                '<br> <br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('cel').value == '') {
+                                    return 'Debes escribir un celular de contacto...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'cel': document.getElementById("cel").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+
+                });
+
+                $('#change_email_contact').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+                    var email_contact = @json($cliente[0]->CORREO_CONTACTO);
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'E-mail de contacto',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>E-mail de contacto:</label> <br> ' +
+                                '<input type="email" id="email_contact" class="form-control" value="'+ email_contact.trim() +'" ' +
+                                '<br> <br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('email_contact').value == '') {
+                                    return 'Debes escribir un email de contacto...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'email_contact': document.getElementById("email_contact").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
+                $('#change_email_fact').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+                    var email_fact = @json($cliente[0]->CORREO_FE);
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'E-mail de facturacion',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>E-mail de facturacion:</label> <br> ' +
+                                '<input type="email" id="email_fact" class="form-control" value="'+ email_fact.trim() +'" ' +
+                                '<br> <br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('email_fact').value == '') {
+                                    return 'Debes escribir un email de facturacion...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'email_fact': document.getElementById("email_fact").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+
+                });
+
+                $('#change_plazo_pago').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+
+                    function getOptionsPlazo(){
+                        $.ajax({
+                            type: "get",
+                            url: '/PedidosGetCondicion',
+                            success: function (data) {
+                                var i = 0;
+                                $('#plazo_pago').append('<option value="" >Seleccione...</option>');
+                                $(data).each(function (){
+                                    $('#plazo_pago').append('<option value="'+ data[i].CODE_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
+                                    i++
+                                });
+                            }
+                        })
+                    }
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'Plazo de pago',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>Plazo de pago:</label> <br> ' +
+                                '<select name="plazo_pago" id="plazo_pago" class="form-control">'+ getOptionsPlazo() +'</select>' +
+                                '<br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('plazo_pago').value == '') {
+                                    return 'Selecciona una opcion...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'plazo_pago': document.getElementById("plazo_pago").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
+                $('#change_descuento').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+                    var descuento = @json($cliente[0]->DESCUENTO);
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'Descuento',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>Porcentaje de descuento:</label> <br> ' +
+                                '<input type="number" id="descuento" class="form-control" value="'+ parseInt(descuento) +'" max="100" min="0" >' +
+                                '<br> <br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('descuento').value == '') {
+                                    return 'Debes escribir un descuento entre 0 y 100...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'descuento': document.getElementById("descuento").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
+                $('#change_vendedor').on('click',function () {
+                    var username = @json(Auth::user()->name);
+                    var cliente = @json($cliente[0]->CODIGO_CLIENTE);
+
+                    function getOptionsVendedores(){
+                        $.ajax({
+                            type: "get",
+                            url: '/PedidosGetUsers',
+                            success: function (data) {
+                                var i = 0;
+                                $('#vendedor').append('<option value="" >Seleccione...</option>');
+                                $(data).each(function (){
+                                    $('#vendedor').append('<option value="'+ data[i].codvendedor +'" >'+ data[i].name +'</option>');
+                                    i++
+                                });
+                            }
+                        })
+                    }
+
+                    swal.mixin({
+                        icon: 'question',
+                        title: 'Vendedor',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        className: "red-bg",
+                        input: 'text',
+                    }).queue([
+                        {
+                            html: '<label>Vendedor:</label> <br> ' +
+                                '<select name="vendedor" id="vendedor" class="form-control">'+ getOptionsVendedores() +'</select>' +
+                                '<br>' +
+                                '<label style="text-align: left" >Justificacion:</label> <br>' +
+                                '<textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>',
+                            inputValidator: () => {
+                                if (document.getElementById('vendedor').value == '') {
+                                    return 'Selecciona una opcion...';
+                                }
+                                if (document.getElementById('justify').value == '') {
+                                    return 'Debes escribir una justificacion...';
+                                }
+                            },
+                            preConfirm: function () {
+                                var array = {
+                                    'vendedor': document.getElementById("vendedor").value,
+                                    'justify': document.getElementById("justify").value,
+                                };
+                                return array;
+                            },
+                            onBeforeOpen: function (dom) {
+                                swal.getInput().style.display = 'none';
+                            }
+                        },
+                    ]).then((result) => {
+                        if (result.value) {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '/',
+                                type: 'post',
+                                data: {
+                                    result, cliente, username
+                                },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Guardardo',
+                                        text: 'Datos guardados con exito!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'La solicitud no pudo ser procesada!',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Aceptar',
+                                    })
+                                }
+                            });
+                        } else {
+                            result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
             });
-
-
         </script>
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -889,8 +1727,10 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-        <link rel="stylesheet" href="@sweetalert2/theme-minimal/minimal.css">
-
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+        <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/css/dataTables.checkboxes.css" rel="stylesheet" />
+        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 
 
     @endpush

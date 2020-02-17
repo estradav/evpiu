@@ -115,6 +115,14 @@ $(document).ready(function(){
                         url: '/GetUniqueCodCaracteristics',
                         type: 'POST',
                         async: false,
+                        data: {
+                            linea: function () {
+                                return $("#car_lineas_id").val();
+                            },
+                            sublinea: function () {
+                                return $("#car_sublineas_id").val();
+                            },
+                        }
                     },
                     required: true,
                     maxlength: 2,

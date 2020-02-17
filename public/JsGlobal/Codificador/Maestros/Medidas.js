@@ -79,13 +79,16 @@ $(document).ready(function(){
             $('#medidaForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#medidamodal').modal('show');
-            document.getElementById("cod").readOnly = true;
-            document.getElementById("mm2").readOnly = true;
-            document.getElementById("denominacion").readOnly = true;
+            document.getElementById("cod").readOnly = false;
+            document.getElementById("mm2").readOnly = false;
+            document.getElementById("denominacion").readOnly = false;
         });
 
         $('body').on('click', '.editmedida', function () {
             var medida_id = $(this).data('id');
+            document.getElementById("cod").readOnly = true;
+            document.getElementById("mm2").readOnly = true;
+            document.getElementById("denominacion").readOnly = true;
             $.get("/ProdCievCodMedida" +'/' + medida_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-Medida");
@@ -102,9 +105,6 @@ $(document).ready(function(){
                 $('#Altura').val(data.altura);
                 $('#Espesor').val(data.espesor);
                 $('#Perforacion').val(data.perforacion);
-                document.getElementById("cod").readOnly = true;
-                document.getElementById("mm2").readOnly = true;
-                document.getElementById("denominacion").readOnly = true;
             });
         });
 

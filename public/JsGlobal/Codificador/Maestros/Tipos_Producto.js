@@ -54,8 +54,8 @@ $(document).ready(function(){
         });
 
         $('body').on('click', '.editTipoProducto', function () {
-            var tipoproducto_id = $(this).data('id');
             document.getElementById("cod").readOnly = true;
+            var tipoproducto_id = $(this).data('id');
             $.get("/ProdCievCodTipoProducto" +'/' + tipoproducto_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-tipoproducto");

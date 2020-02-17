@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SoapClient;
 use Yajra\DataTables\DataTables;
 
 class GestionClientesController extends Controller
@@ -351,5 +352,66 @@ class GestionClientesController extends Controller
         }
     }
 
+    public function FacturacionElectronica(Request $request)
+    {
+        if (request()->ajax()) {
+            $login1 = 'dcorreah';
+            $password = "FE2020ev*";
+            $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+            $client = new SoapClient($wsdl_url);
+            $client->__setLocation($wsdl_url);
+
+            $params = array(
+                'login' => $login1,
+                'password' => $password
+            );
+
+            $auth = $client->autenticar($params);
+            $respuesta = json_decode($auth->return);
+            $token = $respuesta->data->salida;
+
+            $params = array(
+                'token' => $token,
+                'idEmpresa' => '',
+                'idUsuario' => '',
+                'idEstadoEnvioCliente' => '',
+                'idEstadoEnvioDian' => '',
+                'fechaInicial' => '',
+                'fechaFinal' => '',
+                'fechaInicialReg' => '',
+                'fechaFinalReg' => '',
+                'idEstadoGeneracion' => '',
+                'idTipoDocElectronico' => '',
+                'numeroInicial' => '',
+                'numeroFinal' => '',
+                'idnumeracion' => '',
+                'estadoAcuse' => '',
+                'razonSocial' => trim($request->nombre_cliente),
+                'mulCodEstDian' => '',
+                'tipoDocumento' => '',
+                'idDocumento' => '',
+                'idVerficacionFuncional' => ''
+            );
+
+
+            $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+            $return = json_decode($return->return);
+            $values = $return->data;
+
+
+            return datatables::of($values)
+                ->addColumn('opciones', function($row){
+                    $btn = '<button class="btn btn-sm btn-outline-light download_ws" id="'.$row->DT_RowId.'"><i class="far fa-file-pdf"></i> Descargar</button>';
+                    return $btn;})
+                ->rawColumns(['opciones'])
+                ->make(true);
+        }
+    }
+
+
+    public function accesos()
+    {
+        return view('testview');
+    }
 
 }

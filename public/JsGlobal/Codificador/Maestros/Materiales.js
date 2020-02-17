@@ -54,7 +54,7 @@ $(document).ready(function(){
         });
 
         $('body').on('click', '.editmaterial', function () {
-
+            document.getElementById("cod").readOnly = true;
             var material_id = $(this).data('id');
             $.get("/ProdCievCodMaterial" +'/' + material_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar");
@@ -67,7 +67,6 @@ $(document).ready(function(){
                 $('#name').val(data.name);
                 $('#abreviatura').val(data.abreviatura);
                 $('#coments').val(data.coments);
-                document.getElementById("cod").readOnly = true;
             })
         });
 
@@ -110,6 +109,14 @@ $(document).ready(function(){
                         url: '/GetUniqueCodMaterials',
                         type: 'POST',
                         async: false,
+                        data: {
+                            linea: function () {
+                                return $("#mat_lineas_id").val();
+                            },
+                            sublinea: function () {
+                                return $("#mat_sublineas_id").val();
+                            },
+                        }
                     },
                     required: true,
                     maxlength: 1,
