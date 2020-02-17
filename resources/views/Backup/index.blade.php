@@ -41,10 +41,10 @@
                                     </td>
                                     <td>
                                         <a class="btn btn-xs btn-success"
-                                           href="{{action('BackUpController@download', [$backup['file_name']])}}"><i
+                                           href="{{action('BackupController@download', [$backup['file_name']])}}"><i
                                                 class="fa fa-cloud-download"></i> Decargar</a>
                                         <a class="btn btn-xs btn-danger link_confirmation" data-button-type="delete"
-                                           href="{{action('BackUpController@delete', [$backup['file_name']])}}"><i class="fa fa-trash-o"></i>
+                                           href="{{action('BackupController@delete', [$backup['file_name']])}}"><i class="fa fa-trash-o"></i>
                                             Eliminar</a>
                                     </td>
                                 </tr>
