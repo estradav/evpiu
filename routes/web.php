@@ -303,7 +303,19 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/ClientesFaltantesDMS','GestionClientesController@ClientesFaltantesDMS');
             Route::get('GestionClientes/{GestionCliente}/show','GestionClientesController@show');
             Route::get('/ProductosEnTendenciaPorMes','GestionClientesController@ProductosEnTendenciaPorMes');
+            Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');
 
+
+            Route::get('/accesos_remotos', function () {
+                return view('accesos_remotos');
+            });
+
+            //Backup
+            Route::get('backup/download/{file_name}', 'BackUpController@download');
+            Route::get('backup/delete/{file_name}', 'BackUpController@delete');
+            Route::resource('backup', 'BackUpController', ['only' => [
+                'index', 'create', 'store'
+            ]]);
         });
     });
 });

@@ -69,84 +69,96 @@ $(document).ready(function(){
             return (value != '');
         }, "Por favor, seleciona una opcion.");
 
+
+
+
         $('#CrearSubLineas').click(function () {
-            $("#sublineaForm").validate({
-                ignore: "",
-                rules: {
-                    lineas_id : {
-                        selectcheck: true
-                    },
-                    cod: {
-                        remote: {
-                            url: '/GetUniqueCodSubLines',
-                            type: 'POST',
-                            async: false,
-                        },
-                        required: true,
-                        maxlength: 2,
-                        minlength: 2
-                    },
-                    name: "required",
-                    abreviatura: "required",
-                    coments: "required"
-                },
-                highlight: function (element) {
-                    // Only validation controls
-                    $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
-                },
-                unhighlight: function (element) {
-                    // Only validation controls
-                    $(element).closest('.form-control').removeClass('is-invalid');
-                },
-                submitHandler: function (form) {
-                    var umedidas = $("#um_id").val();
-                    var carmedidas = $("#car_um_id").val();
-                    console.log(carmedidas, umedidas);
-                    var encabezado = [];
-                    var Inputs = {
-                        id: $('#sublinea_id').val(),
-                        linea: $('#lineas_id').val(),
-                        cod: $('#cod').val(),
-                        hijo: $('#hijo').val(),
-                        name: $('#name').val(),
-                        abre: $('#abreviatura').val(),
-                        coments: $('#coments').val(),
-                    };
-                    encabezado.push(Inputs);
-
-                    $.ajax({
-                        data: {
-                            encabezado, umedidas, carmedidas
-                        },
-                        url: "/SublineasPost",
-                        type: "POST",
-                        dataType: 'json',
-                        success: function (data) {
-                            $('#sublineaForm').trigger("reset");
-                            $('#sublineamodal').modal('hide');
-
-                            table.draw();
-                            toastr.success("Registro Guardado con Exito!");
-                        },
-                        error: function (data) {
-                            $('#saveBtn').html('Guardar Cambios');
-                        }
-                    });
-                }
-            });
             $('#saveBtn').val("create-sublinea");
             $('#sublinea_id').val('');
             $('#sublineaForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#sublineamodal').modal('show');
             document.getElementById("cod").readOnly = false;
-
-
         });
 
+
+        $("#sublineaForm").validate({
+            ignore: "",
+            rules: {
+                lineas_id : {
+                    selectcheck: true
+                },
+                cod: {
+                    remote: {
+                        url: '/GetUniqueCodSubLines',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            linea: function () {
+                                return $("#lineas_id").val();
+                            }
+                        }
+                    },
+                    required: true,
+                    maxlength: 2,
+                    minlength: 2
+                },
+                name: "required",
+                abreviatura: "required",
+                coments: "required"
+            },
+            highlight: function (element) {
+                // Only validation controls
+                $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+            },
+            unhighlight: function (element) {
+                // Only validation controls
+                $(element).closest('.form-control').removeClass('is-invalid');
+            },
+            submitHandler: function (form) {
+                var umedidas = $("#um_id").val();
+                var carmedidas = $("#car_um_id").val();
+                console.log(carmedidas, umedidas);
+                var encabezado = [];
+                var Inputs = {
+                    id: $('#sublinea_id').val(),
+                    linea: $('#lineas_id').val(),
+                    cod: $('#cod').val(),
+                    hijo: $('#hijo').val(),
+                    name: $('#name').val(),
+                    abre: $('#abreviatura').val(),
+                    coments: $('#coments').val(),
+                };
+                encabezado.push(Inputs);
+
+                $.ajax({
+                    data: {
+                        encabezado, umedidas, carmedidas
+                    },
+                    url: "/SublineasPost",
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#sublineaForm').trigger("reset");
+                        $('#sublineamodal').modal('hide');
+
+                        table.draw();
+                        toastr.success("Registro Guardado con Exito!");
+                    },
+                    error: function (data) {
+                        $('#saveBtn').html('Guardar Cambios');
+                    }
+                });
+            }
+        });
+
+
+
+
         $('body').on('click', '.editsublinea', function () {
+            document.getElementById("cod").readOnly = true;
             var sublinea_id = $(this).data('id');
-            $('#saveBtn').attr('formnovalidate','');
+            $('#cod').attr('formnovalidate',true);
             $.get("/ProdCievCodSublinea" +'/' + sublinea_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-sublinea");
@@ -165,7 +177,6 @@ $(document).ready(function(){
                 $.each(data.carmedida, function (index, value) {
                     $('#car_um_id').append('<option value="'+ index+'" selected>'+value+'</option>');
                 });
-                document.getElementById("cod").readOnly = true;
             });
 
             $("#sublineaForm").validate({

@@ -68,7 +68,11 @@ class ProdCievCodCaracteristicaController extends Controller
 
     public function UniqueCod(Request $request)
     {
-        $UniqueCod = DB::table('cod_caracteristicas')->where('cod','=',$request->cod)->count();
+        $UniqueCod = DB::table('cod_caracteristicas')
+            ->where('car_lineas_id','=',$request->linea)
+            ->where('car_sublineas_id','=',$request->sublinea)
+            ->where('cod','=',$request->cod)
+            ->count();
         if($UniqueCod == 0)
         {echo "true";}
         else

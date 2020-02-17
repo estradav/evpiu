@@ -69,7 +69,11 @@ class ProdCievCodMaterialController extends Controller
 
     public function UniqueCod(Request $request)
     {
-        $UniqueCod = DB::table('cod_materials')->where('cod','=',$request->cod)->count();
+        $UniqueCod = DB::table('cod_materials')
+            ->where('mat_lineas_id','=',$request->linea)
+            ->where('mat_sublineas_id','=',$request->sublinea)
+            ->where('cod','=',$request->cod)
+            ->count();
         if($UniqueCod == 0)
         {echo "true";}
         else

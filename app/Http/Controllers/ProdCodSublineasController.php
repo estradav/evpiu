@@ -44,11 +44,7 @@ class ProdCodSublineasController extends Controller
                 })
                 ->rawColumns(['Opciones','Medidas','Car_Medidas'])
                 ->make(true);
-
         }
-       /* 625-500469-50
-        008-000284-69*/
-
         return view('ProductosCIEV.Maestros.sublineas_show');
     }
 
@@ -65,9 +61,7 @@ class ProdCodSublineasController extends Controller
             $CarUnidadesMedidaArray[$CarUnidadesMedida->id] = $CarUnidadesMedida->descripcion;
         }
 
-
         return response()->json(['sublinea' => $codsublinea,'medida' => $UnidadesMedidaArray, 'carmedida' => $CarUnidadesMedidaArray]);
-
     }
 
     public function destroy($id)
@@ -92,7 +86,10 @@ class ProdCodSublineasController extends Controller
 
     public function UniqueCod(Request $request)
     {
-        $UniqueCod = DB::table('cod_sublineas')->where('cod','=',$request->cod)->count();
+        $UniqueCod = DB::table('cod_sublineas')
+            ->where('lineas_id','=',$request->linea)
+            ->where('cod','=',$request->cod)
+            ->count();
         if($UniqueCod == 0)
         {echo "true";}
         else
