@@ -311,9 +311,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
             });
 
             //Backup
-            Route::get('backup/download/{file_name}', 'BackUpController@download');
-            Route::get('backup/delete/{file_name}', 'BackUpController@delete');
-            Route::resource('backup', 'BackUpController', ['only' => [
+            Route::get('backup/download/{file_name}', 'BackupController@download');
+            Route::get('backup/delete/{file_name}', 'BackupController@delete');
+            Route::resource('backup', 'BackupController', ['only' => [
                 'index', 'create', 'store'
             ]]);
         });
