@@ -299,11 +299,47 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/get_departamentos','GestionClientesController@Departamentos');
             Route::get('/get_ciudades','GestionClientesController@Ciudades');
             Route::get('/get_tipo_cliente','GestionClientesController@TipoCliente');
-         //   Route::get('/view_client','GestionClientesController@Show');
             Route::get('/ClientesFaltantesDMS','GestionClientesController@ClientesFaltantesDMS');
             Route::get('GestionClientes/{GestionCliente}/show','GestionClientesController@show');
             Route::get('/ProductosEnTendenciaPorMes','GestionClientesController@ProductosEnTendenciaPorMes');
             Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');
+
+            //edit items from clients
+            Route::get('get_paymentterm','GestionClientesController@Plazo');
+            Route::get('get_sellerlist','GestionClientesController@GetSellerList');
+            Route::get('get_transactionsClients','GestionClientesController@GetTransactionsData');
+
+
+            Route::post('update_ddr1','GestionClientesController@UpdateAddress1');
+            Route::post('update_ddr2','GestionClientesController@UpdateAddress2');
+            Route::post('update_moneda','GestionClientesController@UpdateMoneda');
+            Route::post('update_type_client','GestionClientesController@UpdateTypeClient');
+            Route::post('update_contact','GestionClientesController@UpdateContact');
+            Route::post('update_phone1','GestionClientesController@UpdatePhone1');
+            Route::post('update_phone2','GestionClientesController@UpdatePhone2');
+            Route::post('update_cellphone','GestionClientesController@UpdateCellphone');
+            Route::post('update_contactemail','GestionClientesController@UpdateContactEmail');
+            Route::post('update_invoiceemail','GestionClientesController@UpdateInvoiceEmail');
+            Route::post('update_paymentterm','GestionClientesController@UpdatePaymentTerm');
+            Route::post('update_discount','GestionClientesController@UpdateDiscount');
+            Route::post('update_seller','GestionClientesController@UpdateSeller');
+            Route::post('update_mailscopy','GestionClientesController@UpdateMailsCopy');
+            Route::post('update_rutentregado','GestionClientesController@UpdateRut');
+            Route::post('update_greatcontributor','GestionClientesController@UpdateGreatContributor');
+            Route::post('update_responsableiva','GestionClientesController@UpdateResponsableIva');
+            Route::post('update_responsablefe','GestionClientesController@UpdateResponsableFe');
+            Route::post('update_phonefe','GestionClientesController@UpdatePhoneFe');
+            Route::post('update_codecityext','GestionClientesController@UpdateCodeCityExt');
+            Route::post('update_groupeconomic','GestionClientesController@UpdateGroupEconomic');
+
+
+
+
+
+
+
+
+
 
 
             Route::get('/accesos_remotos', function () {
@@ -316,6 +352,10 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::resource('backup', 'BackupController', ['only' => [
                 'index', 'create', 'store'
             ]]);
+
+
+
+            Route::resource('bitacoraomff','BitacoraOmffController');
         });
     });
 });

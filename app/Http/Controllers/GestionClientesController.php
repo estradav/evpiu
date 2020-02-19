@@ -52,7 +52,8 @@ class GestionClientesController extends Controller
     {
         if ($request->ajax()){
             $Condicion =  DB::connection('MAX')->table('Code_Master')
-                ->where('Code_Master.CDEKEY_36','=','TERM')
+                ->where('CDEKEY_36','=','TERM')
+                ->where('DAYS_36','<>','')
                 ->get();
         }
         return response()->json($Condicion);
@@ -100,6 +101,17 @@ class GestionClientesController extends Controller
     public function GuardarCliente(Request $request)
     {
         DB::beginTransaction();
+    }
+
+    public function GetSellerList(Request $request)
+    {
+        if ($request->ajax()){
+            $User =  DB::connection('MAX')
+                ->table('Sales_Rep_Master')
+                ->where('UDFKEY_26','<>','RETIRADO')
+                ->get();
+        }
+        return response()->json($User);
     }
 
     public function show($numero)
@@ -408,10 +420,900 @@ class GestionClientesController extends Controller
         }
     }
 
-
-    public function accesos()
+    public function UpdateAddress1(Request $request)
     {
-        return view('testview');
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'ADDR1_23'  =>  $request->result['value'][0]['addr1']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'direccion' =>  $request->result['value'][0]['addr1']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Direccion 1',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'code2' =>$e->getLine(),
+                ),
+            ));
+        }
     }
 
+    public function UpdateAddress2(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'ADDR2_23'  =>  $request->result['value'][0]['addr2']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Direccion 2',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'code2' =>$e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateMoneda(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'CURR_23'  =>  $request->result['value'][0]['moneda']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Moneda',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'code2' =>$e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    //Esta pendiente el cambio de tipo de cliente, por que martin debe validar los equivalentes para DMS
+    public function UpdateTypeClient(Request $request)
+    {
+        dd($request);
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'CURR_23'  =>  $request->result['value'][0]['moneda']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Moneda',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'code2' =>$e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateContact(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'CNTCT_23'  =>  $request->result['value'][0]['contact']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'contacto_1' =>  $request->result['value'][0]['contact']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Contacto',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'code2' =>$e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdatePhone1(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'PHONE_23'  =>  $request->result['value'][0]['tel1']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'telefono_1' =>  $request->result['value'][0]['tel1']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Telefono 1',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'code2' =>$e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdatePhone2(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'TELEX_23'  =>  $request->result['value'][0]['tel2']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'telefono_2' =>  $request->result['value'][0]['tel2']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Telefono 2',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateCellphone(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'FAXNO_23'  =>  $request->result['value'][0]['cel']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'celular' =>  $request->result['value'][0]['cel']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Celular',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateContactEmail(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'EMAIL1_23'  =>  $request->result['value'][0]['email_contact']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'mail' =>  $request->result['value'][0]['email_contact']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Email Contacto',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateInvoiceEmail(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'EMAIL2_23'  =>  $request->result['value'][0]['email_fact']
+                ]);
+
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Email Facturacion',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdatePaymentTerm(Request $request)
+    {
+        $termino_dms = '';
+
+        if ($request->result['value'][0]['plazo_pago'] == '00'){
+            //180 dias
+            $termino_dms = '10';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '01'){
+            //contado
+            $termino_dms = '01';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '02'){
+            //30 dias
+            $termino_dms = '02';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '03'){
+            //60 dias
+            $termino_dms = '03';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '04'){
+            //45 dias
+            $termino_dms = '04';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '05'){
+            //90 dias
+            $termino_dms = '05';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '06'){
+            //15 dias
+            $termino_dms = '06';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '07'){
+            //120 dias
+            $termino_dms = '07';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '08'){
+            //75 dias
+            $termino_dms = '08';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '09'){
+            //150 dias
+            $termino_dms = '09';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '15'){
+            //8 dias
+            $termino_dms = '15';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '16'){
+            //360 dias
+            $termino_dms = '16';
+        }elseif ($request->result['value'][0]['plazo_pago'] == '18'){
+            //70 dias
+            $termino_dms = '18';
+        }
+
+
+
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'TERMS_23'  =>  $request->result['value'][0]['plazo_pago']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'condicion' =>  $termino_dms
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Condicion de pago',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateDiscount(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'DSCRTE_23'  =>  $request->result['value'][0]['descuento']
+                ]);
+
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Descuento',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateSeller(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'SLSREP_23'  =>  $request->result['value'][0]['vendedor']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'vendedor' =>  intval($request->result['value'][0]['vendedor'])
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Vendedor',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateMailsCopy(Request $request)
+    {
+        $Array = $request->correos_copia;
+
+        $correos_string = '';
+
+         foreach ($Array as $Ar){
+
+             $correos_string = $correos_string.';'.$Ar;
+         }
+
+        $correos_string = substr($correos_string,1);
+
+
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master_ex')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'CorreosCopia'  =>  $correos_string
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Correos Copia',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  'Correcccion correos copia',
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateRut(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master_ex')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'RUT'  =>  $request->result['value'][0]['rut']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'tieneRUT' =>  $request->result['value'][0]['rut']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Rut',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateGreatContributor(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master_ex')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'GranContr'  =>  $request->result['value'][0]['gran_contribuyente']
+                ]);
+
+            DB::connection('DMS')
+                ->table('terceros')
+                ->where('codigo_alterno','=',$request->cliente)
+                ->update([
+                    'gran_contribuyente' =>  $request->result['value'][0]['gran_contribuyente']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Gran contribuyente',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateResponsableIva(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master_ex')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'ResponsableIVA'  =>  $request->result['value'][0]['resp_iva']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Responsable IVA',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateResponsableFe(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master_ex')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'ResponsableIVA'  =>  $request->result['value'][0]['resp_fe']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Responsable FE',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdatePhoneFe(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master_ex')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'telFE'  =>  $request->result['value'][0]['tel_fe']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Telefono FE',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateCodeCityExt(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master_ex')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'CiudadExterior'  =>  $request->result['value'][0]['cod_city_ext']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Codigo Ciudad Exterior',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function UpdateGroupEconomic(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            DB::connection('MAX')
+                ->table('customer_master_ex')
+                ->where('CUSTID_23','=', $request->cliente)
+                ->update([
+                    'GRUPOECON'  =>  $request->result['value'][0]['grupo_economico']
+                ]);
+
+            DB::table('log_modifications_clients')->insert([
+                'codigo_cliente'    =>  $request->cliente,
+                'campo_cambiado'    =>  'Grupo Economico',
+                'usuario'           =>  $request->username,
+                'justificacion'     =>  $request->result['value'][0]['justify'],
+                'created_at'        =>  Carbon::now(),
+                'updated_at'        =>  Carbon::now()
+            ]);
+
+            DB::commit();
+
+            return response()->json(['Success' => 'Guardado con exito!'],200);
+
+        }catch (\Exception $e){
+            DB::rollback();
+            echo json_encode(array(
+                'error' => array(
+                    'msg'   => $e->getMessage(),
+                    'code'  => $e->getCode(),
+                    'code2' => $e->getLine(),
+                ),
+            ));
+        }
+    }
+
+    public function GetTransactionsData(Request $request)
+    {
+        $data = DB::table('log_modifications_clients')
+            ->where('codigo_cliente','=',$request->cod_cliente)
+            ->get();
+
+        return datatables::of($data)
+            ->make(true);
+    }
 }
