@@ -12,125 +12,129 @@
 
 @section('content')
     @can('facturacion.view')
-    <div class="col-12">
+        <div class="col-12">
+            <div class="row">
+                <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda o seleccione una o varias facturas para generar un archivo XML o enviar via Webservice</h3>
+            </div>
+        </div>
+        <br>
+
         <div class="row">
-            <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda o seleccione una o varias facturas para generar un archivo XML o enviar via Webservice</h3>
-        </div>
-    </div>
-    <br>
-
-    <div class="row">
-        <div class="col-3">
-            <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
-        </div>
-        <div class="col-3">
-            <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
-        </div>
-        <div class="col-3">
-            <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm btn-block">Buscar</button>
-        </div>
-        <div class="col-3">
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-primary btn-sm " id="CrearXml">Descargar XML</button>
-                <button type="button" class="btn btn-primary btn-sm" id="WebService">Subir via WebService</button>
+            <div class="col-3">
+                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
+            </div>
+            <div class="col-3">
+                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
+            </div>
+            <div class="col-3">
+                <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm btn-block">Buscar</button>
+            </div>
+            <div class="col-3">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary btn-sm " id="CrearXml">Descargar XML</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="WebService">Subir via WebService</button>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <br>
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-responsive table-striped" id="tfac">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="selectAll" name="selectAll" class="selectAll"></th>
-                                    <th>&nbsp; &nbsp;</th>
-                                    <th>Numero</th>
-                                    <th>OV</th>
-                                    <th>Fecha</th>
-                                    <th>Plazo</th>
-                                    <th>Razon Social</th>
-                                    <th>Nit</th>
-                                    <th>Tipo Cliente</th>
-                                    <th>Vendedor</th>
-                                    <th>Valor bruto</th>
-                                    <th>Descuento</th>
-                                    <th>IVA</th>
-                                    <th>Motivo</th>
-                                    <th>Estado DIAN</th>
-                                    <th>Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                 <input class="test" type="hidden" id="test" name="test" style="display: none">
-                            </tbody>
-                        </table>
+        <br>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-striped" id="tfac">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll" name="selectAll" class="selectAll"></th>
+                                        <th>&nbsp; &nbsp;</th>
+                                        <th>Numero</th>
+                                        <th>OV</th>
+                                        <th>Fecha</th>
+                                        <th>Plazo</th>
+                                        <th>Razon Social</th>
+                                        <th>Nit</th>
+                                        <th>Tipo Cliente</th>
+                                        <th>Vendedor</th>
+                                        <th>Valor bruto</th>
+                                        <th>Descuento</th>
+                                        <th>IVA</th>
+                                        <th>Motivo</th>
+                                        <th>Estado DIAN</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     <input class="test" type="hidden" id="test" name="test" style="display: none">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-sensory" id="Modal" tabindex="-1" role="dialog" aria-labelledby="modalsensory" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="titleModal"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="bodyModal">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade modal-sensory" id="Modal" tabindex="-1" role="dialog" aria-labelledby="modalsensory" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="titleModal"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="bodyModal">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
-    <div role="dialog" tabindex="-1" class="modal fade bd-example-modal-xl" style="margin: -10px;" id="InfoWsInvoice">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-left">
-                    <h4 class="modal-title">Informacion de Factura #</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
-                <div class="modal-body"><label style="font-size: 20px;"></label>
-                    <div class="row" style="margin-right: 1% !important; margin-left: 1% !important;">
-                        <div class="col-sm-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Estado envio Cliente</h4>
-                                    <h6 class="text-muted card-subtitle mb-2">Informacion sobre el estado de envio al cliente</h6><label>Estado:</label>
+        <div role="dialog" tabindex="-1" class="modal fade bd-example-modal-xl" style="margin: -10px;" id="InfoWsInvoice">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-left">
+                        <h4 class="modal-title">Informacion de Factura #</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                    <div class="modal-body"><label style="font-size: 20px;"></label>
+                        <div class="row" style="margin-right: 1% !important; margin-left: 1% !important;">
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Estado envio Cliente</h4>
+                                        <h6 class="text-muted card-subtitle mb-2">Informacion sobre el estado de envio al cliente</h6><label>Estado:</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="card">
-                                <div class="card-body" id="testionwsda">
-                                    <h4 class="card-title">Estado envio Cliente</h4>
-                                    <h6 class="text-muted card-subtitle mb-2">Informacion sobre el estado de envio al cliente</h6>
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-body" id="testionwsda">
+                                        <h4 class="card-title">Estado envio Cliente</h4>
+                                        <h6 class="text-muted card-subtitle mb-2">Informacion sobre el estado de envio al cliente</h6>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-light" type="button" data-dismiss="modal">Cerrar</button>
+                    <div class="modal-footer">
+                        <button class="btn btn-light" type="button" data-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="Errors" id="Errors" style="display: none !important;">
+        <div class="Errors" id="Errors" style="display: none !important;">
 
-    </div>
+        </div>
     @else
-        <div class="alert alert-danger" role="alert">
-            No tienes permisos para visualizar las Facturas.
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-exclamation-triangle fa-4x" style="color: red"></i>
+                <h3 class="card-title" style="color: red"> ACCESO DENEGADO </h3>
+                <h3 class="card-text" style="color: red">No tiene permiso para usar esta aplicación, por favor comuníquese a la ext: 102 o escribanos al correo electrónico: auxsistemas@estradavelasquez.com para obtener acceso.</h3>
+            </div>
         </div>
     @endcan
     <style>

@@ -153,8 +153,6 @@ $(document).ready(function(){
         });
 
 
-
-
         $('body').on('click', '.editsublinea', function () {
             document.getElementById("cod").readOnly = true;
             var sublinea_id = $(this).data('id');
