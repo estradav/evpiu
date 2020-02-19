@@ -154,7 +154,7 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <b>RESPOSABLE IVA:</b>
-                                                    @if($cliente[0]->ResponsableIVA == null || 0)
+                                                    @if($cliente[0]->RESPONSABLEIVA == null || 0)
                                                         <label class="text-danger">NO</label>
                                                     @else
                                                         <label class="text-success">SI</label>
