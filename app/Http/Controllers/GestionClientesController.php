@@ -25,14 +25,10 @@ class GestionClientesController extends Controller
 
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/show" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/show" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i> Ver Cliente</a>';
                     return $btn;
                 })
-                ->addColumn('info', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/show" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i></a>';
-                    return $btn;
-                })
-                ->rawColumns(['opciones','info'])
+                ->rawColumns(['opciones'])
                 ->make(true);
         }
         return view('GestionClientes.index');
@@ -96,11 +92,6 @@ class GestionClientesController extends Controller
                 ->get();
         }
         return response()->json($Tipo_cliente);
-    }
-
-    public function GuardarCliente(Request $request)
-    {
-        DB::beginTransaction();
     }
 
     public function GetSellerList(Request $request)
@@ -355,7 +346,7 @@ class GestionClientesController extends Controller
 
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="javascript:void(0)" class="btn btn-sm btn-outline-light Sync-DMS" id="'.trim($row->CodigoMAX).'"><i class="fas fa-sync-alt"></i> Sync</a>';
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="javascript:void(0)" class="btn btn-sm btn-outline-light Sync-DMS" id="'.trim($row->CodigoMAX).'"><i class="fas fa-sync fa-spin"></i> Sincronizar</a>';
                     return $btn;
                 })
 
@@ -1316,4 +1307,270 @@ class GestionClientesController extends Controller
         return datatables::of($data)
             ->make(true);
     }
+
+    public function SaveNewCustomer(Request $request)
+    {
+        $tax_code = '';
+        $gran_contri = '0';
+        $rut_entrega = '0';
+        $termino_dms = '';
+
+        // campos que deben de ir con espacios en blanco
+        $direccion2 = '';
+        $codigo_postal = '';
+        $telefono_2 = '';
+        $celular = '';
+
+        if ($request->M_direccion2 == null){
+            $direccion2 = ' ';
+        }else{
+            $direccion2 = $request->M_direccion2;
+        }
+
+        if ($request->M_Codigo_postal == null){
+            $codigo_postal = ' ';
+        }else{
+            $codigo_postal = $request->M_Codigo_postal;
+        }
+
+        if ($request->M_Telefono2 == null){
+            $telefono_2 = ' ';
+        }else{
+            $telefono_2 = $request->M_Telefono2;
+        }
+
+        if ($request->M_Celular == null){
+            $celular = ' ';
+        }else{
+            $celular = $request->M_Celular;
+        }
+
+
+        if ($request->M_Gravado == 'Y'){
+            $tax_code = 'IVA-V19';
+        }
+
+        if ($request->M_gran_contribuyente == 'on'){
+            $gran_contri = '1';
+        }
+
+        if ($request->M_rut_entregado == 'on'){
+            $rut_entrega = '1';
+        }
+
+
+        if ($request->M_Plazo == '00'){
+            //180 dias
+            $termino_dms = '10';
+        }elseif ($request->M_Plazo == '01'){
+            //contado
+            $termino_dms = '01';
+        }elseif ($request->M_Plazo == '02'){
+            //30 dias
+            $termino_dms = '02';
+        }elseif ($request->M_Plazo == '03'){
+            //60 dias
+            $termino_dms = '03';
+        }elseif ($request->M_Plazo == '04'){
+            //45 dias
+            $termino_dms = '04';
+        }elseif ($request->M_Plazo == '05'){
+            //90 dias
+            $termino_dms = '05';
+        }elseif ($request->M_Plazo == '06'){
+            //15 dias
+            $termino_dms = '06';
+        }elseif ($request->M_Plazo == '07'){
+            //120 dias
+            $termino_dms = '07';
+        }elseif ($request->M_Plazo == '08'){
+            //75 dias
+            $termino_dms = '08';
+        }elseif ($request->M_Plazo == '09'){
+            //150 dias
+            $termino_dms = '09';
+        }elseif ($request->M_Plazo == '15'){
+            //8 dias
+            $termino_dms = '15';
+        }elseif ($request->M_Plazo == '16'){
+            //360 dias
+            $termino_dms = '16';
+        }elseif ($request->M_Plazo == '18'){
+            //70 dias
+            $termino_dms = '18';
+        }
+
+        $correos_copia = $request->Correos_copia;
+        $correos_copia = str_replace(",",";",$correos_copia);
+
+
+        $dms_id_def_trib_tipo = DB::connection('MAX')
+            ->table('Customer_Types')
+            ->where('CUSTYP_62','=',$request->M_Tipo_cliente)
+            ->pluck('UDFREF_62');
+
+
+        $territorio_cliente = DB::connection('MAX')
+            ->table('Sales_Rep_Master')
+            ->where('SLSREP_26','=',$request->M_vendedor)
+            ->pluck('SLSTER_26');
+
+
+        $apellidos_lenght = $request->M_primer_apellido.' '.$request->M_segundo_apellido;
+        $apellidos_lenght = strlen($apellidos_lenght);
+
+        DB::beginTransaction();
+         try {
+             DB::connection('MAX')
+                 ->table('Customer_Master')
+                 ->insert([
+                     'CUSTID_23'    =>  $request->M_Nit_cc,
+                     'SLSREP_23'    =>  $request->M_vendedor,
+                     'STATUS_23'    =>  'H',
+                     'CUSTYP_23'    =>  $request->M_Tipo_cliente,
+                     'NAME_23'      =>  $request->M_primer_nombre.' '.$request->M_segundo_nombre.' '.$request->M_primer_apellido.' '.$request->M_segundo_apellido,
+                     'ADDR1_23'     =>  $request->M_direccion1,
+                     'ADDR2_23'     =>  $direccion2,
+                     'CITY_23'      =>  $request->ciudad,
+                     'STATE_23'     =>  $request->departamento,
+                     'ZIPCD_23'     =>  $codigo_postal,
+                     'CNTRY_23'     =>  $request->pais,
+                     'SLSTER_23'    =>  $territorio_cliente[0],
+                     'CNTCT_23'     =>  $request->M_Contacto,
+                     'PHONE_23'     =>  $request->M_Telefono,
+                     'EMAIL1_23'    =>  $request->M_Email_contacto,
+                     'EMAIL2_23'    =>  $request->M_Email_facturacion,
+                     'TELEX_23'     =>  $telefono_2,
+                     'FAXNO_23'     =>  $celular,
+                     'TAXABL_23'    =>  $request->M_Gravado,
+                     'TXCDE1_23'    =>  $tax_code,
+                     'TERMS_23'     =>  $request->M_Plazo,
+                     'DSCRTE_23'    =>  $request->M_Porcentaje_descuento,
+                     'SHPVIA_23'    =>  $request->M_Forma_envio,
+                     'SLSMTD_23'    =>  '0',
+                     'COGMTD_23'    =>  '0',
+                     'SLSYTD_23'    =>  '0',
+                     'COGYTD_23'    =>  '0',
+                     'COGLYR_23'    =>  '0',
+                     'UNPORD_23'    =>  '0',
+                     'NEWDTE_23'    =>  Carbon::now(),
+                     'DISCPF_23'    =>  'B',
+                     'ALWBCK_23'    =>  'N',
+                     'CHGDTE_23'    =>  Carbon::now(),
+                     'CURR_23'      =>  $request->M_Moneda,
+                     'COMMIS_23'    =>  '0',
+                     'UDFKEY_23'    =>  $request->M_Nit_cc.'-'.$request->M_Nit_cc_dg,
+                     'CreatedBy'    =>  $request->username,
+                     'CreationDate' =>  Carbon::now(),
+                     'VATSUSP_23'   =>  'N',
+                     'COMNT1_23'    =>  ' ',
+                     'COMNT2_23'    =>  ' ',
+                     'TAXNUM_23'    =>  ' ',
+                     'TXCDE2_23'    =>  ' ',
+                     'TXCDE3_23'    =>  ' ',
+                     'CLIMIT_23'    =>  ' ',
+                     'STMNTS_23'    =>  ' ',
+                     'FINCHG_23'    =>  ' ',
+                     'XURR_23'      =>  ' ',
+                     'FOB_23'       =>  ' ',
+                     'SLSLYR_23'    =>  ' ',
+                     'TAXPRV_23'    =>  ' ',
+                     'ADDR3_23'     =>  ' ',
+                     'ADDR4_23'     =>  ' ',
+                     'ADDR5_23'     =>  ' ',
+                     'ADDR6_23'     =>  ' ',
+                     'MCOMP_23'     =>  ' ',
+                     'MSITE_23'     =>  ' ',
+                     'UDFREF_23'    =>  ' ',
+                     'SHPCDE_23'    =>  ' ',
+                     'SHPTHRU_23'   =>  ' '
+                 ]);
+
+             DB::connection('MAX')
+                 ->table('Customer_Master_Ext')
+                 ->insert([
+                     'CUSTID_23'            =>  $request->M_Nit_cc,
+                     'GRUPOECON'            =>  $request->M_grupo_economico,
+                     'TipoIdent'            =>  $request->M_tipo_doc,
+                     'GranContr'            =>  $gran_contri,
+                     'ActividadPrincipal'   =>  $request->M_actividad_principal,
+                     'RUT'                  =>  $rut_entrega,
+                     'ResponsableFE'        =>  $request->M_responsable_fe,
+                     'telFE'                =>  $request->M_telefono_fe,
+                     'CorreosCopia'         =>  $correos_copia,
+                     'ResponsableIVA'       =>  '',
+                     'CiudadExterior'       =>  ''
+             ]);
+
+
+             DB::connection('DMS')
+                 ->table('terceros')
+                 ->insert([
+                     'nit'                              =>  $request->M_Nit_cc,
+                     'digito'                           =>  $request->M_Nit_cc_dg,
+                     'nombres'                          =>  $request->M_primer_nombre.' '.$request->M_segundo_nombre.' '.$request->M_primer_apellido.' '.$request->M_segundo_apellido,
+                     'direccion'                        =>  $request->M_direccion1,
+                     'ciudad'                           =>  $request->ciudad,
+                     'telefono_1'                       =>  $request->M_Telefono,
+                     'telefono_2'                       =>  $request->M_Telefono2,
+                     'tipo_identificacion'              =>  $request->M_tipo_doc, // pendiente por que los valores deben ser equivalentes en max
+                     'pais'                             =>  $request->pais,
+                     'gran_contribuyente'               =>  '0',
+                     'autoretenedor'                    =>  '0',
+                     'bloqueo'                          =>  '0',
+                     'concepto_1'                       =>  $request->M_tipo_tercero_dms,
+                     'concepto_2'                       =>  '1', // territorio del vendedor
+                     'concepto_3'                       =>  '15',
+                     'concepto_4'                       =>  $request->M_tipo_client_dms,
+                     'mail'                             =>  $request->M_Email_contacto,
+                     'pos_num'                          =>  $apellidos_lenght,
+                     'regimen'                          =>  $request->M_tipo_regimen_dms, // validar con martin
+                     'cupo_credito'                     =>  '0',
+                     'nit_real'                         =>  intval($request->M_Nit_cc),
+                     'condicion'                        =>  $termino_dms,
+                     'vendedor'                         =>  intval($request->M_vendedor),
+                     'contacto_1'                       =>  $request->M_Contacto,
+                     'fecha_creacion'                   =>  Carbon::now(),
+                     'descuento_fijo'                   =>  $request->M_Porcentaje_descuento,
+                     'centro_fijo'                      =>  '0',
+                     'y_dpto'                           =>  $request->M_Departamento,
+                     'y_ciudad'                         =>  $request->M_Ciudad,
+                     'celular'                          =>  $request->M_Celular,
+                     'razon_comercial'                  =>  $request->M_Razon_comercial,
+                     'y_pais'                           =>  $request->M_Pais,
+                     'codigo_alterno'                   =>  $request->M_Nit_cc,
+                     'usuario'                          =>  $request->username,
+                     'sincronizado'                     =>  'N',
+                     'id_definicion_tributaria_tipo'    =>  $dms_id_def_trib_tipo[0],
+                     'tieneRUT'                         =>  $rut_entrega,
+                     'codigoPostal'                     =>  $request->M_Codigo_postal,
+                 ]);
+
+
+             DB::connection('DMS')
+                 ->table('terceros_nombres')
+                 ->insert([
+                     'nit'                  =>  $request->M_Nit_cc,
+                     'primer_apellido'      =>  $request->M_primer_apellido,
+                     'segundo_apellido'     =>  $request->M_segundo_apellido,
+                     'primer_nombre'        =>  $request->M_primer_nombre,
+                     'segundo_nombre'       =>  $request->M_segundo_nombre
+                 ]);
+
+             DB::commit();
+
+             return response()->json(['Success' => 'Guardado con exito!'],200);
+
+         }catch (\Exception $e){
+             DB::rollback();
+             echo json_encode(array(
+                 'error' => array(
+                     'msg' => $e->getMessage(),
+                     'code' => $e->getCode(),
+                     'code2' =>$e->getLine(),
+                 ),
+             ));
+         }
+    }
+
 }

@@ -331,6 +331,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('update_phonefe','GestionClientesController@UpdatePhoneFe');
             Route::post('update_codecityext','GestionClientesController@UpdateCodeCityExt');
             Route::post('update_groupeconomic','GestionClientesController@UpdateGroupEconomic');
+            Route::post('save_new_customer','GestionClientesController@SaveNewCustomer');
 
 
 
