@@ -20,9 +20,11 @@
                 </a>
 
                 <div class="col-md-0 float-right">
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" style="align-items: flex-end">
-                        <i class="fas fa-user-plus"></i>  Crear Cliente
-                    </button>
+                    @can('gestion_clientes.crear_cliente')
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" style="align-items: flex-end">
+                            <i class="fas fa-user-plus"></i>  Crear Cliente
+                        </button>
+                    @endcan
                 </div>
 
             </div>
@@ -31,11 +33,11 @@
                     <table class="table table-responsive table-striped CustomerTable" id="CustomerTable">
                         <thead>
                             <tr>
-                                <th>Codigo Cliente</th>
-                                <th>Razon social</th>
-                                <th>Nit/CC</th>
-                                <th>Estado</th>
-                                <th>Opciones</th>
+                                <th>CODIGO CLIENTE</th>
+                                <th>RAZON SOCIAL</th>
+                                <th>NIT / CC</th>
+                                <th>ESTADO</th>
+                                <th>OPCIONES</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,9 +46,9 @@
                 </div>
             </div>
         </div>
-
+        @can('gestion_clientes.clientes_sin_sincronizar')
         <div class="row">
-            <div class="col-sm-6 ">
+            <div class="col-sm-12 ">
                 <div class="card">
                     <div class="card-header">
                         Clientes MAX
@@ -58,40 +60,13 @@
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped ClientsMax" id="ClientsMax">
                                 <thead>
-                                <tr>
-                                    <th>Codigo</th>
-                                    <th>Razon social</th>
-                                    <th>Nit/CC</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 ">
-                <div class="card">
-                    <div class="card-header">
-                        Clientes DMS
-                        <a class="right InfoCustomersTooltip" title="" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Esta tabla muestra los clientes que solo existen en DMS">
-                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-responsive table-striped ClientsDMS" id="ClientsDMS">
-                                <thead>
-                                <tr>
-                                    <th>Codigo</th>
-                                    <th>Razon social</th>
-                                    <th>Nit/CC</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
+                                    <tr>
+                                        <th>CODIGO CLIENTE</th>
+                                        <th>RAZON SOCIAL</th>
+                                        <th>NIT / CC</th>
+                                        <th>ESTADO</th>
+                                        <th>OPCIONES</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -101,6 +76,7 @@
                 </div>
             </div>
         </div>
+        @endcan
 
         <div class="modal fade bd-example-modal-xl ModalClient" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -117,29 +93,44 @@
                                 <div class="row">
                                     <legend style="margin-left: 17px !important;">Informacion del cliente</legend>
                                     <div class="col-sm-3">
-                                        <label for="M_nombre">Nombre: *</label>
-                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Nombre del cliente o razon social">
+                                        <label for="M_primer_nombre">Primer Nombre: *</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Nombre del cliente o razon social, los campos como segundo nombre, primer apellido y segundo apellido solo aplican para persona natural">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
-                                        <input id="M_nombre" name="M_nombre" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                        <input id="M_primer_nombre" name="M_primer_nombre" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                     <div class="col-sm-3">
+                                        <label for="M_segundo_nombre">Segundo Nombre: </label>
+                                        <input id="M_segundo_nombre" name="M_segundo_nombre" type="text" class="form-control" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_primer_apellido">Primer Apellido: </label>
+                                        <input id="M_primer_apellido" name="M_primer_apellido" type="text" class="form-control" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_segundo_apellido">Segundo Apellido: </label>
+                                        <input id="M_segundo_apellido" name="M_segundo_apellido" type="text" class="form-control" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-4">
                                         <label for="M_Razon_comercial">Razon comercial:</label>
                                         <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Nombre como comunmente se conoce a la empresa">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
-                                        <input id="M_Razon_comercial" name="M_Razon_comercial" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                        <input id="M_Razon_comercial" name="M_Razon_comercial" type="text" class="form-control" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <label for="M_direccion1">Direccion 1:</label>
                                         <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Direccion principal del cliente">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
                                         <input id="M_direccion1" name="M_direccion1" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <label for="M_direccion2">Direccion 2:</label>
-                                        <input id="M_direccion2" name="M_direccion2" type="text" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                        <input id="M_direccion2" name="M_direccion2" type="text" class="form-control" value="        " onkeyup="this.value=this.value.toUpperCase();">
                                     </div>
                                 </div>
                                 <br>
@@ -193,44 +184,20 @@
                                         <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Email al que podemos enviar informacion importante">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
-                                        <input id="M_Email_contacto" name="M_Email_contacto" type="email" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                        <input id="M_Email_contacto" name="M_Email_contacto" type="email" class="form-control required" onkeyup="this.value=this.value.toLowerCase();">
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="M_Email_facturacion">E-mail Facturacion:</label>
                                         <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Email principal para envio de facturacion electronica">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
-                                        <input id="M_Email_facturacion" name="M_Email_facturacion" type="email" class="form-control required" onkeyup="this.value=this.value.toUpperCase();">
+                                        <input id="M_Email_facturacion" name="M_Email_facturacion" type="email" class="form-control required" onkeyup="this.value=this.value.toLowerCase();">
                                     </div>
                                 </div>
                             </fieldset>
 
                             <h3>Informacion adicional</h3>
                             <fieldset>
-                                <div class="row">
-                                    <legend style="margin-left: 17px !important;">Informacion adicional</legend>
-                                    <div class="col-sm-3">
-                                        <label for="M_Forma_envio">Forma de envio:</label>
-                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Forma en la que sera entregada la mercancia al cliente">
-                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
-                                        </a>
-                                        <select name="M_Forma_envio" id="M_Forma_envio" class="form-control">
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label for="M_FOB">FOB:</label>
-                                        <input id="M_FOB" name="M_FOB" type="text" class="form-control required">
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label for="M_Enviar_a:">Enviar a:</label>
-                                        <input id="M_Enviar_a" name="M_Enviar_a" type="text" class="form-control required">
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label for="M_Enviar_a_travez_de:">Enviar a travez de:</label>
-                                        <input id="M_Enviar_a_travez_de" name="M_Enviar_a_travez_de" type="text" class="form-control required">
-                                    </div>
-                                </div>
-                                <br>
                                 <div class="row">
                                     <legend style="margin-left: 17px !important;">Informacion fiscal</legend>
                                     <div class="col-sm-3">
@@ -240,20 +207,27 @@
                                         </a>
                                         <select name="M_Gravado" id="M_Gravado" class="form-control">
                                             <option value="" selected>Seleccione...</option>
-                                            <option value="Y">Si</option>
-                                            <option value="N">No</option>
+                                            <option value="Y">SI</option>
+                                            <option value="N">NO</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-3">
-                                        <label for="M_Codigo_fiscal_1">Codigo fiscal 1:</label>
-                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Codigo fiscal (Se puede consultar de MAX)">
+                                        <label for="M_vendedor">Vendedor:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Selecciona 'si' si el cliente es responsable de IVA">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
-                                        <input id="M_Codigo_fiscal_1" name="M_Codigo_fiscal_1" type="number" class="form-control required">
+                                        <select name="M_vendedor" id="M_vendedor" class="form-control">
+                                        </select>
                                     </div>
                                     <div class="col-sm-3">
-                                        <label for="M_Codigo_fiscal_2">Codigo fiscal 2:</label>
-                                        <input id="M_Codigo_fiscal_2" name="M_Codigo_fiscal_2" type="number" class="form-control required">
+                                        <label for="M_tipo_doc">Tipo Documento:</label>
+                                        <select name="M_tipo_doc" id="M_tipo_doc" class="form-control">
+                                            <option value="" selected>Seleccione...</option>
+                                            <option value="C">Ceduda de ciudadania</option>
+                                            <option value="N">NIT</option>
+                                            <option value="E">Cedula de extrangeria</option>
+                                            <option value="T">Tarjeta de identidad</option>
+                                        </select>
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_Nit_cc">NIT/CC:</label>
@@ -270,6 +244,14 @@
                                 <div class="row">
                                     <legend style="margin-left: 17px !important;">Finanzas</legend>
                                     <div class="col-sm-3">
+                                        <label for="M_Forma_envio">Forma de envio:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Forma en la que sera entregada la mercancia al cliente">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
+                                        <select name="M_Forma_envio" id="M_Forma_envio" class="form-control">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
                                         <label for="M_Plazo">Plazo:</label>
                                         <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Plazo de pago para las compras">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
@@ -282,8 +264,50 @@
                                         <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Porcentaje de descuento acordado para el cliente">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
-                                        <input id="M_Porcentaje_descuento" name="M_Porcentaje_descuento" type="number" class="form-control required">
+                                        <input id="M_Porcentaje_descuento" name="M_Porcentaje_descuento" type="number" class="form-control required" value="0">
                                     </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_actividad_principal">Actividad principal:</label>
+                                        <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Codigo de la actividad principal del client, esta informacion se puede consultar en el RUT">
+                                            <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
+                                        </a>
+                                        <input id="M_actividad_principal" name="M_actividad_principal" type="number" class="form-control required">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <legend style="margin-left: 17px !important;">Conceptos DMS</legend>
+                                    <div class="col-sm-3">
+                                        <label for="M_tipo_tercero_dms">Tipo de tercero:</label>
+                                        <select name="M_tipo_tercero_dms" id="M_tipo_tercero_dms" class="form-control">
+                                            <option value="">Seleccione...</option>
+                                            <option value="1">Cliente</option>
+                                            <option value="5">Cliente y Proveedor</option>
+                                            <option value="6">Cliente, Proveedor y Usuario</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_tipo_client_dms">Tipo de cliente:</label>
+                                        <select name="M_tipo_client_dms" id="M_tipo_client_dms" class="form-control">
+                                            <option value="">Seleccione...</option>
+                                            <option value="1">Nacional</option>
+                                            <option value="3">Exterior</option>
+                                            <option value="4">Zona Franca</option>
+                                            <option value="2">CI</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label for="M_tipo_regimen_dms">Regimen:</label>
+                                        <select name="M_tipo_regimen_dms" id="M_tipo_regimen_dms" class="form-control">
+                                            <option value="">Seleccione...</option>
+                                            <option value="1">Comun</option>
+                                            <option value="3">Simplificado</option>
+                                            <option value="4">Persona Natural</option>
+                                            <option value="2">CI</option>
+                                        </select>
+                                    </div>
+
+
                                 </div>
                             </fieldset>
 
@@ -317,7 +341,7 @@
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <label for="M_responsable_fe">Responsable FE:</label>
-                                        <input id="M_responsable_fe" name="M_responsable_fe" type="text" class="form-control">
+                                        <input id="M_responsable_fe" name="M_responsable_fe" type="text" class="form-control" onkeyup="this.value=this.value.toLowerCase();">
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_telefono_fe">Telefono FE:</label>
@@ -329,7 +353,7 @@
                                     </div>
                                     <div class="col-sm-3">
                                         <label for="M_grupo_economico">Grupo Economico:</label>
-                                        <input id="M_grupo_economico" name="M_grupo_economico" type="text" class="form-control">
+                                        <input id="M_grupo_economico" name="M_grupo_economico" type="text" class="form-control" onkeyup="this.value=this.value.toLowerCase();">
                                     </div>
                                 </div>
                                 <br>
@@ -724,6 +748,8 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
+                var Username =  @json(Auth::user()->username);
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -867,8 +893,63 @@
                     },
                     onFinished: function (event, currentIndex)
                     {
-                    	var fob = $('#M_FOB').val();
-                        alert('Este es el valor de Fob: '+fob)
+                        var data_form = $('#example-advanced-form').serializeArray();
+                        var correos_copia = {
+                            name: "Correos_copia",
+                            value:  $('#M_correos_copia').val()
+                        };
+
+                        var pais = {
+                            name: 'pais',
+                            value: $('select[name="M_Pais"] option:selected').text()
+                        };
+
+                        var departamento = {
+                            name: 'departamento',
+                            value: $('select[name="M_Departamento"] option:selected').text()
+                        };
+
+                        var ciudad = {
+                            name: 'ciudad',
+                            value: $('select[name="M_Ciudad"] option:selected').text()
+                        };
+
+                        var username = {
+                            name: 'username',
+                            value: Username
+                        };
+
+                        data_form.push(correos_copia);
+                        data_form.push(pais);
+                        data_form.push(departamento);
+                        data_form.push(ciudad);
+                        data_form.push(username);
+
+
+                    	$.ajax({
+                            url: 'save_new_customer',
+                            type: 'post',
+                            data: data_form,
+                            success: function () {
+                                $('#exampleModalCenter').modal('hide');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Guardardo',
+                                    text: 'El cliente fue creado con exito!',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Aceptar',
+                                })
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: data.message,
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Aceptar',
+                                })
+                            }
+                        })
                     }
                 }).validate({
                     errorPlacement: function errorPlacement(error, element)
@@ -903,6 +984,18 @@
                         M_Ciudad: {
                             selectcheck: true
                         },
+                        M_tipo_doc: {
+                            selectcheck: true
+                        },
+                        M_tipo_tercero_dms: {
+                            selectcheck: true
+                        },
+                        M_tipo_client_dms: {
+                            selectcheck: true
+                        },
+                        M_tipo_regimen_dms: {
+                            selectcheck: true
+                        },
                         M_Contacto: {
                             required: true,
                             minlength: 4,
@@ -932,22 +1025,13 @@
                         M_Email_facturacion: {
                             Emailcheck: true
                         },
-                        M_FOB: {
-                        	required: false,
-                        },
                         M_Porcentaje_descuento: {
                             digits: true,
                             max: 100,
                             min: 0
                         },
-                        M_Enviar_a: {
-                        	required: false
-                        },
-                        M_Enviar_a_travez_de: {
-                            required: false
-                        },
-                        M_Codigo_fiscal_1: {
-                        	required: true,
+                        M_actividad_principal: {
+                        	required: false,
                             maxlength: 7,
                             minlength: 3
                         },
@@ -975,7 +1059,6 @@
                         M_Tipo_cliente: {
                             selectcheck: true
                         }
-
                     },
                     messages:{
                         M_Nit_cc: "",
@@ -987,6 +1070,12 @@
                 });
                 getPlazo();
                 getFormaEnvio();
+                get_paises();
+                tipo_cliente();
+                IgualarDivs();
+                loadClientesFaltantesDms();
+                getOptionsVendedores();
+
                 function getPlazo(){
                     $.ajax({
                         type: "get",
@@ -995,7 +1084,7 @@
                             var i = 0;
                             $('#M_Plazo').append('<option value="" >Seleccione...</option>');
                             $(data).each(function (){
-                                $('#M_Plazo').append('<option value="'+ data[i].DESC_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
+                                $('#M_Plazo').append('<option value="'+ data[i].CODE_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
                                 i++
                             });
                         }
@@ -1010,31 +1099,89 @@
                             var i = 0;
                             $('#M_Forma_envio').append('<option value="" >Seleccione...</option>');
                             $(data).each(function (){
-                                $('#M_Forma_envio').append('<option value="'+ data[i].DESC_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
+                                $('#M_Forma_envio').append('<option value="'+ data[i].CODE_36.trim() +'" >'+ data[i].DESC_36.trim() +'</option>');
                                 i++
                             });
                         }
                     })
                 }
 
-                $('#M_correos_copia').select2({
-                    createTag: function(term, data) {
-                        var value = term.term;
-                        if(validateEmail(value)) {
-                            return {
-                                id: value,
-                                text: value
+                function IgualarDivs(){
+                    var altura_arr = [];
+                    $('.igualar').each(function(){
+                        var altura = $(this).height();
+                        altura_arr.push(altura);
+                    });
+                    altura_arr.sort(function(a, b){return b-a});
+                    $('.igualar').each(function(){
+                        $(this).css('height',altura_arr[0]);
+                    });
+                }
 
-                            };
+                function tipo_cliente() {
+                    $.ajax({
+                        type: "get",
+                        url: '/get_tipo_cliente',
+                        success: function (data) {
+                            var i = 0;
+                            $('#M_Tipo_cliente').append('<option value="">Seleccione...</option>');
+                            $(data).each(function () {
+                                $('#M_Tipo_cliente').append('<option value="'+data[i].CUSTYP_62 +'">'+data[i].DESC_62+'</option>');
+                                i++;
+                            });
                         }
-                        return null;
-                    },
-                    placeholder: "Escribe uno o varios email..",
-                    tags: true,
-                    tokenSeparators: [',', ' ',';'],
-                    width: '100%',
-                });
+                    })
+                }
 
+                function loadClientesFaltantesDms() {
+                    $('.ClientsMax').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        responsive: false,
+                        autoWidth: false,
+                        width:"100%",
+                        ajax: {
+                            url: '/ClientesFaltantesDMS'
+                        },
+                        columns: [
+                            {data:'CodigoMAX', name:'CodigoMAX'},
+                            {data:'NombreMAX', name:'NombreMAX'},
+                            {data:'NITMAX', name:'NITMAX'},
+                            {data:'EstadoMAX', name:'EstadoMAX', orderable:false, searchable:false},
+                            {data:'opciones', name:'opciones', orderable:false, searchable:false},
+                        ],
+
+                        language: {
+                            processing: "Procesando...",
+                            search: "Buscar&nbsp;:",
+                            lengthMenu: "Mostrar _MENU_ registros",
+                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                            infoPostFix: "",
+                            loadingRecords: "Cargando...",
+                            zeroRecords: "No se encontraron resultados",
+                            emptyTable: "Ningún registro disponible en esta tabla :C",
+                            paginate: {
+                                first: "Primero",
+                                previous: "Anterior",
+                                next: "Siguiente",
+                                last: "Ultimo"
+                            },
+                            aria: {
+                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                                sortDescending: ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
+                        rowCallback: function (row, data, index) {
+                            if(data.estado == 'R'){
+                                $(row).find('td:eq(3)').html('<label class="text-danger">Retenido</label>');
+                            }else{
+                                $(row).find('td:eq(3)').html('<label class="text-success">Liberado</label>');
+                            }
+                        }
+                    });
+                }
 
                 function get_paises(){
                     $.ajax({
@@ -1051,11 +1198,24 @@
                     })
                 }
 
-                get_paises();
-
                 function validateEmail(email) {
                     var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     return re.test(email);
+                }
+
+                function getOptionsVendedores(){
+                    $.ajax({
+                        type: "get",
+                        url: '/get_sellerlist',
+                        success: function (data) {
+                            var i = 0;
+                            $('#M_vendedor').append('<option value="" >Seleccione...</option>');
+                            $(data).each(function (){
+                                $('#M_vendedor').append('<option value="'+  data[i].SLSREP_26.trim() +'" >'+ data[i].SLSNME_26.trim() +'</option>');
+                                i++
+                            });
+                        }
+                    })
                 }
 
                 jQuery.validator.addMethod("selectcheck", function(value){
@@ -1107,96 +1267,65 @@
                         }
                     })
                 });
-                tipo_cliente();
 
-                function tipo_cliente() {
-                    $.ajax({
-                        type: "get",
-                        url: '/get_tipo_cliente',
-                        success: function (data) {
-                            var i = 0;
-                            $('#M_Tipo_cliente').append('<option value="">Seleccione...</option>');
-                            $(data).each(function () {
-                                $('#M_Tipo_cliente').append('<option value="'+data[i].CUSTYP_62 +'">'+data[i].DESC_62+'</option>');
-                                i++;
-                            });
+                $('#M_correos_copia').select2({
+                    createTag: function(term, data) {
+                        var value = term.term;
+                        if(validateEmail(value)) {
+                            return {
+                                id: value,
+                                text: value
+
+                            };
+                        }
+                        return null;
+                    },
+                    placeholder: "Escribe uno o varios email..",
+                    tags: true,
+                    tokenSeparators: [',', ' ',';'],
+                    width: '100%',
+                });
+
+                $('body').on('click','.Sync-DMS',function () {
+                    var id = this.id;
+                    Swal.mixin({
+                        confirmButtonText: 'Siguiente &rarr;',
+                        cancelButtonText: 'Cancelar',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        progressSteps: ['1', '2', '3']
+                    }).queue([
+                        {
+                            title: 'Question 1',
+                            text: 'Chaining swal2 modals is easy',
+                            html: '<label>Nombres</label><br> ' +
+                                '<input type="text" class="form-control"><br> ' +
+                                '<label>Apellido</label> <br>' +
+                                ' <input type="text" class="form-control">'
+                        },
+                        {
+                            title: 'Question 2',
+                            text: 'Chaining swal2 modals is easy',
+                            html: '<input type="text" class="form-control">',
+                        },
+                        'Question 3'
+                    ]).then((result) => {
+                        if (result.value) {
+                            const answers = JSON.stringify(result.value);
+                            Swal.fire({
+                                title: 'All done!',
+                                html: `
+                                        Your answers:
+                                        <pre><code>${answers}</code></pre>
+                                      `,
+                                confirmButtonText: 'Lovely!'
+                            })
                         }
                     })
-                }
-                loadClientesFaltantesDms();
+                });
 
-                function IgualarDivs(){
-                    var altura_arr = [];
-                    $('.igualar').each(function(){
-                        var altura = $(this).height();
-                        altura_arr.push(altura);
-                    });
-                    altura_arr.sort(function(a, b){return b-a});
-                    $('.igualar').each(function(){
-                        $(this).css('height',altura_arr[0]);
-                    });
-                }
-
-                function loadClientesFaltantesDms()
-                {
-                    $('.ClientsMax').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        responsive: false,
-                        autoWidth: false,
-                        width:"100%",
-                        ajax: {
-                            url: '/ClientesFaltantesDMS'
-                        },
-                        columns: [
-                            {data:'CodigoMAX', name:'CodigoMAX'},
-                            {data:'NombreMAX', name:'NombreMAX'},
-                            {data:'NITMAX', name:'NITMAX'},
-                            {data:'EstadoMAX', name:'EstadoMAX', orderable:false, searchable:false},
-                            {data:'opciones', name:'opciones', orderable:false, searchable:false},
-                        ],
-
-                        language: {
-                            processing: "Procesando...",
-                            search: "Buscar&nbsp;:",
-                            lengthMenu: "Mostrar _MENU_ registros",
-                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                            infoPostFix: "",
-                            loadingRecords: "Cargando...",
-                            zeroRecords: "No se encontraron resultados",
-                            emptyTable: "Ningún registro disponible en esta tabla :C",
-                            paginate: {
-                                first: "Primero",
-                                previous: "Anterior",
-                                next: "Siguiente",
-                                last: "Ultimo"
-                            },
-                            aria: {
-                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                                sortDescending: ": Activar para ordenar la columna de manera descendente"
-                            }
-                        },
-                        rowCallback: function (row, data, index) {
-                            if(data.estado == 'R'){
-                                $(row).find('td:eq(3)').html('<label class="text-danger">Retenido</label>');
-                            }else{
-                                $(row).find('td:eq(3)').html('<label class="text-success">Liberado</label>');
-                            }
-                        }
-                    });
-                }
-
-                IgualarDivs();
-
-
-                $('.ModalClient a[rel="tooltip"]')
-                    .tooltip({placement: 'right'})
-                    .data('tooltip')
-                    .tip()
-                    .css('z-index',2080);
-
+                $('.ModalClient a[rel="tooltip"]').tooltip({placement: 'right'}).data('tooltip').tip().css('z-index',2080);
             });
         </script>
 

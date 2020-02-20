@@ -1352,7 +1352,7 @@
                                 }
                             });
                             $.ajax({
-                                url: '/',
+                                url: '/update_cellphoneº',
                                 type: 'post',
                                 data: {
                                     result, cliente, username
@@ -2484,6 +2484,9 @@
                         }
                     })
                 });
+
+
+
             });
         </script>
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
