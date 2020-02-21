@@ -335,14 +335,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-
-
-
-
-
-
-
-
             Route::get('/accesos_remotos', function () {
                 return view('accesos_remotos');
             });
@@ -357,6 +349,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
             Route::resource('bitacoraomff','BitacoraOmffController');
+
         });
     });
 });

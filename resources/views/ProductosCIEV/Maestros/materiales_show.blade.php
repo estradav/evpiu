@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="cod" name="cod" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                <input type="text" class="form-control" id="codigo" name="codigo" onkeyup="this.value=this.value.toUpperCase();">
                             </div>
                         </div>
                         <div class="form-group">
@@ -97,7 +97,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Comentarios:</label>
                             <div class="col-sm-12">
-                                <textarea id="coments" name="coments" required="" class="form-control"></textarea>
+                                <textarea id="coments" name="coments" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-offset-2 col-sm-10">
