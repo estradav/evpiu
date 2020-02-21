@@ -34,7 +34,7 @@ class ProdCievCodMaterialController extends Controller
     public function store(Request $request)
     {
         CodMaterial::updateOrCreate(['id' => $request->material_id],
-            [   'cod'               => $request->cod,
+            [   'cod'               => $request->codigo,
                 'name'              => $request->name,
                 'mat_lineas_id'     => $request->mat_lineas_id,
                 'mat_sublineas_id'  => $request->mat_sublineas_id,
@@ -72,7 +72,7 @@ class ProdCievCodMaterialController extends Controller
         $UniqueCod = DB::table('cod_materials')
             ->where('mat_lineas_id','=',$request->linea)
             ->where('mat_sublineas_id','=',$request->sublinea)
-            ->where('cod','=',$request->cod)
+            ->where('cod','=',$request->codigo)
             ->count();
         if($UniqueCod == 0)
         {echo "true";}

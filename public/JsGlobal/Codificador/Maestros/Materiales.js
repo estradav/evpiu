@@ -50,18 +50,18 @@ $(document).ready(function(){
             $('#materialForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#materialmodal').modal('show');
-            document.getElementById("cod").readOnly = false;
+            document.getElementById("codigo").readOnly = false;
         });
 
         $('body').on('click', '.editmaterial', function () {
-            document.getElementById("cod").readOnly = true;
+            document.getElementById("codigo").readOnly = true;
             var material_id = $(this).data('id');
             $.get("/ProdCievCodMaterial" +'/' + material_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-Material");
                 $('#materialmodal').modal('show');
                 $('#material_id').val(data.id);
-                $('#cod').val(data.cod);
+                $('#codigo').val(data.cod);
                 $('#mat_lineas_id').val(data.mat_lineas_id);
                 $('#mat_sublineas_id').val(data.mat_sublineas_id);
                 $('#name').val(data.name);
@@ -104,7 +104,7 @@ $(document).ready(function(){
                 mat_sublineas_id: {
                     selectcheck: true,
                 },
-                cod: {
+                codigo: {
                     remote: {
                         url: '/GetUniqueCodMaterials',
                         type: 'POST',
@@ -124,7 +124,6 @@ $(document).ready(function(){
                 },
                 name: "required",
                 abreviatura: "required",
-                coments: "required"
             },
             highlight: function (element) {
                 // Only validation controls
@@ -142,7 +141,6 @@ $(document).ready(function(){
                     type: "POST",
                     dataType: 'json',
                     success: function (data) {
-
                         $('#materialForm').trigger("reset");
                         $('#materialmodal').modal('hide');
                         table.draw();

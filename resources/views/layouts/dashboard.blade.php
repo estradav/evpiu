@@ -9,6 +9,7 @@
     <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/styles/app.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/styles/main.css') }}">
+    <meta http-equiv="cache-control" content="no-cache">
     @stack('styles')
 </head>
 <body>

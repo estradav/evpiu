@@ -101,7 +101,6 @@ $(document).ready(function() {
                     },
                     name: "required",
                     abreviatura: "required",
-                    coments: "required"
                 },
                 highlight: function (element) {
                     $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
@@ -188,7 +187,6 @@ $(document).ready(function() {
                     },
                     name: "required",
                     abreviatura: "required",
-                    coments: "required"
                 },
                 highlight: function (element) {
                     $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
@@ -254,14 +252,8 @@ $(document).ready(function() {
                             )
                         }
                     });
-                } else if (
+                } else  {
                     result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    Swal.fire(
-                        'Cancelado',
-                        'El registro NO fue eliminado :)',
-                        'error'
-                    )
                 }
             })
         });

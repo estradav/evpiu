@@ -78,7 +78,6 @@ $(document).ready(function(){
             $('#sublineaForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#sublineamodal').modal('show');
-            document.getElementById("cod").readOnly = false;
         });
 
 
@@ -88,7 +87,7 @@ $(document).ready(function(){
                 lineas_id : {
                     selectcheck: true
                 },
-                cod: {
+                codigo: {
                     remote: {
                         url: '/GetUniqueCodSubLines',
                         type: 'POST',
@@ -105,7 +104,6 @@ $(document).ready(function(){
                 },
                 name: "required",
                 abreviatura: "required",
-                coments: "required"
             },
             highlight: function (element) {
                 // Only validation controls
@@ -123,7 +121,7 @@ $(document).ready(function(){
                 var Inputs = {
                     id: $('#sublinea_id').val(),
                     linea: $('#lineas_id').val(),
-                    cod: $('#cod').val(),
+                    cod: $('#codigo').val(),
                     hijo: $('#hijo').val(),
                     name: $('#name').val(),
                     abre: $('#abreviatura').val(),
@@ -154,15 +152,14 @@ $(document).ready(function(){
 
 
         $('body').on('click', '.editsublinea', function () {
-            document.getElementById("cod").readOnly = true;
+            document.getElementById("codigo").readOnly = true;
             var sublinea_id = $(this).data('id');
-            $('#cod').attr('formnovalidate',true);
             $.get("/ProdCievCodSublinea" +'/' + sublinea_id +'/edit', function (data) {
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-sublinea");
                 $('#sublineamodal').modal('show');
                 $('#sublinea_id').val(data.sublinea.id);
-                $('#cod').val(data.sublinea.cod);
+                $('#codigo').val(data.sublinea.cod);
                 $('#lineas_id').val(data.sublinea.lineas_id);
                 $('#name').val(data.sublinea.name);
                 $('#abreviatura').val(data.sublinea.abreviatura);
@@ -183,14 +180,13 @@ $(document).ready(function(){
                     lineas_id : {
                         selectcheck: true
                     },
-                    cod: {
+                    codigo: {
                         required: true,
                         maxlength: 2,
                         minlength: 2
                     },
                     name: "required",
                     abreviatura: "required",
-                    coments: "required"
                 },
                 highlight: function (element) {
                     // Only validation controls
@@ -208,7 +204,7 @@ $(document).ready(function(){
                     var Inputs = {
                         id: $('#sublinea_id').val(),
                         linea: $('#lineas_id').val(),
-                        cod: $('#cod').val(),
+                        codigo: $('#codigo').val(),
                         hijo: $('#hijo').val(),
                         name: $('#name').val(),
                         abre: $('#abreviatura').val(),
@@ -286,8 +282,7 @@ $(document).ready(function(){
         $('#sublineamodal').on('show.bs.modal', function (event) {
             $('#saveBtn').html('Guardar');
             $('.form-control').removeClass('is-invalid');
-            $("#sublineaForm").validate().resetForm();
-            $('#saveBtn').removeAttr('formnovalidate','');
+            $("#sublineaForm").trigger("reset");
             $('.error').remove();
             $('#um_id').html('');
             $('#car_um_id').html('');
@@ -333,7 +328,7 @@ $(document).ready(function(){
             required: true
         });
 
-        $('tbody').on( 'click', '.showMed', function () {
+        $('tbody').on('click', '.showMed', function () {
             var id =  this.id;
             $.ajax({
                 url: "/getUnidadMedidas",
