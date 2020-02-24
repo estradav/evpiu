@@ -126,7 +126,7 @@ class PronosticoController extends Controller
                 foreach($var as $v){
                     $Orden [] = DB::connection('MAX')
                         ->table('CIEV_V_EstadoOP')
-                        ->where('Expr1','=',$v->NumOrdProduct)
+                        ->where('ORDNUM_14','=',$v->NumOrdProduct)
                         ->get();
                 }
             }
