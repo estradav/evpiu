@@ -20,15 +20,15 @@
         "doctrine/dbal": "2.9.3",
         "fideloper/proxy": "^4.0",
         "genealabs/laravel-caffeine": "^1.0",
-        "laravel/framework": "6.12.*",
+        "laravel/framework": "6.16.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "6.0.*",
         "nnnick/chartjs": "^2.8",
         "phpmailer/phpmailer": "^6.1",
         "spatie/laravel-backup": "^6.7",
         "spatie/laravel-permission": "^3.0",
-        "yajra/laravel-datatables-oracle": "^9.6",
-      "ext-http": "*"
+        "yajra/laravel-datatables-oracle": "^9.6"
+
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
