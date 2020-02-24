@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 
 Route::get('/', 'BlogController@index')->name('blog');
@@ -334,10 +335,10 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('save_new_customer','GestionClientesController@SaveNewCustomer');
 
 
+            Route::get('/accesos_remotos','HomeController@AccesosRemotos');
 
-            Route::get('/accesos_remotos', function () {
-                return view('accesos_remotos');
-            });
+
+            
 
             //Backup
             Route::get('backup/download/{file_name}', 'BackupController@download');
