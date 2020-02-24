@@ -2318,20 +2318,6 @@ class FeFacturasController extends Controller
         Swift_Preferences::getInstance()->setCacheType('disk')->setTempDir('/tmp');
 
 
-     /*   Mail::queue('emails.shop_invoice', function($message) {
-            try {
-                $file = Config::get('invoice.path') . '/39/company/1/invoice/' . 'invoice27' . '.pdf';
-                $message->attach($file, array('as' => 'invoice', 'mime' => 'application/pdf'));
-
-                $message->to('myemail@gmail.com')->subject('test');
-            } catch (Exception $e) {
-
-            }
-        });*/
-
-
-
-
 
         Mail::send('mails.Facturacion_Electronica_Mail',$request->all(), function($msj) use($Archivos_pdf, $subject,$for){
             $msj->to($for);
@@ -2341,74 +2327,8 @@ class FeFacturasController extends Controller
 
         });
 
-
-
-
-
-
-
     }
 
-    public function InfoFacturaWebService(Request $request)
-    {
-        $Numero_Factura = $request->id;
 
-
-        $login1 = $request->Username;
-        $password = "FE2020ev*";
-        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
-        $client = new SoapClient($wsdl_url);
-        $client->__setLocation($wsdl_url);
-
-
-        $params = array(
-            'login' => $login1,
-            'password' => $password
-        );
-
-        $auth = $client->autenticar($params);
-        $respuesta = json_decode($auth->return);
-        $token = $respuesta->data->salida;
-
-
-        /*$params = array(
-            'token'                     =>  $token,
-            'iddocumentoelectronico'    =>  740295 //$idDocumentoElectronico[0]->id_factible,
-        );
-
-        $return = $client->obtenerEnvioCliente($params);*/
-
-
-        $params = array(
-            'token'                     => $token,
-            'idEmpresa'                 => '',
-            'idUsuario'                 => '',
-            'idEstadoEnvioCliente'      => '',
-            'idEstadoEnvioDian'         => '',
-            'fechaInicial'              => '2020-01-22',
-            'fechaFinal'                => '2020-01-23',
-            'fechaInicialReg'           => '',
-            'fechaFinalReg'             => '',
-            'idEstadoGeneracion'        => '',
-            'idTipoDocElectronico'      => '',
-            'numeroInicial'             => '',
-            'numeroFinal'               => '',
-            'idnumeracion'              => '',
-            'estadoAcuse'               => '',
-            'razonSocial'               => '',
-            'mulCodEstDian'             => '',
-            'tipoDocumento'             => '',
-            'idDocumento'               => '',
-            'idVerficacionFuncional'    => ''
-
-
-        );
-
-        $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
-
-        $return = json_decode($return->return);
-
-        dd($return);
-    }
 
 }
