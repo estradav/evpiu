@@ -7,8 +7,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="CodigoForm" name="CodigoForm" class="form-horizontal">
+            <form id="CodigoForm" name="CodigoForm" class="form-horizontal">
+                <div class="modal-body">
                     <input type="hidden" name="Codigo_id" id="Codigo_id">
                     <input type="hidden" name="ctp-g" id="ctp-g">
                     <input type="hidden" name="lin-g" id="lin-g">
@@ -101,13 +101,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

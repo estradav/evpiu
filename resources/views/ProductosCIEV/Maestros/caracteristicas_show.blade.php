@@ -6,35 +6,31 @@
 
 @section('subtitle', 'Es la máxima particularización de las lineas, con ellas se da un detalle mayor de las piezas.')
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('Prod_ciev_maestros_caracteristicas') }}
-@stop
-
 @section('content')
     @inject('Lineas','App\Services\Lineas')
     @can('maestro.caracteristica.view')
-    <div class="col-lg-4">
-        <div class="form-group">
-            @can('caracteristica.new')
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearCaracteristica">Nuevo</a>
-            @endcan
-        </div>
-    </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    <div class="col-md-0 float-right">
+                        @can('caracteristica.new')
+                            <a class="btn btn-primary" href="javascript:void(0)" id="CrearCaracteristica"><i class="fas fa-plus-circle"></i> Nuevo</a>
+                        @endcan
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped first data-table">
                             <thead>
                                 <tr>
-                                    <th>Linea</th>
-                                    <th>Sublinea</th>
-                                    <th>Codigo</th>
-                                    <th>Nombre</th>
-                                    <th>Comentarios</th>
-                                    <th>Ultima Actualizacion</th>
-                                    <th>Opciones</th>
+                                    <th>LINEA</th>
+                                    <th>SUBLINEA</th>
+                                    <th>CODIGO</th>
+                                    <th>NOMBRE</th>
+                                    <th>COMENTARIOS</th>
+                                    <th>ACTUALIZADO</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,8 +51,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form id="caracteristicaForm" name="caracteristicaForm" class="form-horizontal">
+                <form id="caracteristicaForm" name="caracteristicaForm" class="form-horizontal">
+                    <div class="modal-body">
                         <input type="hidden" name="caracteristica_id" id="caracteristica_id">
                         <div class="form-group">
                             <label for="car_lineas_id" class="col-sm-6 control-label">Linea:</label>
@@ -100,12 +96,12 @@
                                 <textarea id="coments" name="coments"  class="form-control"></textarea>
                             </div>
                         </div>
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

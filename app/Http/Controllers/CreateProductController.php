@@ -32,6 +32,12 @@ class CreateProductController extends Controller
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editsublinea" id="edit-btn">Editar</a>';
                     return $btn;
                 })
+                ->editColumn('CreationDate', function ($data) {
+                    return  \Carbon\Carbon::parse($data->CreationDate)->diffForHumans();
+                })
+                ->editColumn('update', function ($data) {
+                    return Carbon::parse($data->update)->diffForHumans();
+                })
                 ->rawColumns(['opciones'])
                 ->make(true);
         }

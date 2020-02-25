@@ -6,38 +6,36 @@
 
 @section('subtitle', 'División de las lineas que permiten granularizar las características de las piezas.')
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('Prod_ciev_maestros_sublineas') }}
-@stop
-
 @section('content')
     @inject('Lineas','App\Services\Lineas')
     @inject('UnidadesMedidas','App\Services\UnidadesMedidas')
-
     @can('maestro.sublinea.view')
     <div class="col-lg-4">
         <div class="form-group">
             @can('sublinea.new')
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearSubLineas">Nuevo</a>
             @endcan
         </div>
     </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    <div class="col-md-0 float-right">
+                        <a class="btn btn-primary" href="javascript:void(0)" id="CrearSubLineas"><i class="fas fa-plus-circle"></i> Nuevo</a>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped first data-table" id="Subtable">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Linea</th>
-                                    <th>Codigo</th>
-                                    <th>Nombre Sublinea</th>
-                                    <th>Comentarios</th>
-                                    <th>Unidades de Medida</th>
-                                    <th>Caracteristicas U.Medida</th>
-                                    <th>Opciones</th>
+                                    <th>LINEA</th>
+                                    <th>CODIGO</th>
+                                    <th>NOMBRE</th>
+                                    <th>COMENTARIOS</th>
+                                    <th>U. DE MEDIDA</th>
+                                    <th>CARACTERISTICAS U. DE MEDIDA</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -153,18 +151,6 @@
             </div>
         </div>
     @endcan
-    <style>
-        .red {
-            background-color: red !important;
-        }
-        td.details-control {
-            background: url('/img/medida.png') no-repeat center center;
-            cursor: pointer;
-        }
-        tr.details td.details-control {
-            background: url('/img/x.png') no-repeat center center;
-        }
-    </style>
     @push('javascript')
         <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Sublineas.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>

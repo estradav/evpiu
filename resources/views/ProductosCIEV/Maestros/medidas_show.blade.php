@@ -6,23 +6,19 @@
 
 @section('subtitle', 'Definición de las diferentes dimensiones en las que se puede elaborar una pieza.')
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('Prod_ciev_maestros_medidas') }}
-@stop
-
 @section('content')
     @inject('Lineas','App\Services\Lineas')
     @can('maestro.medida.view')
-    <div class="col-lg-4">
-        <div class="form-group">
-            @can('medida.new')
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearMedida">Nuevo</a>
-            @endcan
-        </div>
-    </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    <div class="col-md-0 float-right">
+                        @can('medida.new')
+                            <a class="btn btn-primary" href="javascript:void(0)" id="CrearMedida"><i class="fas fa-plus-circle"></i> Nuevo</a>
+                        @endcan
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped first data-table">

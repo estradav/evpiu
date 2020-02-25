@@ -54,19 +54,33 @@ $(document).ready(function(){
         });
 
         $('body').on('click', '.editmaterial', function () {
+            $("#materialForm").validate().resetForm();
+            $('#saveBtn').attr('formnovalidate','');
             document.getElementById("codigo").readOnly = true;
             var material_id = $(this).data('id');
             $.get("/ProdCievCodMaterial" +'/' + material_id +'/edit', function (data) {
+                $('#mat_lineas_id').val(data.mat_lineas_id);
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-Material");
-                $('#materialmodal').modal('show');
                 $('#material_id').val(data.id);
                 $('#codigo').val(data.cod);
-                $('#mat_lineas_id').val(data.mat_lineas_id);
-                $('#mat_sublineas_id').val(data.mat_sublineas_id);
+
                 $('#name').val(data.name);
                 $('#abreviatura').val(data.abreviatura);
                 $('#coments').val(data.coments);
+
+                var lineas_id = data.mat_lineas_id;
+                $('#mat_sublineas_id').empty();
+                if ($.trim(lineas_id) != ''){
+                    $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
+                        $('#mat_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
+                        $.each(getsublineas, function (index, value) {
+                            $('#mat_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
+                        });
+                        $('#mat_sublineas_id').val(data.mat_sublineas_id);
+                    });
+                }
+                $('#materialmodal').modal('show');
             })
         });
 
@@ -187,21 +201,15 @@ $(document).ready(function(){
                             )
                         }
                     });
-                }else if (
-                    /* Read more about handling dismissals below */
+                }else{
                     result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    Swal.fire(
-                        'Cancelado',
-                        'El registro NO fue eliminado :)',
-                        'error'
-                    )
                 }
             })
         })
     });
 
     $('#mat_lineas_id').on('change', function () {
+        $('#mat_sublineas_id').empty();
         var lineas_id = $(this).val();
         if ($.trim(lineas_id) != ''){
             $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {

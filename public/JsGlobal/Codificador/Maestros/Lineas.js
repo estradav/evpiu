@@ -134,20 +134,21 @@ $(document).ready(function() {
             });
         });
 
+        var linea_id;
         $('body').on('click', '.editLinea', function () {
             document.getElementById("codigo").readOnly = true;
-            $('#lineaForm').trigger("reset");
-            var linea_id = $(this).data('id');
+            $('#edit_lineaForm').trigger("reset");
+            linea_id = $(this).data('id');
             $.get("/ProdCievCod" + '/' + linea_id + '/edit', function (data) {
-                $('#modelHeading').html("Editar");
+                $('#edit_modalHeading').html("Editar " + data.name );
                 $('#saveBtn').val("edit-linea");
-                $('#Lineamodal').modal('show');
-                $('#linea_id').val(data.id);
-                $('#codigo').val(data.cod);
-                $('#tipoproducto_id').val(data.tipoproducto_id);
-                $('#name').val(data.name);
-                $('#abreviatura').val(data.abreviatura);
-                $('#coments').val(data.coments);
+                $('#edit_linea_modal').modal('show');
+              //  $('#edor_linea_id').val(data.id);
+                $('#edit_codigo').val(data.cod);
+                $('#edit_tipoproducto_id').val(data.tipoproducto_id);
+                $('#edit_name').val(data.name);
+                $('#edit_abreviatura').val(data.abreviatura);
+                $('#edit_coments').val(data.coments);
             });
             jQuery.extend(jQuery.validator.messages, {
                 required: "Este campo es obligatorio.",
@@ -258,7 +259,7 @@ $(document).ready(function() {
             })
         });
 
-        $('#Lineamodal').on('show.bs.modal', function (event) {
+        $('#Lineamodal').on('hide.bs.modal', function (event) {
             $('#saveBtn').html('Guardar');
             $('.form-control').removeClass('is-invalid');
             $('.error').remove();
@@ -266,5 +267,51 @@ $(document).ready(function() {
         });
 
 
+        $("#edit_lineaForm").validate({
+            ignore: "",
+            rules: {
+                tipoproducto_id: {
+                    selectcheck: true
+                },
+                name: "required",
+                abreviatura: "required",
+            },
+            highlight: function (element) {
+                $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-control').removeClass('is-invalid');
+            },
+            submitHandler: function (form) {
+                $(this).html('Guardando...');
+                var form_data = $('#edit_lineaForm').serializeArray();
+                var id = {
+                    name: 'id',
+                    value:  linea_id
+                };
+                form_data.push(id);
+
+                $.ajax({
+                    data: form_data,
+                    url: "/lines_update",
+                    type: "POST",
+                    dataType: 'json',
+                    success: function () {
+                        $('#edit_lineaForm').trigger("reset");
+                        $('#edit_linea_modal').modal('hide');
+                        table.draw();
+                        swal.fire({
+                            title: 'Guardado!',
+                            text: "¡Registro guardado con exito!",
+                            icon: 'success',
+                        })
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                        $('#saveBtn').html('Guardar Cambios');
+                    }
+                });
+            }
+        });
     });
 });

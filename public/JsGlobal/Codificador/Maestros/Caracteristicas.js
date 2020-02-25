@@ -44,35 +44,43 @@ $(document).ready(function(){
 
         $('#CrearCaracteristica').click(function () {
             $('#saveBtn').removeAttr('formnovalidate','');
-            $('#saveBtn').val("create-caracteristica");
             $('#caracteristica_id').val('');
             $('#caracteristicaForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#caracteristicamodal').modal('show');
+            $('#car_sublineas_id').empty();
+
             document.getElementById("cod").readOnly = false;
         });
 
         $('body').on('click', '.editcaracteristica', function () {
-
-            obtener_sublineas();
             $("#caracteristicaForm").validate().resetForm();
             $('#saveBtn').attr('formnovalidate','');
-
             var caracteristica_id = $(this).data('id');
-
             $.get("/ProdCievCodCaracteristica" +'/' + caracteristica_id +'/edit', function (data) {
                 $('#car_lineas_id').val(data.car_lineas_id);
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-caracteristica");
-                $('#caracteristicamodal').modal('show');
                 $('#caracteristica_id').val(data.id);
                 $('#cod').val(data.cod);
                 $('#name').val(data.name);
                 $('#abreviatura').val(data.abreviatura);
                 $('#coments').val(data.coments);
+
                 document.getElementById("cod").readOnly = true;
-                document.getElementById('car_sublineas_id').value = data.car_sublineas_id;
-                console.log(data.car_sublineas_id)
+
+                var lineas_id = data.car_lineas_id;
+                $('#car_sublineas_id').empty();
+                if ($.trim(lineas_id) != ''){
+                    $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
+                        $('#car_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
+                        $.each(getsublineas, function (index, value) {
+                            $('#car_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
+                        });
+                        $('#car_sublineas_id').val(data.car_sublineas_id);
+                    });
+                }
+                $('#caracteristicamodal').modal('show');
             });
         });
 
@@ -193,24 +201,17 @@ $(document).ready(function(){
                             )
                         }
                     });
-                }else if (
-                    /* Read more about handling dismissals below */
+                }else {
                     result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    Swal.fire(
-                        'Cancelado',
-                        'El registro NO fue eliminado :)',
-                        'error'
-                    )
                 }
             })
         });
 
         $('#car_lineas_id').on('change', function () {
             var lineas_id = $(this).val();
+            $('#car_sublineas_id').empty();
             if ($.trim(lineas_id) != ''){
                 $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
-                    $('#car_sublineas_id').empty();
                     $('#car_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
                     $.each(getsublineas, function (index, value) {
                         $('#car_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
@@ -225,18 +226,7 @@ $(document).ready(function(){
             $('.error').remove();
         });
 
-        function obtener_sublineas(){
-            var lineas_id = $('#car_lineas_id').val();
-            if ($.trim(lineas_id) != ''){
-                $('#car_sublineas_id').empty();
-                $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
-                    $('#car_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
-                    $.each(getsublineas, function (index, value) {
-                        $('#car_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
-                    })
-                });
-            }
-        }
+
     });
 });
 

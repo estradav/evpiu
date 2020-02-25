@@ -1,47 +1,33 @@
 @extends('layouts.dashboard')
 
-@section('page_title', 'Facturacion Electronica')
+@section('page_title', 'Facturacion electronica')
 
-@section('module_title', 'Facturacion Electronica')
+@section('module_title', 'Facturacion electronica')
 
 @section('subtitle', 'Este módulo permite validar las Facturas generadas en MAX.')
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('fact_electr_facturas') }}
-@stop
-
 @section('content')
     @can('facturacion.view')
-        <div class="col-12">
-            <div class="row">
-                <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda o seleccione una o varias facturas para generar un archivo XML o enviar via Webservice</h3>
-            </div>
-        </div>
-        <br>
-
-        <div class="row">
-            <div class="col-3">
-                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
-            </div>
-            <div class="col-3">
-                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
-            </div>
-            <div class="col-3">
-                <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm btn-block">Buscar</button>
-            </div>
-            <div class="col-3">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-primary btn-sm " id="CrearXml">Descargar XML</button>
-                    <button type="button" class="btn btn-primary btn-sm" id="WebService">Subir via WebService</button>
-                </div>
-            </div>
-        </div>
-
-
-        <br>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-3">
+                                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
+                            </div>
+                            <div class="col-3">
+                                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
+                            </div>
+                            <div class="col-3">
+                                <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm btn-block" style="height: 36px;">Buscar</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-sm" id="CrearXml" style="height: 36px; margin-right: 25px">Descargar XML</button>
+                                <button type="button" class="btn btn-primary btn-sm" id="WebService" style="height: 36px;">Subir via WebService</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped" id="tfac">

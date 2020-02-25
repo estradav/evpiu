@@ -259,7 +259,7 @@
                                             <option value="2016">2016</option>
                                         </select>
                                         <div class="input-group-append">
-                                            <button class="btn btn-success" id="CambiarAñoGrafico">Cambiar año</button>
+                                            <button class="btn btn-success" id="CambiarAñoGrafico" disabled="">Cambiar año</button>
                                         </div>
                                         <div class="input-group-append">
                                             <button class="btn btn-success" id="AñadirAñoGrafico">Agregar año</button>
@@ -424,7 +424,6 @@
                             Year: Year
                         },
                         success: function (data) {
-                            console.log(data);
                             var chartdata = {
                                 labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
                                 datasets: [
@@ -716,6 +715,7 @@
                             success: function (data) {
                                 addData(graf_prop_est, Year, color, data[0]);
                                 $('option:selected', '#Valor_año').attr('disabled', true);
+                                $('#Valor_año').val('');
                             }
                         });
                     }else{
@@ -1826,9 +1826,7 @@
                             if(Array != ''){
                                  var i = 0;
                                 $.each(Array, function (index, value) {
-                                    console.log(value);
                                     $("#CorreosCopia").append('<option value="'+index+'">'+value+'</option>');
-
                                 })
                             }
                         }
@@ -1863,7 +1861,6 @@
                                 tokenSeparators: [',', ' ',';'],
                                 width: '100%',
                             });
-                            console.log(document.getElementById("CorreosCopia").value);
                         },
                     }).queue([
                         {
