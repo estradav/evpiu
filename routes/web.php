@@ -117,9 +117,12 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/get-invoice-day-data-value','ChartDataController@getDayInvoiceData');
 
             Route::post('/TiposProductoPost','ProdCodTipoProductoController@store');
+            Route::post('/types_products_update','ProdCodTipoProductoController@TypesProductUpdate');
             Route::get('/TiposProductoIndex','ProdCodTipoProductoController@index');
 
             Route::post('/LineasPost','ProdCodLineasController@store');
+            Route::post('/lines_update','ProdCodLineasController@LinesUpdate');
+
             Route::get('/LineasIndex','ProdCodLineasController@index');
 
             Route::post('/SublineasPost','ProdCodSublineasController@SaveSublinea');
@@ -338,7 +341,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/accesos_remotos','HomeController@AccesosRemotos');
 
 
-            
+
 
             //Backup
             Route::get('backup/download/{file_name}', 'BackupController@download');

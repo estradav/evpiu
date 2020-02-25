@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\CodMaterial;
 use App\CodSublinea;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -20,10 +21,18 @@ class ProdCievCodMaterialController extends Controller
                 ->select('cod_materials.cod as cod','cod_materials.name as name','cod_materials.abreviatura as abrev','cod_materials.updated_at as upt',
                     'cod_materials.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_materials.id as id')->get();
             return DataTables::of($data)
-                ->addColumn('Opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmaterial" id="edit-btn"><i class="far fa-edit"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletematerial"><i class="fas fa-trash"></i></a>'.'</div>';
-                    return $btn;
+                ->addColumn('Opciones',
+                    '<div class="btn-group ml-auto">
+                        @can("material.editar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editmaterial" id="edit-btn"><i class="far fa-edit" style="color: #3085d6"></i></a>
+                        @endcan
+                        @can("material.eliminar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Eliminar" class="btn btn-sm deletematerial"><i class="fas fa-trash" style="color: #db4437"></i></a>
+                        @endcan
+                        </div>'
+                )
+                ->editColumn('upt', function ($data) {
+                    return Carbon::parse($data->upt)->diffForHumans();
                 })
                 ->rawColumns(['Opciones'])
                 ->make(true);
@@ -58,6 +67,7 @@ class ProdCievCodMaterialController extends Controller
 
     public function getSublineas(Request $request)
     {
+        $getsublineasArray = [];
         if ($request->ajax()){
             $getsublineas = CodSublinea::where('lineas_id', $request->lineas_id)->get();
             foreach ($getsublineas as $sblinea){
@@ -75,8 +85,10 @@ class ProdCievCodMaterialController extends Controller
             ->where('cod','=',$request->codigo)
             ->count();
         if($UniqueCod == 0)
-        {echo "true";}
-        else
-        {echo "false";}
+        {
+            echo "true";
+        }else {
+            echo "false";
+        }
     }
 }

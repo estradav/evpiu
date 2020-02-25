@@ -1426,7 +1426,7 @@ class GestionClientesController extends Controller
                  ->insert([
                      'CUSTID_23'    =>  $request->M_Nit_cc,
                      'SLSREP_23'    =>  $request->M_vendedor,
-                     'STATUS_23'    =>  'H',
+                     'STATUS_23'    =>  'R',
                      'CUSTYP_23'    =>  $request->M_Tipo_cliente,
                      'NAME_23'      =>  $request->M_primer_nombre.' '.$request->M_segundo_nombre.' '.$request->M_primer_apellido.' '.$request->M_segundo_apellido,
                      'ADDR1_23'     =>  $request->M_direccion1,
@@ -1524,7 +1524,7 @@ class GestionClientesController extends Controller
                      'concepto_4'                       =>  $request->M_tipo_client_dms,
                      'mail'                             =>  $request->M_Email_contacto,
                      'pos_num'                          =>  $apellidos_lenght,
-                     'regimen'                          =>  $request->M_tipo_regimen_dms, // validar con martin
+                     'regimen'                          =>  'S', // validar con martin
                      'cupo_credito'                     =>  '0',
                      'nit_real'                         =>  intval($request->M_Nit_cc),
                      'condicion'                        =>  $termino_dms,

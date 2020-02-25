@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\CodCaracteristica;
 use App\CodSublinea;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -19,10 +20,18 @@ class ProdCievCodCaracteristicaController extends Controller
                 ->select('cod_caracteristicas.cod as cod','cod_caracteristicas.name as name','cod_caracteristicas.abreviatura as abrev','cod_caracteristicas.updated_at as upt',
                     'cod_caracteristicas.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_caracteristicas.id as id')->get();
             return DataTables::of($data)
-                ->addColumn('Opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editcaracteristica" id="edit-btn"><i class="far fa-edit"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletecaracteristica"><i class="fas fa-trash"></i></a>'.'</div>';
-                    return $btn;
+                ->addColumn('Opciones',
+                    '<div class="btn-group ml-auto">
+                        @can("caracteristicas.editar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editcaracteristica" id="edit-btn"><i class="far fa-edit" style="color: #3085d6"></i></a>
+                        @endcan
+                        @can("caracteristicas.eliminar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Eliminar" class="btn btn-sm deletecaracteristica"><i class="fas fa-trash" style="color: #db4437"></i></a>
+                        @endcan
+                        </div>'
+                )
+                ->editColumn('upt', function ($data) {
+                    return Carbon::parse($data->upt)->diffForHumans();
                 })
                 ->rawColumns(['Opciones'])
                 ->make(true);

@@ -78,7 +78,7 @@
         </div>
         @endcan
 
-        <div class="modal fade bd-example-modal-xl ModalClient" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade bd-example-modal-xl exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -731,11 +731,7 @@
             .tabcontrol > .content > .body ul > li {
                 display: list-item;
             }
-
-
-
         </style>
-
     @else
         <div class="card">
             <div class="card-body text-center">
@@ -808,11 +804,6 @@
                     }
                 });
 
-                $('.InfoCustomersTooltip').tooltip();
-
-                $('.ModalTooltip').tooltip({
-                    appendTo: "##exampleModalCenter"
-                });
 
 
 
@@ -1286,7 +1277,7 @@
                     width: '100%',
                 });
 
-                $('body').on('click','.Sync-DMS',function () {
+                /*$('body').on('click','.Sync-DMS',function () {
                     var id = this.id;
                     Swal.mixin({
                         confirmButtonText: 'Siguiente &rarr;',
@@ -1323,9 +1314,11 @@
                             })
                         }
                     })
-                });
+                });*/
 
-                $('.ModalClient a[rel="tooltip"]').tooltip({placement: 'right'}).data('tooltip').tip().css('z-index',2080);
+                $('.exampleModalCenter a[rel="tooltip"]').tooltip(
+                    {placement: 'right'
+                    });
             });
         </script>
 

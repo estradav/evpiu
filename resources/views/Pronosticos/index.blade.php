@@ -172,11 +172,6 @@
                     <div class="modal-body" id="data">
 
                     </div>
-                    <div class="modal-footer">
-                        @can('pronosticos.close')
-                            <button class="btn btn-danger btn-sm" disabled>Cerrar Pronostico</button>
-                        @endcan
-                    </div>
                 </div>
             </div>
         </div>
@@ -472,6 +467,7 @@
                 });
 
                 $('body').on('click', '.btnNum', function () {
+                    $('#data').html('');
                     var value = $(this).val();
                     $('#data').append('<div class="container" style="align-items: center !important; margin-left: 40%; ">' +
                       '<div class="preloader">' +
@@ -480,7 +476,6 @@
                       '</div>'+
                       '<div class="text-center"><h3>Cargando Informacion un momento por favor....</h3></div>'
                     );
-
                     $('#DetallePronostico').modal('show');
                     $.ajax({
                         type: "get",
@@ -490,7 +485,7 @@
                             $('#data').html('');
                             console.log(data);
                             $('#PronosticoTitle').html('PRONOSTICO: ' + value);
-                            if(data != ''){
+                            if(data.pronostico.length != 0 ){
                                 var i = 0;
                                 $(data.pronostico).each(function () {
                                     $('#data').append(`
@@ -540,6 +535,22 @@
                                     var v = 0;
                                     $(data.ordenes[i]).each(function () {
                                         if( data.ordenes[i][v].CTActual.trim() == 'Y'){
+                                            var estado = '';
+
+                                            if(data.ordenes[i][v].STATUS_10 == '1'){
+                                                estado = 'Planeada';
+                                            }else if(data.ordenes[i][v].STATUS_10 == '2'){
+                                                estado = 'Autorizada'
+                                            }else if(data.ordenes[i][v].STATUS_10 == '3'){
+                                                estado = 'Liberada'
+                                            }else if(data.ordenes[i][v].STATUS_10 == '4'){
+                                                estado = 'Concluida'
+                                            }else if(data.ordenes[i][v].STATUS_10 == '5'){
+                                                estado = 'Cerrada'
+                                            }else if(data.ordenes[i][v].STATUS_10 == '6'){
+                                                estado = 'Cancelada'
+                                            }
+
                                             $('.datos_tabla_'+data.pronostico[i].NumOrdProduct).append('<tr>' +
                                                 '<td>'+ data.ordenes[i][v].WRKCTR_14 +'</td>'+
                                                 '<td style="color: red">'+ data.ordenes[i][v].OPRDES_14 +'</td>'+
@@ -548,10 +559,26 @@
                                                 '<td>'+ data.ordenes[i][v].Desecho +'</td>'+
                                                 '<td>'+ data.ordenes[i][v].REVDTE_14 +'</td>'+
                                                 '<td>'+ data.ordenes[i][v].MOVDTE_14 +'</td>'+
-                                                '<td>'+ data.ordenes[i][v].STATUS_10 +'</td>'+
+                                                '<td>'+ estado +'</td>'+
                                                 '</tr>'
                                             );
                                         }else{
+                                            var estado = '';
+
+                                            if(data.ordenes[i][v].STATUS_10 == '1'){
+                                                estado = 'Planeada';
+                                            }else if(data.ordenes[i][v].STATUS_10 == '2'){
+                                                estado = 'Autorizada'
+                                            }else if(data.ordenes[i][v].STATUS_10 == '3'){
+                                                estado = 'Liberada'
+                                            }else if(data.ordenes[i][v].STATUS_10 == '4'){
+                                                estado = 'Concluida'
+                                            }else if(data.ordenes[i][v].STATUS_10 == '5'){
+                                                estado = 'Cerrada'
+                                            }else if(data.ordenes[i][v].STATUS_10 == '6'){
+                                                estado = 'Cancelada'
+                                            }
+
                                             $('.datos_tabla_'+data.pronostico[i].NumOrdProduct).append('<tr>' +
                                                 '<td>'+ data.ordenes[i][v].WRKCTR_14 +'</td>'+
                                                 '<td>'+ data.ordenes[i][v].OPRDES_14 +'</td>'+
@@ -560,11 +587,10 @@
                                                 '<td>'+ data.ordenes[i][v].Desecho +'</td>'+
                                                 '<td>'+ data.ordenes[i][v].REVDTE_14 +'</td>'+
                                                 '<td>'+ data.ordenes[i][v].MOVDTE_14 +'</td>'+
-                                                '<td>'+ data.ordenes[i][v].STATUS_10 +'</td>'+
+                                                '<td>'+ estado +'</td>'+
                                                 '</tr>'
                                             );
                                         }
-
                                         v++;
                                     });
                                 }

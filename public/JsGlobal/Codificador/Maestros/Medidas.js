@@ -85,19 +85,19 @@ $(document).ready(function(){
         });
 
         $('body').on('click', '.editmedida', function () {
+            $("#medidaForm").validate().resetForm();
+            $('#saveBtn').attr('formnovalidate','');
             var medida_id = $(this).data('id');
             document.getElementById("cod").readOnly = true;
             document.getElementById("mm2").readOnly = true;
             document.getElementById("denominacion").readOnly = true;
             $.get("/ProdCievCodMedida" +'/' + medida_id +'/edit', function (data) {
+                $('#med_lineas_id').val(data.med_lineas_id);
                 $('#modelHeading').html("Editar");
                 $('#saveBtn').val("edit-Medida");
-                $('#medidamodal').modal('show');
                 $('#medida_id').val(data.id);
                 $('#cod').val(data.cod);
                 $('#mm2').val(data.mm2);
-                $('#med_lineas_id').val(data.med_lineas_id);
-                $('#med_sublineas_id').val(data.med_sublineas_id);
                 $('#denominacion').val(data.denominacion);
                 $('#UndMedida').val(data.undmedida);
                 $('#Diametro').val(data.diametro);
@@ -105,6 +105,19 @@ $(document).ready(function(){
                 $('#Altura').val(data.altura);
                 $('#Espesor').val(data.espesor);
                 $('#Perforacion').val(data.perforacion);
+
+                var lineas_id = data.med_lineas_id;
+                $('#med_sublineas_id').empty();
+                if ($.trim(lineas_id) != ''){
+                    $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
+                        $('#med_sublineas_id').append("<option value=''>Seleccionar una sublinea</option>");
+                        $.each(getsublineas, function (index, value) {
+                            $('#med_sublineas_id').append("<option value='" + index + "'>"+ value +"</option>");
+                        });
+                        $('#med_sublineas_id').val(data.med_sublineas_id);
+                    });
+                }
+                $('#medidamodal').modal('show');
             });
         });
 

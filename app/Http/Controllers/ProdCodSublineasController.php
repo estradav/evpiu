@@ -6,6 +6,7 @@ use App\CodLinea;
 use App\CodSublinea;
 use App\Services\Sublineas;
 use App\UnidadesMedida;
+use Carbon\Carbon;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,11 +38,17 @@ class ProdCodSublineasController extends Controller
                     return $btn1;
                 })
 
-                ->addColumn('Opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editsublinea" id="edit-btn"><i class="far fa-edit"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletesubLinea"><i class="fas fa-trash"></i></a>'.'</div>';
-                    return $btn;
-                })
+                ->addColumn('Opciones',
+                    '<div class="btn-group ml-auto">
+                        @can("sublinea.editar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editsublinea" id="edit-btn"><i class="far fa-edit" style="color: #3085d6"></i></a>
+                        @endcan
+                        @can("sublinea.eliminar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Eliminar" class="btn btn-sm deletesubLinea"><i class="fas fa-trash" style="color: #db4437"></i></a>
+                        @endcan
+                        </div>'
+                )
+
                 ->rawColumns(['Opciones','Medidas','Car_Medidas'])
                 ->make(true);
         }
@@ -88,7 +95,7 @@ class ProdCodSublineasController extends Controller
     {
         $UniqueCod = DB::table('cod_sublineas')
             ->where('lineas_id','=',$request->linea)
-            ->where('cod','=',$request->cod)
+            ->where('cod','=',$request->codigo)
             ->count();
         if($UniqueCod == 0)
         {echo "true";}

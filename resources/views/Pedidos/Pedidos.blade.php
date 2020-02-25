@@ -14,12 +14,18 @@
     @can('pedidos.view')
         <div class="col-lg-12">
             <div class="form-group">
-                <span><input type="button" class="btn btn-primary btn-sm NewPed" id="NewPed" value="Crear Pedido"></span>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="col-md-0 float-right">
+                            @can('pedido.crear')
+                                <a class="btn btn-primary NewPed" href="javascript:void(0)" id="NewPed"><i class="fas fa-plus-circle"></i> Nuevo</a>
+                            @endcan
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped dataTableP" id="table">
@@ -1360,12 +1366,13 @@
                     })
                 });
 
+                var public_path = '{{ public_path() }}';
                 function imprimirElemento(elemento) {
                     var ventana =  window.open('Print','','width=900');
-                    ventana.document.write('<html><head><title>' + document.title + '</title>');
-                    ventana.document.write('<link rel="stylesheet" href="http://evpiu.test/dashboard/styles/app.css">' +
-                      ' <link rel="stylesheet" href="http://evpiu.test/dashboard/styles/main.css">');
-                    ventana.document.write('</head><body >');
+                    ventana.document.write('<html lang="es"><head><title>' + document.title + '</title>');
+                    ventana.document.write('<link rel="stylesheet" href="'+ public_path +'/dashboard/styles/app.css">' +
+                      '<link rel="stylesheet" href="'+ public_path +'/dashboard/styles/main.css">');
+                    ventana.document.write('</head><body>');
                     ventana.document.write(elemento.innerHTML);
                     ventana.document.write('</body></html>');
                     ventana.document.close();

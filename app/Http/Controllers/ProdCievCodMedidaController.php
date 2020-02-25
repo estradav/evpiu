@@ -23,11 +23,16 @@ class ProdCievCodMedidaController extends Controller
                     'cod_medidas.coments as coment','cod_lineas.name as linea','cod_sublineas.name as sublinea','cod_medidas.id as id')->get();
 
             return DataTables::of($data)
-                ->addColumn('Opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editmedida" id="edit-btn"><i class="far fa-edit"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deletemedida"><i class="fas fa-trash"></i></a>'.'</div>';
-                    return $btn;
-                })
+                ->addColumn('Opciones',
+                    '<div class="btn-group ml-auto">
+                        @can("medida.editar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editmedida" id="edit-btn"><i class="far fa-edit" style="color: #3085d6"></i></a>
+                        @endcan
+                        @can("medida.eliminar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Eliminar" class="btn btn-sm deletemedida"><i class="fas fa-trash" style="color: #db4437"></i></a>
+                        @endcan
+                        </div>'
+                )
                 ->rawColumns(['Opciones'])
                 ->make(true);
         }

@@ -5,23 +5,19 @@
 @section('module_title', 'Lista de Codigos')
 
 @section('subtitle', 'Este modulo permite ver, crear y editar Codigos.')
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('Prod_ciev_codigos') }}
-@stop
 @section('content')
     @inject('TipoProductos','App\Services\TipoProductos')
     @can('codificador.view')
-    <div class="col-lg-4">
-        <div class="form-group">
-            @can('codificador.new')
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearCodigo">Crear Codigo</a>
-            @endcan
-        </div>
-    </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    <div class="col-md-0 float-right">
+                        @can('codificador.new')
+                            <a class="btn btn-primary" href="javascript:void(0)" id="CrearCodigo"><i class="fas fa-plus-circle"></i> Nuevo</a>
+                        @endcan
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped first data-table">

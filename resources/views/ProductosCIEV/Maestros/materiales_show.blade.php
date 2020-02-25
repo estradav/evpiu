@@ -6,35 +6,31 @@
 
 @section('subtitle', 'Definicion de los posibles elementos con los que se puede construir una pieza.')
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('Prod_ciev_maestros_materiales') }}
-@stop
-
 @section('content')
     @inject('Lineas','App\Services\Lineas')
     @can('maestro.material.view')
-    <div class="col-lg-4">
-        <div class="form-group">
-            @can('material.new')
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearMaterial">Nuevo</a>
-            @endcan
-        </div>
-    </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    <div class="col-md-0 float-right">
+                        @can('material.new')
+                            <a class="btn btn-primary" href="javascript:void(0)" id="CrearMaterial"><i class="fas fa-plus-circle"></i> Nuevo</a>
+                        @endcan
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped first data-table">
                             <thead>
                                 <tr>
-                                    <th>Linea</th>
-                                    <th>Sublinea</th>
-                                    <th>Codigo</th>
-                                    <th>Nombre</th>
-                                    <th>Comentarios</th>
-                                    <th>Ultima actualizacion</th>
-                                    <th>Opciones</th>
+                                    <th>LINEA</th>
+                                    <th>SUBLINEA</th>
+                                    <th>CODIGO</th>
+                                    <th>NOMBRE</th>
+                                    <th>COMENTARIOS</th>
+                                    <th>ACTUALIZADO</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,8 +51,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form id="materialForm" name="materialForm" class="form-horizontal">
+                <form id="materialForm" name="materialForm" class="form-horizontal">
+                    <div class="modal-body">
                         <input type="hidden" name="material_id" id="material_id">
                         <div class="form-group">
                             <label for="name" class="col-sm-6 control-label">Linea:</label>
@@ -100,12 +96,13 @@
                                 <textarea id="coments" name="coments" class="form-control"></textarea>
                             </div>
                         </div>
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

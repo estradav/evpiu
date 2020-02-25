@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\CodTipoProducto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Auth;
 
 class ProdCodTipoProductoController extends Controller
 {
@@ -15,11 +13,23 @@ class ProdCodTipoProductoController extends Controller
     {
         if ($request->ajax()) {
             $data = CodTipoProducto::latest()->get();
+
             return Datatables::of($data)
-                ->addColumn('opciones', function($row){
-                    $btn =  '<div class="btn-group ml-auto">'.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Editar" class="edit btn btn-primary btn-sm editTipoProducto" id="edit-btn"><i class="far fa-edit"></i></a>';
-                    $btn = $btn.'<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteTipoProducto"><i class="fas fa-trash"></i></a>'.'</div>';
-                    return $btn;
+                ->addColumn('opciones',
+                    '<div class="btn-group ml-auto">
+                        @can("tipos_producto.editar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editTipoProducto" id="edit-btn"><i class="far fa-edit" style="color: #3085d6;"></i></a>
+                        @endcan
+                        @can("tipos_producto.eliminar")
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Eliminar" class="btn btn-sm deleteTipoProducto"><i class="fas fa-trash" style="color: #db4437"></i></a>
+                        @endcan
+                        </div>'
+                )
+                ->editColumn('created_at', function ($data) {
+                    return $data->created_at->diffForHumans();
+                })
+                ->editColumn('updated_at', function ($data) {
+                    return $data->updated_at->diffForHumans();
                 })
                 ->rawColumns(['opciones'])
                 ->make(true);
@@ -68,6 +78,17 @@ class ProdCodTipoProductoController extends Controller
             echo "false"; //already registered
         }
 
+    }
+
+    public function TypesProductUpdate(Request $request)
+    {
+        CodTipoProducto::where('id',$request->id)
+            ->update([
+                'name'          => $request->edit_name,
+                'coments'       => $request->edit_coments,
+            ]);
+
+        return response()->json(['true'],200);
     }
 
 }

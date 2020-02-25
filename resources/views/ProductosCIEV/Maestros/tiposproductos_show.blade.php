@@ -2,37 +2,33 @@
 
 @section('page_title', 'Maestros (Tipos Producto)')
 
-@section('module_title', 'Tipos Producto')
+@section('module_title', 'Tipos de producto')
 
-@section('subtitle', 'Clasificación Macro de la gama de elementos que requiere la codificacion de piezas de Estrada Velasquez, segun su funcionalidad.')
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('Prod_ciev_maestros_tipos_producto') }}
-@stop
+@section('subtitle', 'Clasificación macro de la gama de elementos que requiere la codificacion de piezas de Estrada Velasquez, segun su funcionalidad.')
 
 @section('content')
     @can('maestro.tipoproducto.view')
-    <div class="col-lg-4">
-        <div class="form-group">
-            @can('tipoproducto.new')
-            <a class="btn btn-primary" href="javascript:void(0)" id="CrearLineas">Nuevo</a>
-            @endcan
-        </div>
-    </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    <div class="col-md-0 float-right">
+                        @can('tipoproducto.new')
+                            <a class="btn btn-primary" href="javascript:void(0)" id="Crear_tipo_producto"> <i class="fas fa-plus-circle"></i> Nuevo</a>
+                        @endcan
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped first data-table">
                             <thead>
                                 <tr>
-                                    <th>Codigo</th>
-                                    <th>Nombre</th>
-                                    <th>Comentarios</th>
-                                    <th>Fecha de Creacion</th>
-                                    <th>Ultima Actualizacion</th>
-                                    <th>Opciones</th>
+                                    <th>CODIGO</th>
+                                    <th>NOMBRE</th>
+                                    <th>COMENTARIOS</th>
+                                    <th>CREADO</th>
+                                    <th>ACTUALIZADO</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,7 +40,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="tipoproductomodal" aria-hidden="true">
+    <div class="modal animated slideInDown" id="tipoproductomodal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -53,8 +49,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form id="tipoproductoForm" name="tipoproductoForm" class="form-horizontal">
+                <form id="tipoproductoForm" name="tipoproductoForm" class="form-horizontal">
+                    <div class="modal-body">
                         <input type="hidden" name="tipoproducto_id" id="tipoproducto_id">
                         <input type="hidden" name="usuario" id="usuario" value="{{ Auth::user()->name  }}" >
                         <div class="form-group">
@@ -75,15 +71,56 @@
                                 <textarea id="coments" name="coments" class="form-control"></textarea>
                             </div>
                         </div>
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <div class="modal animated slideInDown" id="edit_tipoproducto_modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="edit_modelHeading"> </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="edit_tipo_producto_Form" name="edit_tipo_producto_Form" class="form-horizontal">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-6 control-label">Codigo:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="edit_cod" name="edit_cod" disabled onkeyup="this.value=this.value.toUpperCase();" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">Nombre:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="edit_name" name="edit_name"  onkeyup="this.value=this.value.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Comentarios:</label>
+                            <div class="col-sm-12">
+                                <textarea id="edit_coments" name="edit_coments" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="saveBtnEdit" value="Crear">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     @else
         <div class="card">
             <div class="card-body text-center">
@@ -94,6 +131,10 @@
         </div>
     @endcan
     @push('javascript')
+        <script>
+           var Username =  @json(Auth::user()->username);
+        </script>
+
         <script src="/JsGlobal/Codificador/Maestros/Tipos_Producto.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
