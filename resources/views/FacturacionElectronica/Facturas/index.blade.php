@@ -35,20 +35,20 @@
                                     <tr>
                                         <th><input type="checkbox" id="selectAll" name="selectAll" class="selectAll"></th>
                                         <th>&nbsp; &nbsp;</th>
-                                        <th>Numero</th>
+                                        <th>NUMERO</th>
                                         <th>OV</th>
-                                        <th>Fecha</th>
-                                        <th>Plazo</th>
-                                        <th>Razon Social</th>
-                                        <th>Nit</th>
-                                        <th>Tipo Cliente</th>
-                                        <th>Vendedor</th>
-                                        <th>Valor bruto</th>
-                                        <th>Descuento</th>
+                                        <th>FECHA</th>
+                                        <th>PLAZO</th>
+                                        <th>RAZON SOCIAL</th>
+                                        <th>NIT</th>
+                                        <th>T.CLIENTE</th>
+                                        <th>VENDEDOR</th>
+                                        <th>BRUTO</th>
+                                        <th>DESCUENTO</th>
                                         <th>IVA</th>
-                                        <th>Motivo</th>
-                                        <th>Estado DIAN</th>
-                                        <th>Opciones</th>
+                                        <th>MOTIVO</th>
+                                        <th>ESTADO DIAN</th>
+                                        <th>ACCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>

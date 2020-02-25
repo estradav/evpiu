@@ -42,8 +42,8 @@
                     <a href="#Inventario" class="nav-link" aria-controls="Inventario" role="tab" data-toggle="tab">&nbsp;<span>Inventario</span>&nbsp;</a>
                 </li>
             </ul>
-            <div class="modal-body">
-                <form id="ProductForm" name="ProductForm" class="form-horizontal">
+            <form id="ProductForm" name="ProductForm" class="form-horizontal">
+                <div class="modal-body">
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="Maestro">
                             <div class="row">
@@ -698,13 +698,12 @@
                             </fieldset>
                         </div><!-- end tab-pane -->
                     </div>
-                    <br>
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-primary" id="saveBtn"  name="saveBtn" value="Crear">Guardar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
-            </div><!-- end modal-body -->
+                </div><!-- end modal-body -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="saveBtn"  name="saveBtn" value="Crear">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
         </div><!-- end modal-content -->
     </div><!-- end modal-dialog -->
 </div>
