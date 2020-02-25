@@ -6,18 +6,11 @@
 
 @section('subtitle', 'Este módulo permite cambiar la configuracion de la aplicacion de facturacion electronica.')
 
-{{--@section('breadcrumbs')
-    {{ Breadcrumbs::render('tag_create') }}
-@stop--}}
 
 @section('content')
     @can('fe.config')
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="section-block" id="basicform">
-                    <h3 class="section-title">Configuracion de facuracion electronica</h3>
-                    <p>Este formulario permite cambiar las opciones de facturacion electronica.</p>
-                </div>
                 <div class="card">
                     <h5 class="card-header">Configuracion de Facturas</h5>
                     <div class="card-body">

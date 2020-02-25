@@ -8,64 +8,51 @@
 
 @section('content')
     @can('AuditoriaFe.view')
-        <div class="row" >
-            <div class="col-12">
-                <h3> Por favor, seleccione un rango de fechas o un rango de numeracion para visualizar facturas.</h3>
-            </div>
-        </div>
-        <br>
-        <div class="form-group">
-            <div class="input-group">
-                <div class="row input-daterange col-12">
-                    <div class="col-2">
-                        <label for="">Fecha Inicial:</label>
-                        <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
-                    </div>
-                    <div class="col-2">
-                        <label for="">Fecha Final:</label>
-                        <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
-                    </div>
-                    <div class="col-2">
-                        <label for="">Registro Inicial:</label>
-                        <input type="number" name="fe_start" id="fe_start" class="form-control" placeholder="Factura Inicia"/>
-                    </div>
-                    <div class="col-2">
-                        <label for="">Registro Final:</label>
-                        <input type="number" name="fe_end" id="fe_end" class="form-control" placeholder="Factura Final"/>
-                    </div>
-                    <div class="col-2">
-                        <label for="">Tipo Documento:</label>
-                        <select name="type_doc" id="type_doc" class="form-control">
-                            <option value="1">Factura</option>
-                            <option value="2">Nota Debito</option>
-                            <option value="3">Nota Credito</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary btn-sm" id="filter"><i class="fas fa-search"></i><br>Filtrar Registros</button>
-                    &nbsp; &nbsp;
-                    <button class="btn btn-primary btn-sm" id="Auditar"><i class="fas fa-file-invoice"></i> <i class="fas fa-check-double"></i><br>Auditar</button>
-                </div>
-            </div>
-        </div>
-        <br>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-2">
+                                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
+                            </div>
+                            <div class="col-2">
+                                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
+                            </div>
+                            <div class="col-2">
+                                <input type="number" name="fe_start" id="fe_start" class="form-control" placeholder="Factura Inicia"/>
+                            </div>
+                            <div class="col-2">
+                                <input type="number" name="fe_end" id="fe_end" class="form-control" placeholder="Factura Final"/>
+                            </div>
+                            <div class="col-2">
+                                <select name="type_doc" id="type_doc" class="form-control">
+                                    <option value="1">Factura</option>
+                                    <option value="2">Nota Debito</option>
+                                    <option value="3">Nota Credito</option>
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary btn-sm" id="filter"><i class="fas fa-search"></i> Filtrar</button>
+                                <button class="btn btn-primary btn-sm" id="Auditar"><i class="fas fa-file-invoice"></i> <i class="fas fa-check-double"></i> Auditar</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped" id="tfac">
                                 <thead>
                                     <tr>
-                                        <th>ID Factible</th>
-                                        <th>Factura/Nota</th>
-                                        <th>Tipo</th>
-                                        <th>Adquiriente</th>
-                                        <th>Nit/CC</th>
-                                        <th>Fecha Generacion</th>
-                                        <th>Fecha Registro</th>
-                                        <th>Estado DIAN</th>
-                                        <th>Estado Cliente</th>
-                                        <th class="text-center">Opciones</th>
+                                        <th>ID FACTIBLE</th>
+                                        <th>FACTURA/NOTA</th>
+                                        <th>TIPO</th>
+                                        <th>CLIENTE</th>
+                                        <th>NIT/CC</th>
+                                        <th>F. GENERACION</th>
+                                        <th>F. REGISTRO</th>
+                                        <th>ESTADO DIAN</th>
+                                        <th>ESTADO CLIENTE</th>
+                                        <th class="text-center">ACCIONES</th>
                                     </tr>
                                 </thead>
                                 <tbody>

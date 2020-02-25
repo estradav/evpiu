@@ -12,15 +12,14 @@
 
 @section('content')
     @can('mis_requerimientos.view')
-        <div class="col-lg-12">
-            <div class="form-group">
-                <span><input type="button" class="btn btn-primary btn-sm NewRequerimiento" id="NewRequerimiento" value="Crear requerimiento"></span>
-            </div>
-        </div>
-        <br>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="col-md-0 float-right">
+                            <button class="btn btn-primary NewRequerimiento" id="NewRequerimiento"> <i class="fas fa-plus-circle"></i> Crear</button>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped dataTable" id="table">

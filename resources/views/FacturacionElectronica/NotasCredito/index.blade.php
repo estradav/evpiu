@@ -6,41 +6,8 @@
 
 @section('subtitle', 'Este módulo permite validar las Notas Credito generadas en MAX.')
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('fact_electr_notas_cre') }}
-@stop
-
 @section('content')
 @can('notascredito.view')
-    <div class="col-12">
-        <div class="row">
-            <h3> Por favor, seleccione un rango de fechas para comenzar con la busqueda.</h3>
-        </div>
-    </div>
-    <br>
-    <div class="form-group">
-        <div class="input-group">
-            <div class="row input-daterange">
-                <div class="col-md-4">
-                    <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
-                </div>
-                <div class="col-md-4">
-                    <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
-                </div>
-                <div class="col-md-4">
-                    <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm">Buscar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br>
-    <div class="col-lg-4">
-        <div class="form-group">
-            <span><input type="button" class="btn btn-primary btn-sm" id="CrearXml" value="Descargar XML"></span>
-            <span><input type="button" class="btn btn-primary btn-sm" id="WebService" value="Enviar via WebService"></span>
-        </div>
-    </div>
 
     <div class="DatosWebServ" id="DatosWebServ" name="DatosWebServ" style="display: none !important;">
     </div>
@@ -48,6 +15,23 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-3">
+                            <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
+                        </div>
+                        <div class="col-3">
+                            <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
+                        </div>
+                        <div class="col-3">
+                            <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm btn-block" style="height: 36px;">Buscar</button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-primary btn-sm" id="CrearXml" style="height: 36px; margin-right: 25px">Descargar XML</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="WebService" style="height: 36px;">Subir via WebService</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-responsive table-striped" id="tfac">
@@ -55,19 +39,19 @@
                                 <tr>
                                     <th><input type="checkbox" id="selectAll" name="selectAll"></th>
                                     <th>&nbsp; &nbsp;</th>
-                                    <th>Numero</th>
-                                    <th>Factura Ref</th>
-                                    <th>Fecha</th>
-                                    <th>Razon Social</th>
-                                    <th>Nit</th>
-                                    <th>Tipo Cliente</th>
-                                    <th>Vendedor</th>
-                                    <th>Valor bruto</th>
-                                    <th>Descuento</th>
+                                    <th>NUMERO</th>
+                                    <th>FACTURA</th>
+                                    <th>FECHA</th>
+                                    <th>RAZON SOCIAL</th>
+                                    <th>NIT</th>
+                                    <th>TIPO CIENTE</th>
+                                    <th>VENDEDOR</th>
+                                    <th>BRUTO</th>
+                                    <th>DESCUENTO</th>
                                     <th>IVA</th>
-                                    <th>Motivo</th>
-                                    <th>Estado DIAN</th>
-                                    <th>Opciones</th>
+                                    <th>MOTIVO</th>
+                                    <th>ESTADO DIAN</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
