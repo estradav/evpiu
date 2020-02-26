@@ -469,9 +469,8 @@
                 $('body').on('click', '.btnNum', function () {
                     $('#data').html('');
                     var value = $(this).val();
-                    $('#data').append('<div class="container" style="align-items: center !important; margin-left: 40%; ">' +
-                      '<div class="preloader">' +
-                      '</div>' +
+                    $('#data').append('<div class="container" style="align-items: center !important; margin-left: 45%; ">' +
+                      '<div class="preloader"></div>' +
                       '<br>' +
                       '</div>'+
                       '<div class="text-center"><h3>Cargando Informacion un momento por favor....</h3></div>'
@@ -498,7 +497,7 @@
                                                     <b>FECHA DE LIBERACION:</b> <label>` + data.pronostico[i].fechaliberacion + `</label>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <b>PRODUCTO:</b> <label>` + data.pronostico[i].producto + `</label>
+                                                    <b>PRODUCTO:</b> <label>` + data.pronostico[i].producto +`-`+ data.pronostico[i].descripcion  +`</label>
                                                 </div>
                                             </div>
                                             <div class="row">

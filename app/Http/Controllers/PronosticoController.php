@@ -115,6 +115,7 @@ class PronosticoController extends Controller
                     ->select('CIEV_V_OP_Pronosticos_v1.OP as NumOrdProduct',
                         'CIEV_V_OP_Pronosticos_v1.fechaOP as fechaliberacion',
                         'CIEV_V_OP_Pronosticos_v1.Referencia as producto',
+                        'CIEV_V_OP_Pronosticos_v1.Descripcion as descripcion',
                         'CIEV_V_OP_Pronosticos_v1.TipoOP as TipoOP',
                         'CIEV_V_OP_Pronosticos_v1.CantActual as cantProceso',
                         'CIEV_V_OP_Pronosticos_v1.Arte as arte',

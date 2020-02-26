@@ -353,6 +353,13 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
             Route::resource('bitacoraomff','BitacoraOmffController');
+            Route::get('get_bitacoraomff','BitacoraOmffController@index');
+            Route::get('create_bitacoraomff','BitacoraOmffController@Create');
+            Route::post('save_bitacoraomff','BitacoraOmffController@Store');
+            Route::get('get_details_bitacoraomff','BitacoraOmffController@Details');
+
+
+
 
         });
     });

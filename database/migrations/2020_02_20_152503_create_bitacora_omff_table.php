@@ -15,7 +15,18 @@ class CreateBitacoraOmffTable extends Migration
     {
         Schema::create('bitacora_omff', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('maquina');
+            $table->string('machine');
+            $table->string('tb');
+            $table->string('rz');
+            $table->string('vz');
+            $table->string('z');
+            $table->string('workshift');
+            $table->string('operator');
+            $table->string('maintenance')->nullable();
+            $table->string('type_maintenance')->nullable();
+            $table->string('operator_maintenance')->nullable();
+            $table->string('created_by');
+            $table->string('observations')->nullable();
             $table->timestamps();
         });
     }
