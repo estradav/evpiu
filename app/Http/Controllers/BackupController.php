@@ -55,7 +55,7 @@ class BackupController extends Controller
 
         $cron_job_command = $this->commonUtil->getCronJobCommand();
 
-        return view("backup.index")
+        return view("Backup.index")
             ->with(compact('backups', 'cron_job_command'));
     }
 
