@@ -8,10 +8,7 @@
 
 @section('content')
     @can('backup')
-        <a id="create-new-backup-button" href="{{ url('backup/create') }}" class="btn btn-primary pull-right"
-           style="margin-bottom:2em;"><i
-                class="fa fa-plus"></i> Crear Backup
-        </a>
+        <a id="create-new-backup-button" href="{{ url('backup/create') }}" class="btn btn-primary pull-right" style="margin-bottom:2em;"><i class="fa fa-plus"></i> Crear Backup</a>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -63,7 +60,6 @@
         <br>
         <strong>Para activar los backups automaticos:</strong><br>
         <code>{{$cron_job_command}}</code>
-        <?php
     @else
         <div class="card">
             <div class="card-body text-center">
@@ -73,7 +69,7 @@
             </div>
         </div>
     @endcan
-
+<?php
     function formatSizeUnits($bytes)
     {
         if ($bytes >= 1073741824)
