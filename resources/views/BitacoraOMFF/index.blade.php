@@ -25,16 +25,16 @@
             </div>
         </div>
         <!-- Modal -->
-        <div class="modal fade bd-modal-xl" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal fade bd-modal-lg" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="infoModalHeader">Modal title</h5>
+                        <h3 class="modal-title" id="infoModalHeader"></h3>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body" id="infoModalBody">
+                    <div class="modal-body" id="infoModalBody" style="margin-left: 10% !important; margin-right: 10% !important; ">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -127,7 +127,7 @@
                         url: '/get_bitacoraomff'
                     },
                     columns: [
-                        {data:'date', name:'date', orderable:false, searchable:false},
+                        {data:'date', name:'date', orderable:true, searchable:true},
                         {data:'Opciones', name:'Opciones', orderable:false, searchable:false},
                     ],
                     columnDefs: [
@@ -175,7 +175,7 @@
                             $(data).each(function () {
                                 if (data.turno1.length > 0){
                                     var i = 0;
-                                    $('#infoModalBody').append('<h2>Turno 1:</h2>' +
+                                    $('#infoModalBody').append('<h2>Turno 6:00 a.m - 2:00 p.m:</h2>' +
                                         '<div class="table-responsive">' +
                                         '<table class="table table-responsive table-striped turno1" id="turno1">' +
                                         '<thead>' +
@@ -186,7 +186,7 @@
                                         '<th>VZ</th>' +
                                         '<th>Z</th>' +
                                         '<th>TOTAL</th>' +
-                                        '<th>% OC</th>' +
+                                        '<th>% CO</th>' +
                                         '</tr>' +
                                         '</thead>' +
                                         '<tbody id="turno1body"></tbody>' +
@@ -209,12 +209,12 @@
                                         i++;
                                     });
                                 }else if (data.turno1.length == 0){
-                                    $('#infoModalBody').append('<h2>Turno 1:</h2> <br> <div class="alert alert-danger" role="alert">Sin datos registrados..</div>')
+                                    $('#infoModalBody').append('<h2>Turno 6:00 a.m - 2:00 p.m:</h2> <br> <div class="alert alert-danger" role="alert">Sin datos registrados..</div>')
                                 }
 
                                 if (data.turno2.length > 0){
                                     var i = 0;
-                                    $('#infoModalBody').append('<h2>Turno 2:</h2>' +
+                                    $('#infoModalBody').append('<h2>Turno 2:00 p.m - 10:00 p.m:</h2>' +
                                         '<div class="table-responsive">' +
                                         '<table class="table table-responsive table-striped turno2" id="turno2">' +
                                         '<thead>' +
@@ -225,7 +225,7 @@
                                         '<th>VZ</th>' +
                                         '<th>Z</th>' +
                                         '<th>TOTAL</th>' +
-                                        '<th>% OC</th>' +
+                                        '<th>% CO</th>' +
                                         '</tr>' +
                                         '</thead>' +
                                         '<tbody id="turno2body"></tbody>' +
@@ -250,12 +250,12 @@
                                         i++;
                                     });
                                 }else if (data.turno2.length == 0) {
-                                    $('#infoModalBody').append('<h2>Turno 2:</h2> <div class="alert alert-danger" role="alert">Sin datos registrados..</div>')
+                                    $('#infoModalBody').append('<h2>Turno 2:00 p.m - 10:00 p.m:</h2> <div class="alert alert-danger" role="alert">Sin datos registrados..</div>')
                                 }
 
                                 if (data.turno3.length > 0){
                                     var i = 0;
-                                    $('#infoModalBody').append('<h2>Turno 3:</h2>' +
+                                    $('#infoModalBody').append('<h2>Turno 10:00 p.m - 6:00 a.m:</h2>' +
                                         '<div class="table-responsive">' +
                                         '<table class="table table-responsive table-striped turno3" id="turno3">' +
                                         '<thead>' +
@@ -266,7 +266,7 @@
                                         '<th>VZ</th>' +
                                         '<th>Z</th>' +
                                         '<th>TOTAL</th>' +
-                                        '<th>% OC</th>' +
+                                        '<th>% CO</th>' +
                                         '</tr>' +
                                         '</thead>' +
                                         '<tbody id="turno3body"></tbody>' +
@@ -291,7 +291,7 @@
                                         i++;
                                     });
                                 }else if (data.turno3.length == 0){
-                                    $('#infoModalBody').append('<h2>Turno 3:</h2> <div class="alert alert-danger" role="alert">Sin datos registrados..</div>')
+                                    $('#infoModalBody').append('<h2>Turno 10:00 p.m - 6:00 a.m:</h2> <div class="alert alert-danger" role="alert">Sin datos registrados..</div>')
                                 }
                             });
                             console.log(data)

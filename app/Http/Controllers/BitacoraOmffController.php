@@ -13,7 +13,8 @@ class BitacoraOmffController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data =  DB::table('bitacora_omff')->select(DB::raw('DATE(created_at) as date, machine , tb, rz, vz, z, workshift, operator, maintenance, type_maintenance, id '), DB::raw('count(*) as views'))
+            $data =  DB::table('bitacora_omff')
+                ->select(DB::raw('DATE(created_at) as date, machine , tb, rz, vz, z, workshift, operator, maintenance, type_maintenance, id '), DB::raw('count(*) as views'))
                 ->groupBy('date')
                 ->get();
 
@@ -92,7 +93,7 @@ class BitacoraOmffController extends Controller
                     array_push($turno3,$v);
                 }
             }
-            
+
 
             return response()->json(['turno1' => $turno1, 'turno2' => $turno2,'turno3' => $turno3],200);
         }
