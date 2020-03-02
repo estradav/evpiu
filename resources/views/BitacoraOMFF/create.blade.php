@@ -87,7 +87,7 @@
                                     <b class="control-label">TB - TAPA BOTON:</b>
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="number" id="TB" name="TB" class="form-control" value="0">
+                                    <input type="text" id="TB" name="TB" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                                     <b class="control-label">RZ - REMACHE ZAMAC:</b>
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="number" id="RZ" name="RZ" class="form-control" value="0">
+                                    <input type="text" id="RZ" name="RZ" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                                     <b class="control-label">VZ - VARIOS ZAMAC:</b>
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="number" id="VZ" name="VZ" class="form-control" value="0">
+                                    <input type="text" id="VZ" name="VZ" class="form-control" >
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                                     <b class="control-label">Z - BOTONES CAMISERO:</b>
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="number" id="Z" name="Z" class="form-control" value="0">
+                                    <input type="text" id="Z" name="Z" class="form-control" >
                                 </div>
                             </div>
                         </div>
