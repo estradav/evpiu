@@ -60,8 +60,9 @@ class LoginController extends Controller
     {
         $check = Hash::check($request->input('password'), $request->user()->password);
         if (!$check) {
-            return redirect()->route('login.locked')->withErrors([
-                'Your password does not match your profile.'
+            return redirect()->route('login.locked')
+                ->withErrors([
+                'password' => 'La contraseña ingresada es incorrecta.'
             ]);
         }
         session(['lock-expires-at' => now()->addMinutes($request->user()->getLockoutTime())]);

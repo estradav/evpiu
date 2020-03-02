@@ -60,19 +60,19 @@ class PedidoController extends Controller
         $results = array();
 
         $queries = DB::connection('MAX')->table('CIEV_V_Clientes')
-            ->where('CIEV_V_Clientes.NAME_23', 'LIKE', '%'.$query.'%')
-            ->orWhere('CIEV_V_Clientes.CUSTID_23', 'LIKE', '%'.$query.'%')->take(20)
+            ->where('CIEV_V_Clientes.RAZON_SOCIAL', 'LIKE', '%'.$query.'%')
+            ->orWhere('CIEV_V_Clientes.CODIGO_CLIENTE', 'LIKE', '%'.$query.'%')->take(20)
             ->get();
 
         foreach ($queries as $q) {
             $results[] = [
-                'value'         => trim($q->NAME_23),
-                'CodigoCliente' => trim($q->CUSTID_23),
-                'Direccion'     => trim($q->ADDR1_23),
-                'Ciudad'        => trim($q->CITY_23),
-                'Telefono'      => trim($q->PHONE_23),
+                'value'         => trim($q->RAZON_SOCIAL),
+                'CodigoCliente' => trim($q->CODIGO_CLIENTE),
+                'Direccion'     => trim($q->DIRECCION),
+                'Ciudad'        => trim($q->CIUDAD),
+                'Telefono'      => trim($q->TEL1),
                 'Plazo'         => trim($q->PLAZO),
-                'retenido'      => trim($q->STATUS_23),
+                'retenido'      => trim($q->ACTIVO),
                 'descuento'     => number_format($q->DESCUENTO,0,'','')
             ];
         }
