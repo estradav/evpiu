@@ -351,12 +351,27 @@ Route::group(['middleware' => ['caffeinated']], function () {
             ]]);
 
 
-
+            //Bitacora de operacion y mantenimiento de fuentes fijas
             Route::resource('bitacoraomff','BitacoraOmffController');
             Route::get('get_bitacoraomff','BitacoraOmffController@index');
             Route::get('create_bitacoraomff','BitacoraOmffController@Create');
             Route::post('save_bitacoraomff','BitacoraOmffController@Store');
             Route::get('get_details_bitacoraomff','BitacoraOmffController@Details');
+
+
+
+            Route::resource('informecontrolentrega', 'InformeControlEntregaController');
+            Route::get('informecontrolentrega_get','InformeControlEntregaController@index');
+
+
+            Route::resource('informeordenproduccion','InformeOrdenProduccionController');
+            Route::get('informeordenproduccion_getdata','InformeOrdenProduccionController@index');
+
+
+            Route::get('/informeordenproduccion_barcode','InformeOrdenProduccionController@Barcode');
+
+
+
 
 
 

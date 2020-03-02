@@ -194,4 +194,6 @@ class PronosticoController extends Controller
             }
         }
     }
+
+
 }

@@ -112,7 +112,7 @@ class CreateProductController extends Controller
                 'Pl_CaOrd_Max'  => number_format($q->MAXQTY_01,0,'.',''),
                 'Pl_CaOrd_Mult' => number_format($q->MULQTY_01,0,'.',''),
 
-                /* Campos Inventarios*/
+                /* Campos ControlEntregas*/
                 'Inv_UltTrans'  => trim($q->TNXDTE_01), // No se muestra  pero es necesario para el post
                 'Inv_ReqInsp'   => trim($q->INSRQD_01),
                 'Inv_ExcEnt'    => trim($q->EXCREC_01),
