@@ -1419,6 +1419,11 @@ class GestionClientesController extends Controller
         $apellidos_lenght = $request->M_primer_apellido.' '.$request->M_segundo_apellido;
         $apellidos_lenght = strlen($apellidos_lenght);
 
+        $nombre_max = '';
+        if ($request->M_primer_apellido != '' || null){
+            $nombre_max = $request->M_primer_apellido.' '.$request->M_segundo_apellido.''.$request->M_primer_nombre.' '.$request->M_segundo_nombre;
+        }
+
         DB::beginTransaction();
          try {
              DB::connection('MAX')
@@ -1428,7 +1433,7 @@ class GestionClientesController extends Controller
                      'SLSREP_23'    =>  $request->M_vendedor,
                      'STATUS_23'    =>  'R',
                      'CUSTYP_23'    =>  $request->M_Tipo_cliente,
-                     'NAME_23'      =>  $request->M_primer_nombre.' '.$request->M_segundo_nombre.' '.$request->M_primer_apellido.' '.$request->M_segundo_apellido,
+                     'NAME_23'      =>  $nombre_max,
                      'ADDR1_23'     =>  $request->M_direccion1,
                      'ADDR2_23'     =>  $direccion2,
                      'CITY_23'      =>  $request->ciudad,

@@ -61,7 +61,33 @@
                     <div class="modal-body">
                         <input type="hidden" name="medida_id" id="medida_id">
                         <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Codigo:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="cod" name="cod" onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="mm2" class="col-sm-6 control-label">Milimetros²:</label>
+                                    <div class="col-sm-12">
+                                        <input type="number" class="form-control" id="mm2" name="mm2"  onkeyup="this.value=this.value.toUpperCase();">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="denominacion" class="col-sm-6 control-label">Denominacion:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="denominacion" name="denominacion" value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="name" class="col-sm-6 control-label">Linea:</label>
                                     <div class="col-sm-12">
@@ -75,7 +101,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="name" class="col-sm-3 control-label">Sublinea:</label>
                                     <div class="col-sm-12">
@@ -83,31 +109,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-6 control-label">Codigo:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="cod" name="cod" value=""  onkeyup="this.value=this.value.toUpperCase();">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="mm2" class="col-sm-6 control-label">Milimetros²:</label>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="mm2" name="mm2" value="" onkeyup="this.value=this.value.toUpperCase();">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="denominacion" class="col-sm-6 control-label">Denominacion:</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="denominacion" name="denominacion" value="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
+
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="denominacion" class="col-sm-12 control-label">Unidad Medida:</label>
                                     <div class="col-sm-12">

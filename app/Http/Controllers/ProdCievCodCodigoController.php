@@ -80,6 +80,7 @@ class ProdCievCodCodigoController extends Controller
 
     public function getlineas(Request $request)
     {
+        $getlineasArray = [];
         if ($request->ajax()){
             $getlineas = CodLinea::where('tipoproducto_id', $request->tipoproducto_id)->get();
             foreach ($getlineas as $linea){
@@ -91,6 +92,7 @@ class ProdCievCodCodigoController extends Controller
 
     public function getsublineas(Request $request)
     {
+        $getsublineasArray = [];
         if ($request->ajax()){
             $getsublineas = CodSublinea::where('lineas_id', $request->lineas_id)->get();
             foreach ($getsublineas as $sblinea){

@@ -73,24 +73,23 @@ $(document).ready(function(){
              }
         });
 
+        document.getElementById("cod").readOnly = true;
+        document.getElementById("mm2").readOnly = true;
+        document.getElementById("denominacion").readOnly = true;
+
         $('#CrearMedida').click(function () {
             $('#saveBtn').val("create-medida");
             $('#medida_id').val('');
             $('#medidaForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#medidamodal').modal('show');
-            document.getElementById("cod").readOnly = false;
-            document.getElementById("mm2").readOnly = false;
-            document.getElementById("denominacion").readOnly = false;
+
         });
 
         $('body').on('click', '.editmedida', function () {
             $("#medidaForm").validate().resetForm();
             $('#saveBtn').attr('formnovalidate','');
             var medida_id = $(this).data('id');
-            document.getElementById("cod").readOnly = true;
-            document.getElementById("mm2").readOnly = true;
-            document.getElementById("denominacion").readOnly = true;
             $.get("/ProdCievCodMedida" +'/' + medida_id +'/edit', function (data) {
                 $('#med_lineas_id').val(data.med_lineas_id);
                 $('#modelHeading').html("Editar");
