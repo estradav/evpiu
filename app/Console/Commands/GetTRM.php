@@ -63,8 +63,8 @@ class GetTRM extends Command
                     ->where('CODE_36','=','US')->update([
                         'EXCRTE_36'         => $tasa,
                         'UDFKEY_36'         => $response->value,
-                        'UDFREF_36'         => Carbon::now()->format('dd-mm-yyyy'),
-                        'ModifiedBy'       => 'Evpiu',
+                        'UDFREF_36'         => date("d-m-Y"),
+                        'ModifiedBy'        => 'Evpiu',
                         'ModificationDate'  => Carbon::now()
                     ]);
 
