@@ -128,6 +128,7 @@ class PronosticoController extends Controller
                     $Orden [] = DB::connection('MAX')
                         ->table('CIEV_V_EstadoOP')
                         ->where('ORDNUM_14','=',$v->NumOrdProduct)
+                        ->orderBy('OPRSEQ_14','asc')
                         ->get();
                 }
             }
@@ -194,6 +195,5 @@ class PronosticoController extends Controller
             }
         }
     }
-
 
 }

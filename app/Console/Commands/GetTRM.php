@@ -74,7 +74,7 @@ class GetTRM extends Command
                    'factor' => $response->value
                 ]);
 
-                Log::info('success');
+                Log::info('Tarea automatica: TRM Obtenido correctamente');
             }
         } catch(Exception $e){
             Log::emergency($e->getMessage());

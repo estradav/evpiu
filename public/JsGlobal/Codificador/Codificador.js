@@ -202,9 +202,10 @@ $(document).ready(function(){
 
     $('#tipoproducto_id').on('change', function () {
         var tipoproducto_id = $(this).val();
+        $('#lineas_id').empty();
+        $('#sublinea_id').empty();
         if ($.trim(tipoproducto_id) != ''){
             $.get('getlineas',{tipoproducto_id: tipoproducto_id}, function(getlineas) {
-                $('#lineas_id').empty();
                 $('#lineas_id').append("<option value=''>Seleccione una Linea...</option>");
                 $.each(getlineas, function (index, value) {
                     $('#lineas_id').append("<option value='" + index + "'>"+ value +"</option>");

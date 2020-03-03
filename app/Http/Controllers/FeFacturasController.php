@@ -267,7 +267,7 @@ class FeFacturasController extends Controller
                     $tipo_documento_ide = 42;
                 }
                 else{
-                    $tipo_documento_ide = 13;
+                    $tipo_documento_ide = 31;
                 }
 
 
@@ -1257,7 +1257,7 @@ class FeFacturasController extends Controller
 
                 $bruto_factura           = null;
                 $subtotal_factura        = null;
-                $brutomasiva_factura     =  null;
+                $brutomasiva_factura     = null;
                 $descuento_factura       = null;
                 $total_cargos            = null;
                 $totalpagar              = null;
@@ -1319,15 +1319,15 @@ class FeFacturasController extends Controller
                 else { $medio_pago = 10;}
 
                 // valida el tipo de documento de identidad
-                if ($encabezado->idtipodocumento == 31 )
+                if ($encabezado->idtipodocumento == 13 )
                 {
-                    $tipo_documento_ide = 31;
+                    $tipo_documento_ide = 13;
                 }
-                if ($encabezado->idtipodocumento == 22){
+                else if ($encabezado->idtipodocumento == 22){
                     $tipo_documento_ide = 42;
                 }
                 else{
-                    $tipo_documento_ide = 13;
+                    $tipo_documento_ide = 31;
                 }
 
 

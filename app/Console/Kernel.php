@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'App\Console\Commands\GetTRM'
+        'App\Console\Commands\GetTRM',
+        'App\Console\Commands\CloseForecasts'
     ];
 
     /**
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('get:trm')->dailyAt('04:00');
+         $schedule->command('close:forecasts')->dailyAt('06:00');
     }
 
     /**
