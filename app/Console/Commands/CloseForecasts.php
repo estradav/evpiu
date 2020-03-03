@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Psy\Exception\Exception;
 
 class CloseForecasts extends Command
@@ -95,8 +96,26 @@ class CloseForecasts extends Command
             }
 
             Log::info('Tarea automatica: Pronosticos cerrados correctamente');
+
+            $subject = "PRONOSTICOS CERRADOS";
+            Mail::send('mails.automatic_task.trm',[], function($msj) use($subject){
+                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->subject($subject);
+                $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
+                $msj->cc("dcorrea@estradavelasquez.com");
+            });
+
+
         } catch(Exception $e){
             Log::emergency($e->getMessage());
+
+            $subject = "ERROR AL CERRAR PRONOSTICOS";
+            Mail::send('mails.automatic_task.fail_close_forecast',[], function($msj) use($subject){
+                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->subject($subject);
+                $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
+                $msj->cc("dcorrea@estradavelasquez.com");
+            });
         }
     }
 }

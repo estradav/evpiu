@@ -370,11 +370,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/informeordenproduccion_barcode','InformeOrdenProduccionController@Barcode');
 
 
-
-
-
-
-
         });
     });
 });
