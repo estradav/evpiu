@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Psy\Exception\Exception;
 use SoapClient;
 use SoapFault;
@@ -75,9 +76,26 @@ class GetTRM extends Command
                 ]);
 
                 Log::info('Tarea automatica: TRM Obtenido correctamente');
+
+                $subject = "TRM SUBIDO CORRECTAMENTE";
+                Mail::send('mails.automatic_task.trm',[], function($msj) use($subject){
+                    $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                    $msj->subject($subject);
+                    $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
+                    $msj->cc("dcorrea@estradavelasquez.com");
+                });
+
             }
         } catch(Exception $e){
             Log::emergency($e->getMessage());
+
+            $subject = "ERROR AL SUBIR TRM";
+            Mail::send('mails.automatic_task.fail_trm',[], function($msj) use($subject){
+                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->subject($subject);
+                $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
+                $msj->cc("dcorrea@estradavelasquez.com");
+            });
         }
 
 
