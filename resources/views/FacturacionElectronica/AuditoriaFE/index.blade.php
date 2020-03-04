@@ -475,6 +475,7 @@
                             Username: Username
                         },
                         success: function (data) {
+                            console.log(data);
                         	var array = [];
                         	var i = 0;
                             $(data).each(function () {

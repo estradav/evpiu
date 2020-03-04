@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\GetTRM',
-        'App\Console\Commands\CloseForecasts'
+        'App\Console\Commands\CloseForecasts',
+        'App\Console\Commands\InvoiceAudit'
     ];
 
     /**
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('get:trm')->dailyAt('04:00');
          $schedule->command('close:forecasts')->dailyAt('06:00');
+         $schedule->command('invoice:audit')->dailyAt('06:30');
     }
 
     /**
