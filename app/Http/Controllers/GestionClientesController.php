@@ -1417,11 +1417,11 @@ class GestionClientesController extends Controller
 
 
         $apellidos_lenght = $request->M_primer_apellido.' '.$request->M_segundo_apellido;
-        $apellidos_lenght = strlen($apellidos_lenght);
+        $apellidos_lenght = strlen($apellidos_lenght ) +1;
 
         $nombre_max = '';
         if ($request->M_primer_apellido != '' || null){
-            $nombre_max = $request->M_primer_apellido.' '.$request->M_segundo_apellido.''.$request->M_primer_nombre.' '.$request->M_segundo_nombre;
+            $nombre_max = $request->M_primer_apellido.' '.$request->M_segundo_apellido.' '.$request->M_primer_nombre.' '.$request->M_segundo_nombre;
         }
 
         DB::beginTransaction();
@@ -1513,7 +1513,7 @@ class GestionClientesController extends Controller
                  ->insert([
                      'nit'                              =>  $request->M_Nit_cc,
                      'digito'                           =>  $request->M_Nit_cc_dg,
-                     'nombres'                          =>  $request->M_primer_nombre.' '.$request->M_segundo_nombre.' '.$request->M_primer_apellido.' '.$request->M_segundo_apellido,
+                     'nombres'                          =>  $nombre_max,
                      'direccion'                        =>  $request->M_direccion1,
                      'ciudad'                           =>  $request->ciudad,
                      'telefono_1'                       =>  $request->M_Telefono,
@@ -1563,18 +1563,14 @@ class GestionClientesController extends Controller
                  ]);
 
              DB::commit();
-
              return response()->json(['Success' => 'Guardado con exito!'],200);
 
          }catch (\Exception $e){
              DB::rollback();
-             echo json_encode(array(
-                 'error' => array(
-                     'msg' => $e->getMessage(),
-                     'code' => $e->getCode(),
-                     'code2' =>$e->getLine(),
-                 ),
-             ));
+             return response()->json([
+                 'success' => 'false',
+                 'errors'  => $e->getMessage(),
+             ], 400);
          }
     }
 

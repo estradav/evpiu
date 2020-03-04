@@ -226,8 +226,6 @@ class GestionFacturacionElectronicaController extends Controller
 
                 $token = $respuesta->data->salida;
 
-
-
                 $params = array(
                     'token' => $token,
                     'idEmpresa' => '',
@@ -253,6 +251,7 @@ class GestionFacturacionElectronicaController extends Controller
                 $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
                 $return = json_decode($return->return);
                 $values = $return->data;
+
 
                 return response()->json($values);
 
@@ -299,6 +298,7 @@ class GestionFacturacionElectronicaController extends Controller
                 $values = $return->data;
 
                 return response()->json($values);
+
             }
         }
     }

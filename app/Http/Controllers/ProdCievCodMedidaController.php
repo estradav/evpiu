@@ -145,8 +145,6 @@ class ProdCievCodMedidaController extends Controller
 
     public function UniqueDenominacion(Request $request)
     {
-        dd($request);
-
         $UniqueCod = DB::table('cod_medidas')
             ->where('med_lineas_id','=',$request->lineas_id)
             ->where('med_lineas_id','=',$request->sublineas_id)

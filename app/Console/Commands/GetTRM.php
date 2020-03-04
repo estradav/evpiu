@@ -71,7 +71,7 @@ class GetTRM extends Command
 
                 DB::connection('DMS')->table('monedas_factores')->insert([
                    'moneda' => 'US',
-                   'fecha'  => Carbon::now(),
+                   'fecha'  => Carbon::now()->format('Y-m-d 00:00:00'),
                    'factor' => $response->value
                 ]);
 

@@ -308,7 +308,7 @@ $(document).ready(function(){
 
         var diametro = $('#Diametro').val();
         var Umedida = $('#UndMedida').val();
-        var Altura = $('#Altura').val();
+        var Altura = $('#º').val();
         var Base = $('#Base').val();
         var resultado = 0;
         var sub;
@@ -404,7 +404,7 @@ $(document).ready(function(){
             }
         }
 
-        if (Altura != null  && Base != null &&  diametro == null && Umedida == 'un'){
+        if (Altura != null  && Base != null  &&  diametro == null && Umedida == 'un'){
             var suma6 = ((Base * 25.40) * (Altura * 25.40)) * 2;
             resultado = Math.floor(suma6);
             sub = resultado.toString().substr(-2);
@@ -537,6 +537,7 @@ $(document).ready(function(){
 
 
     $('body').on("keyup",'.Base', function(){
+        console.log('test');
         calcular();
         denominacion();
     });
