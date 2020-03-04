@@ -20,7 +20,7 @@
         "doctrine/dbal": "2.9.3",
         "fideloper/proxy": "^4.0",
         "genealabs/laravel-caffeine": "^1.0",
-        "laravel/framework": "6.17.*",
+        "laravel/framework": "6.18.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "6.0.*",
         "milon/barcode": "^6.0",
