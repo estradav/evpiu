@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreatePostFormRequest;
 use App\Http\Requests\UpdatePostFormRequest;
 use App\Post;
 use App\Category;
 use App\Tag;
+use Illuminate\View\View;
 
 class PostController extends Controller
 {
@@ -29,7 +33,7 @@ class PostController extends Controller
     /**
      * Muestra un listado de las publicaciones existentes.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -39,10 +43,10 @@ class PostController extends Controller
     }
 
     /**
-     * @todo: Move CKEditor from CDN to Laravel Mix.
+     * @return Factory|View
+     *@todo: Move CKEditor from CDN to Laravel Mix.
      * Muestra el formulario para crear una nueva etiqueta.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -53,11 +57,11 @@ class PostController extends Controller
     }
 
     /**
-     * @todo: Make throw exceptions.
+     * @param CreatePostFormRequest $request
+     * @return RedirectResponse
+     *@todo: Make throw exceptions.
      * Almacena una nueva categoría en la base de datos.
      *
-     * @param  \App\Http\Requests\CreatePostFormRequest  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(CreatePostFormRequest $request)
     {
@@ -88,8 +92,8 @@ class PostController extends Controller
     /**
      * Muestra una publicación en específico.
      *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
+     * @param Post $post
+     * @return void
      */
     public function show(Post $post)
     {
@@ -97,12 +101,12 @@ class PostController extends Controller
     }
 
     /**
-     * @todo: Move CKEditor from CDN to Laravel Mix.
+     * @param  Post  $post
+     * @return Factory|View
+     *@todo: Move CKEditor from CDN to Laravel Mix.
      * Muestra el formulario para editar una publicación
      * en específico.
      *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
     {
@@ -113,12 +117,12 @@ class PostController extends Controller
     }
 
     /**
-     * @todo: Make throw exceptions.
+     * @param  \App\Http\Requests\UpdatePostFormRequest  $request
+     * @param  Post  $post
+     * @return RedirectResponse
+     *@todo: Make throw exceptions.
      * Actualiza la publicación especificada en la base de datos.
      *
-     * @param  \App\Http\Requests\UpdatePostFormRequest  $request
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
      */
     public function update(UpdatePostFormRequest $request, Post $post)
     {
@@ -159,8 +163,8 @@ class PostController extends Controller
      * Retira la publicación especificada y su archivo de imagen
      * anexada de la base de datos.
      *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
+     * @param  Post $post
+     * @return RedirectResponse
      */
     public function destroy(Post $post)
     {

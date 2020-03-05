@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Menu;
 use App\MenuItem;
 use App\User;
+use Illuminate\View\View;
 
 class MenuController extends Controller
 {
@@ -26,7 +29,7 @@ class MenuController extends Controller
     /**
      * Muestra todos los menus.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -40,7 +43,7 @@ class MenuController extends Controller
     /**
      * Muestra el formulario para almacenar un nuevo menu.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function create()
     {
@@ -50,8 +53,8 @@ class MenuController extends Controller
     /**
      * Almacena un nuevo menu.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -75,7 +78,7 @@ class MenuController extends Controller
      * Muestra el formulario para editar la información de un menu.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function edit($id)
     {
@@ -89,8 +92,9 @@ class MenuController extends Controller
     /**
      * Actualiza la información de un menu específico.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -114,7 +118,7 @@ class MenuController extends Controller
      * Elimina un menu específico.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function destroy($id)
     {

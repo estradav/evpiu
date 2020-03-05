@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
@@ -10,6 +14,7 @@ use App\Permission;
 use App\PermissionGroup;
 use App\Http\Requests\CreatePermissionGroupFormRequest;
 use App\Http\Requests\UpdatePermissionGroupFormRequest;
+use Illuminate\View\View;
 
 class PermissionGroupController extends Controller
 {
@@ -24,7 +29,7 @@ class PermissionGroupController extends Controller
     /**
      * Muestra una lista de todos los grupos de permisos de la plataforma.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -36,7 +41,7 @@ class PermissionGroupController extends Controller
     /**
      * Muestra el formulario para crear un nuevo grupo de permisos en la plataforma.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function create()
     {
@@ -58,8 +63,8 @@ class PermissionGroupController extends Controller
      * Almacena un nuevo grupo de permisos en la plataforma
      * y asocia permisos a éste.
      *
-     * @param  \App\Http\Requests\CreatePermissionGroupFormRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param CreatePermissionGroupFormRequest $request
+     * @return RedirectResponse
      */
     public function store(CreatePermissionGroupFormRequest $request)
     {
@@ -91,8 +96,8 @@ class PermissionGroupController extends Controller
      * Proporciona la información de un grupo de permisos en específico
      * junto con sus permisos asociados.
      *
-     * @param  \App\PermissionGroup  $permissionGroup
-     * @return \Illuminate\Http\Response
+     * @param PermissionGroup $permissionGroup
+     * @return Factory|View
      */
     public function show(PermissionGroup $permissionGroup)
     {
@@ -103,8 +108,8 @@ class PermissionGroupController extends Controller
      * Muestra el formulario para editar la información de un
      * grupo de permisos en específico.
      *
-     * @param  \App\PermissionGroup  $permissionGroup
-     * @return \Illuminate\Http\Response
+     * @param PermissionGroup $permissionGroup
+     * @return Factory|View
      */
     public function edit(PermissionGroup $permissionGroup)
     {
@@ -130,8 +135,8 @@ class PermissionGroupController extends Controller
      * junto con sus nuevos permisos.
      *
      * @param  \App\Http\Requests\UpdatePermissionGroupFormRequest  $request
-     * @param  \App\PermissionGroup  $permissionGroup
-     * @return \Illuminate\Http\Response
+     * @param PermissionGroup $permissionGroup
+     * @return RedirectResponse
      */
     public function update(UpdatePermissionGroupFormRequest $request, PermissionGroup $permissionGroup)
     {
@@ -151,7 +156,7 @@ class PermissionGroupController extends Controller
         // Se respalda el grupo al que pertenecía cada permiso que se va a mover a un nuevo grupo
         $previousPermissionGroups = array_map(function ($group) {
             return $group['id'];
-        }, Permission::getGroups($availablePermissions));
+        }, (array)Permission::getGroups($availablePermissions));
 
         // Actualiza la informacion estándar del grupo
         $permissionGroup->fill($request->except('assigned_perms', 'avail_perms'));
@@ -193,8 +198,9 @@ class PermissionGroupController extends Controller
     /**
      * Elimina un grupo de permisos específico de la plataforma
      *
-     * @param  \App\PermissionGroup  $permissionGroup
-     * @return \Illuminate\Http\Response
+     * @param PermissionGroup $permissionGroup
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(PermissionGroup $permissionGroup)
     {

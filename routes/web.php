@@ -357,6 +357,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('create_bitacoraomff','BitacoraOmffController@Create');
             Route::post('save_bitacoraomff','BitacoraOmffController@Store');
             Route::get('get_details_bitacoraomff','BitacoraOmffController@Details');
+            Route::get('get_chart_peer_day_bitacoraomff','BitacoraOmffController@chart_peer_day');
+
+
 
 
             Route::resource('informecontrolentrega', 'InformeControlEntregaController');

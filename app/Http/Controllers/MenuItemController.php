@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use App\Menu;
 use App\MenuItem;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\View\View;
 
 class MenuItemController extends Controller
 {
@@ -26,8 +29,8 @@ class MenuItemController extends Controller
     /**
      * Almacena un nuevo item en un menu específico.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -54,9 +57,9 @@ class MenuItemController extends Controller
     /**
      * Actualiza un item específico de un menu específico.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -82,7 +85,7 @@ class MenuItemController extends Controller
      *
      * @param  int  $menu
      * @param  int  $item_id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Menu $menu, $item_id)
     {
@@ -102,7 +105,7 @@ class MenuItemController extends Controller
      * Muestra la estructura de un menu en específico.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function builder($id)
     {

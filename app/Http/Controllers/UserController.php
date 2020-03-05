@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\User;
@@ -10,6 +14,7 @@ use App\Role;
 use App\Permission;
 use App\PermissionGroup;
 use App\Http\Requests\UserFormRequest;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -29,7 +34,7 @@ class UserController extends Controller
     /**
      * Muestra una lista de todos los usuarios de la plataforma.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -64,8 +69,8 @@ class UserController extends Controller
      * Proporciona la información de un usuario en específico
      * junto con sus roles y permisos asociados.
      *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return Factory|View
      */
     public function show(User $user)
     {
@@ -79,8 +84,8 @@ class UserController extends Controller
      * Muestra el formulario para editar la información de un
      * usuario en específico.
      *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return RedirectResponse
      */
     public function edit(User $user)
     {
@@ -161,8 +166,8 @@ class UserController extends Controller
      * junto con sus nuevos roles y permisos.
      *
      * @param  \App\Http\Requests\UserFormRequest  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return RedirectResponse
      */
     public function update(UserFormRequest $request, User $user)
     {
@@ -201,8 +206,9 @@ class UserController extends Controller
     /**
      * Elimina un usuario en específico de la plataforma.
      *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(User $user)
     {
