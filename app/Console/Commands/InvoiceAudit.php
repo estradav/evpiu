@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -107,7 +106,7 @@ class InvoiceAudit extends Command
             }
 
 
-            Log::info('Tarea automatica: Auditoria de facturacion electronica');
+            Log::info('[TAREAS AUTOMATICAS]: Auditoria de facturacion electronica');
 
             $subject = "AUDITORIA DE FACTURACION ELECTRONICA";
             Mail::send('mails.automatic_task.invoice_audit',['missing' => $missing], function($msj) use($subject){
@@ -117,7 +116,7 @@ class InvoiceAudit extends Command
                 $msj->cc("dcorrea@estradavelasquez.com");
             });
         }catch(Exception $e){
-            Log::emergency($e->getMessage());
+            Log::emergency('[TAREAS AUTOMATICAS]:'. $e->getMessage());
         }
     }
 }

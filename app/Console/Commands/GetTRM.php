@@ -75,7 +75,7 @@ class GetTRM extends Command
                    'factor' => $response->value
                 ]);
 
-                Log::info('Tarea automatica: TRM Obtenido correctamente');
+                Log::info('[TAREAS AUTOMATICAS]: TRM Obtenido correctamente');
 
                 $subject = "TRM SUBIDO CORRECTAMENTE";
                 Mail::send('mails.automatic_task.trm',[], function($msj) use($subject){
@@ -87,7 +87,7 @@ class GetTRM extends Command
 
             }
         } catch(Exception $e){
-            Log::emergency($e->getMessage());
+            Log::emergency('[TAREAS AUTOMATICAS]: '. $e->getMessage());
 
             $subject = "ERROR AL SUBIR TRM";
             Mail::send('mails.automatic_task.fail_trm',[], function($msj) use($subject){
@@ -97,7 +97,5 @@ class GetTRM extends Command
                 $msj->cc("dcorrea@estradavelasquez.com");
             });
         }
-
-
     }
 }

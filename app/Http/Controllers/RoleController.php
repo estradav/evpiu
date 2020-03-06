@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -10,6 +14,7 @@ use App\Role;
 use App\Permission;
 use App\PermissionGroup;
 use App\Http\Requests\RoleFormRequest;
+use Illuminate\View\View;
 
 class RoleController extends Controller
 {
@@ -30,7 +35,7 @@ class RoleController extends Controller
     /**
      * Muestra una lista de todos los roles de la plataforma.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -42,7 +47,7 @@ class RoleController extends Controller
     /**
      * Muestra el formulario para crear un nuevo rol en la plataforma.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function create()
     {
@@ -67,8 +72,8 @@ class RoleController extends Controller
      * Almacena un nuevo rol en la plataforma junto con sus
      * permisos asociados.
      *
-     * @param  \App\Http\Requests\RoleFormRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param RoleFormRequest $request
+     * @return RedirectResponse
      */
     public function store(RoleFormRequest $request)
     {
@@ -90,8 +95,8 @@ class RoleController extends Controller
      * Proporciona la información de un rol en específico
      * junto con los usuarios y permisos asociados.
      *
-     * @param  \Spatie\Permission\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @param Role $role
+     * @return Factory|View
      */
     public function show(Role $role)
     {
@@ -108,8 +113,8 @@ class RoleController extends Controller
      * Muestra el formulario para editar la información de un
      * rol en específico.
      *
-     * @param  \Spatie\Permission\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @param Role $role
+     * @return RedirectResponse
      */
     public function edit(Role $role)
     {
@@ -142,9 +147,9 @@ class RoleController extends Controller
      * Actualiza la información de un rol en específico
      * junto con sus nuevos permisos.
      *
-     * @param  \App\Http\Requests\RoleFormRequest  $request
-     * @param  \Spatie\Permission\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @param RoleFormRequest $request
+     * @param Role $role
+     * @return RedirectResponse
      */
     public function update(RoleFormRequest $request, Role $role)
     {
@@ -168,8 +173,9 @@ class RoleController extends Controller
     /**
      * Elimina un rol en específico de la plataforma.
      *
-     * @param  \Spatie\Permissions\Models\Role $role
-     * @return \Illuminate\Http\Response
+     * @param Role $role
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Role $role)
     {

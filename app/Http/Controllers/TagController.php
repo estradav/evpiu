@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\TagFormRequest;
 use App\Tag;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class TagController extends Controller
 {
@@ -25,7 +30,7 @@ class TagController extends Controller
     /**
      * Muestra un listado de las etiquetas existentes.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -37,7 +42,7 @@ class TagController extends Controller
     /**
      * Muestra el formulario para crear una nueva etiqueta.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function create()
     {
@@ -45,11 +50,11 @@ class TagController extends Controller
     }
 
     /**
-     * @todo: Make throw exceptions.
+     * @param TagFormRequest $request
+     * @return RedirectResponse
+     *@todo: Make throw exceptions.
      * Almacena una nueva etiqueta en la base de datos.
      *
-     * @param  \App\Http\Requests\TagFormRequest  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(TagFormRequest $request)
     {
@@ -67,8 +72,8 @@ class TagController extends Controller
     /**
      * Muestra una etiqueta en específico.
      *
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
+     * @param Tag $tag
+     * @return void
      */
     public function show(Tag $tag)
     {
@@ -79,8 +84,8 @@ class TagController extends Controller
      * Muestra el formulario para editar una etiqueta
      * en específico.
      *
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
+     * @param Tag $tag
+     * @return Factory|View
      */
     public function edit(Tag $tag)
     {
@@ -88,12 +93,12 @@ class TagController extends Controller
     }
 
     /**
-     * @todo: Make throw exceptions.
+     * @param  TagFormRequest  $request
+     * @param Tag $tag
+     * @return RedirectResponse
+     *@todo: Make throw exceptions.
      * Actualiza la etiqueta especificada en la base de datos.
      *
-     * @param  \App\Http\Requests\TagFormRequest  $request
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
      */
     public function update(TagFormRequest $request, Tag $tag)
     {
@@ -111,8 +116,9 @@ class TagController extends Controller
     /**
      * Retira la etiqueta especificada de la base de datos.
      *
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Response
+     * @param Tag $tag
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Tag $tag)
     {

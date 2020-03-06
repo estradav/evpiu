@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
 use App\Tag;
+use Illuminate\View\View;
 
 class BlogController extends Controller
 {
@@ -14,7 +16,7 @@ class BlogController extends Controller
      * por cada página ordenadas por fecha de creación
      * descendente.
      *
-     * @return \Illuminate\Http\Request
+     * @return Factory|View
      */
     public function index()
     {
@@ -26,12 +28,12 @@ class BlogController extends Controller
     }
 
     /**
+     * @param Post $post
+     * @return Factory|View
      * @todo: Upgrade pagination, tags and
      * categories appearance.
      * Muestra la publicación especificada.
      *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Request
      */
     public function post(Post $post)
     {
@@ -39,13 +41,13 @@ class BlogController extends Controller
     }
 
     /**
+     * @param Category $category
+     * @return Factory|View
      * @todo: Upgrade pagination appearance.
      * Muestra cinco publicaciones por cada página,
      * relacionadas con una categoría en específico y
      * ordenadas por fecha de creación descendente.
      *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Request
      */
     public function category(Category $category)
     {
@@ -55,13 +57,13 @@ class BlogController extends Controller
     }
 
     /**
+     * @param Tag $tag
+     * @return Factory|View
      * @todo: Upgrade pagination appearance.
      * Muestra cinco publicaciones por cada página,
      * relacionadas con una etiqueta en específico y
      * ordenadas por fecha de creación descendente.
      *
-     * @param  \App\Tag  $tag
-     * @return \Illuminate\Http\Request
      */
     public function tag(Tag $tag)
     {

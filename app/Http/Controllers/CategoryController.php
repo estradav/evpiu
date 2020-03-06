@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryFormRequest;
 use App\Category;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
@@ -25,7 +30,7 @@ class CategoryController extends Controller
     /**
      * Muestra un listado de las categorías existentes.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
@@ -37,7 +42,7 @@ class CategoryController extends Controller
     /**
      * Muestra el formulario para crear una nueva categoría.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function create()
     {
@@ -45,11 +50,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * @todo: Make throw exceptions.
+     * @param  \App\Http\Requests\CategoryFormRequest  $request
+     * @return RedirectResponse
+     *@todo: Make throw exceptions.
      * Almacena una nueva categoría en la base de datos.
      *
-     * @param  \App\Http\Requests\CategoryFormRequest  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(CategoryFormRequest $request)
     {
@@ -67,8 +72,8 @@ class CategoryController extends Controller
     /**
      * Muestra una categoría en específico.
      *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return void
      */
     public function show(Category $category)
     {
@@ -79,8 +84,8 @@ class CategoryController extends Controller
      * Muestra el formulario para editar una categoría
      * en especifico.
      *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return Factory|View
      */
     public function edit(Category $category)
     {
@@ -88,12 +93,12 @@ class CategoryController extends Controller
     }
 
     /**
-     * @todo: Make throw exceptions.
+     * @param  \App\Http\Requests\CategoryFormRequest  $request
+     * @param  Category  $category
+     * @return RedirectResponse
+     *@todo: Make throw exceptions.
      * Actualiza la categoría especificada en la base de datos.
      *
-     * @param  \App\Http\Requests\CategoryFormRequest  $request
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
      */
     public function update(CategoryFormRequest $request, Category $category)
     {
@@ -111,8 +116,9 @@ class CategoryController extends Controller
     /**
      * Retira la categoría especificada de la base de datos.
      *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(Category $category)
     {
