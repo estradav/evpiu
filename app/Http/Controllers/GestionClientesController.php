@@ -100,6 +100,7 @@ class GestionClientesController extends Controller
             $User =  DB::connection('MAX')
                 ->table('Sales_Rep_Master')
                 ->where('UDFKEY_26','<>','RETIRADO')
+                ->orderBy('SLSNME_26','asc')
                 ->get();
         }
         return response()->json($User);
@@ -1001,7 +1002,7 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
         try {
             DB::connection('MAX')
-                ->table('customer_master_ex')
+                ->table('customer_master_ext')
                 ->where('CUSTID_23','=', $request->cliente)
                 ->update([
                     'CorreosCopia'  =>  $correos_string
@@ -1037,7 +1038,7 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
         try {
             DB::connection('MAX')
-                ->table('customer_master_ex')
+                ->table('customer_master_ext')
                 ->where('CUSTID_23','=', $request->cliente)
                 ->update([
                     'RUT'  =>  $request->result['value'][0]['rut']
@@ -1080,7 +1081,7 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
         try {
             DB::connection('MAX')
-                ->table('customer_master_ex')
+                ->table('customer_master_ext')
                 ->where('CUSTID_23','=', $request->cliente)
                 ->update([
                     'GranContr'  =>  $request->result['value'][0]['gran_contribuyente']
@@ -1123,7 +1124,7 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
         try {
             DB::connection('MAX')
-                ->table('customer_master_ex')
+                ->table('customer_master_ext')
                 ->where('CUSTID_23','=', $request->cliente)
                 ->update([
                     'ResponsableIVA'  =>  $request->result['value'][0]['resp_iva']
@@ -1159,7 +1160,7 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
         try {
             DB::connection('MAX')
-                ->table('customer_master_ex')
+                ->table('customer_master_ext')
                 ->where('CUSTID_23','=', $request->cliente)
                 ->update([
                     'ResponsableIVA'  =>  $request->result['value'][0]['resp_fe']
@@ -1195,7 +1196,7 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
         try {
             DB::connection('MAX')
-                ->table('customer_master_ex')
+                ->table('customer_master_ext')
                 ->where('CUSTID_23','=', $request->cliente)
                 ->update([
                     'telFE'  =>  $request->result['value'][0]['tel_fe']
@@ -1231,7 +1232,7 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
         try {
             DB::connection('MAX')
-                ->table('customer_master_ex')
+                ->table('customer_master_ext')
                 ->where('CUSTID_23','=', $request->cliente)
                 ->update([
                     'CiudadExterior'  =>  $request->result['value'][0]['cod_city_ext']
@@ -1267,7 +1268,7 @@ class GestionClientesController extends Controller
         DB::beginTransaction();
         try {
             DB::connection('MAX')
-                ->table('customer_master_ex')
+                ->table('customer_master_ext')
                 ->where('CUSTID_23','=', $request->cliente)
                 ->update([
                     'GRUPOECON'  =>  $request->result['value'][0]['grupo_economico']

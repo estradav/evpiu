@@ -95,10 +95,10 @@ class CloseForecasts extends Command
                 }
             }
 
-            Log::info('Tarea automatica: Pronosticos cerrados correctamente');
+            Log::info('[TAREAS AUTOMATICAS]: Pronosticos cerrados correctamente');
 
             $subject = "PRONOSTICOS CERRADOS";
-            Mail::send('mails.automatic_task.trm',[], function($msj) use($subject){
+            Mail::send('mails.automatic_task.close_forecast',[], function($msj) use($subject){
                 $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
                 $msj->subject($subject);
                 $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
@@ -107,7 +107,7 @@ class CloseForecasts extends Command
 
 
         } catch(Exception $e){
-            Log::emergency($e->getMessage());
+            Log::emergency('[TAREAS AUTOMATICAS]:'. $e->getMessage());
 
             $subject = "ERROR AL CERRAR PRONOSTICOS";
             Mail::send('mails.automatic_task.fail_close_forecast',[], function($msj) use($subject){

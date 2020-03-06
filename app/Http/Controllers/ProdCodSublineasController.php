@@ -22,7 +22,8 @@ class ProdCodSublineasController extends Controller
                 ->leftJoin('cod_lineas','cod_sublineas.lineas_id','=','cod_lineas.id')
                 ->select('cod_sublineas.cod as cod','cod_sublineas.name as name','cod_sublineas.abreviatura as abrev',
                     'cod_sublineas.coments as coment', 'cod_lineas.name as linea','cod_sublineas.id as id','cod_sublineas.usuario as usr',
-                    'cod_sublineas.created_at as created','cod_sublineas.updated_at as update','cod_sublineas.id as DT_Row_Index' );
+                    'cod_sublineas.created_at as created','cod_sublineas.updated_at as update','cod_sublineas.id as DT_Row_Index' )
+                 ->get();
 
 
             return Datatables::of($data)
