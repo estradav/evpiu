@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Mostrar usuario')
 
@@ -25,6 +25,7 @@
         </div>
     </div>
 </div>
+<br>
 <div class="row">
     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
         <div class="card">
@@ -32,7 +33,7 @@
             <div class="card-body">
                 <div class="row">
                     @foreach ($user->roles as $role)
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-4 col-6">
                         <ul class="list-unstyled arrow">
                             <li><a href="{{ route('roles.show', $role->id) }}">{{ $role->description }}</a></li>
                         </ul>
@@ -48,7 +49,7 @@
             <div class="card-body">
                 <div class="row">
                     @foreach ($userPermissions as $permission)
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-4 col-6">
                         <ul class="list-unstyled arrow">
                             <li><a href="{{ route('permissions.show', $permission->id) }}">{{ $permission->description }}</a></li>
                         </ul>

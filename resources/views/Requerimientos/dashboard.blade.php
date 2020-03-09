@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Estadisticas de requerimientos')
 
@@ -620,7 +620,7 @@
 
                 $('#downloadPdf').click(function(event) {
 
-                	var img_enc = new Image(); img_enc.src = '/img/Logo_v2.png';
+                	var img_enc = new Image(); img_enc.src = '/img/estrada.png';
                     var ReqAsignados = document.getElementById("ReqAsignados").toDataURL("image/png", 1.0);
                     var EstPropDis = document.getElementById("Est_Propuestas").toDataURL("image/png", 1.0);
                     var EstReq  = document.getElementById("ReqTotals").toDataURL("image/png", 1.0);

@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Pedidos (Produccion)')
 
@@ -19,20 +19,20 @@
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped dataTableP" id="table">
                                 <thead>
-                                <tr>
-                                    <th># Pedido</th>
-                                    <th>Orden de Compra</th>
-                                    <th>Codigo Cliente</th>
-                                    <th>Nombre Cliente</th>
-                                    <th>Vendedor</th>
-                                    <th>Condiciones de pago</th>
-                                    <th>Descuento</th>
-                                    <th>IVA</th>
-                                    <th>Estado</th>
-                                    <th>Sub Estado</th>
-                                    <th>Fecha Creacion</th>
-                                    <th style="text-align:center ">Opciones</th>
-                                </tr>
+                                    <tr>
+                                        <th># Pedido</th>
+                                        <th>Orden de Compra</th>
+                                        <th>Codigo Cliente</th>
+                                        <th>Nombre Cliente</th>
+                                        <th>Vendedor</th>
+                                        <th>Condiciones de pago</th>
+                                        <th>Descuento</th>
+                                        <th>IVA</th>
+                                        <th>Estado</th>
+                                        <th>Sub Estado</th>
+                                        <th>Fecha Creacion</th>
+                                        <th style="text-align:center ">Opciones</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>

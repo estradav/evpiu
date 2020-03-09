@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Modificar permiso')
 
@@ -6,18 +6,11 @@
 
 @section('subtitle', 'Este módulo gestiona todos los permisos de los roles de la aplicación.')
 
-@section('breadcrumbs')
-{{ Breadcrumbs::render('permission_edit', $permission) }}
-@stop
 
 @section('content')
     @can('permissions.edit')
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="section-block" id="basicform">
-                <h3 class="section-title">Modificar permiso</h3>
-                <p>Este formulario te ayudará a actualizar un permiso existente en la plataforma.</p>
-            </div>
             <div class="card">
                 <h5 class="card-header">Modificar permiso: {{ $permission->description }}</h5>
                 <div class="card-body">

@@ -66,8 +66,8 @@ class FeNotasCreditoController extends Controller
             }
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/nc/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="far fa-edit"></i></a>';
-                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download-vg" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>'.'</div>';
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/nc/'.$row->id.'/edit" class="btn btn-sm btn-outline-light" id="edit-fac"><i class="fas fa-edit" style="color: #3085d6"></i></a>';
+                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download-vg" id="'.$row->id.'"><i class="fas fa-file-pdf" style="color: #FF0000"></i></button>'.'</div>';
                     return $btn;
                 })
                 ->addColumn('selectAll', function($row){

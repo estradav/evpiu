@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Backup')
 
@@ -8,11 +8,12 @@
 
 @section('content')
     @can('backup')
-        <a id="create-new-backup-button" href="{{ url('backup/create') }}" class="btn btn-primary pull-right" style="margin-bottom:2em;"><i class="fa fa-plus"></i> Crear Backup</a>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header">Backup</h5>
+                    <div class="card-header">
+                        <a id="create-new-backup-button" href="{{ url('backup/create') }}" class="btn btn-primary pull-right" ><i class="fa fa-plus"></i> Crear Backup</a>
+                    </div>
                     <div class="card-body">
                         @if (count($backups))
                             <table class="table table-striped table-bordered">
@@ -38,8 +39,7 @@
                                         </td>
                                         <td>
                                             <a class="btn btn-xs btn-success"
-                                               href="{{action('BackupController@download', [$backup['file_name']])}}"><i
-                                                    class="fa fa-cloud-download"></i> Decargar</a>
+                                               href="{{action('BackupController@download', [$backup['file_name']])}}"><i class="fa fa-cloud-download"> </i> Decargar</a>
                                             <a class="btn btn-xs btn-danger link_confirmation" data-button-type="delete"
                                                href="{{action('BackupController@delete', [$backup['file_name']])}}"><i class="fa fa-trash-o"></i>
                                                 Eliminar</a>

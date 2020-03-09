@@ -37,7 +37,7 @@ class ProdCievCodCodigoController extends Controller
                 ->addColumn('Opciones',
                     '<div class="btn-group ml-auto">
                         @can("codigo.editar")
-                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editCodigo" id="edit-btn"><i class="far fa-edit" style="color: #3085d6"></i></a>
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editCodigo" id="edit-btn"><i class="fas fa-edit" style="color: #3085d6"></i></a>
                         @endcan
                         @can("codigo.eliminar")
                         <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Eliminar" class="btn btn-sm deleteCodigo"><i class="fas fa-trash" style="color: #db4437"></i></a>
@@ -80,9 +80,11 @@ class ProdCievCodCodigoController extends Controller
 
     public function getlineas(Request $request)
     {
-        $getlineasArray = [];
         if ($request->ajax()){
-            $getlineas = CodLinea::where('tipoproducto_id', $request->tipoproducto_id)->get();
+
+            $getlineasArray = [];
+            $getlineas = CodLinea::where('tipoproducto_id', $request->tipoproducto_id)
+                ->orderBy('name','asc')->get();
             foreach ($getlineas as $linea){
                 $getlineasArray[$linea->id] = $linea->name;
             }
@@ -94,7 +96,8 @@ class ProdCievCodCodigoController extends Controller
     {
         $getsublineasArray = [];
         if ($request->ajax()){
-            $getsublineas = CodSublinea::where('lineas_id', $request->lineas_id)->get();
+            $getsublineas = CodSublinea::where('lineas_id', $request->lineas_id)->orderBy('name','asc')
+                ->get();
             foreach ($getsublineas as $sblinea){
                 $getsublineasArray[$sblinea->id] = $sblinea->name;
             }
@@ -105,7 +108,9 @@ class ProdCievCodCodigoController extends Controller
     public function getcaracteristica(Request $request)
     {
         if ($request->ajax()){
-            $getcaracteristicas = CodCaracteristica::where('car_sublineas_id', $request->car_sublineas_id)->get();
+            $getcaracteristicas = CodCaracteristica::where('car_sublineas_id', $request->car_sublineas_id)
+                ->orderBy('name','asc')
+                ->get();
             $getCaracteristicaArray = [];
             foreach ($getcaracteristicas as $caracteristica){
                 $getCaracteristicaArray[$caracteristica->id] = $caracteristica->name;
@@ -117,7 +122,8 @@ class ProdCievCodCodigoController extends Controller
     public function getmaterial(Request $request)
     {
         if ($request->ajax()){
-            $getmaterial= CodMaterial::where('mat_sublineas_id', $request->mat_sublineas_id)->get();
+            $getmaterial= CodMaterial::where('mat_sublineas_id', $request->mat_sublineas_id)
+                ->orderBy('name','asc')->get();
             $getMaterialArray = [];
             foreach ($getmaterial as $material){
                 $getMaterialArray[$material->id] = $material->name;

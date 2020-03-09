@@ -1,4 +1,4 @@
- @extends('layouts.dashboard')
+ @extends('layouts.architectui')
 
 @section('page_title', 'Creador de Productos')
 
@@ -22,20 +22,18 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="text-left">
-                                @can('clonador.new')
-                                    <a class="btn btn-primary" href="javascript:void(0)" id="New">Crear ò Clonar</a>
-                                @endcan
-                            </div>
+                    <div class="col-6">
+                        <div class="text-left">
+                            @can('clonador.new')
+                                <a class="btn btn-primary" href="javascript:void(0)" id="New">Crear ò Clonar</a>
+                            @endcan
                         </div>
-                        <div class="col-6">
-                            <div class="text-right">
-                                @can('codificador.new')
-                                    <a class="btn btn-primary" href="javascript:void(0)" id="CrearCodigo">Codificador</a>
-                                @endcan
-                            </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-right">
+                            @can('codificador.new')
+                                <a class="btn btn-primary" href="javascript:void(0)" id="CrearCodigo">Codificador</a>
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -60,8 +58,7 @@
             </div>
         </div>
     </div>
-    @extends('ProductosCIEV.Creador_Productos.Modal')
-    @extends('ProductosCIEV.Codificador.modal')
+
     <style>
         legend.scheduler-border {
             width:inherit;
@@ -91,4 +88,5 @@
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     @endpush
 @endsection
-
+ @extends('ProductosCIEV.Creador_Productos.Modal')
+ @extends('ProductosCIEV.Codificador.modal')

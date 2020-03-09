@@ -26,7 +26,7 @@ class ProdCievCodMedidaController extends Controller
                 ->addColumn('Opciones',
                     '<div class="btn-group ml-auto">
                         @can("medida.editar")
-                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editmedida" id="edit-btn"><i class="far fa-edit" style="color: #3085d6"></i></a>
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editmedida" id="edit-btn"><i class="fas fa-edit" style="color: #3085d6"></i></a>
                         @endcan
                         @can("medida.eliminar")
                         <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Eliminar" class="btn btn-sm deletemedida"><i class="fas fa-trash" style="color: #db4437"></i></a>

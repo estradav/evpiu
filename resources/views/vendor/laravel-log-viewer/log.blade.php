@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Logs')
 
@@ -40,6 +40,7 @@
                                 @endforeach
                             </div>
                         </div>
+                        <br>
                         <div class="col-10 table-container">
                             @if ($logs === null)
                                 <div>

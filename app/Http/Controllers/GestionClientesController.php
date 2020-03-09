@@ -25,7 +25,7 @@ class GestionClientesController extends Controller
 
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/show" class="btn btn-sm btn-outline-light" id="view-customer"><i class="far fa-eye"></i> Ver Cliente</a>';
+                    $btn = '<div class="btn-group ml-auto float-center">'.'<a href="/GestionClientes/'.trim($row->CodigoMAX).'/show" class="btn btn-sm btn-outline-light" id="view-customer"><i class="fas fa-eye"></i> Ver Cliente</a>';
                     return $btn;
                 })
                 ->rawColumns(['opciones'])

@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Pronosticos')
 
@@ -55,126 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade bd-modal-lg" id="Inventario" tabindex="-1" role="dialog" aria-labelledby="Inventario" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="InventarioTitle"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="CodigoForm" name="CodigoForm" class="form-horizontal">
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-responsive table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Referencia</th>
-                                                            <th>Descripcion</th>
-                                                            <th>Cant.Comprometida</th>
-                                                            <th>Cant. Disponible</th>
-                                                            <th>Total</th>
-                                                            <th>Detalle x Lote</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td id="Referencia"></td>
-                                                            <td id="Descripcion"></td>
-                                                            <td id="CantComp"></td>
-                                                            <td id="CantDisp"></td>
-                                                            <td id="Total"></td>
-                                                            <td id="Detail"></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <br>
-                        <div class="row" style="display: none" id="CantCompromet" >
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <span><h5>Cantidades Comprometidas</h5></span>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-responsive table-striped CantComprometTable1" id="CantComprometTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Orden de Venta</th>
-                                                        <th>Cliente</th>
-                                                        <th>Cant.Pedia</th>
-                                                        <th>Cant.Enviada</th>
-                                                        <th>Cant.Facturada</th>
-                                                        <th>Pendiente</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row"  id="InvlotBod">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <span><h5>Detalles por Lote</h5></span>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-responsive table-striped InvlotBodTable1" id="InvlotBodTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="800px">Lote</th>
-                                                        <th width="400px">Bodega</th>
-                                                        <th>Cantidad</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade bd-modal-xl" id="DetallePronostico" tabindex="-1" role="dialog" aria-labelledby="DetallePronostico" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="PronosticoTitle"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="data">
-
-                    </div>
-                </div>
-            </div>
-        </div>
+        <br>
         <style>
             .preloader {
                 width: 140px;
@@ -697,3 +578,126 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     @endpush
 @stop
+
+@section('modal')
+    <div class="modal fade bd-modal-lg" id="Inventario" tabindex="-1" role="dialog" aria-labelledby="Inventario" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="InventarioTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="CodigoForm" name="CodigoForm" class="form-horizontal">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-responsive table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>Referencia</th>
+                                                    <th>Descripcion</th>
+                                                    <th>Cant.Comprometida</th>
+                                                    <th>Cant. Disponible</th>
+                                                    <th>Total</th>
+                                                    <th>Detalle x Lote</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td id="Referencia"></td>
+                                                    <td id="Descripcion"></td>
+                                                    <td id="CantComp"></td>
+                                                    <td id="CantDisp"></td>
+                                                    <td id="Total"></td>
+                                                    <td id="Detail"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <div class="row" style="display: none" id="CantCompromet" >
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <span><h5>Cantidades Comprometidas</h5></span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-responsive table-striped CantComprometTable1" id="CantComprometTable">
+                                            <thead>
+                                            <tr>
+                                                <th>Orden de Venta</th>
+                                                <th>Cliente</th>
+                                                <th>Cant.Pedia</th>
+                                                <th>Cant.Enviada</th>
+                                                <th>Cant.Facturada</th>
+                                                <th>Pendiente</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row"  id="InvlotBod">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <span><h5>Detalles por Lote</h5></span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-responsive table-striped InvlotBodTable1" id="InvlotBodTable">
+                                            <thead>
+                                            <tr>
+                                                <th width="800px">Lote</th>
+                                                <th width="400px">Bodega</th>
+                                                <th>Cantidad</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-modal-xl" id="DetallePronostico" tabindex="-1" role="dialog" aria-labelledby="DetallePronostico" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="PronosticoTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="data">
+
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

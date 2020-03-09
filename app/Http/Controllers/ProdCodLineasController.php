@@ -23,7 +23,7 @@ class ProdCodLineasController extends Controller
             ->addColumn('opciones',
                 '<div class="btn-group ml-auto">
                         @can("linea.editar")
-                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editLinea" id="edit-btn"><i class="far fa-edit" style="color: #3085d6"></i></a>
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Editar" class="btn btn-sm editLinea" id="edit-btn"><i class="fas fa-edit" style="color: #3085d6"></i></a>
                         @endcan
                         @can("linea.eliminar")
                         <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$id}}" data-original-title="Eliminar" class="btn btn-sm deleteLinea"><i class="fas fa-trash" style="color: #db4437"></i></a>

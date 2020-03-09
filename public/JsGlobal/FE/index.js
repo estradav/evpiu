@@ -87,7 +87,6 @@ $(document).ready(function () {
                 {data: 'plazo', name: 'plazo', orderable: false, searchable: false},
                 {data: 'razon_social', name: 'razon_social'},
                 {data: 'nit_cliente', name: 'nit_cliente'},
-                {data: 'tipo_cliente', name: 'tipo_cliente', orderable: false, searchable: true},
                 {data: 'vendedor', name: 'vendedor'},
                 {data: 'bruto', name:'bruto', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
                 {data: 'desc', name: 'desc', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
@@ -132,13 +131,13 @@ $(document).ready(function () {
                     },
                     success: function (data) {
                         if (data != ''){
-                            $(row).find('td:eq(14)').html('<label id="'+id+'" class="text-success">'+data+'</label>')
+                            $(row).find('td:eq(13)').html('<label id="'+id+'" class="text-success">'+data+'</label>')
                         }else{
-                            $(row).find('td:eq(14)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger">Error</a>')
+                            $(row).find('td:eq(13)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger">Error</a>')
                         }
                     },
                     error: function () {
-                        $(row).find('td:eq(14)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger ErrorEstDianFac">Pendiente</a>')
+                        $(row).find('td:eq(13)').html('<a href="javascript:void(0)" id="'+id+'" class="text-danger ErrorEstDianFac">Pendiente</a>')
                     }
                 });
 

@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Facturacion electronica')
 
@@ -55,7 +55,7 @@
                         <button class="btn btn-success" id="SaveFacturas">Guardar Cambios</button>
                     </div>
                 </div>
-
+                <br>
 
                 <div class="card">
                     <h5 class="card-header">Configuracion de Notas Credito</h5>
