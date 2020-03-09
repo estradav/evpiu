@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Bitacora OMFF')
 
@@ -10,47 +10,39 @@
     @can('bitacoraomff')
         <div class="card">
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-responsive table-striped" id="table" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th style="width: 50%">FECHA DE REGISTRO</th>
-                                <th style="width: 50%">ACCIONES</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-striped" id="table">
+                                <thead>
+                                    <tr>
+                                        <th>FECHA DE REGISTRO</th>
+                                        <th>ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Modal -->
-        <div class="modal fade bd-modal-lg" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="infoModalHeader"></h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="infoModalBody" style="margin-left: 10% !important; margin-right: 10% !important; ">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <br>
+        <div class="card">
+            <div class="card-header">
+                Carga de operacion diaria
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <canvas id="P00X"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
         <style>
-            td.details-control {
-                background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
-                cursor: pointer;
-            }
-            tr.shown td.details-control {
-                background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
-            }
             .preloader {
                 width: 140px;
                 height: 140px;
@@ -170,6 +162,7 @@
                         type: 'get',
                         data: {date: date},
                         success: function (data) {
+                            console.log(data);
                             $('#infoModalHeader').html(date);
                             $('#infoModalBody').html('');
                             $(data).each(function () {
@@ -274,8 +267,6 @@
                                         '</div> <br>');
 
                                     $(data.turno3).each(function () {
-
-                                        console.log(data.turno3);
                                         var total_lingotes = parseInt(data.turno3[i].tb) + parseInt(data.turno3[i].rz) + parseInt(data.turno3[i].vz) + parseInt(data.turno3[i].z);
                                         var carga_operacion = (parseInt(data.turno3[i].tb) * 25)/ 17 + (parseInt(data.turno3[i].rz) * 50)/ 8.3 + (parseInt(data.turno3[i].vz) * 15)/ 14 + (parseInt(data.turno3[i].z) * 10)/ 3;
 
@@ -294,11 +285,99 @@
                                     $('#infoModalBody').append('<h2>Turno 10:00 p.m - 6:00 a.m:</h2> <div class="alert alert-danger" role="alert">Sin datos registrados..</div>')
                                 }
                             });
-                            console.log(data)
                         }
                     });
-                })
+                });
+
+                oc_peer_machine();
+                function oc_peer_machine(Year = ''){
+                    $.ajax({
+                        url: '/get_chart_peer_day_bitacoraomff',
+                        type: 'get',
+                        data: {
+                            Year: Year
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            $(data).each(function () {
+
+                            });
+                            var chartdata = {
+                                labels: data['P300'][0]['date'],
+                                datasets: [
+                                    {
+                                        label: "P300",
+                                        fill: false,
+                                        backgroundColor: 'rgb(54, 162, 235)',
+                                        borderColor: 'rgb(54, 162, 235)',
+                                        data: data['P300'][0]['value']
+                                    },
+                                ]
+                            };
+                            var mostrar = $("#P00X");
+                            graf_prop_est = new Chart(mostrar, {
+                                type: 'line',
+                                data: chartdata,
+                                options: {
+                                    responsive: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Ventas Mensuales'
+                                    },
+                                    hover: {
+                                        mode: 'nearest',
+                                        intersect: true
+                                    },
+
+
+                                }
+                            });
+                        },
+                        error: function () {
+
+                        }
+                    });
+                }
             });
         </script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+        <script type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css"></script>
+        <script type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+        <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/css/dataTables.checkboxes.css" rel="stylesheet" />
+        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
     @endpush
+@stop
+@section('modal')
+    <div class="modal fade bd-example-modal-lg" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="infoModalHeader"> </h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="infoModalBody" style="margin-left: 10% !important; margin-right: 10% !important; ">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
 @endsection
