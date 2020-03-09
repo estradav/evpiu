@@ -56,26 +56,6 @@
                             </div>
                             <button class="close"></button>
                         </div>
-                        <ul class="header-menu nav">
-                            <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-link-icon fa fa-database"> </i>
-                                    Estadisticas
-                                </a>
-                            </li>
-                            <li class="btn-group nav-item">
-                                <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-link-icon fa fa-edit"></i>
-                                    Proyectos
-                                </a>
-                            </li>
-                            <li class="dropdown nav-item">
-                                <a href="javascript:void(0);" class="nav-link">
-                                    <i class="nav-link-icon fa fa-cog"></i>
-                                    Configuracion
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                     <div class="app-header-right">
                         <div class="header-btn-lg pr-0">
@@ -815,6 +795,12 @@
         <script src="{{ asset('dashboard/scripts/app.js') }}"></script>
         <script src="{{ asset('dashboard/scripts/main.js') }}"></script>
         <script src="{{ asset('architectui/assets/scripts/main.js') }}"></script>
+
+
+        <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
+
 
 
         <script>
