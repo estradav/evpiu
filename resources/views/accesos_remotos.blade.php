@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Accesos Remotos')
 
@@ -83,6 +83,7 @@
                     </div>
                 </div>
             </div>
+            <br>
             <div class="row">
                 <div class="col-12">
                     <div class="card card-primary card-outline">
