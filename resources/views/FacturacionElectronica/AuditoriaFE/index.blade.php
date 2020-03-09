@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Gestion Facturacion Electronica')
 
@@ -33,8 +33,8 @@
                                 </select>
                             </div>
                             <div class="col-2">
-                                <button class="btn btn-primary btn-sm" id="filter"><i class="fas fa-search"></i> Filtrar</button>
-                                <button class="btn btn-primary btn-sm" id="Auditar"><i class="fas fa-file-invoice"></i> <i class="fas fa-check-double"></i> Auditar</button>
+                                <button class="btn btn-primary" id="filter"><i class="fas fa-search"></i> Filtrar</button>
+                                <button class="btn btn-primary" id="Auditar"><i class="fas fa-file-invoice"></i> <i class="fas fa-check-double"></i> Auditar</button>
                             </div>
                         </div>
                     </div>
@@ -59,138 +59,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade bd-example-modal-xl" id="InfoWsInvoice" tabindex="-1" role="dialog" aria-labelledby="InfoWsInvoice" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="InfoWsInvoiceTitle">Detalles Factura #</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Cliente:</b></label>
-                                        <label id="nombreAdquiriente"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Nit/CC:</b> </label>
-                                        <label id="identificacionAdquiriente"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Correo envio:</b></label>
-                                        <label id="correoenvio"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Fecha Generacion:</b></label>
-                                        <label id="fechageneracion"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Fecha Registro:</b></label>
-                                        <label id="fecharegistro"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Estado DIAN:</b></label>
-                                        <label id="descestadoenviodian"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Observacion:</b></label>
-                                        <label id="processedmessage"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Estado Cliente:</b></label>
-                                        <label id="descestadoenviocliente"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label"><b>Observacion:</b></label>
-                                        <label id="comentarioenvio">Mensaje almacenado, pronto sera enviado.</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="col-sm-12" id="correosCopia">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="col-sm-12" id="verificacionfuncionales">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade bd-example-modal-lg" id="InfoWsObserv" tabindex="-1" role="dialog" aria-labelledby="InfoWsObserv" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="InfoWsObservTitle"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="InfoWsObservDetail">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -543,3 +411,136 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     @endpush
 @stop
+@section('modal')
+    <div class="modal fade bd-example-modal-xl" id="InfoWsInvoice" tabindex="-1" role="dialog" aria-labelledby="InfoWsInvoice" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="InfoWsInvoiceTitle">Detalles Factura #</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Cliente:</b></label>
+                                    <label id="nombreAdquiriente"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Nit/CC:</b> </label>
+                                    <label id="identificacionAdquiriente"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Correo envio:</b></label>
+                                    <label id="correoenvio"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Fecha Generacion:</b></label>
+                                    <label id="fechageneracion"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Fecha Registro:</b></label>
+                                    <label id="fecharegistro"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Estado DIAN:</b></label>
+                                    <label id="descestadoenviodian"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Observacion:</b></label>
+                                    <label id="processedmessage"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Estado Cliente:</b></label>
+                                    <label id="descestadoenviocliente"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <label for="name" class="control-label"><b>Observacion:</b></label>
+                                    <label id="comentarioenvio">Mensaje almacenado, pronto sera enviado.</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="col-sm-12" id="correosCopia">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="col-sm-12" id="verificacionfuncionales">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" id="InfoWsObserv" tabindex="-1" role="dialog" aria-labelledby="InfoWsObserv" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="InfoWsObservTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="InfoWsObservDetail">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

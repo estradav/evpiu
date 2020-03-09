@@ -1,23 +1,11 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Modificar rol')
-
-@section('module_title', 'Roles')
-
-@section('subtitle', 'Este módulo gestiona todos los roles de los usuarios de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('role_edit', $role) }}
-@stop
 
 @section('content')
 @can('roles.edit')
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="section-block" id="basicform">
-            <h3 class="section-title">Modificar rol</h3>
-            <p>Este formulario te ayudará a actualizar un rol existente en la aplicación.</p>
-        </div>
         <div class="card">
             <h5 class="card-header">Modificar rol: {{ $role->description }}</h5>
             <div class="card-body">

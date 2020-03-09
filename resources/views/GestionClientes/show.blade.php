@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title',  $cliente[0]->RAZON_SOCIAL )
 @section('content')
@@ -9,7 +9,7 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile igualar">
                             <h2 class="profile-username text-center">
-                                <i class="far fa-building "></i>  {{ $cliente[0]->RAZON_SOCIAL }}
+                                <i class="fas fa-building "></i>  {{ $cliente[0]->RAZON_SOCIAL }}
                             </h2>
 
                             <ul class="list-group list-group-unbordered mb-3">
@@ -43,14 +43,39 @@
                     </div>
                 </div>
 
+
                 <div class="col-md-9 ">
                     <div class="card igualar">
-                        <div class="card-header p-2">
-                            <ul class="nav nav-pills">
+                        <div class="card-header">
+                            <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                                <li class="nav-item">
+                                    <a role="tab" class="nav-link active"  id="tab-0" data-toggle="tab" href="#informacion" aria-selected="false">
+                                        <span>Informacion</span>
+                                    </a>
+                                </li>
+                                @can('vercliente.facturacionelectronica')
+                                <li class="nav-item">
+                                    <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#Facturacion" aria-selected="true">
+                                        <span>Facturacion electronica</span>
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('vercliente.cambiosrealizados')
+                                <li class="nav-item">
+                                    <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#Transacciones">
+                                        <span>Cambios Realizados</span>
+                                    </a>
+                                </li>
+                                @endcan
+                            </ul>
+
+
+
+                            {{--<ul class="nav nav-pills">
                                 <li class="nav-item"><a class="nav-link active" href="#informacion" data-toggle="tab">Informacion</a></li>
                               @can('vercliente.facturacionelectronica')<li class="nav-item"><a class="nav-link" href="#Facturacion" data-toggle="tab">Facturacion electronica</a></li> @endcan
                               @can('vercliente.cambiosrealizados') <li class="nav-item"><a class="nav-link" href="#Transacciones" data-toggle="tab">Cambios Realizados</a></li> @endcan
-                            </ul>
+                            </ul>--}}
                         </div><!-- /.card-header -->
                         <div class="card-body ">
                             <div class="tab-content">
@@ -229,6 +254,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <br>
+            <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">

@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Maestros (Medidas)')
 
@@ -47,7 +47,28 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-exclamation-triangle fa-4x" style="color: red"></i>
+                <h3 class="card-title" style="color: red"> ACCESO DENEGADO </h3>
+                <h3 class="card-text" style="color: red">No tiene permiso para usar esta aplicación, por favor comuníquese a la ext: 102 o escribanos al correo electrónico: auxsistemas@estradavelasquez.com para obtener acceso.</h3>
+            </div>
+        </div>
+    @endcan
 
+    @push('javascript')
+        <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Medidas.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    @endpush
+@endsection
+@section('modal')
     <div class="modal fade bd-example-modal-lg" id="medidamodal" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -143,24 +164,4 @@
             </div>
         </div>
     </div>
-    @else
-        <div class="card">
-            <div class="card-body text-center">
-                <i class="fas fa-exclamation-triangle fa-4x" style="color: red"></i>
-                <h3 class="card-title" style="color: red"> ACCESO DENEGADO </h3>
-                <h3 class="card-text" style="color: red">No tiene permiso para usar esta aplicación, por favor comuníquese a la ext: 102 o escribanos al correo electrónico: auxsistemas@estradavelasquez.com para obtener acceso.</h3>
-            </div>
-        </div>
-    @endcan
-
-    @push('javascript')
-        <script type="text/javascript" src="/JsGlobal/Codificador/Maestros/Medidas.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-    @endpush
 @endsection

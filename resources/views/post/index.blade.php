@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Publicaciones')
 
@@ -11,15 +11,16 @@
 @stop
 
 @section('content')
-    @can('posts.create')
-    <a href="{{ route('posts.create') }}" class="btn btn-sm btn-success" role="button">
-        <i class="fas fa-plus-circle"></i> Crear publicación
-    </a>
-    @endcan
-
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    @can('posts.create')
+                        <a href="{{ route('posts.create') }}" class="btn btn-sm btn-success" role="button">
+                            <i class="fas fa-plus-circle"></i> Crear publicación
+                        </a>
+                    @endcan
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered first">
@@ -56,12 +57,12 @@
                                             </a>
                                             @can('posts.edit')
                                             <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-outline-light edit">
-                                                <i class="far fa-edit"></i>
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             @endcan
                                             @can('posts.destroy')
                                             <div class="btn btn-sm btn-outline-light delete" data-id="{{ $post->id }}">
-                                                <i class="far fa-trash-alt"></i>
+                                                <i class="fas fa-trash-alt"></i>
                                             </div>
                                             @endcan
                                         </div>
@@ -76,33 +77,36 @@
         </div>
     </div>
 
-    @can('posts.destroy')
-    <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title"><i class="fas fa-trash"></i> Eliminar publicación</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Estás seguro de que deseas eliminar esta publicación?</p>
-                </div>
-                <div class="modal-footer">
-                    <form action="#" id="delete_form" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-danger delete-confirm"
-                               value="Sí, eliminar esta publicación">
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    @endcan
+
 @stop
+@section('modal')
+    @can('posts.destroy')
+        <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i class="fas fa-trash"></i> Eliminar publicación</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que deseas eliminar esta publicación?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="#" id="delete_form" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <input type="submit" class="btn btn-danger delete-confirm"
+                                   value="Sí, eliminar esta publicación">
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    @endcan
+@endsection
 
 @push('javascript')
     <!-- DataTables -->

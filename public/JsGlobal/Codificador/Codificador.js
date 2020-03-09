@@ -203,7 +203,11 @@ $(document).ready(function(){
     $('#tipoproducto_id').on('change', function () {
         var tipoproducto_id = $(this).val();
         $('#lineas_id').empty();
-        $('#sublinea_id').empty();
+        $('#sublineas_id').empty();
+        $('#caracteristica_id').empty();
+        $('#material_id').empty();
+        $('#medida_id').empty();
+
         if ($.trim(tipoproducto_id) != ''){
             $.get('getlineas',{tipoproducto_id: tipoproducto_id}, function(getlineas) {
                 $('#lineas_id').append("<option value=''>Seleccione una Linea...</option>");
@@ -223,6 +227,12 @@ $(document).ready(function(){
 
     $('#lineas_id').on('change', function () {
         var lineas_id = $(this).val();
+        $('#sublineas_id').empty();
+        $('#caracteristica_id').empty();
+        $('#material_id').empty();
+        $('#medida_id').empty();
+
+
         if ($.trim(lineas_id) != ''){
             $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
                 $('#sublineas_id').empty();
@@ -244,6 +254,11 @@ $(document).ready(function(){
 
     $('#sublineas_id').on('change', function () {
         var car_sublineas_id = $(this).val();
+        $('#caracteristica_id').empty();
+        $('#material_id').empty();
+        $('#medida_id').empty();
+
+
         if ($.trim(car_sublineas_id) != ''){
             $.get('getcaracteristica',{car_sublineas_id: car_sublineas_id}, function(getcaracteristica) {
                 $('#caracteristica_id').empty();

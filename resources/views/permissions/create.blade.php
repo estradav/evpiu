@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Crear permiso')
 
@@ -14,10 +14,6 @@
 @can('permissions.create')
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="section-block" id="basicform">
-            <h3 class="section-title">Crear Permiso</h3>
-            <p>Este formulario te ayudará a crear un nuevo permiso en la plataforma.</p>
-        </div>
         <div class="card">
             <h5 class="card-header">Crear Permiso</h5>
             <div class="card-body">

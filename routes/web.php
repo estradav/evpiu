@@ -59,7 +59,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('fe/{fe}/edit','FeFacturasController@editfactura')->name('fe.edit');
             Route::put('/fe/{fe}', 'FeFacturasController@updatefactura')->name('fe.update');
             Route::get('/fe/getDownload/{file}','FeFacturasController@getDownload');
-            Route::get('/fe_configs','FeFacturasController@config');
+            Route::get('/fe_configs','FeFacturasController@config')->name('fe_configs');
             Route::post('/savefeConfigs','FeFacturasController@savefeConfigs');
             Route::post('/savefeConfigsNc','FeFacturasController@savefeConfigsNc');
             Route::post('/ReenviarFacturas','FeFacturasController@ReenviarFacturas');

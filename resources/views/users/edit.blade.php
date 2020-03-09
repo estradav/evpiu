@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Modificar usuario')
 
@@ -17,10 +17,6 @@
         @method('put')
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="section-block" id="basicform">
-                    <h3 class="section-title">Modificar usuario</h3>
-                    <p>Este formulario te ayudará a actualizar la información de un usuario existente en la aplicación.</p>
-                </div>
                 <div class="card">
                     <h5 class="card-header">Modificar usuario: {{ $user->name }}</h5>
                     <div class="card-body">
@@ -70,6 +66,7 @@
                             <input id="u_password-confirm" type="password" class="form-control" name="password_confirmation">
                         </div>
                     </div>
+                    <br>
                     <div class="card-body border-top">
                         <h4>Roles asociados ({{ $user->roles->count() }})</h4>
                         <div class="row">
@@ -87,6 +84,7 @@
                             @endforelse
                         </div>
                     </div>
+                    <br>
                     <div class="card-body border-top">
                         <h4>Roles disponibles ({{ $availableRoles->count() }})</h4>
                         <div class="row">

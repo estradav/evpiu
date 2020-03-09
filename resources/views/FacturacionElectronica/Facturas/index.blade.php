@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Facturacion electronica')
 
@@ -8,58 +8,54 @@
 
 @section('content')
     @can('facturacion.view')
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-3">
-                                <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
-                            </div>
-                            <div class="col-3">
-                                <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
-                            </div>
-                            <div class="col-3">
-                                <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm btn-block" style="height: 36px;">Buscar</button>
-                            </div>
-                            <div class="col">
-                                <button type="button" class="btn btn-primary btn-sm" id="CrearXml" style="height: 36px; margin-right: 25px">Descargar XML</button>
-                                <button type="button" class="btn btn-primary btn-sm" id="WebService" style="height: 36px;">Subir via WebService</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-responsive table-striped" id="tfac">
-                                <thead>
-                                    <tr>
-                                        <th><input type="checkbox" id="selectAll" name="selectAll" class="selectAll"></th>
-                                        <th>&nbsp; &nbsp;</th>
-                                        <th>NUMERO</th>
-                                        <th>OV</th>
-                                        <th>FECHA</th>
-                                        <th>PLAZO</th>
-                                        <th>RAZON SOCIAL</th>
-                                        <th>NIT</th>
-                                        <th>T.CLIENTE</th>
-                                        <th>VENDEDOR</th>
-                                        <th>BRUTO</th>
-                                        <th>DESCUENTO</th>
-                                        <th>IVA</th>
-                                        <th>MOTIVO</th>
-                                        <th>ESTADO DIAN</th>
-                                        <th>ACCIONES</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                     <input class="test" type="hidden" id="test" name="test" style="display: none">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="col-3">
+                    <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
+                </div>
+                <div class="col-3">
+                    <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
+                </div>
+                <div class="col-3">
+                    <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm btn-block" style="height: 36px;">Buscar</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-sm" id="CrearXml" style="height: 36px; margin-right: 25px">Descargar XML</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="WebService" style="height: 36px;">Subir via WebService</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-responsive table-striped" id="tfac">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAll" name="selectAll" class="selectAll"></th>
+                                <th>&nbsp; &nbsp;</th>
+                                <th>NUMERO</th>
+                                <th>OV</th>
+                                <th>FECHA</th>
+                                <th>PLAZO</th>
+                                <th>RAZON SOCIAL</th>
+                                <th>NIT</th>
+                                {{--<th>T.CLIENTE</th>--}}
+                                <th>VENDEDOR</th>
+                                <th>BRUTO</th>
+                                <th>DESCUENTO</th>
+                                <th>IVA</th>
+                                <th>MOTIVO</th>
+                                <th>ESTADO DIAN</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <input class="test" type="hidden" id="test" name="test" style="display: none">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+
+        <br>
         <div class="modal fade modal-sensory" id="Modal" tabindex="-1" role="dialog" aria-labelledby="modalsensory" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

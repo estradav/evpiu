@@ -1,25 +1,18 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Permisos')
 
-@section('module_title', 'Permisos')
-
-@section('subtitle', 'Este módulo gestiona todos los permisos de los roles de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('permissions') }}
-@stop
-
 @section('content')
-    @can('permissions.create')
-    <a href="{{ route('permissions.create') }}" class="btn btn-sm btn-success" role="button">
-        <i class="fas fa-plus-circle"></i> Crear permiso
-    </a>
-    @endcan
-
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+                <div class="card-header">
+                    @can('permissions.create')
+                        <a href="{{ route('permissions.create') }}" class="btn btn-sm btn-success" role="button">
+                            <i class="fas fa-plus-circle"></i> Crear permiso
+                        </a>
+                    @endcan
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped first">
@@ -59,12 +52,12 @@
                                             @endcan
                                             @can('permissions.edit')
                                             <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-sm btn-outline-light">
-                                                <i class="far fa-edit"></i>
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             @endcan
                                             @can('permissions.destroy')
                                             <div class="btn btn-sm btn-outline-light delete" data-id="{{ $permission->id }}">
-                                                <i class="far fa-trash-alt"></i>
+                                                <i class="fas fa-trash-alt"></i>
                                             </div>
                                             @endcan
                                         </div>
@@ -78,35 +71,35 @@
             </div>
         </div>
     </div>
-
-    @can('permissions.destroy')
-    <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title"><i class="fas fa-trash"></i> Eliminar permiso</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Estás seguro de que deseas eliminar este permiso?</p>
-                </div>
-                <div class="modal-footer">
-                    <form action="#" id="delete_form" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-danger delete-confirm"
-                               value="Sí, eliminar este permiso">
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    @endcan
 @stop
-
+@section('modal')
+    @can('permissions.destroy')
+        <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i class="fas fa-trash"></i> Eliminar permiso</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que deseas eliminar este permiso?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="#" id="delete_form" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <input type="submit" class="btn btn-danger delete-confirm"
+                                   value="Sí, eliminar este permiso">
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    @endcan
+@endsection
 @push('javascript')
     <!-- DataTables -->
     <script>

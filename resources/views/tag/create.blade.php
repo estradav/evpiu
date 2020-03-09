@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.architectui')
 
 @section('page_title', 'Crear etiqueta')
 
@@ -14,10 +14,6 @@
 @can('tags.create')
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="section-block" id="basicform">
-            <h3 class="section-title">Crear Etiqueta</h3>
-            <p>Este formulario te ayudará a crear una nueva etiqueta para una publicación.</p>
-        </div>
         <div class="card">
             <h5 class="card-header">Crear Etiqueta</h5>
             <div class="card-body">
