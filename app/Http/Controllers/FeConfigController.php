@@ -12,7 +12,7 @@ class FeConfigController extends Controller
     {
         $feconfigs = FeConfig::all();
         //dd($feconfigs);
-        return view('FacturacionElectronica.Configuracion.Index',compact('feconfigs'));
+        return view('FacturacionElectronica.Configuracion.index',compact('feconfigs'));
     }
 
 
