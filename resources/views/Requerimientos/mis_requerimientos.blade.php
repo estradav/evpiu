@@ -44,187 +44,6 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade bd-example-modal-lg" id="NewRequerimientoModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="overflow-y: scroll;">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="NewRequerimientoTitle"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="" id="NewRequerimentForm">
-                        <div class="modal-body">
-                            <div class="row" >
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <label for="name" class="control-label">Cliente:</label>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" name="NewRequirementNameClient" id="NewRequirementNameClient" placeholder="Buscar cliente...">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <label for="name" class="control-label">Marca:</label>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="NewRequirementNameMarca" id="NewRequirementNameMarca" placeholder="Buscar marca...">
-                                                <input type="button" id="Nueva_marca" name="Nueva_marca" class="btn-success" value="Nuevo">
-                                                {{--<a href="javascript:void(0)" class="btn-success" id="Nueva_marca" name="Nueva_marca">x</a>--}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="name" class="col-sm-6 control-label">Producto:</label>
-                                        <div class="col-sm-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="CodReqDescription" id="CodReqDescription" placeholder="Buscar un producto existente...">
-                                                <input type="button" id="NewRequirementNewDescription" name="NewRequirementNewDescription" class="btn-success" value="Codificar producto">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name" class="col-sm-12 control-label">¿Render 3D?:</label>
-                                        <div class="col-sm-12">
-                                            <div class="input-group">
-                                                <input type="checkbox" name="Render" checked>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <label for="name" class="control-label">Vendedor:</label>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="input-group">
-                                                <select name="NewRequirementVendedor" id="NewRequirementVendedor" class="form-control"></select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="name" class="col-sm-6 control-label">Informacion adicional:</label>
-                                        <div class="col-sm-12">
-                                            <textarea name="NewRequirementNewInfo" id="NewRequirementNewInfo" cols="30" rows="5" class="form-control" placeholder="Escribe toda la informacion relevante para el area de diseño" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase();" ></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary fileinput-upload-button" id="NewRequerimientoSave">Crear</button>
-                            <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade bd-example-modal-sm" id="CreateMedidaModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Nueva Marca</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="" id="NewMarcaForm">
-                        <div class="modal-body">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Nombre:</label>
-                                    <input type="text" class="form-control" name="NewRequirementNewMarcaName" id="NewRequirementNewMarcaName" style="text-transform:uppercase " onkeyup="this.value = this.value.toUpperCase();">
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="TypeMarca">Tipo:</label>
-                                    <select name="TypeMarca" id="TypeMarca"  class="form-control">
-                                        <option value="" selected>Seleccione...</option>
-                                        <option value="GL">Generico Liso</option>
-                                        <option value="GM">Generico Marcado</option>
-                                        <option value="MP">Marca Propia</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Comentario:</label>
-                                    <textarea class="form-control" name="NewRequirementNewMarcaDescription" id="NewRequirementNewMarcaDescription" cols="30" rows="3" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase();"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary NewRequerimientoMedidaSave" id="NewRequerimientoMedidaSave">Crear</button>
-                            <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade bd-example-modal-sm" id="CodificadorModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Codificar producto</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="name" class="control-label">Linea:</label>
-                                <select name="CodLinea" id="CodLinea" class="form-control"></select>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="name" class="control-label">Sublinea:</label>
-                                <select name="CodSubLinea" id="CodSubLinea" class="form-control"></select>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="name" class="control-label">Caracteristica:</label>
-                                <select name="CodCaracteristica" id="CodCaracteristica" class="form-control"></select>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="name" class="control-label">Material:</label>
-                                <select name="CodMaterial" id="CodMaterial" class="form-control"></select>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="name" class="control-label">Medida:</label>
-                                <select name="CodMedida" id="CodMedida" class="form-control"></select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary NewCode" id="NewCode">Aceptar</button>
-                        <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     @else
         <div class="card">
             <div class="card-body text-center">
@@ -946,3 +765,185 @@
 
     @endpush
 @stop
+@section('modal')
+    <div class="modal fade bd-example-modal-lg" id="NewRequerimientoModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="overflow-y: scroll;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="NewRequerimientoTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" id="NewRequerimentForm">
+                    <div class="modal-body">
+                        <div class="row" >
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label for="name" class="control-label">Cliente:</label>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" name="NewRequirementNameClient" id="NewRequirementNameClient" placeholder="Buscar cliente...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label for="name" class="control-label">Marca:</label>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="NewRequirementNameMarca" id="NewRequirementNameMarca" placeholder="Buscar marca...">
+                                            <input type="button" id="Nueva_marca" name="Nueva_marca" class="btn-success" value="Nuevo">
+                                            {{--<a href="javascript:void(0)" class="btn-success" id="Nueva_marca" name="Nueva_marca">x</a>--}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Producto:</label>
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="CodReqDescription" id="CodReqDescription" placeholder="Buscar un producto existente...">
+                                            <input type="button" id="NewRequirementNewDescription" name="NewRequirementNewDescription" class="btn-success" value="Codificar producto">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-12 control-label">¿Render 3D?:</label>
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            <input type="checkbox" name="Render" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label for="name" class="control-label">Vendedor:</label>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            <select name="NewRequirementVendedor" id="NewRequirementVendedor" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-6 control-label">Informacion adicional:</label>
+                                    <div class="col-sm-12">
+                                        <textarea name="NewRequirementNewInfo" id="NewRequirementNewInfo" cols="30" rows="5" class="form-control" placeholder="Escribe toda la informacion relevante para el area de diseño" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase();" ></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary fileinput-upload-button" id="NewRequerimientoSave">Crear</button>
+                        <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-sm" id="CreateMedidaModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nueva Marca</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" id="NewMarcaForm">
+                    <div class="modal-body">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Nombre:</label>
+                                <input type="text" class="form-control" name="NewRequirementNewMarcaName" id="NewRequirementNewMarcaName" style="text-transform:uppercase " onkeyup="this.value = this.value.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="TypeMarca">Tipo:</label>
+                                <select name="TypeMarca" id="TypeMarca"  class="form-control">
+                                    <option value="" selected>Seleccione...</option>
+                                    <option value="GL">Generico Liso</option>
+                                    <option value="GM">Generico Marcado</option>
+                                    <option value="MP">Marca Propia</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Comentario:</label>
+                                <textarea class="form-control" name="NewRequirementNewMarcaDescription" id="NewRequirementNewMarcaDescription" cols="30" rows="3" style="text-transform:uppercase" onkeyup="this.value = this.value.toUpperCase();"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary NewRequerimientoMedidaSave" id="NewRequerimientoMedidaSave">Crear</button>
+                        <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-sm" id="CodificadorModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Codificar producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="name" class="control-label">Linea:</label>
+                            <select name="CodLinea" id="CodLinea" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="name" class="control-label">Sublinea:</label>
+                            <select name="CodSubLinea" id="CodSubLinea" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="name" class="control-label">Caracteristica:</label>
+                            <select name="CodCaracteristica" id="CodCaracteristica" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="name" class="control-label">Material:</label>
+                            <select name="CodMaterial" id="CodMaterial" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="name" class="control-label">Medida:</label>
+                            <select name="CodMedida" id="CodMedida" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary NewCode" id="NewCode">Aceptar</button>
+                    <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

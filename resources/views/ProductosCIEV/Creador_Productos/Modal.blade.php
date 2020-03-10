@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="modelHeading"></h4>
+                <h4 class="modal-title" id="modelHeading">Crear o clonar</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -700,8 +700,8 @@
                     </div>
                 </div><!-- end modal-body -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="saveBtn"  name="saveBtn" value="Crear">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary btn-lg" id="saveBtn"  name="saveBtn" value="Crear">Guardar</button>
+                    <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div><!-- end modal-content -->
