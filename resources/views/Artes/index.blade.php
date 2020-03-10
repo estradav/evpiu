@@ -141,7 +141,7 @@
                     <div id="ViewArtPdf" style="height:750px;" ></div>
                 </div>
                 <div class="modal-footer" style="text-align: center !important;">
-                    <button class="btn btn-primary" data-dismiss="modal" id="CloseViewArt">Aceptar</button>
+                    <button class="btn btn-primary btn-lg" data-dismiss="modal" id="CloseViewArt">Aceptar</button>
                 </div>
             </div>
         </div>

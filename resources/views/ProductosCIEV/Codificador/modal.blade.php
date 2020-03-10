@@ -104,8 +104,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary btn-lg" id="saveBtn" value="Crear">Guardar</button>
+                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>

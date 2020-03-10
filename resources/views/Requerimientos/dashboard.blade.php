@@ -22,14 +22,14 @@
                         <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
                     </div>
                     <div>
-                        <button type="button" name="filter" id="filter" class="btn btn-primary btn-sm">Filtrar datos</button>
+                        <button type="button" name="filter" id="filter" class="btn btn-primary btn-lg">Filtrar datos</button>
                     </div>
                     <div class="col-2">
-                        <button type="button" name="ViewAll" id="ViewAll" class="btn btn-primary btn-sm">Mostrar todo</button>
+                        <button type="button" name="ViewAll" id="ViewAll" class="btn btn-primary btn-lg">Mostrar todo</button>
                     </div>
                 </div>
                 <div class="col text-right" style="margin-right: 1px">
-                    <button id="downloadPdf" class="btn btn-primary btn-sm">Descargar Reporte</button>
+                    <button id="downloadPdf" class="btn btn-primary btn-lg">Descargar Reporte</button>
                 </div>
             </div>
         </div>
@@ -51,6 +51,7 @@
                     </div>
                 </div>
             </div>
+            <br>
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card">
@@ -61,7 +62,6 @@
                 </div>
             </div>
         </div>
-
         <div style="display: none !important;">
             <div class="row">
                 <div class="col-sm-12">
@@ -79,6 +79,7 @@
                 </div>
             </div>
         </div>
+
 
         <div style="display: none !important;">
             <div class="row">
@@ -126,6 +127,7 @@
                 </div>
             </div>
         </div>
+        <br>
         <style>
             .preloader {
                 width: 140px;

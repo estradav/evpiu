@@ -435,7 +435,13 @@
                                         <li class="{{ request()->route()->named('bitacoraomff.create') ? 'mm-active' : '' }}">
                                             <a href="{{ route('bitacoraomff.create') }}">
                                                 <i class="metismenu-icon"></i>
-                                                Registro
+                                                Registro P0XX
+                                            </a>
+                                        </li>
+                                        <li class="{{ (request()->is('bitacoraomff_hl1')) ? 'mm-active' : '' }}">
+                                        <a href="{{ url('bitacoraomff_hl1') }}">
+                                                <i class="metismenu-icon"></i>
+                                                Registro HL1
                                             </a>
                                         </li>
                                         <li class="{{ request()->route()->named('bitacoraomff.index') ? 'mm-active' : '' }}">
@@ -472,8 +478,8 @@
                                                 </i>Gestion FE
                                             </a>
                                         </li>
-                                        <li class="{{ request()->route()->named('ConfigFe.index') ? 'mm-active' : '' }}">
-                                            <a href="{{ route('ConfigFe.index') }}">
+                                        <li class="{{ request()->is('ConfigFe') ? 'mm-active' : '' }}">
+                                            <a href="{{ url('ConfigFe') }}">
                                                 <i class="metismenu-icon">
                                                 </i>Configuracion
                                             </a>
@@ -592,8 +598,8 @@
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
-                                        <li class="{{ request()->route()->named('requerimientos_dashboard.index') ? 'mm-active' : '' }}">
-                                            <a href="{{ route('requerimientos_dashboard.index') }}">
+                                        <li class="{{ request()->is('misrequerimientos') ? 'mm-active' : '' }}">
+                                            <a href="{{ url('misrequerimientos') }}">
                                                 <i class="metismenu-icon">
                                                 </i>Mis requerimientos
                                             </a>
@@ -780,6 +786,7 @@
                     <div class="app-main__inner">
                         @yield('content')
                     </div>
+                    <br>
                     <div class="app-wrapper-footer">
                         <div class="app-footer">
                             <div class="app-footer__inner">
@@ -795,14 +802,9 @@
         <script src="{{ asset('dashboard/scripts/app.js') }}"></script>
         <script src="{{ asset('dashboard/scripts/main.js') }}"></script>
         <script src="{{ asset('architectui/assets/scripts/main.js') }}"></script>
-
-
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
-
-
-
         <script>
                 @if(Session::has('alerts'))
             let alerts = {!! json_encode(Session::get('alerts')) !!};

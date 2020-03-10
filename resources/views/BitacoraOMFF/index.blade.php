@@ -8,12 +8,36 @@
 
 @section('content')
     @can('bitacoraomff')
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        Maquinas P0XX
+                    </div>
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped" id="table">
+                                <thead>
+                                    <tr>
+                                        <th>FECHA DE REGISTRO</th>
+                                        <th>ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        HL1
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-striped" id="table_hl1">
                                 <thead>
                                     <tr>
                                         <th>FECHA DE REGISTRO</th>
@@ -72,7 +96,7 @@
                 -webkit-animation: ellipsis steps(4,end) 900ms infinite;
                 animation: ellipsis steps(4,end) 900ms infinite;
                 content: "\2026"; /* ascii code for the ellipsis character */
-                width: 0px;
+                width: 0;
             }
 
             @keyframes ellipsis {
@@ -109,7 +133,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-                 var table = $('#table').DataTable({
+                $('#table').DataTable({
                     processing: true,
                     serverSide: true,
                     responsive: false,
@@ -122,12 +146,7 @@
                         {data:'date', name:'date', orderable:true, searchable:true},
                         {data:'Opciones', name:'Opciones', orderable:false, searchable:false},
                     ],
-                    columnDefs: [
-                        {
-                            width: "25%",
-                            targets: 0
-                        }
-                    ],
+
                     language: {
                         processing: "Procesando...",
                         search: "Buscar&nbsp;:",
@@ -151,6 +170,7 @@
                         }
                     },
                 });
+                load_hl1();
 
                 $('body').on('click','.info',function () {
                     var date = this.id;
@@ -338,6 +358,95 @@
                         }
                     });
                 }
+
+                function load_hl1() {
+                    $('#table_hl1').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        responsive: false,
+                        autoWidth: false,
+                        width:"100%",
+                        ajax: {
+                            url: '/hl1_table_bitacoraomff'
+                        },
+                        columns: [
+                            {data:'date', name:'date', orderable:true, searchable:true},
+                            {data:'Opciones', name:'Opciones', orderable:false, searchable:false},
+                        ],
+
+                        language: {
+                            processing: "Procesando...",
+                            search: "Buscar&nbsp;:",
+                            lengthMenu: "Mostrar _MENU_ registros",
+                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                            infoPostFix: "",
+                            loadingRecords: "Cargando...",
+                            zeroRecords: "No se encontraron resultados",
+                            emptyTable: "Ningún registro disponible en esta tabla :C",
+                            paginate: {
+                                first: "Primero",
+                                previous: "Anterior",
+                                next: "Siguiente",
+                                last: "Ultimo"
+                            },
+                            aria: {
+                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                                sortDescending: ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
+                    });
+                }
+
+                $('body').on('click','.info_hl1',function () {
+                    var date = this.id;
+                    $('#infoModal').modal('show');
+                    $('#infoModalHeader').html('<i class="fas fa-sync-alt fa-spin"></i>');
+                    $('#infoModalBody').html('<div style="margin-left: 20px" <h1 class="loading"> Cargando Informacion, un momento por favor</h1></div>');
+                    $.ajax({
+                        url: '/Details_Hl1_bitacoraomff',
+                        type: 'get',
+                        data: {date: date},
+                        success: function (data) {
+                            console.log(data);
+                            $('#infoModalHeader').html(date);
+                            $('#infoModalBody').html('');
+                            $(data).each(function () {
+                                if (data.length > 0) {
+                                    var i = 0;
+                                    $('#infoModalBody').append('<h2>CARGA DE OPERACION POR DIA</h2>' +
+                                        '<div class="table-responsive">' +
+                                        '<table class="table table-responsive table-striped" >' +
+                                        '<thead>' +
+                                        '<tr>' +
+                                        '<th>  </th>' +
+                                        '<th>TOTAL LINGOTES</th>' +
+                                        '<th>% CO</th>' +
+                                        '</tr>' +
+                                        '</thead>' +
+                                        '<tbody id="data"> </tbody>' +
+                                        '</table>' +
+                                        '</div> <br>');
+
+                                    $(data).each(function () {
+                                        var carga_operacion = (parseInt(data[i].lingotes) * 100) / 202 ;
+
+                                        $('#data').append('<tr>' +
+                                            '<td> CARGA DE OPERACION </td>' +
+                                            '<td>' + data[i].lingotes + '</td>' +
+                                            '<td>' + carga_operacion.toFixed(2) + ' % </td>' +
+                                            '</tr>');
+                                        i++;
+                                    });
+                                } else if (data.length == 0) {
+                                    $('#infoModalBody').append('<h2>:</h2> <br> <div class="alert alert-danger" role="alert">Sin datos registrados..</div>')
+                                }
+
+                            });
+                        }
+                    });
+                });
             });
         </script>
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -374,7 +483,7 @@
                 <div class="modal-body" id="infoModalBody" style="margin-left: 10% !important; margin-right: 10% !important; ">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

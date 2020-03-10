@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-right">
-                        <button class="btn btn-success" id="SaveFacturas">Guardar Cambios</button>
+                        <button class="btn btn-success btn-lg" id="SaveFacturas">Guardar Cambios</button>
                     </div>
                 </div>
                 <br>
@@ -98,7 +98,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-right">
-                        <button class="btn btn-success" id="SaveNC">Guardar Cambios</button>
+                        <button class="btn btn-success btn-lg" id="SaveNC">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
