@@ -4,30 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7950d59afcd33eff0209e9cbc5581bd1",
+    "content-hash": "1e975971ca177eb0b29e9275b0af64ed",
     "packages": [
         {
             "name": "adldap2/adldap2",
-            "version": "v10.2.2",
+            "version": "v10.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Adldap2/Adldap2.git",
-                "reference": "f09ca4ae3a65dbf123b56dc7e4ace8682ea16cdb"
+                "reference": "2baffac2dfef308f0a94afa360b6a77540730fd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Adldap2/Adldap2/zipball/f09ca4ae3a65dbf123b56dc7e4ace8682ea16cdb",
-                "reference": "f09ca4ae3a65dbf123b56dc7e4ace8682ea16cdb",
+                "url": "https://api.github.com/repos/Adldap2/Adldap2/zipball/2baffac2dfef308f0a94afa360b6a77540730fd2",
+                "reference": "2baffac2dfef308f0a94afa360b6a77540730fd2",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-ldap": "*",
-                "illuminate/contracts": "~5.0|~6.0",
+                "illuminate/contracts": "~5.0|~6.0|~7.0",
                 "php": ">=7.0",
                 "psr/log": "~1.0",
                 "psr/simple-cache": "~1.0",
-                "tightenco/collect": "~5.0|~6.0"
+                "tightenco/collect": "~5.0|~6.0|~7.0"
             },
             "require-dev": {
                 "mockery/mockery": "~1.0",
@@ -63,25 +63,25 @@
                 "ldap",
                 "windows"
             ],
-            "time": "2019-12-18T15:07:31+00:00"
+            "time": "2020-03-08T23:04:47+00:00"
         },
         {
             "name": "adldap2/adldap2-laravel",
-            "version": "v6.0.8",
+            "version": "v6.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Adldap2/Adldap2-Laravel.git",
-                "reference": "c2809bcca39bd51fe3fbe426c5dc32e89a868a42"
+                "reference": "0c828772333936f4c26c1ce27bd372008eae7e6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Adldap2/Adldap2-Laravel/zipball/c2809bcca39bd51fe3fbe426c5dc32e89a868a42",
-                "reference": "c2809bcca39bd51fe3fbe426c5dc32e89a868a42",
+                "url": "https://api.github.com/repos/Adldap2/Adldap2-Laravel/zipball/0c828772333936f4c26c1ce27bd372008eae7e6e",
+                "reference": "0c828772333936f4c26c1ce27bd372008eae7e6e",
                 "shasum": ""
             },
             "require": {
                 "adldap2/adldap2": "^10.1",
-                "illuminate/support": "~5.5|~6.0",
+                "illuminate/support": "~5.5|~6.0|~7.0",
                 "php": ">=7.1"
             },
             "require-dev": {
@@ -117,7 +117,7 @@
                 "laravel",
                 "ldap"
             ],
-            "time": "2019-09-03T16:03:04+00:00"
+            "time": "2020-03-08T23:15:56+00:00"
         },
         {
             "name": "balping/json-raw-encoder",
@@ -1146,25 +1146,25 @@
         },
         {
             "name": "jenssegers/model",
-            "version": "v1.2.2",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jenssegers/model.git",
-                "reference": "44fb64d4dae0daee89eb62a4fcc40ef6cf7da370"
+                "reference": "3a70a5b155a690d0dc3a063e1878d4fd7b0b5b6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jenssegers/model/zipball/44fb64d4dae0daee89eb62a4fcc40ef6cf7da370",
-                "reference": "44fb64d4dae0daee89eb62a4fcc40ef6cf7da370",
+                "url": "https://api.github.com/repos/jenssegers/model/zipball/3a70a5b155a690d0dc3a063e1878d4fd7b0b5b6d",
+                "reference": "3a70a5b155a690d0dc3a063e1878d4fd7b0b5b6d",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^5.0|^6.0",
-                "illuminate/support": "^4.0|^5.0|^6.0"
+                "illuminate/contracts": "^5.0|^6.0|^7.0",
+                "illuminate/support": "^4.0|^5.0|^6.0|^7.0"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "*",
-                "phpunit/phpunit": "^4.0|^5.0"
+                "phpunit/phpunit": "*"
             },
             "type": "library",
             "autoload": {
@@ -1189,20 +1189,20 @@
                 "laravel",
                 "model"
             ],
-            "time": "2019-10-04T10:46:28+00:00"
+            "time": "2020-03-05T17:17:42+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v6.18.0",
+            "version": "v6.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "077b895d935b7fbcfb1d1eb34217fa4f80a130d8"
+                "reference": "367c2c8dfdfe83cb2ddbc029c0222174098d093a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/077b895d935b7fbcfb1d1eb34217fa4f80a130d8",
-                "reference": "077b895d935b7fbcfb1d1eb34217fa4f80a130d8",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/367c2c8dfdfe83cb2ddbc029c0222174098d093a",
+                "reference": "367c2c8dfdfe83cb2ddbc029c0222174098d093a",
                 "shasum": ""
             },
             "require": {
@@ -1335,7 +1335,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-03-03T13:14:27+00:00"
+            "time": "2020-03-10T14:11:04+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1544,16 +1544,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.64",
+            "version": "1.0.65",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "d13c43dbd4b791f815215959105a008515d1a2e0"
+                "reference": "8f17b3ba67097aafb8318cd5c553b1acf7c891c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d13c43dbd4b791f815215959105a008515d1a2e0",
-                "reference": "d13c43dbd4b791f815215959105a008515d1a2e0",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/8f17b3ba67097aafb8318cd5c553b1acf7c891c8",
+                "reference": "8f17b3ba67097aafb8318cd5c553b1acf7c891c8",
                 "shasum": ""
             },
             "require": {
@@ -1624,7 +1624,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2020-02-05T18:14:17+00:00"
+            "time": "2020-03-08T18:53:20+00:00"
         },
         {
             "name": "milon/barcode",
@@ -2877,6 +2877,78 @@
                 "temporary-directory"
             ],
             "time": "2019-12-15T18:52:09+00:00"
+        },
+        {
+            "name": "studio/laravel-totem",
+            "version": "v6.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codestudiohq/laravel-totem.git",
+                "reference": "f97cdc3d141db3dbddf1599c82aba2f8085422f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codestudiohq/laravel-totem/zipball/f97cdc3d141db3dbddf1599c82aba2f8085422f8",
+                "reference": "f97cdc3d141db3dbddf1599c82aba2f8085422f8",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.9",
+                "illuminate/bus": "^6.0",
+                "illuminate/console": "^6.0",
+                "illuminate/contracts": "^6.0",
+                "illuminate/database": "^6.0",
+                "illuminate/events": "^6.0",
+                "illuminate/notifications": "^6.0",
+                "laravelcollective/html": "^6.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "orchestra/database": "^4.0",
+                "orchestra/testbench": "^4.0",
+                "phpunit/phpunit": "^8.3"
+            },
+            "suggest": {
+                "nexmo/client": "Required for sms notifications."
+            },
+            "type": "library",
+            "extra": {
+                "component": "package",
+                "branch-alias": {
+                    "dev-6.0": "6.0.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Studio\\Totem\\Providers\\TotemServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Studio\\Totem\\": "src/",
+                    "Studio\\Totem\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roshan Gautam",
+                    "email": "roshan.gautam@hotmail.com"
+                }
+            ],
+            "description": "A Laravel package to manage your cron jobs through a beautiful dashboard",
+            "keywords": [
+                "Code Studio",
+                "laravel",
+                "manager",
+                "schedule",
+                "totem"
+            ],
+            "time": "2020-01-03T05:29:01+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4310,16 +4382,16 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v6.17.0",
+            "version": "v7.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tightenco/collect.git",
-                "reference": "bc554bfb79fc02b4e6e1dd463a7fa8470119e9ab"
+                "reference": "306a4def08c9781ff74fcf1e012f22cbf8686348"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tightenco/collect/zipball/bc554bfb79fc02b4e6e1dd463a7fa8470119e9ab",
-                "reference": "bc554bfb79fc02b4e6e1dd463a7fa8470119e9ab",
+                "url": "https://api.github.com/repos/tightenco/collect/zipball/306a4def08c9781ff74fcf1e012f22cbf8686348",
+                "reference": "306a4def08c9781ff74fcf1e012f22cbf8686348",
                 "shasum": ""
             },
             "require": {
@@ -4356,7 +4428,7 @@
                 "collection",
                 "laravel"
             ],
-            "time": "2020-02-25T19:45:47+00:00"
+            "time": "2020-03-09T16:52:33+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

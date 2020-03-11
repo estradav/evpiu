@@ -1029,43 +1029,52 @@ class FeFacturasController extends Controller
 
     public function GuardarFacturaEdit(Request $request)
     {
-        /* preguntar por reason o condicion de pago en un query */
-        $CondicionPago =  DB::connection('MAXP')->table('Code_Master')->where('CDEKEY_36','=','TERM')
-        ->where('DAYS_36','=', $request->encabezado[0]['condicionpago'])->select('CODE_36')->get();
 
-        $Numero_de_factura = '00'.$request->encabezado[0]['Numero_factura'];
+        /* preguntar por reason o condicion de pago en un query */
+        $CondicionPago =  DB::connection('MAXP')
+            ->table('Code_Master')
+            ->where('CDEKEY_36','=','TERM')
+            ->where('DAYS_36','=', $request->encabezado['condicionpago'])
+            ->pluck('CODE_36');
+
+        $Numero_de_factura = '00'.$request->encabezado['Numero_factura'];
         $Detalle = $request->Items;
+
         $ConIVA = [];
         $SinIVA = [];
 
+
+
         foreach($Detalle as $dest){
+
             if ($dest['iva'] > 0 ){
-                $ConIVA[] = $dest;
+                array_push($ConIVA,$dest);
             }
             else{
-                $SinIVA[] = $dest;
+                array_push($SinIVA,$dest);
             }
         }
 
-        if($ConIVA != null && $SinIVA == null) {
+
+        if(!empty($ConIVA)) {
             DB::beginTransaction();
             try {
                 DB::connection('MAXP')->table('Invoice_master')
                     ->where('INVCE_31', '=', $Numero_de_factura)
                     ->update([
-                        'COMNT1_31' => $request->encabezado[0]['notas'],
-                        'REASON_31' => $request->encabezado[0]['motivo'],
-                        'TAX1_31'   => $request->encabezado[0]['total_iva'],
-                        'LNETOT_31' => $request->encabezado[0]['total_bruto'],
-                        'ORDDSC_31' => $request->encabezado[0]['total_descuento'],
-                        'UDFKEY_31' => $request->encabezado[0]['total_retencion'],
-                        'MSCAMT_31' => $request->encabezado[0]['total_seguro'],
-                        'FRTAMT_31' => $request->encabezado[0]['total_flete'],
-                        'TAXTOT_31' => $request->encabezado[0]['total_subtotal'],
-                        'CUSTPO_31' => $request->encabezado[0]['ordencompra'],
+                        'COMNT1_31' => $request->encabezado['notas'],
+                        'REASON_31' => $request->encabezado['motivo'],
+                        'TAX1_31'   => $request->encabezado['total_iva'],
+                        'LNETOT_31' => $request->encabezado['total_bruto'],
+                        'ORDDSC_31' => $request->encabezado['total_descuento'],
+                        'UDFKEY_31' => $request->encabezado['total_retencion'],
+                        'MSCAMT_31' => $request->encabezado['total_seguro'],
+                        'FRTAMT_31' => $request->encabezado['total_flete'],
+                        'TAXTOT_31' => $request->encabezado['total_subtotal'],
+                        'CUSTPO_31' => $request->encabezado['ordencompra'],
                         'TAXCD1_31' => 'IVA-V19',
                         'TAXABL_31' => 'Y',
-                        'TERMS_31'  => $CondicionPago[0]->CODE_36,
+                        'TERMS_31'  => $CondicionPago[0],
                     ]);
 
                 foreach ($ConIVA as $Det) {
@@ -1085,8 +1094,24 @@ class FeFacturasController extends Controller
                             'TAXABL_32'     => 'Y'
                         ]);
                 }
+
+                foreach ($SinIVA as $Det) {
+                    $limnnum = substr($Det['item'], 0, 2);
+                    $delnum = substr($Det['item'], 2, 4);
+                    DB::connection('MAXP')->table('Invoice_detail')
+                        ->where('INVCE_32', '=', $Numero_de_factura)
+                        ->where('LINNUM_32', '=', $limnnum)
+                        ->where('DELNUM_32', '=', $delnum)
+                        ->where('ORDNUM_32', '=', $Det['ordencompra'])
+                        ->update([
+                            'PRICE_32'      => $Det['preciounitario'],
+                            'TAX1_32'       => $Det['iva'],
+                            'TAXCDE1_32'    => 'IVA-V19',
+                            'TAXABL_32'     => 'Y'
+                        ]);
+                }
                 DB::commit();
-                return response()->json(['Success' => 'Todo Ok']);
+                return response()->json(['Success' => 'Todo Ok'],200);
             }
             catch (\Exception $e){
                 DB::rollback();
@@ -1097,11 +1122,12 @@ class FeFacturasController extends Controller
                         'code2' =>$e->getLine(),
                     ),
                 ));
+                return response()->json(['error' => $e],404);
             }
         }
 
 
-        if($ConIVA == null && $SinIVA != null) {
+        if(empty($ConIVA)) {
             DB::beginTransaction();
             try {
                 DB::connection('MAXP')->table('Invoice_master')
@@ -1138,7 +1164,7 @@ class FeFacturasController extends Controller
                         ]);
                 }
                 DB::commit();
-                return response()->json(['Success' => 'Todo Ok']);
+                return response()->json(['Success' => 'Todo Ok'],200);
             }
             catch (\Exception $e){
                 DB::rollback();
@@ -1149,6 +1175,7 @@ class FeFacturasController extends Controller
                         'code2' =>$e->getLine(),
                     ),
                 ));
+                return response()->json(['error' => $e],404);
             }
         }
     }

@@ -418,13 +418,19 @@
                                         Blog
                                     </a>
                                 </li>
-                                <li class="app-sidebar__heading">Aplicativos</li>
-                                <li class="{{ request()->route()->named('Artes.index') ? 'mm-active' : '' }}">
-                                    <a href="{{ route('Artes.index') }}">
-                                        <i class="metismenu-icon  pe-7s-pen"></i>
-                                        Artes
+                                <li class="{{ request()->is('accesos_remotos') ? 'mm-active' : '' }}">
+                                    <a href="{{ url('accesos_remotos') }}">
+                                        <i class="metismenu-icon pe-7s-paper-plane">
+                                        </i>Accesos remotos
                                     </a>
                                 </li>
+                                <li class="app-sidebar__heading">Aplicativos</li>
+                                    <li class="{{ request()->route()->named('Artes.index') ? 'mm-active' : '' }}">
+                                        <a href="{{ route('Artes.index') }}">
+                                            <i class="metismenu-icon  pe-7s-pen"></i>
+                                            Artes
+                                        </a>
+                                    </li>
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon  pe-7s-graph1"></i>
@@ -460,13 +466,13 @@
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
-                                        <li class="{{ request()->route()->named('fe.index') ? 'mm-active' : '' }}">
+                                        <li class="{{ request()->route()->named('fe.*') ? 'mm-active' : '' }}">
                                             <a href="{{ route('fe.index') }}">
                                                 <i class="metismenu-icon"></i>
                                                   Facturas
                                             </a>
                                         </li>
-                                        <li class="{{ request()->route()->named('nc.index') ? 'mm-active' : '' }}">
+                                        <li class="{{ request()->route()->named('nc.*') ? 'mm-active' : '' }}">
                                             <a href="{{ route('nc.index') }}">
                                                 <i class="metismenu-icon">
                                                 </i>Notas credito
@@ -772,8 +778,8 @@
                                         </i>Backups
                                     </a>
                                 </li>
-                                <li class="{{ request()->route()->named('backup.index') ? 'mm-active' : '' }}">
-                                    <a href="#">
+                                <li class="{{ request()->is('logs') ? 'mm-active' : '' }}">
+                                    <a href="{{ url('logs') }}">
                                         <i class="metismenu-icon pe-7s-video">
                                         </i>Logs
                                     </a>

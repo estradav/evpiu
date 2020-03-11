@@ -15,9 +15,6 @@ class FeConfigController extends Controller
         return view('FacturacionElectronica.Configuracion.index',compact('feconfigs'));
     }
 
-
-
-
     public  function store ()
     {
 
