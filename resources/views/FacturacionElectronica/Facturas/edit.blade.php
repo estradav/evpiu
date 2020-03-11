@@ -142,72 +142,69 @@
                 </div>
             </div>
         </div>
-        <div>
-            <div class="card">
-                <h5 class="card-header">Productos</h5>
-                <div class="card-body">
-                    <form role="form">
-                        <div class="table-responsive">
-                            <table class="table table-striped first tabla_productos">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 10% !important; text-align: center">ORDEN</th>
-                                        <th style="width: 12% !important; text-align: center">CODIGO</th>
-                                        <th style="width: 15% !important; text-align: center">DESCRIPCION</th>
-                                        <th style="width: 5%  !important; text-align: center">U/M</th>
-                                        <th style="width: 10% !important; text-align: center">CANTIDAD</th>
-                                        <th style="width: 10% !important; text-align: center">PRECIO UNITARIO</th>
-                                        <th style="width: 10% !important; text-align: center">IVA</th>
-                                        <th style="width: 15% !important; text-align: center">SUBTOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="items_factura" name="items_factura">
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-                <br>
-                <div class="card-footer">
+        <br>
+        <div class="card">
+            <h5 class="card-header">Productos</h5>
+            <div class="card-body">
+                <form role="form">
                     <div class="table-responsive">
-                        <table class="table table-striped first">
+                        <table class="table table-striped first tabla_productos">
                             <thead>
-                            <tr>
-                                <th style="text-align: center">TOTAL BRUTO</th>
-                                <th style="text-align: center">DESCUENTO</th>
-                                <th style="text-align: center">RETENCION</th>
-                                <th style="text-align: center">SEGURO</th>
-                                <th style="text-align: center">FLETE</th>
-                                <th style="text-align: center">SUBTOTAL</th>
-                                <th style="text-align: center">IVA</th>
-                                <th style="text-align: center">TOTAL</th>
-                            </tr>
-                            </thead>
-                            <tbody id="totales_factura">
                                 <tr>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_bruto" readonly="readonly"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_descuento" readonly="readonly"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_retencion" readonly="readonly"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_seguro" readonly="readonly"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_flete" readonly="readonly"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_subtotal" readonly="readonly"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_iva" readonly="readonly"></td>
-                                    <td><input type="number" class="form-control" style="text-align: right" id="Total_factura" readonly="readonly"></td>
+                                    <th style="width: 10% !important; text-align: center">ORDEN</th>
+                                    <th style="width: 12% !important; text-align: center">CODIGO</th>
+                                    <th style="width: 15% !important; text-align: center">DESCRIPCION</th>
+                                    <th style="width: 5%  !important; text-align: center">U/M</th>
+                                    <th style="width: 10% !important; text-align: center">CANTIDAD</th>
+                                    <th style="width: 10% !important; text-align: center">PRECIO UNITARIO</th>
+                                    <th style="width: 10% !important; text-align: center">IVA</th>
+                                    <th style="width: 15% !important; text-align: center">SUBTOTAL</th>
                                 </tr>
+                            </thead>
+                            <tbody id="items_factura" name="items_factura">
                             </tbody>
                         </table>
                     </div>
+                </form>
+            </div>
+            <br>
+            <div class="card-footer">
+                <div class="table-responsive">
+                    <table class="table table-striped first">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center">TOTAL BRUTO</th>
+                            <th style="text-align: center">DESCUENTO</th>
+                            <th style="text-align: center">RETENCION</th>
+                            <th style="text-align: center">SEGURO</th>
+                            <th style="text-align: center">FLETE</th>
+                            <th style="text-align: center">SUBTOTAL</th>
+                            <th style="text-align: center">IVA</th>
+                            <th style="text-align: center">TOTAL</th>
+                        </tr>
+                        </thead>
+                        <tbody id="totales_factura">
+                            <tr>
+                                <td><input type="number" class="form-control" style="text-align: right" id="Total_bruto" readonly="readonly"></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="Total_descuento" readonly="readonly"></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="Total_retencion" readonly="readonly"></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="Total_seguro" readonly="readonly"></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="Total_flete" readonly="readonly"></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="Total_subtotal" readonly="readonly"></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="Total_iva" readonly="readonly"></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="Total_factura" readonly="readonly"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <div class="col-sm-12 pl-0">
-                <p class="text-right">
-                    <a href="{{ route('fe.index') }}" class="btn btn-sm btn-secondary" role="button">Volver</a>
-                    <a href="javascript:void(0)" id="SaveBtn" name="SaveBtn" class="btn btn-sm btn-primary">Guardar cambios</a>
-                </p>
+            <div class="card-footer">
+                <button id="SaveBtn" class="btn btn-primary btn-lg">Guardar cambios</button> &nbsp;
+                <a href="{{ route('fe.index') }}" class="btn btn-secondary btn-lg" role="button">Volver</a>
             </div>
         </div>
+
+
     <style>
         .preloader {
             width: 140px;
@@ -273,21 +270,21 @@
                             $('#contacto').val(data['encabezado'][0]['nombres'].trim());
                             $('#telefono').val(data['encabezado'][0]['telefono'].trim());
                             $('#motivo').val(data['encabezado'][0]['motivo'].trim());
-                            $('#documento').val(data['encabezado'][0]['nit_cliente'].trim());
+                            $('#documento').val(data['encabezado'][0]['nit_cliente']);
                             $('#fecha_factura').val(data['encabezado'][0]['fechadocumento'].trim());
                             $('#fecha_vencimiento').val(data['encabezado'][0]['fechavencimiento'].trim());
                             $('#codigo_cliente').val(data['encabezado'][0]['codigocliente'].trim());
                             $('#remision').val(data['encabezado'][0]['ov'].trim());
                             $('#notas_factura').val(data['encabezado'][0]['notas'].trim());
-                            $('#condicion_pago').val(data['encabezado'][0]['dias'].trim());
-                            $('#Total_flete').val(data['encabezado'][0]['fletes'].trim());
-                            $('#Total_subtotal').val(data['encabezado'][0]['subtotal'].trim());
-                            $('#Total_seguro').val(data['encabezado'][0]['seguros'].trim());
-                            $('#Total_descuento').val(data['encabezado'][0]['descuento'].trim());
-                            $('#Total_bruto').val(data['encabezado'][0]['bruto'].trim());
-                            $('#Total_iva').val(data['encabezado'][0]['iva'].trim());
+                            $('#condicion_pago').val(data['encabezado'][0]['dias']);
+                            $('#Total_flete').val(data['encabezado'][0]['fletes']);
+                            $('#Total_subtotal').val(data['encabezado'][0]['subtotal']);
+                            $('#Total_seguro').val(data['encabezado'][0]['seguros']);
+                            $('#Total_descuento').val(data['encabezado'][0]['descuento']);
+                            $('#Total_bruto').val(data['encabezado'][0]['bruto']);
+                            $('#Total_iva').val(data['encabezado'][0]['iva']);
                             $('#Total_retencion').val(0);
-                            $('#oc').val(data['encabezado'][0]['OC'].trim());
+                            $('#oc').val(data['encabezado'][0]['OC']);
 
 
                             var i = 0;
@@ -298,10 +295,10 @@
                                     '<td style="width: 12% !important;">' + '<input type="text" class="form-control" value="'+ data['detalle'][i]['CodigoProducto'].trim() +' " readonly="readonly">' + '</td>' +
                                     '<td style="width: 15% !important;">' + '<input type="text" class="form-control" value="'+ data['detalle'][i]['descripcionproducto'].trim() +'" readonly="readonly">' + '</td>' +
                                     '<td style="width: 5%  !important;">' + '<input id="'+n+'" type="text" class="form-control item_unidadmedida" value="'+ data['detalle'][i]['UM'].trim() +'" readonly="readonly">'  + '</td>' +
-                                    '<td style="width: 10% !important;">' + '<input id="Cant-'+n+'" style="text-align: right !important;" type="number" class="form-control item_cantidad" value="'+ parseFloat(data['detalle'][i]['cantidad'].trim()).toFixed(2) +'" readonly="readonly">' + '</td>' +
-                                    '<td style="width: 10% !important;">' + '<input id="Precun-'+n+'" style="text-align: right !important;" type="number" class="form-control item_preciounitario" value="'+ parseFloat(data['detalle'][i]['precio'].trim()).toFixed(2) +'">' + '</td>' +
-                                    '<td style="width: 10% !important;">' + '<input id="Itmiva-'+n+'" style="text-align: right !important;" type="number" class="form-control item_iva" value="'+ parseFloat(data['detalle'][i]['iva_item'].trim()).toFixed(2) +'" readonly="readonly">' + '</td>' +
-                                    '<td style="width: 15% !important;">' + '<input id="ItmPrec-'+n+'" style="text-align: right !important;" type="number" class="form-control item_preciototal" value="'+ parseFloat(data['detalle'][i]['totalitem'].trim()).toFixed(2) +'" readonly="readonly">' +'</td>' +
+                                    '<td style="width: 10% !important;">' + '<input id="Cant-'+n+'" style="text-align: right !important;" type="number" class="form-control item_cantidad" value="'+ parseFloat(data['detalle'][i]['cantidad']).toFixed(2) +'" readonly="readonly">' + '</td>' +
+                                    '<td style="width: 10% !important;">' + '<input id="Precun-'+n+'" style="text-align: right !important;" type="number" class="form-control item_preciounitario" value="'+ parseFloat(data['detalle'][i]['precio']).toFixed(2) +'">' + '</td>' +
+                                    '<td style="width: 10% !important;">' + '<input id="Itmiva-'+n+'" style="text-align: right !important;" type="number" class="form-control item_iva" value="'+ parseFloat(data['detalle'][i]['iva_item']).toFixed(2) +'" readonly="readonly">' + '</td>' +
+                                    '<td style="width: 15% !important;">' + '<input id="ItmPrec-'+n+'" style="text-align: right !important;" type="number" class="form-control item_preciototal" value="'+ parseFloat(data['detalle'][i]['totalitem']).toFixed(2) +'" readonly="readonly">' +'</td>' +
                                     '<td class="item" style="display: none !important;">' + ' <input type="text" value="'+ data['detalle'][i]['item'].trim() +'">' + '</td>' +
                                     '<td class="ordencompra" style="display: none !important;">' + '<input type="text" value="' + data['detalle'][i]['OV'].trim() + '">' + '</td>' +
                                     '</tr>'
@@ -440,7 +437,7 @@
                     var iva = subtotalmenosdesc * 0.19;
 
                     document.getElementById(item_subtotal).value=subtotalmenosdesc;
-                    document.getElementById(id).value=precio_unitarioitm;
+                  //  document.getElementById(id).value=precio_unitarioitm;
 
                     if($('#tieneiva').val() == 1){
                         document.getElementById(item_iva).value=iva;
@@ -518,9 +515,9 @@
                     var total_factura = $('#Total_factura').val();
                     var orden_compra = $('#oc').val();
 
-                    var encabezado = [];
+                    //var encabezado = [];
                     let Items = [];
-                    var Inputs = {
+                    var encabezado = {
                         notas: notas,
                         motivo: motivo,
                         condicionpago: condicionpago,
@@ -536,10 +533,10 @@
                         Numero_factura: Numero_factura,
                         ordencompra: orden_compra
                     };
-                    encabezado.push(Inputs);
+                   // encabezado.push(Inputs);
 
 
-                    var filas = $("#items_factura").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
+                    var filas = $("#items_factura").find("tr"); //devulve las filas del body
                     for(i=0; i<filas.length; i++) { //Recorre las filas 1 a 1
                         var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
                         var cantidad = $($(celdas[4]).children("input")[0]).val();
@@ -571,22 +568,20 @@
                         url: "/GuardarFacturaEdit",
                         type: "post",
                         data:{
-                            Items,encabezado
+                            Items:Items,
+                            encabezado:encabezado
                         },
                         success: function (data) {
-                            if (data.hasOwnProperty('error')) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: '¡Oops!',
-                                    text: '¡Hubo un error al guardar la factura!',
-                                })
-                            }else{
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: '¡Guardado!',
-                                    text: '¡Factura editada con exito!',
-                                })
-                            }
+                            console.log(data);
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Guardado!',
+                                text: '¡Factura editada con exito!',
+                            })
+
+                        },
+                        error: function (data) {
+                            alert(data);
                         }
                     })
                 });

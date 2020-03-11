@@ -165,6 +165,8 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        Studio\Totem\Providers\TotemServiceProvider::class,
+
 
 
         /*
@@ -235,6 +237,8 @@ return [
         'Adldap' => Adldap\Laravel\Facades\Adldap::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+        'Arr' => Illuminate\Support\Arr::class,
+        'Str' => Illuminate\Support\Str::class,
     ],
 
 ];

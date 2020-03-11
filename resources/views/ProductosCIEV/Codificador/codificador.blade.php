@@ -1,10 +1,7 @@
 @extends('layouts.architectui')
 
 @section('page_title', 'Codigos')
-
-@section('module_title', 'Lista de Codigos')
-
-@section('subtitle', 'Este modulo permite ver, crear y editar Codigos.')
+)
 @section('content')
     @inject('TipoProductos','App\Services\TipoProductos')
     @can('codificador.view')
