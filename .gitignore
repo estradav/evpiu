@@ -13,6 +13,6 @@ yarn-error.log
 public/XML/Facturacion_electronica_Facturas.xml
 *.xml
 .env
-.env
 /public/requerimientos/
-*.xml
+public/architectui/src/assets/fonts/
+resources/js/
