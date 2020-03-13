@@ -19,8 +19,8 @@
                   <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                 </a>--}}
                 @can('gestion_clientes.crear_cliente')
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" style="align-items: flex-end">
-                        <i class="fas fa-user-plus"></i>  Crear Cliente
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModalCenter" style="align-items: flex-end">
+                        <i class="fas fa-user-plus"> </i>  Nuevo Cliente
                     </button>
                 @endcan
 
@@ -599,7 +599,10 @@
                                     text: 'El cliente fue creado con exito!',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: 'Aceptar',
-                                })
+                                });
+
+                                $('#example-advanced-form').trigger("reset");
+
                             },
                             error: function (data) {
                                 Swal.fire({
@@ -1062,10 +1065,8 @@
                         inputDigVerificacion.value = calcularDigitoVerificacion (nit);
                     }
                 }
-
             });
         </script>
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -1080,20 +1081,16 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" ></script>
         <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-
-
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
-
         <script src="/jquery-steps/jquery.steps.js"></script>
     @endpush
 @stop
 @section('modal')
     <div class="modal fade bd-example-modal-xl" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1101,7 +1098,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="example-advanced-form" action="#">
+                    <form id="example-advanced-form" >
                         <h3>Cliente</h3>
                         <fieldset>
                             <div class="row">
@@ -1413,7 +1410,6 @@
                                     <h3 class="text-danger">¡Alerta: Esta accion no es reversible!</h3>
                                 </div>
                             </div>
-
                             <input id="acceptTerms" name="acceptTerms" type="checkbox" class="custom-checkbox required"> <label for="acceptTerms-2">He digilenciado la informacion correctamente.</label>
                         </fieldset>
                     </form>
