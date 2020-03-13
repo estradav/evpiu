@@ -12,39 +12,39 @@
 
 @section('content')
     @can('pronosticos.view')
-        <div class="col-lg-12">
-            <div class="form-group">
                 <input type="hidden" value="3" id="Open">
                 <input type="hidden" value="4" id="HideClose">
                 <input type="hidden" value="5" id="Close">
                 <input type="hidden" value="6" id="Anuld">
-                <span><input type="button" class="btn btn-primary btn-sm" id="OpenBtn" value="¿Mostrar Abiertos?"></span>
-                <span><input type="button" class="btn btn-primary btn-sm" id="OpenAndClose" value="¿Mostrar Completados?"></span>
-                <span><input type="button" class="btn btn-danger btn-sm" id="CloseAnulBtn" value="¿Mostrar Cerrados y Anulados?"></span>
-                @can('cerrar_pronosticos')
-                <button class="btn btn-primary btn-sm" id="cerrar_pronosticos">Cerrar Pronosticos</button>
-                @endcan
-            </div>
-        </div>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" id="OpenBtn">Mostrar Abiertos</button>
+                            <button class="btn btn-primary" id="OpenAndClose">Mostrar Completados</button>
+                            <button class="btn btn-danger" id="CloseAnulBtn">Mostrar Cerrados y Anulados</button>
+                            @can('cerrar_pronosticos')
+                                <button class="btn btn-primary btn-sm" id="cerrar_pronosticos">Cerrar Pronosticos</button>
+                            @endcan
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped dataTable" id="table">
                                 <thead>
                                     <tr>
-                                        <th>Numero</th>
-                                        <th>Fecha</th>
-                                        <th>Referencia</th>
-                                        <th>Descripcion</th>
-                                        <th>Detalle</th>
-                                        <th>Acabado</th>
-                                        <th>Cantidad</th>
-                                        <th>Cod. Cliente</th>
-                                        <th>Cliente</th>
-                                        <th>Estado</th>
-                                        <th>Vendedor</th>
+                                        <th>NUMERO</th>
+                                        <th>FECHA</th>
+                                        <th>REF</th>
+                                        <th>DESCRIPCION</th>
+                                        <th>DETALLE</th>
+                                        <th>ACABADO</th>
+                                        <th>CANTIDAD</th>
+                                        <th>COD. CLIENTE</th>
+                                        <th>CLIENTE</th>
+                                        <th>ESTADO</th>
+                                        <th>VENDEDOR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,7 +129,7 @@
                                 return '<button  value="'+data+'" class="btn btn-link btn-sm btnRef" id="Ref" >' + data + '</button>';}
                             },
 
-                            {data: 'descrip', name: 'descrip', orderable: false, searchable: false},
+                            {data: 'descrip', name: 'descrip', orderable: false, searchable: true},
                             {data: 'detail', name: 'detail', orderable: false, searchable: true},
                             {data: 'acabado', name: 'acabado', orderable: true, searchable: true},
                             {data: 'cant', name: 'cant', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 0, '')},

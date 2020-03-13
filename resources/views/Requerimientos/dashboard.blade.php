@@ -16,20 +16,36 @@
             <div class="input-group">
                 <div class="row input-daterange col-sm-8">
                     <div class="col-sm-3">
-                        <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
                     </div>
                     <div class="col-sm-3">
-                        <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
                     </div>
                     <div>
-                        <button type="button" name="filter" id="filter" class="btn btn-primary btn-lg">Filtrar datos</button>
                     </div>
                     <div class="col-2">
-                        <button type="button" name="ViewAll" id="ViewAll" class="btn btn-primary btn-lg">Mostrar todo</button>
                     </div>
                 </div>
                 <div class="col text-right" style="margin-right: 1px">
-                    <button id="downloadPdf" class="btn btn-primary btn-lg">Descargar Reporte</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="row col">
+                    <div class="col-2">
+                        <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Fecha inicial" readonly />
+                    </div>
+                    <div class="col-2">
+                        <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Fecha final" readonly />
+                    </div>
+                    <div class="col-2">
+                        <button type="button" name="filter" id="filter" class="btn btn-primary btn-block btn-lg">Filtrar datos</button>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" name="ViewAll" id="ViewAll" class="btn btn-primary btn-block btn-lg">Mostrar todo</button>
+                    </div>
+                    <div class="col-3">
+                        <button id="downloadPdf" class="btn btn-primary btn-lg btn-block">Descargar Reporte</button>
+                    </div>
                 </div>
             </div>
         </div>

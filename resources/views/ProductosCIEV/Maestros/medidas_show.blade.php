@@ -24,19 +24,19 @@
                         <table class="table table-striped first data-table">
                             <thead>
                                 <tr>
-                                    <th>Linea</th>
-                                    <th>Sublinea</th>
-                                    <th>Codigo</th>
-                                    <th>Denominacion</th>
-                                    <th>Diametro</th>
-                                    <th>Largo</th>
-                                    <th>Espesor</th>
-                                    <th>Base</th>
-                                    <th>Altura</th>
-                                    <th>Perforacion</th>
-                                    <th>Milimetros²</th>
-                                    <th>Comentarios</th>
-                                    <th>Opciones</th>
+                                    <th>LINEA</th>
+                                    <th>SUBLINEA</th>
+                                    <th>COD</th>
+                                    <th>DENOMINACION</th>
+                                    <th>DIAMETRO</th>
+                                    <th>LARGO</th>
+                                    <th>ESPESOR</th>
+                                    <th>BASE</th>
+                                    <th>ALTURA</th>
+                                    <th>PERF</th>
+                                    <th>MM²</th>
+                                    <th>COMENTARIOS</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>

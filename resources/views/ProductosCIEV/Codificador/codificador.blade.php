@@ -20,16 +20,16 @@
                         <table class="table table-striped first data-table">
                             <thead>
                                 <tr>
-                                    <th>Codigo</th>
-                                    <th>Descripcion</th>
-                                    <th>Tipo Producto</th>
-                                    <th>Linea</th>
-                                    <th>Sublinea</th>
-                                    <th>Medida</th>
-                                    <th>Caracteristica</th>
-                                    <th>Material</th>
-                                    <th>Comentarios</th>
-                                    <th>Opciones</th>
+                                    <th>CODIGO</th>
+                                    <th>DESCRIPCION</th>
+                                    <th>TIPO PRODUCTO</th>
+                                    <th>LINEA</th>
+                                    <th>SUBLINEA</th>
+                                    <th>MEDIDA</th>
+                                    <th>CARACTERISTICA</th>
+                                    <th>MATERIAL</th>
+                                    <th>COMENTARIOS</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>

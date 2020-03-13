@@ -12,51 +12,53 @@
 
 @section('content')
     @can('gestion_requerimientos.view')
-        <div class="col-lg-12">
-            <div class="form-group">
-                <ul class="nav nav-tabs " id="nav">
-                    <li class="nav-item">
-                        <a class="nav-link Por_Plano" href="javascript:void(0)" id="1">RENDER</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Por_revisar active" href="javascript:void(0)" id="2">POR REVISAR</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Rediligenciar" href="javascript:void(0)" id="3">ASIGNADO</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Asignados" href="javascript:void(0)" id="4">INICIADO</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Iniciados" href="javascript:void(0)" id="5">FINALIZADO</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Renderizando" href="javascript:void(0)" id="6">ANULADO DISEÑO</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Por_Aprobar" href="javascript:void(0)" id="7">SIN APROBAR</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Por_Corregir" href="javascript:void(0)" id="0">ANULADO VENDEDOR</a>
-                    </li>
-                  {{--  <li class="nav-item">
-                        <a class="nav-link Aprobados" href="javascript:void(0)" id="9">Aprobados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Cerrados" href="javascript:void(0)" id="10">Cerrados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Anulado" href="javascript:void(0)" id="11">Anulados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link Sin_Aprobar" href="javascript:void(0)" id="12">Sin aprobar</a>
-                    </li>--}}
-                </ul>
-            </div>
-        </div>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav" id="nav">
+                            <li class="nav-item">
+                                <a class="nav-link Por_Plano" href="javascript:void(0)" id="1">
+                                    <span>RENDER</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link Por_revisar active" href="javascript:void(0)" id="2">
+                                    <span>POR REVISAR</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link Rediligenciar" href="javascript:void(0)" id="3">
+                                    <span>ASIGNADO</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link Asignados" href="javascript:void(0)" id="4">
+                                    <span>INICIADO</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link Iniciados" href="javascript:void(0)" id="5">
+                                    <span>FINALIZADO</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link Renderizando" href="javascript:void(0)" id="6">
+                                    <span>ANULADO DISEÑO</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link Por_Aprobar" href="javascript:void(0)" id="7">
+                                    <span>SIN APROBAR</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link Por_Corregir" href="javascript:void(0)" id="0">
+                                    <span>ANULADO VENDEDOR</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped dataTable" id="table">

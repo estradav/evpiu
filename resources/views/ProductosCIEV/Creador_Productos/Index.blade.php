@@ -42,12 +42,12 @@
                         <table class="table table-striped first data-table">
                             <thead>
                                 <tr>
-                                    <th>Numero</th>
-                                    <th>Descripcion</th>
-                                    <th>Fecha de Creacion</th>
-                                    <th>Ultima Actualizacion</th>
-                                    <th>Modificado Por</th>
-                                    <th>Opciones</th>
+                                    <th>NUMERO</th>
+                                    <th>DESCRIPCION</th>
+                                    <th>CREADO</th>
+                                    <th>ULTIMA ACTUALIZACION</th>
+                                    <th>MODIFICADO POR</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
