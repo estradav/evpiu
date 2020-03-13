@@ -1421,8 +1421,10 @@ class GestionClientesController extends Controller
         $apellidos_lenght = strlen($apellidos_lenght ) +1;
 
         $nombre_max = '';
-        if ($request->M_primer_apellido != '' || null){
+        if ($request->M_primer_apellido != ''){
             $nombre_max = $request->M_primer_apellido.' '.$request->M_segundo_apellido.' '.$request->M_primer_nombre.' '.$request->M_segundo_nombre;
+        }else{
+            $nombre_max = $request->M_primer_nombre;
         }
 
         DB::beginTransaction();
