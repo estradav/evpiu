@@ -40,7 +40,6 @@ class BitacoraOmffController extends Controller
                 ->rawColumns(['Opciones'])
                 ->make(true);
         }
-
         return view('BitacoraOMFF.index');
     }
 
@@ -79,7 +78,7 @@ class BitacoraOmffController extends Controller
                 Log::info('[BitacoraOMFF]: Registro guardado correctamente');
 
                 return response()->json(['ok'],200);
-            } catch(Exception $e){
+            }catch(Exception $e){
                 Log::error('[BitacoraOMFF]: '. $e->getLine());
                 return false;
             }
@@ -136,36 +135,26 @@ class BitacoraOmffController extends Controller
                 ->groupBy( 'date','machine')
                 ->get()->toArray();
 
-            foreach ($dates_query as $value){
-
-                if ($value->machine == 'P300'){
+            foreach ($dates_query as $value) {
+                if ($value->machine == 'P300') {
                     $P300[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
-                }
-                else if ($value->machine == 'P301'){
+                } else if ($value->machine == 'P301') {
                     $P301[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
-                }
-                else if ($value->machine == 'P302'){
+                } else if ($value->machine == 'P302') {
                     $P302[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
-                }
-                else if ($value->machine == 'P303'){
+                } else if ($value->machine == 'P303') {
                     $P303[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
-                }
-                else if ($value->machine == 'P304'){
+                } else if ($value->machine == 'P304') {
                     $P304[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
-                }
-                else if ($value->machine == 'P305'){
+                } else if ($value->machine == 'P305') {
                     $P305[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
-                }
-                else if ($value->machine == 'P306'){
+                } else if ($value->machine == 'P306') {
                     $P306[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
-                }
-                else if ($value->machine == 'P307'){
+                } else if ($value->machine == 'P307') {
                     $P307[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
-                }
-                else if ($value->machine == 'P308'){
+                } else if ($value->machine == 'P308') {
                     $P308[] = ['fecha' => $value->date, 'lingotes' => $value->rz + $value->vz + $value->z + $value->tb];
                 }
-
             }
 
             $P300_days = []; $P300_values = [];
@@ -268,11 +257,10 @@ class BitacoraOmffController extends Controller
                     'created_at'            => Carbon::now(),
                     'updated_at'            => Carbon::now()
                 ]);
-
                 Log::info('[BitacoraOMFF]: Registro guardado correctamente');
-
                 return response()->json(['ok'],200);
-            } catch(Exception $e){
+
+            }catch(Exception $e){
                 Log::error('[BitacoraOMFF]: '. $e->getLine());
                 return false;
             }
@@ -286,7 +274,6 @@ class BitacoraOmffController extends Controller
             ->select(DB::raw('DATE(created_at) as date'),DB::raw('sum(lingotes) as lingotes'))
             ->groupBy('date')
             ->get()->toArray();
-
 
         return response()->json($values);
     }

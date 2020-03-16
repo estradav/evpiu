@@ -48,7 +48,7 @@ $(document).ready(function() {
             $('#lineaForm').trigger("reset");
             $('#saveBtn').val("create-linea");
             $('#linea_id').val('');
-            $('#modelHeading').html("Nuevo");
+            $('#modelHeading').html("NUEVA LINEA");
             $('#Lineamodal').modal('show');
             document.getElementById("codigo").readOnly = false;
 

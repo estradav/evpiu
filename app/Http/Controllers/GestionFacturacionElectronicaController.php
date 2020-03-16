@@ -298,7 +298,6 @@ class GestionFacturacionElectronicaController extends Controller
                 $values = $return->data;
 
                 return response()->json($values);
-
             }
         }
     }

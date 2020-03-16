@@ -1356,5 +1356,4 @@ class FeNotasCreditoController extends Controller
         }
         return response()->json($resultados);
     }
-
 }

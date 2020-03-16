@@ -8,8 +8,13 @@ class Comprador
 {
     public function get()
     {
-        $Comprador = DB::connection('MAX')->table('Buyers')->select('Buyers.BUYID_95','Buyers.BUYNME_95')->get();
+        $Comprador = DB::connection('MAX')
+            ->table('Buyers')
+            ->select('Buyers.BUYID_95','Buyers.BUYNME_95')
+            ->get();
+
         $CompradorArray[''] = 'Seleccione...';
+
         foreach ($Comprador as $Compr){
             $CompradorArray[trim($Compr->BUYID_95)] = trim($Compr->BUYNME_95);
         }

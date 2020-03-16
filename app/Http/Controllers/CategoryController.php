@@ -50,7 +50,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param  \App\Http\Requests\CategoryFormRequest  $request
+     * @param CategoryFormRequest $request
      * @return RedirectResponse
      *@todo: Make throw exceptions.
      * Almacena una nueva categoría en la base de datos.
@@ -93,7 +93,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param  \App\Http\Requests\CategoryFormRequest  $request
+     * @param CategoryFormRequest $request
      * @param  Category  $category
      * @return RedirectResponse
      *@todo: Make throw exceptions.

@@ -9,7 +9,9 @@ class Materiales
     public function get()
     {
         $Materiales = CodMaterial::get();
-        $MaterialesArray[''] = 'Seleccione un Material...';
+
+        $MaterialesArray[''] = 'Seleccione un material...';
+
         foreach ($Materiales as $materiales){
             $MaterialesArray[$materiales->id] = $materiales->name;
         }
