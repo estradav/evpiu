@@ -227,4 +227,38 @@ $(document).ready(function(){
         $('.form-control').removeClass('is-invalid');
         $('.error').remove();
     });
+    
+    $('#name').autocomplete({
+        appendTo: '#materialmodal',
+        source: function (request, response) {
+            var material = $("#name").val();
+            $.ajax({
+                url: "/get_materiales",
+                method: "get",
+                data: {
+                    query: material,
+                },
+                dataType: "json",
+                success: function (data) {
+                    var resp = $.map(data, function (obj) {
+                        return obj
+                    });
+                    response(resp);
+                }
+            })
+        },
+        focus: function (event, ui) {
+            $('#codigo').val([ui.item.code]);
+            $('#name').val([ui.item.name]);
+            $('#abreviatura').val([ui.item.abbreviation]);
+            return true;
+        },
+        select: function (event, ui) {
+            $('#codigo').val([ui.item.code]);
+            $('#name').val([ui.item.name]);
+            $('#abreviatura').val([ui.item.abbreviation]);
+
+        },
+        minlength: 2
+    });
 });
