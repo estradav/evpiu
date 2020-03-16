@@ -91,4 +91,25 @@ class ProdCievCodMaterialController extends Controller
             echo "false";
         }
     }
+    
+    public function Materials(Request $request)
+    {
+        $query = $request->get('query');
+        $results = array();
+
+        $queries = DB::table('materiales')
+            ->where('name', 'LIKE', '%'.$query.'%')
+            ->orWhere('abbreviation', 'LIKE', '%'.$query.'%')
+            ->get();
+
+        foreach ($queries as $q) {
+            $results[] = [
+                'value'         => $q->name,
+                'code'          => $q->code,
+                'name'          => $q->name,
+                'abbreviation'  => $q->abbreviation
+            ];
+        }
+        return response()->json($results);
+    }
 }
