@@ -11,10 +11,10 @@ class UnidadesMedidas
         $UnidadesMedidas = UnidadesMedida::get();
 
         $UnidadesMedidaArray =[];
+
         foreach ($UnidadesMedidas as $UnidadesMedida){
             $UnidadesMedidaArray[$UnidadesMedida->id] = $UnidadesMedida->descripcion;
         }
         return $UnidadesMedidaArray;
-
     }
 }

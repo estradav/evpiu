@@ -10,7 +10,8 @@ class Sublineas
     {
         $Sublineas = CodSublinea::get();
 
-        $SublineasArray[''] = 'Seleccione una Sublinea...';
+        $SublineasArray[''] = 'Seleccione una sublinea...';
+
         foreach ($Sublineas as $sublinea){
             $SublineasArray[$sublinea->id] = $sublinea->name;
         }

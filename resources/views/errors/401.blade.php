@@ -2,8 +2,6 @@
 <style>
     @import url("https://fonts.googleapis.com/css?family=Dosis:300,400,700,800");
 
-    /** Styles for the 403 Page **/
-
     .particle-error,
     .permission_denied,
     #particles-js {
@@ -162,9 +160,6 @@
     }
 
 </style>
-
-<!-- Icons purchased via Iconfinder under Basic License -->
-
 <body class="permission_denied">
 <div id="particles-js"></div>
 <div class="denied__wrapper">

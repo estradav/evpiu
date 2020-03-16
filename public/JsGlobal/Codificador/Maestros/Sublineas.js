@@ -73,7 +73,7 @@ $(document).ready(function(){
         $('#saveBtn').val("create-sublinea");
         $('#sublinea_id').val('');
         $('#sublineaForm').trigger("reset");
-        $('#modelHeading').html("Nuevo");
+        $('#modelHeading').html("NUEVA SUBLINEA");
         $('#sublineamodal').modal('show');
 
     });

@@ -134,7 +134,7 @@
                 <form id="edit_lineaForm" name="edit_lineaForm" class="form-horizontal">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="edit_tipoproducto_id" class="col-sm-6 control-label">Tipo de Producto:</label>
+                            <label for="edit_tipoproducto_id" class="col-sm-6 control-label">Tipo de producto:</label>
                             <div class="col-sm-12">
                                 <select class="form-control" name="edit_tipoproducto_id" id="edit_tipoproducto_id" >
                                     @foreach( $TipoProductos->get() as $index => $TipoProducto)

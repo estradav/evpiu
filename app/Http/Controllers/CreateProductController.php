@@ -24,7 +24,9 @@ class CreateProductController extends Controller
                     'Part_Master.PMDES1_01 as desc',
                     'Part_Master.CreationDate as CreationDate',
                     'Part_Master.ModificationDate as update',
-                    'Part_Master.CreatedBy as Creado')->orderBy('CreationDate','desc')->take(1200)
+                    'Part_Master.CreatedBy as Creado')
+                ->orderBy('CreationDate','desc')
+                ->take(1200)
                 ->get();
 
             return Datatables::of($data)
@@ -49,9 +51,11 @@ class CreateProductController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('MAX')->table('Part_Master')
+        $queries = DB::connection('MAX')
+            ->table('Part_Master')
             ->where('Part_Master.PRTNUM_01', 'LIKE', '%'.$query.'%')
-            ->orWhere('Part_Master.PMDES1_01', 'LIKE', '%'.$query.'%')->take(20)
+            ->orWhere('Part_Master.PMDES1_01', 'LIKE', '%'.$query.'%')
+            ->take(20)
             ->get();
 
         foreach ($queries as $q)
@@ -77,14 +81,14 @@ class CreateProductController extends Controller
                 'Tc_Manu'       => trim($q->MFGLT_01),
                 'TC_Comp'       => trim($q->PURLT_01),
 
-                    /* Campos de Ingenieria */
+                /* Campos de Ingenieria */
                 'Ig_PorcDes'    => trim($q->SCRAP_01),
                 'Ig_EstIng'     => trim($q->STAENG_01),
                 'Ig_FecObs'     => trim($q->OBSDTE_01), /* este no va, ya que va a ser un producto nuevo, aun no tiene fecha de obsolesencia  */
                 'Ig_Cbn'        => trim($q->LLC_01),
                 'Ig_NumPln'     => trim($q->DRANUM_01),
 
-                    /* Campos de Planificador */
+                /* Campos de Planificador */
                 'Pl_PolOrd'     => trim($q->ORDPOL_01),
                 'Pl_Prgm'       => trim($q->SCHFLG_01),
                 'Pl_TcCrit'     => number_format($q->CRPHLT_01,0,'.',''),
@@ -92,6 +96,7 @@ class CreateProductController extends Controller
                 'Pl_Pdr'        => number_format($q->ROP_01,0,'.',''),
                 'Pl_Cdr'        => number_format($q->ROQ_01,0,'.',''),
                 'Pl_InvSeg'     => number_format($q->SAFSTK_01,0,'.',''),
+
                 /*checkbox*/
                 'Pl_PlFirm'     => trim($q->FRMPLN_01),
                 'Pl_Ncnd'       => trim($q->NCNR_01),
@@ -143,8 +148,7 @@ class CreateProductController extends Controller
                 'QUMVOH_01' => number_format($q->QUMVOH_01,2,'.',''),
                 'HRS_01'    => number_format($q->HRS_01,2,'.',''),
                 'QUMHRS_01' => number_format($q->QUMHRS_01,2,'.',''),
-                'PURUOM_01' => trim($q->PURUOM_01),
-
+                'PURUOM_01' => trim($q->PURUOM_01)
             ];
         }
         return response()->json($results);
@@ -155,9 +159,11 @@ class CreateProductController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('evpiu')->table('cod_codigos')
+        $queries = DB::connection('evpiu')
+            ->table('cod_codigos')
             ->where('cod_codigos.codigo','LIKE','%'.$query.'%')
-            ->orWhere('cod_codigos.descripcion','LIKE','%'.$query.'%')->take(20)
+            ->orWhere('cod_codigos.descripcion','LIKE','%'.$query.'%')
+            ->take(20)
             ->get();
 
         foreach ($queries as $q)
@@ -176,7 +182,9 @@ class CreateProductController extends Controller
         DB::beginTransaction();
         try {
             $date = date('Ymd H:i:s');
-            DB::connection('MAX')->table('Part_Master')->insert([
+            DB::connection('MAX')
+                ->table('Part_Master')
+                ->insert([
                 'Part_Master.PRTNUM_01' => $request->Maestro_Cod,
                 'Part_Master.TYPE_01'   => $request->Maestro_TP,
                 'Part_Master.CLSCDE_01' => $request->Maestro_Cod_Clase,
@@ -289,7 +297,9 @@ class CreateProductController extends Controller
                 'Part_Master.NCNR_01' => $request->Planificador_NcndVal, /*checkbox*/
             ]);
 
-            DB::connection('MAX')->table('Activity_index')->insert([
+            DB::connection('MAX')
+                ->table('Activity_index')
+                ->insert([
                 'Activity_index.LLC_03'     => $request->Ingenieria_Cbn,
                 'Activity_index.PRTNUM_03'  => $request->Maestro_Cod,
                 'Activity_index.BOMFLG_03'  => 'N',
@@ -310,8 +320,10 @@ class CreateProductController extends Controller
             $Prod_dest = $request->Maestro_Cod;
 
             $InsProd_Struc = [];
-            $Product_Structur = DB::connection('MAX')->table('Product_Structure')
-                ->where('Product_Structure.PARPRT_02','=', $Producto)->get();
+            $Product_Structur = DB::connection('MAX')
+                ->table('Product_Structure')
+                ->where('Product_Structure.PARPRT_02','=', $Producto)
+                ->get();
 
             foreach ($Product_Structur as $Prod_Struc){
                 $InsProd_Struc[] = [
@@ -347,11 +359,15 @@ class CreateProductController extends Controller
                     'ALTCDE_02'    => ''
                 ];
             }
-            DB::connection('MAX')->table('Product_Structure')->insert($InsProd_Struc);
+            DB::connection('MAX')
+                ->table('Product_Structure')
+                ->insert($InsProd_Struc);
 
             $InsPart_Rou = [];
-            $Part_Routing = DB::connection('MAX')->table('Part_Routing')
-                ->where('Part_Routing.PRTNUM_12','=', $Producto)->get();
+            $Part_Routing = DB::connection('MAX')
+                ->table('Part_Routing')
+                ->where('Part_Routing.PRTNUM_12','=', $Producto)
+                ->get();
 
             foreach ($Part_Routing as $Part_Rou ){
                 $InsPart_Rou[] = [
@@ -396,11 +412,15 @@ class CreateProductController extends Controller
                     'ALTCDE_12'  => '',
                 ];
             }
-            DB::connection('MAX')->table('Part_Routing')->insert($InsPart_Rou);
+            DB::connection('MAX')
+                ->table('Part_Routing')
+                ->insert($InsPart_Rou);
 
             $InsPart_Sal = [];
-            $Part_Sales = DB::connection('MAX')->table('Part_Sales')
-                ->where('Part_Sales.PRTNUM_29','=', $Producto)->get();
+            $Part_Sales = DB::connection('MAX')
+                ->table('Part_Sales')
+                ->where('Part_Sales.PRTNUM_29','=', $Producto)
+                ->get();
 
             foreach ($Part_Sales as $Part_Sale ) {
                 $InsPart_Sal[] = [
@@ -489,7 +509,9 @@ class CreateProductController extends Controller
                     'WARRES_29'    => $Part_Sale->WARRES_29
                 ];
             }
-            DB::connection('MAX')->table('Part_Sales')->insert($InsPart_Sal);
+            DB::connection('MAX')
+                ->table('Part_Sales')
+                ->insert($InsPart_Sal);
 
             DB::commit();
 
@@ -505,7 +527,6 @@ class CreateProductController extends Controller
                 ),
             ));
         }
-       /* return response()->json($resultado);*/
     }
 
 }

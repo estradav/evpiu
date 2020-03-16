@@ -14,7 +14,6 @@ use Illuminate\View\View;
 
 class BackupController extends Controller
 {
-
     protected $commonUtil;
 
     public function __construct(Util $commonUtil)
@@ -71,14 +70,6 @@ class BackupController extends Controller
         }
 
         try {
-            //Disable in demo
-            if (config('app.env') == 'demo') {
-                $output = ['success' => 0,
-                    'msg' => 'Feature disabled in demo!!'
-                ];
-                return back()->with('status', $output);
-            }
-
             // start the backup process
             Artisan::call('backup:run');
             $output = Artisan::output();
@@ -98,7 +89,7 @@ class BackupController extends Controller
         return back()->with('status', $output);
     }
 
-    /**
+    /*
      * Downloads a backup zip file.
      *
      * TODO: make it work no matter the flysystem driver (S3 Bucket, etc).
@@ -108,9 +99,6 @@ class BackupController extends Controller
         if (!auth()->user()->can('backup')) {
             abort(403, 'Accion no autorizada.');
         }
-
-        //Disable in demo
-
 
         $file = config('backup.backup.name') . '/' . $file_name;
         $disk = Storage::disk(config('backup.backup.destination.disks')[0]);
@@ -125,7 +113,7 @@ class BackupController extends Controller
                 "Content-disposition" => "attachment; filename=\"" . basename($file) . "\"",
             ]);
         } else {
-            abort(404, "The backup file doesn't exist.");
+            abort(404, "El archivo de backup no existe.");
         }
     }
 
@@ -135,15 +123,7 @@ class BackupController extends Controller
     public function delete($file_name)
     {
         if (!auth()->user()->can('backup')) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        //Disable in demo
-        if (config('app.env') == 'demo') {
-            $output = ['success' => 0,
-                'msg' => 'Feature disabled in demo!!'
-            ];
-            return back()->with('status', $output);
+            abort(403, 'Accion no autorizada.');
         }
 
         $disk = Storage::disk(config('backup.backup.destination.disks')[0]);
@@ -151,7 +131,7 @@ class BackupController extends Controller
             $disk->delete(config('backup.backup.name') . '/' . $file_name);
             return redirect()->back();
         } else {
-            abort(404, "The backup file doesn't exist.");
+            abort(404, "El archivo de backup no existe.");
         }
     }
 

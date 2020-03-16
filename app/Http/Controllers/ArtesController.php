@@ -15,9 +15,12 @@ class ArtesController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $data = DB::connection('EVPIUM')->table('V_Artes')->orderBy('idRequerimiento','desc')->get();
-                return Datatables::of($data)->make(true);
+                $data = DB::connection('EVPIUM')
+                    ->table('V_Artes')
+                    ->orderBy('idRequerimiento','desc')
+                    ->get();
 
+                return Datatables::of($data)->make(true);
             }
         }catch(Exception $e){
             Log::error('[Artes]: '. $e->getMessage());
@@ -25,5 +28,4 @@ class ArtesController extends Controller
 
         return view('Artes.index');
     }
-
 }

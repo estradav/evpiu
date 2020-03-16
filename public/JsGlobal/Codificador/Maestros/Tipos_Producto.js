@@ -46,7 +46,7 @@ $(document).ready(function(){
         $('#saveBtn').val("create-tipoproducto");
         $('#tipoproducto_id').val('');
         $('#tipoproductoForm').trigger("reset");
-        $('#modelHeading').html("Nuevo");
+        $('#modelHeading').html("NUEVO TIPO DE PRODUCTO");
         $('#tipoproductomodal').modal('show');
         document.getElementById("cod").readOnly = false;
     });
@@ -57,7 +57,7 @@ $(document).ready(function(){
         document.getElementById("cod").readOnly = true;
         tipoproducto_id = $(this).data('id');
         $.get("/ProdCievCodTipoProducto" +'/' + tipoproducto_id +'/edit', function (data) {
-            $('#edit_modelHeading').html("Editar "+ data.name);
+            $('#edit_modelHeading').html("EDITAR "+ data.name);
             $('#saveBtn').val("edit-tipoproducto");
             $('#edit_tipoproducto_modal').modal('show');
             $('#edit_cod').val(data.cod);

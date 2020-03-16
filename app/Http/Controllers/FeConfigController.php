@@ -11,18 +11,11 @@ class FeConfigController extends Controller
     public function index ()
     {
         $feconfigs = FeConfig::all();
-        //dd($feconfigs);
         return view('FacturacionElectronica.Configuracion.index',compact('feconfigs'));
-    }
-
-    public  function store ()
-    {
-
     }
 
     public  function update(FeConfigFromRequest $request, FeConfig $feConfig)
     {
-
         $formData = $request->all();
         $feConfig->update($formData);
         return view('FacturacionElectronica.Configuracion.Index');

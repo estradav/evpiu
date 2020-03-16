@@ -14,8 +14,12 @@ class ChartDataController extends Controller
     public function getAllMonths()
     {
         $month_array = array();
-        $users_date = User::orderBy('created_at','asc')->pluck('created_at');
+
+        $users_date = User::orderBy('created_at','asc')
+            ->pluck('created_at');
+
         $users_date = json_decode($users_date);
+
         if ( ! empty($users_date)){
             foreach ($users_date as $unformatted_date){
                 $date = new \Datetime( $unformatted_date);
@@ -27,13 +31,18 @@ class ChartDataController extends Controller
         return $month_array;
     }
 
-
-    /* contamos la cantidad de registros que hay por mes */
+    /**
+     * @param  $month
+     * @return
+     * @todo: .
+     * devuelve la cantidad  de registros por mes
+     */
     public function getMonthlyUserCount($month)
     {
         $monthly_user_count = User::whereMonth('created_at', $month)->get()->count();
         return $monthly_user_count;
     }
+
 
     /* realizamos un arreglo para mostrar el nombre de los meses y poner la cantidad de registros en un foreach */
     public function  getMonthlyUserData()
@@ -48,12 +57,9 @@ class ChartDataController extends Controller
                array_push($month_name_array, $month_name);
             }
         }
-        $max_no = max( $monthly_user_count_array);
-        //$max = round(($max_no + 10/2)/10) * 10;
         $monthly_user_data_array = array(
             'months'    =>  $month_name_array,
             'User_Count_data'   =>  $monthly_user_count_array,
-            //'Max'   => $max
         );
         return  $monthly_user_data_array;
     }
@@ -63,9 +69,15 @@ class ChartDataController extends Controller
     public function getAllMonthsInvoice()
     {
         $month_array = array();
+
         $año = '2019';
-        $invoice_date = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')->whereYear('CIEV_V_FacturasTotalizadasIntranet.fecha', $año)->orderBy('CIEV_V_FacturasTotalizadasIntranet.fecha','asc')
+
+        $invoice_date = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
+            ->whereYear('CIEV_V_FacturasTotalizadasIntranet.fecha', $año)
+            ->orderBy('CIEV_V_FacturasTotalizadasIntranet.fecha','asc')
             ->pluck('CIEV_V_FacturasTotalizadasIntranet.fecha');
+
         $invoice_date = json_decode($invoice_date);
         if ( ! empty($invoice_date)){
             foreach ($invoice_date as $unformatted_date){
@@ -82,11 +94,17 @@ class ChartDataController extends Controller
     public function getMonthlyInvoiceCount($month)
     {
         $año = '2019';
-        $monthly_invoice_count = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')->whereYear('CIEV_V_FacturasTotalizadasIntranet.fecha', $año)
-            ->whereMonth('CIEV_V_FacturasTotalizadasIntranet.fecha',$month)->get()->count();
+
+        $monthly_invoice_count = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
+            ->whereYear('CIEV_V_FacturasTotalizadasIntranet.fecha', $año)
+            ->whereMonth('CIEV_V_FacturasTotalizadasIntranet.fecha',$month)
+            ->get()
+            ->count();
 
         return $monthly_invoice_count;
     }
+
 
     public function  getMonthlyInvoiceData()
     {
@@ -106,15 +124,13 @@ class ChartDataController extends Controller
         );
         return  $monthly_invoice_data_array;
     }
-    /* FIN  CANTIDAD DE FACTURAS POR MES EN UN PERIODO DE 1 AÑO   */
 
-
-    /* INICIO VENTAS POR MES EN UN PERIODO DE 1 AÑO  */
 
     public function getMonthlyInvoiceValue($month)
     {
         $año = '2019';
-        $monthly_invoice_value = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')
+        $monthly_invoice_value = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
             ->whereYear('CIEV_V_FacturasTotalizadasIntranet.FECHA', $año)
             ->whereMonth('CIEV_V_FacturasTotalizadasIntranet.FECHA',$month)
             ->whereIn('CIEV_V_FacturasTotalizadasIntranet.tipocliente',['PN','RC'])
@@ -123,10 +139,12 @@ class ChartDataController extends Controller
         return $monthly_invoice_value;
     }
 
+
     public function getMonthlyInvoiceValueExp($month)
     {
         $año = '2019';
-        $monthly_invoice_value_exp = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')
+        $monthly_invoice_value_exp = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
             ->whereYear('CIEV_V_FacturasTotalizadasIntranet.FECHA', $año)
             ->whereMonth('CIEV_V_FacturasTotalizadasIntranet.FECHA',$month)
             ->where('CIEV_V_FacturasTotalizadasIntranet.tipocliente','=','EX')
@@ -158,16 +176,15 @@ class ChartDataController extends Controller
         );
         return  $monthly_invoice_data_array;
     }
-    /* FIN VENTAS POR MES EN UN PERIODO DE 1 AÑO  */
 
 
-
-    /* INICIO VENTAS POR AÑO EN UN PERIODO DE 3 AÑOS  */
-/* Consulta las facturas por año y las suma dependiendo si es exportacion o si es nacional */
+    /* Consulta las facturas por año y las suma dependiendo si es exportacion o si es nacional */
     public function getAllAgesInvoice()
     {
         $age_array = array();
-        $invoice_age_date = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')->orderBy('CIEV_V_FacturasTotalizadasIntranet.FECHA','asc')
+        $invoice_age_date = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
+            ->orderBy('CIEV_V_FacturasTotalizadasIntranet.FECHA','asc')
             ->pluck('CIEV_V_FacturasTotalizadasIntranet.FECHA');
         $invoice_age_date = json_decode($invoice_age_date);
         if ( ! empty($invoice_age_date)){
@@ -181,9 +198,11 @@ class ChartDataController extends Controller
         return $age_array;
     }
 
+
     public function getAgesInvoiceCount($year)
     {
-        $age_invoice_count = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')
+        $age_invoice_count = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
             ->WhereYear('CIEV_V_FacturasTotalizadasIntranet.FECHA',$year)
             ->whereIn('CIEV_V_FacturasTotalizadasIntranet.tipocliente',['PN','RC'])
             ->sum('CIEV_V_FacturasTotalizadasIntranet.subtotal');
@@ -191,17 +210,17 @@ class ChartDataController extends Controller
         return $age_invoice_count;
     }
 
+
     public function getAgesInvoiceCountExp($year)
     {
-
-        $ages_invoice_value_exp = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')
+        $ages_invoice_value_exp = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
             ->whereYear('CIEV_V_FacturasTotalizadasIntranet.FECHA', $year)
             ->where('CIEV_V_FacturasTotalizadasIntranet.tipocliente','=','EX')
             ->sum('CIEV_V_FacturasTotalizadasIntranet.subtotal');
 
         return $ages_invoice_value_exp;
     }
-
 
 
     public function  getAgeInvoiceData()
@@ -219,28 +238,23 @@ class ChartDataController extends Controller
                 array_push($age_name_array, $age_name);
             }
         }
-       /* $max_no = max( $age_invoice_count_array);
-        $max = round(($max_no + 10/2)/10) * 10;*/
+
         $age_invoice_data_array = array(
             'Invoice_age'          =>  $age_name_array,
             'Invoice_sum_data'     =>  $age_invoice_sum_array,
             'Invoice_sum_data_exp' =>   $ages_invoice_value_exp_array
-            //'Max'   => $max
         );
 
         return  $age_invoice_data_array;
-
     }
-    /* FIN VENTAS POR AÑO EN UN PERIODO DE 3 AÑOS  */
 
-
-
-/* INICIO VENTAS POR DIA EN UN PERIODO DE 30 DIAS  */
 
     public function getAllDaysInvoice()
     {
         $day_array = array();
-        $invoice_day_date = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')->orderBy('CIEV_V_FacturasTotalizadasIntranet.FECHA','asc')
+        $invoice_day_date = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
+            ->orderBy('CIEV_V_FacturasTotalizadasIntranet.FECHA','asc')
             ->where('CIEV_V_FacturasTotalizadasIntranet.FECHA','>=',Carbon::now()->subMonth())
             ->pluck('CIEV_V_FacturasTotalizadasIntranet.FECHA');
         $invoice_day_date = json_decode($invoice_day_date);
@@ -255,9 +269,11 @@ class ChartDataController extends Controller
         return $day_array;
     }
 
+
     public function getDaysInvoiceCount($day)
     {
-        $day_invoice_count = DB::connection('MAX')->table('CIEV_V_FacturasTotalizadasIntranet')
+        $day_invoice_count = DB::connection('MAX')
+            ->table('CIEV_V_FacturasTotalizadasIntranet')
             ->WhereDay('CIEV_V_FacturasTotalizadasIntranet.FECHA',$day)
             ->whereIn('CIEV_V_FacturasTotalizadasIntranet.tipocliente',['PN','RC'])
             ->sum('CIEV_V_FacturasTotalizadasIntranet.subtotal');
@@ -301,7 +317,5 @@ class ChartDataController extends Controller
         );
 
         return  $day_invoice_data_array;
-
     }
-    /* FIN VENTAS POR DIA EN UN PERIODO DE 30 DIAS  */
 }

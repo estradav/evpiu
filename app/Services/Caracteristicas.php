@@ -9,7 +9,9 @@ class Caracteristicas
     public function get()
     {
         $Caracteristicas = CodCaracteristica::get();
-        $CaracteristicasArray[''] = 'Seleccione una Caracteristica...';
+
+        $CaracteristicasArray[''] = 'Seleccione una caracteristica...';
+
         foreach ($Caracteristicas as $caracteristicas){
             $CaracteristicasArray[$caracteristicas->id] = $caracteristicas->name;
         }

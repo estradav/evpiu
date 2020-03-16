@@ -1498,14 +1498,14 @@ class GestionClientesController extends Controller
                  ->table('Customer_Master_Ext')
                  ->insert([
                      'CUSTID_23'            =>  $request->M_Nit_cc,
-                     'GRUPOECON'            =>  $request->M_grupo_economico,
+                     'GRUPOECON'            =>  $request->M_grupo_economico ?? '',
                      'TipoIdent'            =>  $request->M_tipo_doc,
                      'GranContr'            =>  $gran_contri,
                      'ActividadPrincipal'   =>  $request->M_actividad_principal,
                      'RUT'                  =>  $rut_entrega,
-                     'ResponsableFE'        =>  $request->M_responsable_fe,
-                     'telFE'                =>  $request->M_telefono_fe,
-                     'CorreosCopia'         =>  $correos_copia,
+                     'ResponsableFE'        =>  $request->M_responsable_fe ?? '',
+                     'telFE'                =>  $request->M_telefono_fe ?? '',
+                     'CorreosCopia'         =>  $correos_copia  ?? '',
                      'ResponsableIVA'       =>  '',
                      'CiudadExterior'       =>  ''
              ]);
