@@ -376,7 +376,8 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/informeordenproduccion_barcode','InformeOrdenProduccionController@Barcode');
 
             Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-
+            
+            Route::get('get_materiales','ProdCievCodMaterialController@Materials');
         });
     });
 });

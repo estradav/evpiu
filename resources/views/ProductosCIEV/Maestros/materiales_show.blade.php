@@ -95,7 +95,7 @@
                                 <select class="form-control" name="mat_sublineas_id" id="mat_sublineas_id"></select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: none !important;">
                             <label for="name" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="codigo" name="codigo" onkeyup="this.value=this.value.toUpperCase();">
@@ -107,7 +107,7 @@
                                 <input type="text" class="form-control" id="name" name="name" value="" onkeyup="this.value=this.value.toUpperCase();">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: none !important;">
                             <label for="name" class="col-sm-2 control-label">Abreviatura:</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="abreviatura" name="abreviatura"  value="" onkeyup="this.value=this.value.toUpperCase();">
@@ -119,7 +119,6 @@
                                 <textarea id="coments" name="coments" class="form-control"></textarea>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
