@@ -32,8 +32,7 @@
         "rap2hpoutre/laravel-log-viewer": "^1.4",
         "spatie/laravel-backup": "^6.7",
         "spatie/laravel-permission": "^3.0",
-        "yajra/laravel-datatables-oracle": "^9.6",
-      "ext-http": "*"
+        "yajra/laravel-datatables-oracle": "^9.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
