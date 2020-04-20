@@ -424,6 +424,12 @@
                                         </i>Accesos remotos
                                     </a>
                                 </li>
+                                <li class="{{ request()->is('medida_prevencion') ? 'mm-active' : '' }}">
+                                    <a href="{{ url('medida_prevencion') }}">
+                                        <i class="metismenu-icon pe-7s-paper-plane">
+                                        </i>Medida de prevencion <span class="badge badge-success">New!</span>
+                                    </a>
+                                </li>
                                 <li class="app-sidebar__heading">Aplicativos</li>
                                     <li class="{{ request()->route()->named('Artes.index') ? 'mm-active' : '' }}">
                                         <a href="{{ route('Artes.index') }}">

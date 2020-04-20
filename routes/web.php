@@ -377,6 +377,12 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
             Route::get('get_materiales','ProdCievCodMaterialController@Materials');
+
+            Route::resource('medida_prevencion','MedidaPrevencionController');
+            Route::post('/validate_exist_employee','MedidaPrevencionController@validate_exist_employee');
+            Route::get('/get_data_peer_day_medida_prevencion','MedidaPrevencionController@info');
+            Route::post('/registry_temperature_in_day','MedidaPrevencionController@registry_temperature_in_day');
+            Route::post('/exit_employee_in_day','MedidaPrevencionController@exit_employee_in_day');
         });
     });
 });

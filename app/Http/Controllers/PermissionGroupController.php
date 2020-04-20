@@ -101,7 +101,7 @@ class PermissionGroupController extends Controller
      */
     public function show(PermissionGroup $permissionGroup)
     {
-        return view('permission_groups.show', compact('permissionGroup',));
+        return view('permission_groups.show', compact('permissionGroup'));
     }
 
     /**
