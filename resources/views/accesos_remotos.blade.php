@@ -13,9 +13,7 @@
                 <div class="col-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h2 class="profile-username text-center">
-                                Aplicaciones
-                            </h2>
+                            Aplicaciones
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -88,9 +86,7 @@
                 <div class="col-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h2 class="profile-username text-center">
-                                Informes
-                            </h2>
+                            Informes
                         </div>
                         <div class="card-body">
                             <div class="row">

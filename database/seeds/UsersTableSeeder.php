@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
             'email'          => 'admin@evpiu.com',
             'username'       => 'administrator',
             'menu'           => 'administrator',
-            'Codvendedor'    => '999',
+            'codvendedor'    => '999',
             'password'       => bcrypt('password'),
             'remember_token' => Str::random(60),
         ]);
@@ -30,15 +30,16 @@ class UsersTableSeeder extends Seeder
         $user->assignRole('super-admin');
 
         $user = User::create([
-            'name'           => 'Usuario',
-            'email'          => 'user@evpiu.com',
-            'username'       => 'user',
-            'menu'           => 'user',
-            'Codvendedor'    => '999',
-            'password'       => bcrypt('password'),
+            'name'           => 'Daniel Correa Hincapie',
+            'email'          => 'dcorrea@estradavelasquez.com',
+            'username'       => 'dcorreah',
+            'menu'           => 'administrator',
+            'codvendedor'    => '999',
+            'password'       => bcrypt('1214737718'),
             'remember_token' => Str::random(60),
         ]);
 
         $user->assignRole('user');
+        $user->assignRole('super-admin');
     }
 }
