@@ -179,7 +179,7 @@
                 },
             });
 
-            $('.info').on('click', function () {
+            $('body').on('click', '.info', function () {
 
                 var id = this.id;
                 $.ajax({
@@ -237,7 +237,7 @@
                     }
                 });
             });
-            $('.registry_temperature').on('click', function () {
+            $('body').on('click', '.registry_temperature', function () {
                 var id = this.id
                 swal.mixin({
                     icon: 'info',
@@ -301,7 +301,7 @@
                     }
                 })
             });
-            $('.exit').on('click', function () {
+            $('body').on('click', '.exit', function () {
                 var id = this.id
                 swal.mixin({
                     icon: 'question',
@@ -379,7 +379,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" ></script>
-
-
-
 @endpush
