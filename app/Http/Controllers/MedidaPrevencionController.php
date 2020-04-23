@@ -122,13 +122,9 @@ class MedidaPrevencionController extends Controller
                 ]);
             }
 
-
-
-
             if ($info_empleado[0]->state == 1){
                 return response()->json(['El empleado seleccionado ya se encuenta trabajando'],200);
             }
-
             elseif ($info_empleado[0]->state == 0){
                 DB::table('employee_prevention')
                     ->where('employee','=',$request->empleado)
@@ -184,7 +180,6 @@ class MedidaPrevencionController extends Controller
                 'created_at'    =>  Carbon::now(),
                 'updated_at'    =>  Carbon::now()
             ]);
-
     }
 
     /**
@@ -225,12 +220,23 @@ class MedidaPrevencionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function get_all_employees(Request $request)
     {
-        //
+        $term = trim($request->q);
+        if (empty($term)) {
+            $tags = DB::connection('DMS')
+                ->table('V_CIEV_Personal')
+                ->where('estado', '=','A')
+                ->get();
+            $formatted_tags = [];
+            foreach ($tags as $tag) {
+                $formatted_tags[] = ['id' => $tag->nombres, 'text' => $tag->nombres];
+            }
+            return response()->json($formatted_tags);
+        }
     }
 
     public function validate_exist_employee (Request $request){

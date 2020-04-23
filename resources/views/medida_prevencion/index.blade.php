@@ -96,6 +96,17 @@
             </div>
         </div>
     </div>
+    <style>
+        .select2-selection__rendered {
+            line-height: 31px !important;
+        }
+        .select2-container .select2-selection--single {
+            height: 35px !important;
+        }
+        .select2-selection__arrow {
+            height: 34px !important;
+        }
+    </style>
 @endsection
 @push('javascript')
     <script>
@@ -167,6 +178,8 @@
                             });
                             $('#registry_form').trigger("reset");
                             table.draw();
+                            window.location.reload();
+
                         }
                     });
                     return false;
@@ -355,7 +368,7 @@
                                     text: 'Datos guardados con exito!',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: 'Aceptar',
-                                })
+                                });
                             },
                             error: function () {
                                 Swal.fire({
@@ -372,6 +385,9 @@
                     }
                 })
             });
+
+            $('#empleado').select2();
+
         });
     </script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
@@ -379,4 +395,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" ></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
 @endpush
