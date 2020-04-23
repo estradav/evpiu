@@ -306,6 +306,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('GestionClientes/{GestionCliente}/show','GestionClientesController@show');
             Route::get('/ProductosEnTendenciaPorMes','GestionClientesController@ProductosEnTendenciaPorMes');
             Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');
+            Route::get('/create_client','GestionClientesController@CrearCliente');
+
+
 
             //edit items from clients
             Route::get('get_paymentterm','GestionClientesController@Plazo');
@@ -383,6 +386,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/get_data_peer_day_medida_prevencion','MedidaPrevencionController@info');
             Route::post('/registry_temperature_in_day','MedidaPrevencionController@registry_temperature_in_day');
             Route::post('/exit_employee_in_day','MedidaPrevencionController@exit_employee_in_day');
+            Route::get('/get_all_employees','MedidaPrevencionController@get_all_employees');
         });
     });
 });
