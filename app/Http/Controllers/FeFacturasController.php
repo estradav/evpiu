@@ -98,7 +98,7 @@ class FeFacturasController extends Controller
 
        // Estructura del XML
        $objetoXML = new XMLWriter();
-       $objetoXML->openURI("XML/Facturacion_electronica_Facturas.xml");
+       $objetoXML->openURI("Facturacion_electronica_Facturas.xml");
        $objetoXML->openMemory();
        $objetoXML->setIndent(true);
        $objetoXML->setIndentString("\t");
@@ -529,7 +529,7 @@ class FeFacturasController extends Controller
                        $objetoXML->endElement();
                        $objetoXML->endElement();
                    }
-                   else if (trim($encabezado->seguros_usd) != 0 ){
+                   if (trim($encabezado->seguros_usd) != 0  ){
                        $objetoXML->startElement("cargo");
                        $objetoXML->startElement("idconcepto");
                        $objetoXML->text('');
