@@ -28,7 +28,62 @@
                         </div>
                         <div class="col-4" onload="new_clock()">
                             <label for="">Hora de ingreso:</label>
-                            <input type="text" name="datetime" id="datetime" class="form-control" value="" readonly="readonly">
+                            <div class="input-group">
+                                <input type="text" name="datetime" id="datetime" class="form-control" value="" readonly="readonly">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-danger" type="button" id="stop_time">
+                                        <i id="stop_time_ico" class="fas fa-stop"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="">¿Fiebre?</label>
+                            <select name="question_1" id="question_1" class="form-control">
+                                <option value="1">SI</option>
+                                <option value="0" selected>NO</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <label for="">¿Tos seca?</label>
+                            <select name="question_2" id="question_2" class="form-control">
+                                <option value="1">SI</option>
+                                <option value="0" selected>NO</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <label for="">¿Dolor de garganta?</label>
+                            <select name="question_3" id="question_3" class="form-control">
+                                <option value="1">SI</option>
+                                <option value="0" selected>NO</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <label for="">¿Dificultad para respirar?</label>
+                            <select name="question_4" id="question_4" class="form-control">
+                                <option value="1">SI</option>
+                                <option value="0" selected>NO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="">¿Pérdida del gusto y/o del olfato?</label>
+                            <select name="question_5" id="question_5" class="form-control">
+                                <option value="1">SI</option>
+                                <option value="0" selected>NO</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="">¿Ha tenido Usted contacto durante los últimos 14 días con alguna persona a quien le sospechen o le haya diagnosticado coronavirus?</label>
+                            <select name="question_6" id="question_6" class="form-control">
+                                <option value="1">SI</option>
+                                <option value="0" selected>NO</option>
+                            </select>
                         </div>
                     </div>
                     <br>
@@ -96,6 +151,37 @@
             </div>
         </div>
     </div>
+    <div class="modal modal-danger fade" tabindex="-1" id="edit_temperature_modal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form_edit_temperature">
+                    <div class="modal-body">
+                        <input type="text" id="id_edit_temperature" name="id_edit_temperature" style="display: none !important;">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="">Temperatura: </label>
+                                <input type="number" class="form-control" id="temperature_edit_temperature" name="temperature_edit_temperature">
+                            </div>
+                            <div class="col-6">
+                                <label for="">Fecha registro: </label>
+                                <input type="text" class="form-control" id="date_edit_temperature" name="date_edit_temperature">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-success">Guardar</button>
+                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <style>
         .select2-selection__rendered {
             line-height: 31px !important;
@@ -109,24 +195,30 @@
     </style>
 @endsection
 @push('javascript')
-    <script>
+    <script type="text/javascript">
+        var clock_on = true;
         function new_clock(){
-            clock = new Date();
-            hour =   clock.getHours();
-            minutes = clock.getMinutes();
-            seconds = clock.getSeconds();
+            if(clock_on === true){
+                clock = new Date();
+                hour =   clock.getHours();
+                minutes = clock.getMinutes();
+                seconds = clock.getSeconds();
 
-            var ampm = hour >= 12 ? 'pm' : 'am';
-            hour = hour % 12;
-            hour = hour ? hour : 12; // the hour '0' should be '12'
-            minutes = minutes < 10 ? '0'+minutes : minutes;
-            var strTime = hour + ':' + minutes + ':' + seconds + ' ' +  ampm;
+                var ampm = hour >= 12 ? 'PM' : 'AM';
+                hour = hour % 12;
+                hour = hour ? hour : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hour + ':' + minutes + ':' + seconds + ' ' +  ampm;
 
-            $('#datetime').val(strTime);
-            $('#exit_clock').val(strTime);
-            setTimeout(new_clock, 1000)
+                $('#datetime').val(strTime);
+                $('#exit_clock').val(strTime);
+                setTimeout(new_clock, 1000)
+            }else{
+                return false;
+            }
         }
         setTimeout(new_clock, 1000);
+
 
         $(document).ready(function () {
             $.ajaxSetup({
@@ -136,7 +228,6 @@
             });
 
             var table = $('#empleados_table').DataTable();
-
 
             jQuery.validator.addMethod("selectcheck", function(value){
                 return (value != 'empty');
@@ -179,7 +270,6 @@
                             $('#registry_form').trigger("reset");
                             table.draw();
                             window.location.reload();
-
                         }
                     });
                     return false;
@@ -189,17 +279,17 @@
                 },
                 unhighlight: function (element) {
                     $(element).closest('.form-control').removeClass('is-invalid');
-                },
+                }
             });
 
-            $('body').on('click', '.info', function () {
-
+            $(document).on('click', '.info', function () {
                 var id = this.id;
                 $.ajax({
                     url: '/get_data_peer_day_medida_prevencion',
                     type: 'get',
                     data: {id: id},
                     success: function (data) {
+                        console.log(data);
                         $('#info_modal_body').html('');
                         for (var i = 0; i <= data.days.length -1; i++){
                             $('#info_modal_body').append(`
@@ -224,6 +314,7 @@
                                             <tr>
                                                 <th scope="col">Temperatura registrada</th>
                                                 <th scope="col">Hora de registro</th>
+                                                <th scope="col">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="temperatures_`+ i +`" >
@@ -240,13 +331,14 @@
                                     <tr>
                                         <th scope="row">`+data.days[i].temperature[j].temperature +`</th>
                                         <td>`+data.days[i].temperature[j].created_at +`</td>
+                                        <td> <button class="btn btn-info edit_temperature_modal" id="`+data.days[i].temperature[j].id + `,`+ data.days[i].temperature[j].temperature+ `,`+ data.days[i].temperature[j].created_at  +`"> editar</button> </td>
                                     </tr>`);
                             }
                         }
                         $('#info_modal').modal('show');
                     },
-                    error: function () {
-
+                    error: function (data) {
+                        console.log(data);
                     }
                 });
             });
@@ -265,11 +357,10 @@
                 }).queue([
                     {
                         html:' <input type="number" class="form-control" id="temperatura_input" min="20" max="40">',
-                            inputValidator: () => {
+                        inputValidator: () => {
                             if (document.getElementById('temperatura_input').value == '') {
                                 return 'Este campo no puede ir en blanco';
                             }
-
                         },
                         preConfirm: function () {
                             var array = {
@@ -338,14 +429,12 @@
                             if (document.getElementById('temperatura_input1').value == '') {
                                 return 'Este campo no puede ir en blanco';
                             }
-
                         },
                         preConfirm: function () {
                             var array = {
                                 'id': id,
                                 'temperatura_input': document.getElementById("temperatura_input1").value,
                                 'hora_salida': document.getElementById("exit_clock").value
-
                             };
                             return array;
                         },
@@ -388,13 +477,73 @@
 
             $('#empleado').select2();
 
+            $(document).on('click','#stop_time', function () {
+                if(clock_on === true){
+                    clock_on = false;
+                    document.getElementById('datetime').readOnly=false;
+                    document.getElementById('stop_time').classList.replace('btn-outline-danger','btn-outline-success')
+                    document.getElementById('stop_time_ico').classList.replace('fa-stop','fa-play')
+                }
+                else if(clock_on === false) {
+                    clock_on = true;
+                    document.getElementById('datetime').readOnly=true;
+                    document.getElementById('stop_time').classList.replace('btn-outline-success','btn-outline-danger')
+                    document.getElementById('stop_time_ico').classList.replace('fa-play','fa-stop')
+                    setTimeout(new_clock, 1000);
+                }
+            });
+            $(document).on('click','.edit_temperature_modal', function () {
+                let data = this.id;
+                data = data.split(',')
+
+                $('#id_edit_temperature').val(data[0]);
+                $('#temperature_edit_temperature').val(data[1]);
+                $('#date_edit_temperature').val(data[2]);
+                $('#edit_temperature_modal').modal('show');
+            });
+            $('#form_edit_temperature').validate({
+                rules:{
+                    temperature_edit_temperature: {
+                        required: true
+                    },
+                    date_edit_temperature: {
+                        required: true
+                    }
+                },
+                submitHandler: function (form) {
+                    var data_form = $('#form_edit_temperature').serializeArray();
+                    $.ajax({
+                        url: '/medida_prevencion_edit_temperature',
+                        method: 'post',
+                        type: 'post',
+                        data: data_form,
+                        success: function (data) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Completado',
+                                text: data,
+                                showCancelButton: false,
+                                confirmButtonText: 'Aceptar',
+                                cancelButtonText: 'Cancelar',
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                            });
+                            $('#edit_temperature_modal').modal('hide');
+                            $('#info_modal').modal('hide');
+
+                        }
+                    });
+                    return false;
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-invalid');
+                }
+            });
         });
     </script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" ></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
 @endpush
