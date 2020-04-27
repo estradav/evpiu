@@ -71,6 +71,13 @@ class MedidaPrevencionController extends Controller
                 'id_employee'   =>  $nuevo_empleado,
                 'time_enter'    =>  $request->datetime,
                 'time_exit'     =>  ' ',
+                'question_1'    =>  $request->question_1,
+                'question_2'    =>  $request->question_2,
+                'question_3'    =>  $request->question_3,
+                'question_4'    =>  $request->question_4,
+                'question_5'    =>  $request->question_5,
+                'question_6'    =>  $request->question_6,
+                'notes'         =>  $request->notas,
                 'created_at'    =>  Carbon::now(),
                 'updated_at'    =>  Carbon::now()
             ]);
@@ -111,6 +118,13 @@ class MedidaPrevencionController extends Controller
                     'id_employee'   =>  $info_empleado[0]->id,
                     'time_enter'    =>  $request->datetime,
                     'time_exit'     =>  ' ',
+                    'question_1'    =>  $request->question_1,
+                    'question_2'    =>  $request->question_2,
+                    'question_3'    =>  $request->question_3,
+                    'question_4'    =>  $request->question_4,
+                    'question_5'    =>  $request->question_5,
+                    'question_6'    =>  $request->question_6,
+                    'notes'         =>  $request->notas,
                     'created_at'    =>  Carbon::now(),
                     'updated_at'    =>  Carbon::now()
                 ]);
@@ -146,14 +160,11 @@ class MedidaPrevencionController extends Controller
             ->where('id_employee','=',$request->id)
             ->get();
 
-
         for ($j = 0; $j <= count($days) -1 ; $j++){
-
             $tempeatures =  DB::table('employee_prevention_temperature_peer_day')
                 ->where('id_day','=',$days[$j]->id)
-                ->select('temperature', 'created_at')
+                ->select('id','temperature', 'created_at')
                 ->get();
-
 
             $days[$j]->temperature = $tempeatures;
         }
@@ -239,8 +250,14 @@ class MedidaPrevencionController extends Controller
         }
     }
 
-    public function validate_exist_employee (Request $request){
+    public function edit_temperature (Request $request){
+        DB::table('employee_prevention_temperature_peer_day')
+            ->where('id','=',$request->id_edit_temperature)
+            ->update([
+                'temperature'   => $request->temperature_edit_temperature,
+                'created_at'    => $request->date_edit_temperature
+            ]);
 
-        echo "true";
+        return response()->json(['Guardado con exito'],200);
     }
 }

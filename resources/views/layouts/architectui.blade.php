@@ -10,6 +10,9 @@
         <link rel="stylesheet" href="{{ asset('architectui/main.css') }}">
         {{--<link rel="stylesheet" href="{{ asset('dashboard/styles/app.css') }}">--}}
         <link rel="stylesheet" href="{{ asset('dashboard/styles/main.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta http-equiv="cache-control" content="no-cache">
         @stack('styles')
@@ -426,7 +429,7 @@
                                 </li>
                                 <li class="{{ request()->is('medida_prevencion') ? 'mm-active' : '' }}">
                                     <a href="{{ url('medida_prevencion') }}">
-                                        <i class="metismenu-icon pe-7s-paper-plane">
+                                        <i class="metismenu-icon pe-7s-like">
                                         </i>Medida de prevencion <span class="badge badge-success">New!</span>
                                     </a>
                                 </li>
@@ -814,9 +817,11 @@
         <script src="{{ asset('dashboard/scripts/app.js') }}"></script>
         <script src="{{ asset('dashboard/scripts/main.js') }}"></script>
         <script src="{{ asset('architectui/assets/scripts/main.js') }}"></script>
-        <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
         <script>
                 @if(Session::has('alerts'))
             let alerts = {!! json_encode(Session::get('alerts')) !!};

@@ -15,7 +15,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'App\Console\Commands\GetTRM',
         'App\Console\Commands\CloseForecasts',
-        'App\Console\Commands\InvoiceAudit'
+        'App\Console\Commands\InvoiceAudit',
+        'App\Console\Commands\ExitAllEmployees',
+        'App\Console\Commands\PermisionFolder'
     ];
 
     /**
@@ -29,6 +31,8 @@ class Kernel extends ConsoleKernel
          $schedule->command('get:trm')->dailyAt('04:00');
          $schedule->command('close:forecasts')->dailyAt('06:00');
          $schedule->command('invoice:audit')->dailyAt('06:30');
+         $schedule->command('exit:employees')->dailyAt('23:50');
+         $schedule->command('permission:folder')->dailyAt('03:00');
     }
 
     /**
