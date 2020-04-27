@@ -236,12 +236,7 @@
             $('#registry_form').validate({
                 rules:{
                     empleado:{
-                        selectcheck: true,
-                        remote:{
-                            url: '/validate_exist_employee',
-                            type: 'POST',
-                            async: true,
-                        },
+                        selectcheck: true
                     },
                     temperatura: {
                         required: true,
