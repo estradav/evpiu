@@ -57,6 +57,7 @@ class MedidaPrevencionController extends Controller
      */
     public function store(Request $request)
     {
+
         $empleado_existe = DB::table('employee_prevention')
             ->where('employee','=',$request->empleado)
             ->count();
