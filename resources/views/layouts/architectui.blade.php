@@ -430,7 +430,7 @@
                                 <li class="{{ request()->is('medida_prevencion') ? 'mm-active' : '' }}">
                                     <a href="{{ url('medida_prevencion') }}">
                                         <i class="metismenu-icon pe-7s-like">
-                                        </i>Medida de prevencion <span class="badge badge-success">New!</span>
+                                        </i>Medida de prevencion
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">Aplicativos</li>
@@ -793,6 +793,14 @@
                                         </i>Logs
                                     </a>
                                 </li>
+
+                                <li class="{{ request()->route()->named('edit_medida_prevencion.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ url('edit_medida_prevencion') }}">
+                                        <i class="metismenu-icon pe-7s-magic-wand">
+                                        </i>Adm med. prevencion
+                                        <span class="badge badge-success">New!</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -822,6 +830,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+        <script src="//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"></script>
         <script>
                 @if(Session::has('alerts'))
             let alerts = {!! json_encode(Session::get('alerts')) !!};

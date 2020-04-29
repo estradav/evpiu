@@ -10,7 +10,6 @@
         </div>
         <form id="registry_form" name="registry_form">
             <div class="card-body">
-
                 <div class="col-12">
                     <div class="row">
                         <div class="col-4">
@@ -337,7 +336,7 @@
                     }
                 });
             });
-            $('body').on('click', '.registry_temperature', function () {
+            $(document).on('click', '.registry_temperature', function () {
                 var id = this.id
                 swal.mixin({
                     icon: 'info',

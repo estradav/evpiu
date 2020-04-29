@@ -391,6 +391,13 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('/exit_employee_in_day','MedidaPrevencionController@exit_employee_in_day');
             Route::get('/get_all_employees','MedidaPrevencionController@get_all_employees');
             Route::post('/medida_prevencion_edit_temperature','MedidaPrevencionController@edit_temperature');
+
+
+            Route::resource('edit_medida_prevencion','EditMedidaPrevencionController');
+            Route::post('edit_medida_prevencion_edit_time_enter','EditMedidaPrevencionController@edit_time_enter');
+            Route::post('edit_medida_prevencion_edit_time_exit','EditMedidaPrevencionController@edit_time_exit');
+            Route::post('edit_medida_prevencion_edit_temperature','EditMedidaPrevencionController@edit_temperature');
+
         });
     });
 });
