@@ -433,6 +433,13 @@
                                         </i>Medida de prevencion
                                     </a>
                                 </li>
+                                <li class="{{ request()->route()->named('edit_medida_prevencion.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ url('edit_medida_prevencion') }}">
+                                        <i class="metismenu-icon pe-7s-magic-wand">
+                                        </i>G. Medida de prevencion
+                                        <span class="badge badge-success">New!</span>
+                                    </a>
+                                </li>
                                 <li class="app-sidebar__heading">Aplicativos</li>
                                     <li class="{{ request()->route()->named('Artes.index') ? 'mm-active' : '' }}">
                                         <a href="{{ route('Artes.index') }}">
@@ -791,14 +798,6 @@
                                     <a href="{{ url('logs') }}">
                                         <i class="metismenu-icon pe-7s-video">
                                         </i>Logs
-                                    </a>
-                                </li>
-
-                                <li class="{{ request()->route()->named('edit_medida_prevencion.*') ? 'mm-active' : '' }}">
-                                    <a href="{{ url('edit_medida_prevencion') }}">
-                                        <i class="metismenu-icon pe-7s-magic-wand">
-                                        </i>Adm med. prevencion
-                                        <span class="badge badge-success">New!</span>
                                     </a>
                                 </li>
                             </ul>

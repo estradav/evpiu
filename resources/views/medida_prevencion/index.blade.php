@@ -3,133 +3,143 @@
 @section('page_title', 'Ingreso de personal')
 
 @section('content')
-<div class="container-fluid">
-    <div class="card card-shadow-dark">
-        <div class="card-header">
-            Registro de personal que ingresa
-        </div>
-        <form id="registry_form" name="registry_form">
-            <div class="card-body">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-4">
-                            <label for="">Empleado:</label>
-                            <select name="empleado" id="empleado" class="form-control" autofocus>
-                                <option value="empty" selected>Seleccione...</option>
-                                @foreach($empleados as $empleado)
-                                    <option value="{{$empleado}}">{{$empleado}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <label for="">Temperatura:</label>
-                            <input type="number" class="form-control" max="40" min="20" id="temperatura" name="temperatura">
-                        </div>
-                        <div class="col-4" onload="new_clock()">
-                            <label for="">Hora de ingreso:</label>
-                            <div class="input-group">
-                                <input type="text" name="datetime" id="datetime" class="form-control" value="" readonly="readonly">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-danger" type="button" id="stop_time">
-                                        <i id="stop_time_ico" class="fas fa-stop"></i>
-                                    </button>
+    @can('medida_prevencion')
+        <div class="container-fluid">
+            <div class="card card-shadow-dark">
+                <div class="card-header">
+                    Registro de personal que ingresa
+                </div>
+                <form id="registry_form" name="registry_form">
+                    <div class="card-body">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="">Empleado:</label>
+                                    <select name="empleado" id="empleado" class="form-control" autofocus>
+                                        <option value="empty" selected>Seleccione...</option>
+                                        @foreach($empleados as $empleado)
+                                            <option value="{{$empleado}}">{{$empleado}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Temperatura:</label>
+                                    <input type="number" class="form-control" max="40" min="20" id="temperatura" name="temperatura">
+                                </div>
+                                <div class="col-4" onload="new_clock()">
+                                    <label for="">Hora de ingreso:</label>
+                                    <div class="input-group">
+                                        <input type="text" name="datetime" id="datetime" class="form-control" value="" readonly="readonly">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-danger" type="button" id="stop_time">
+                                                <i id="stop_time_ico" class="fas fa-stop"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label for="">¿Fiebre?</label>
+                                    <select name="question_1" id="question_1" class="form-control">
+                                        <option value="1">SI</option>
+                                        <option value="0" selected>NO</option>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <label for="">¿Tos seca?</label>
+                                    <select name="question_2" id="question_2" class="form-control">
+                                        <option value="1">SI</option>
+                                        <option value="0" selected>NO</option>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <label for="">¿Dolor de garganta?</label>
+                                    <select name="question_3" id="question_3" class="form-control">
+                                        <option value="1">SI</option>
+                                        <option value="0" selected>NO</option>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <label for="">¿Dificultad para respirar?</label>
+                                    <select name="question_4" id="question_4" class="form-control">
+                                        <option value="1">SI</option>
+                                        <option value="0" selected>NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label for="">¿Pérdida del gusto y/o del olfato?</label>
+                                    <select name="question_5" id="question_5" class="form-control">
+                                        <option value="1">SI</option>
+                                        <option value="0" selected>NO</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="">¿Ha tenido Usted contacto durante los últimos 14 días con alguna persona a quien le sospechen o le haya diagnosticado coronavirus?</label>
+                                    <select name="question_6" id="question_6" class="form-control">
+                                        <option value="1">SI</option>
+                                        <option value="0" selected>NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="">Notas/Observaciones: </label>
+                                    <textarea name="notas" id="notas" cols="10" rows="3" class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-3">
-                            <label for="">¿Fiebre?</label>
-                            <select name="question_1" id="question_1" class="form-control">
-                                <option value="1">SI</option>
-                                <option value="0" selected>NO</option>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label for="">¿Tos seca?</label>
-                            <select name="question_2" id="question_2" class="form-control">
-                                <option value="1">SI</option>
-                                <option value="0" selected>NO</option>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label for="">¿Dolor de garganta?</label>
-                            <select name="question_3" id="question_3" class="form-control">
-                                <option value="1">SI</option>
-                                <option value="0" selected>NO</option>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label for="">¿Dificultad para respirar?</label>
-                            <select name="question_4" id="question_4" class="form-control">
-                                <option value="1">SI</option>
-                                <option value="0" selected>NO</option>
-                            </select>
-                        </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success" id="save" name="save">Registrar ingreso</button>
                     </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-3">
-                            <label for="">¿Pérdida del gusto y/o del olfato?</label>
-                            <select name="question_5" id="question_5" class="form-control">
-                                <option value="1">SI</option>
-                                <option value="0" selected>NO</option>
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label for="">¿Ha tenido Usted contacto durante los últimos 14 días con alguna persona a quien le sospechen o le haya diagnosticado coronavirus?</label>
-                            <select name="question_6" id="question_6" class="form-control">
-                                <option value="1">SI</option>
-                                <option value="0" selected>NO</option>
-                            </select>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-12">
-                            <label for="">Notas/Observaciones: </label>
-                            <textarea name="notas" id="notas" cols="10" rows="3" class="form-control"></textarea>
-                        </div>
-                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    Usuarios trabajando
+                </div>
+                <div class="card-body">
+                    <table class="table" id="empleados_table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center">EMPLEADO</th>
+                                <th scope="col" class="text-center">INFO</th>
+                                <th scope="col" class="text-center">TEMPERATURA</th>
+                                <th scope="col" class="text-center">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($empleados_registrados as $registros)
+                                <tr>
+                                    <td class="text-center">{{ $registros->employee }}</td>
+                                    <td class="text-center"><button class="btn btn-primary info" id="{{ $registros->id }}"><i class="fas fa-eye"></i> Info</button> </td>
+                                    <td class="text-center"><button class="btn btn-success registry_temperature" id="{{ $registros->id }}"><i class="fas fa-thermometer"></i> Temperatura</button></td>
+                                    <td class="text-center"><button class="btn btn-danger exit" id="{{ $registros->id }}"><i class="fas fa-door-closed"></i> Salida</button></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="card-footer">
-                <button type="submit" class="btn btn-success" id="save" name="save">Registrar ingreso</button>
+        </div>
+    @else
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-exclamation-triangle fa-4x" style="color: red"></i>
+                <h3 class="card-title" style="color: red"> ACCESO DENEGADO </h3>
+                <h3 class="card-text" style="color: red">No tiene permiso para usar esta aplicación, por favor comuníquese a la ext: 102 o escribanos al correo electrónico: auxsistemas@estradavelasquez.com para obtener acceso.</h3>
             </div>
-        </form>
-    </div>
-</div>
-<br>
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-header">
-            Usuarios trabajando
         </div>
-        <div class="card-body">
-            <table class="table" id="empleados_table">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-center">EMPLEADO</th>
-                        <th scope="col" class="text-center">INFO</th>
-                        <th scope="col" class="text-center">TEMPERATURA</th>
-                        <th scope="col" class="text-center">ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($empleados_registrados as $registros)
-                        <tr>
-                            <td class="text-center">{{ $registros->employee }}</td>
-                            <td class="text-center"><button class="btn btn-primary info" id="{{ $registros->id }}"><i class="fas fa-eye"></i> Info</button> </td>
-                            <td class="text-center"><button class="btn btn-success registry_temperature" id="{{ $registros->id }}"><i class="fas fa-thermometer"></i> Temperatura</button></td>
-                            <td class="text-center"><button class="btn btn-danger exit" id="{{ $registros->id }}"><i class="fas fa-door-closed"></i> Salida</button></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    @endcan
 @stop
 @section('modal')
     <div class="modal modal-danger fade" tabindex="-1" id="info_modal" role="dialog">

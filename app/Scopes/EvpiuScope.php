@@ -17,7 +17,6 @@ class EvpiuScope implements ScopeInterface
     {
         // The distinguished name of our LDAP group.
         $evpiu = 'CN=EV-PIU,DC=ciev,DC=local';
-
         $query->whereMemberOf($evpiu);
     }
 }
