@@ -90,7 +90,7 @@ class FeNotasCreditoController extends Controller
         $Notas_credito = json_decode($Notas_credito);
 
         $objetoXML = new    XMLWriter();
-        $objetoXML->openURI("XML/NotasCredito.xml");
+        $objetoXML->openURI("NotasCredito.xml");
         $objetoXML->openMemory();
         $objetoXML->setIndent(true);
         $objetoXML->setIndentString("\t");
@@ -687,6 +687,30 @@ class FeNotasCreditoController extends Controller
                 }
 
                 $objetoXML->endElement(); // cierra items
+
+
+                $objetoXML->startElement("datosextra");
+                if (trim($enc->notas) != ''){
+                    $objetoXML->startElement("datoextra");
+
+                    $objetoXML->startElement("tipo");
+                    $objetoXML->text('1');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("clave");
+                    $objetoXML->text('notas_documento');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text(trim($enc->notas));
+                    $objetoXML->endElement();
+
+                    $objetoXML->endElement();
+                }
+
+
+                $objetoXML->endElement();
+
                 $objetoXML->endElement(); // Final del nodo raíz, "documento"
             }
         }
@@ -706,7 +730,7 @@ class FeNotasCreditoController extends Controller
         $resultados = [];
         foreach ($Notas_credito as $nc) {
             $objetoXML = new    XMLWriter();
-            $objetoXML->openURI("XML/NotasCredito.xml");
+            $objetoXML->openURI("NotasCredito.xml");
             $objetoXML->openMemory();
             $objetoXML->setIndent(true);
             $objetoXML->setIndentString("\t");
@@ -1295,13 +1319,33 @@ class FeNotasCreditoController extends Controller
                         $objetoXML->text(number_format(abs($total_valor_item_iva),2,'.',''));
                         $objetoXML->endElement();
                         $objetoXML->endElement();
-
                     }
                     $objetoXML->endElement();
                     $objetoXML->endElement(); // cierra item
                 }
-
                 $objetoXML->endElement(); // cierra items
+
+                $objetoXML->startElement("datosextra");
+                if (trim($enc->notas) != ''){
+                    $objetoXML->startElement("datoextra");
+
+                    $objetoXML->startElement("tipo");
+                    $objetoXML->text('1');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("clave");
+                    $objetoXML->text('notas_documento');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text(trim($enc->notas));
+                    $objetoXML->endElement();
+
+                    $objetoXML->endElement();
+                }
+
+
+                $objetoXML->endElement();
                 $objetoXML->endElement(); // Final del nodo raíz, "documento"
             }
 
