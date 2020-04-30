@@ -3,63 +3,73 @@
 @section('page_title','editar empleado')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="card card-shadow-dark">
-            <div class="card-header">
-                <div class="text-left col-6">
-                    {{$employee[0]->employee}}
-                </div>
-                <div class="text-right col-6">
-                    @if ($employee[0]->state == 1)
-                        <span class="badge badge-primary">trabajando</span>
-                    @else
-                        <span class="badge badge-success">en casa</span>
-                    @endif
-                </div>
-            </div>
-            <div class="card-body">
-                @foreach($days as $day)
-                    <hr>
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-12">
-                                <h5><b>Fecha: </b>{{date('d-m-Y', strtotime($day->created_at))}} </h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <h5><b> Hora de entrada: </b> {{$day->time_enter}}  <a href="javascript:void(0)" id="{{$day->time_enter.','. $day->id}}" class="edit_time_enter"><i class="fas fa-pen-square"></i></a></h5>
-                            </div>
-                            <div class="col-6 text-right">
-                                <h5><b> Hora de salida: </b> {{$day->time_exit}} <a href="javascript:void(0)" id="{{$day->time_exit.','. $day->id}}" class="edit_time_exit"><i class="fas fa-pen-square"></i></a></h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <table class="table table-bordered text-center">
-                                <thead>
-                                <tr>
-                                    <th scope="col">TEMPERATURA</th>
-                                    <th scope="col">HORA DE REGISTRO</th>
-                                    <th scope="col">ACCIONES</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($day->temperature as $temperature)
-                                        <tr>
-                                            <th scope="row">{{ $temperature->temperature }}</th>
-                                            <td>{{ date('g:i A', strtotime($temperature->created_at))}}</td>
-                                            <td> <button class="btn btn-info edit_temperature_modal" id="{{$temperature->id.','. $temperature->temperature.','.$temperature->created_at }}"> Editar</button> </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+    @can('admin_medida_prevencion')
+        <div class="container-fluid">
+            <div class="card card-shadow-dark">
+                <div class="card-header">
+                    <div class="text-left col-6">
+                        {{$employee[0]->employee}}
                     </div>
-                    <hr>
-                @endforeach
+                    <div class="text-right col-6">
+                        @if ($employee[0]->state == 1)
+                            <span class="badge badge-primary">trabajando</span>
+                        @else
+                            <span class="badge badge-success">en casa</span>
+                        @endif
+                    </div>
+                </div>
+                <div class="card-body">
+                    @foreach($days as $day)
+                        <hr>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5><b>Fecha: </b>{{date('d-m-Y', strtotime($day->created_at))}} </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <h5><b> Hora de entrada: </b> {{$day->time_enter}}  <a href="javascript:void(0)" id="{{$day->time_enter.','. $day->id}}" class="edit_time_enter"><i class="fas fa-pen-square"></i></a></h5>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <h5><b> Hora de salida: </b> {{$day->time_exit}} <a href="javascript:void(0)" id="{{$day->time_exit.','. $day->id}}" class="edit_time_exit"><i class="fas fa-pen-square"></i></a></h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">TEMPERATURA</th>
+                                        <th scope="col">HORA DE REGISTRO</th>
+                                        <th scope="col">ACCIONES</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($day->temperature as $temperature)
+                                            <tr>
+                                                <th scope="row">{{ $temperature->temperature }}</th>
+                                                <td>{{ date('g:i A', strtotime($temperature->created_at))}}</td>
+                                                <td> <button class="btn btn-info edit_temperature_modal" id="{{$temperature->id.','. $temperature->temperature.','.$temperature->created_at }}"> Editar</button> </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
+    @else
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-exclamation-triangle fa-4x" style="color: red"></i>
+                <h3 class="card-title" style="color: red"> ACCESO DENEGADO </h3>
+                <h3 class="card-text" style="color: red">No tiene permiso para usar esta aplicación, por favor comuníquese a la ext: 102 o escribanos al correo electrónico: auxsistemas@estradavelasquez.com para obtener acceso.</h3>
+            </div>
+        </div>
+    @endcan
 @endsection
 
 @push('javascript')
