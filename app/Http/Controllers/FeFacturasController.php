@@ -190,6 +190,7 @@ class FeFacturasController extends Controller
                }
            }
 
+
            foreach ($Encabezado_Factura as $encabezado) {
                $bruto_factura           = null;
                $subtotal_factura        = null;
@@ -716,7 +717,7 @@ class FeFacturasController extends Controller
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("notas");
-                   $objetoXML->text('');
+                   $objetoXML->text(' ');
                    $objetoXML->endElement();
 
                    $objetoXML->startElement("cantidad");
@@ -928,6 +929,25 @@ class FeFacturasController extends Controller
 
                    $objetoXML->endElement();
                }
+
+               if (trim($encabezado->notas) != ''){
+                   $objetoXML->startElement("datoextra");
+
+                   $objetoXML->startElement("tipo");
+                   $objetoXML->text('1');
+                   $objetoXML->endElement();
+
+                   $objetoXML->startElement("clave");
+                   $objetoXML->text('notas_documento');
+                   $objetoXML->endElement();
+
+                   $objetoXML->startElement("valor");
+                   $objetoXML->text(trim($encabezado->notas));
+                   $objetoXML->endElement();
+
+                   $objetoXML->endElement();
+               }
+
 
                $objetoXML->endElement(); // cierra items
                $objetoXML->endElement();
@@ -2034,6 +2054,23 @@ class FeFacturasController extends Controller
                     $objetoXML->startElement("valor");
                     $objetoXML->text(trim($encabezado->RTEIVA));
                     $objetoXML->endElement();
+                    $objetoXML->endElement();
+                }
+                if (trim($encabezado->notas) != ''){
+                    $objetoXML->startElement("datoextra");
+
+                    $objetoXML->startElement("tipo");
+                    $objetoXML->text('1');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("clave");
+                    $objetoXML->text('notas_documento');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text(trim($encabezado->notas));
+                    $objetoXML->endElement();
+
                     $objetoXML->endElement();
                 }
 
