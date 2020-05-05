@@ -830,6 +830,9 @@
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
         <script src="//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+
         <script>
                 @if(Session::has('alerts'))
             let alerts = {!! json_encode(Session::get('alerts')) !!};
