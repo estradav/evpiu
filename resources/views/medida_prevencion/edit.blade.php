@@ -10,6 +10,7 @@
                     <div class="text-left col-6">
                         {{$employee[0]->employee}}
                     </div>
+
                     <div class="text-right col-6">
                         @if ($employee[0]->state == 1)
                             <span class="badge badge-primary">trabajando</span>
@@ -24,7 +25,7 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12">
-                                    <h5><b>Fecha: </b>{{date('d-m-Y', strtotime($day->created_at))}} </h5>
+                                    <h5><b>Fecha: </b>{{date('d-m-Y', strtotime($day->created_at))}} <a href="javascript:void(0)" id="{{$day->created_at.','. $day->id}}" class="edit_created_at"><i class="fas fa-pen-square"></i></a></h5>
                                 </div>
                             </div>
                             <div class="row">
@@ -299,7 +300,87 @@
                         result.dismiss === Swal.DismissReason.cancel
                     }
                 })
+            });
 
+            $(document).on('click','.edit_created_at', function () {
+                let id = this.id;
+                id = id.split(',')
+
+
+                var date = id[0];
+
+                function GetFormattedDate(date) {
+                    var todayTime = new Date(date);
+                    console.log(todayTime)
+
+                    var month   = ("0" + (todayTime.getMonth() + 1)).slice(-2)
+                    var day     = todayTime.getDate();
+                    var year    = todayTime.getFullYear();
+                    return day + "-" + month + "-" + year;
+                }
+
+                swal.mixin({
+                    icon: 'info',
+                    title: 'Fecha de registro',
+                    confirmButtonText: 'Aceptar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    buttonsStyling: true,
+                    showCancelButton: true,
+                    input: 'text',
+                }).queue([
+                    {
+                        html:' <input type="text" class="form-control" id="created_at" value="'+  GetFormattedDate(date) +'">',
+                        inputValidator: () => {
+                            if (document.getElementById('created_at').value == '') {
+                                return 'Este campo no puede ir en blanco';
+                            }
+
+                        },
+                        preConfirm: function () {
+                            var array = {
+                                'id': id[1],
+                                'created_at': document.getElementById("created_at").value,
+                            };
+                            return array;
+                        },
+                        onBeforeOpen: function (dom) {
+                            swal.getInput().style.display = 'none';
+                        }
+                    },
+                ]).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: '/edit_medida_prevencion_edit_created_at',
+                            type: 'post',
+                            data: {
+                                result: result.value[0]
+                            },
+                            success: function () {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Guardardo',
+                                    text: 'Datos guardados con exito!',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Aceptar',
+                                })
+                               // window.location.reload(true)
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'La solicitud no pudo ser procesada!',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Aceptar',
+                                })
+                            }
+                        });
+                    } else {
+                        result.dismiss === Swal.DismissReason.cancel
+                    }
+                })
             });
         });
     </script>
