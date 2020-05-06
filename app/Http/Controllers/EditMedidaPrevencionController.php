@@ -89,14 +89,28 @@ class EditMedidaPrevencionController extends Controller
     }
 
 
-    public function edit_temperature(Request $request)
-    {
+    public function edit_temperature(Request $request){
         DB::table('employee_prevention_temperature_peer_day')
             ->where('id','=', $request['result']['id'])
             ->update([
                 'temperature'   =>  $request['result']['temperature'],
                 'created_at'    =>  $request['result']['time']
 
+            ]);
+
+        return response()->json(['Guardado con exito'],200);
+    }
+
+    public function edit_created_at(Request $request){
+
+        $date_format = $request['result']['created_at'];
+        $date_format = explode("-",$date_format);
+        $date_format = $date_format[2]."-".$date_format[1]."-".$date_format[0]." 00:00:00";
+        
+        DB::table('employee_prevention_days')
+            ->where('id','=', $request['result']['id'])
+            ->update([
+               'created_at' =>  $date_format
             ]);
 
         return response()->json(['Guardado con exito'],200);

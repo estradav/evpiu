@@ -309,6 +309,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
             Route::group(['prefix' => 'clientes'], function (){
                 Route::get('nuevo_cliente','GestionClientesController@CrearCliente');
+                Route::get('search_client','GestionClientesController@search_client');
             });
 
 
@@ -397,7 +398,10 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('edit_medida_prevencion_edit_time_enter','EditMedidaPrevencionController@edit_time_enter');
             Route::post('edit_medida_prevencion_edit_time_exit','EditMedidaPrevencionController@edit_time_exit');
             Route::post('edit_medida_prevencion_edit_temperature','EditMedidaPrevencionController@edit_temperature');
+            Route::post('edit_medida_prevencion_edit_created_at','EditMedidaPrevencionController@edit_created_at');
 
+            Route::get('/ingreso_cedula','MedidaPrevencionController@ingreso_cedula');
+            Route::get('/consultar_empleado_invitado_cc','MedidaPrevencionController@consultar_empleado_invitado_cc');
         });
     });
 });
