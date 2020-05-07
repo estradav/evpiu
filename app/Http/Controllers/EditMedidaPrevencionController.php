@@ -106,7 +106,7 @@ class EditMedidaPrevencionController extends Controller
         $date_format = $request['result']['created_at'];
         $date_format = explode("-",$date_format);
         $date_format = $date_format[2]."-".$date_format[1]."-".$date_format[0]." 00:00:00";
-        
+
         DB::table('employee_prevention_days')
             ->where('id','=', $request['result']['id'])
             ->update([

@@ -68,12 +68,9 @@ $(document).ready(function () {
         var count = 0;
         var id = $(this).data('id');
         table =  $('#tfac').DataTable({
-            processing: true,
-            serverSide: true,
-            responsive: false,
-            autoWidth: false,
-            start: '0',
-            length: '10',
+            scrollX: true,
+            scrollY: 200,
+
             ajax: {
                 url:'/FacturasIndex',
                 data:{from_date:from_date, to_date:to_date}

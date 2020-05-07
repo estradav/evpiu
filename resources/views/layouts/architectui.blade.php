@@ -8,8 +8,6 @@
         <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon_192x192.png') }}">
         <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
         <link rel="stylesheet" href="{{ asset('architectui/main.css') }}">
-        {{--<link rel="stylesheet" href="{{ asset('dashboard/styles/app.css') }}">--}}
-        <link rel="stylesheet" href="{{ asset('dashboard/styles/main.css') }}">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
         <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
@@ -94,7 +92,8 @@
                     </div>
                 </div>
             </div>
-            <div class="ui-theme-settings">
+
+           {{-- <div class="ui-theme-settings">
                 <button type="button" id="TooltipDemo" class="btn-open-options btn btn-warning">
                     <i class="fa fa-cog fa-w-16 fa-spin fa-2x"></i>
                 </button>
@@ -372,7 +371,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--}}
+
+
             <div class="app-main">
                 <div class="app-sidebar sidebar-shadow">
                     <div class="app-header__logo">
@@ -821,18 +822,17 @@
                 </div>
             </div>
         </div>
-        <script src="{{ asset('dashboard/scripts/app.js') }}"></script>
-        <script src="{{ asset('dashboard/scripts/main.js') }}"></script>
+
         <script src="{{ asset('architectui/assets/scripts/main.js') }}"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
         <script src="//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script>
                 @if(Session::has('alerts'))
             let alerts = {!! json_encode(Session::get('alerts')) !!};
