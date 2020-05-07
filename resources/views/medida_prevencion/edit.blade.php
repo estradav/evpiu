@@ -101,12 +101,12 @@
                     {
                         html:' <input type="text" class="form-control" id="time_enter_edit" value="'+id[0]+'">',
                         inputValidator: () => {
-                            var valid_time = document.getElementById('time_enter_edit').value.match(/^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/)
+                            var valid_time = document.getElementById('time_enter_edit').value.match(/^[\d]{4}[-][\d]{2}[-][\d]{2} (0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/)
                             if (document.getElementById('time_enter_edit').value == '') {
                                 return 'Este campo no puede ir en blanco';
                             }
                             if(!valid_time){
-                                return 'la hora debe estar en formato hh:mm AM/PM';
+                                return 'la hora debe estar en formato Y-M-D H:M am/pm';
                             }
                         },
                         preConfirm: function () {
@@ -174,12 +174,12 @@
                     {
                         html:' <input type="text" class="form-control" id="time_exit_edit" value="'+id[0]+'">',
                         inputValidator: () => {
-                            var valid_time = document.getElementById('time_exit_edit').value.match(/^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/)
+                            var valid_time = document.getElementById('time_exit_edit').value.match(/^[\d]{4}[-][\d]{2}[-][\d]{2} (0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/)
                             if (document.getElementById('time_exit_edit').value == '') {
                                 return 'Este campo no puede ir en blanco';
                             }
                             if(!valid_time){
-                                return 'la hora debe estar en formato H:mm AM/PM';
+                                return 'la hora debe estar en formato Y-M-D H:M am/pm';
                             }
                         },
                         preConfirm: function () {
@@ -246,14 +246,12 @@
                             '<label for="">Fecha y hora:</label>' +
                             '<input type="text" class="form-control" id="time_edit" value="'+ id[2]+'" placeholder="fecha y hora">',
                         inputValidator: () => {
-
                             if (document.getElementById('temperature_edit').value == '') {
                                 return 'Este campo no puede ir en blanco';
                             }
                             if (document.getElementById('time_edit').value == '') {
                                 return 'Este campo no puede ir en blanco';
                             }
-
                         },
                         preConfirm: function () {
                             var array = {
@@ -314,7 +312,7 @@
                     console.log(todayTime)
 
                     var month   = ("0" + (todayTime.getMonth() + 1)).slice(-2)
-                    var day     = todayTime.getDate();
+                    var day     = ("0" + todayTime.getDate()).slice(-2);
                     var year    = todayTime.getFullYear();
                     return day + "-" + month + "-" + year;
                 }
@@ -365,7 +363,7 @@
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: 'Aceptar',
                                 })
-                               // window.location.reload(true)
+                                window.location.reload(true)
                             },
                             error: function () {
                                 Swal.fire({

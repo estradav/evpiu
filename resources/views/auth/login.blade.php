@@ -157,7 +157,7 @@
                                 <div class="textInput" id="login_emaildiv">
                                     <div class="fieldWrapper">
                                         <label for="username" class="fieldLabel">Email</label>
-                                        <input id="username" name="username" type="text" class="form-control form-control-lg{{ $errors->has('username') ? ' is-invalid' : '' }}" required="required" aria-required="true" autocomplete="off" placeholder="Usuario" value="{{ old('username') }}">
+                                        <input id="username" name="username" type="text" class="form-control form-control-lg{{ $errors->has('username') ? ' is-invalid' : '' }}" required="required" aria-required="true" autocomplete="off" placeholder="Usuario" value="{{ old('username') }}" autofocus>
                                         @if ($errors->has('username'))
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('username') }}</strong>

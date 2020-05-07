@@ -7,10 +7,8 @@ use Carbon\Traits\Date;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use phpDocumentor\Reflection\Type;
 
 
 class MedidaPrevencionController extends Controller
@@ -57,6 +55,9 @@ class MedidaPrevencionController extends Controller
      */
     public function store(Request $request)
     {
+        $date_format = $request->datetime;
+        $date_format = Carbon::now()->format('Y-m-d').' '.$date_format;
+
 
         $empleado_existe = DB::table('employee_prevention')
             ->where('employee','=',$request->empleado)
@@ -70,7 +71,7 @@ class MedidaPrevencionController extends Controller
 
             $nuevo_dia = DB::table('employee_prevention_days')->insertGetId([
                 'id_employee'   =>  $nuevo_empleado,
-                'time_enter'    =>  $request->datetime,
+                'time_enter'    =>  $date_format,
                 'time_exit'     =>  ' ',
                 'question_1'    =>  $request->question_1,
                 'question_2'    =>  $request->question_2,
@@ -117,7 +118,7 @@ class MedidaPrevencionController extends Controller
             else if($dia == 0){
                 $nuevo_dia = DB::table('employee_prevention_days')->insertGetId([
                     'id_employee'   =>  $info_empleado[0]->id,
-                    'time_enter'    =>  $request->datetime,
+                    'time_enter'    =>  $date_format,
                     'time_exit'     =>  ' ',
                     'question_1'    =>  $request->question_1,
                     'question_2'    =>  $request->question_2,
@@ -202,6 +203,10 @@ class MedidaPrevencionController extends Controller
      */
     public function exit_employee_in_day(Request $request)
     {
+        $date_format = $request['result']['hora_salida'];
+        $date_format = Carbon::now()->format('Y-m-d').' '.$date_format;
+
+
         $dia_id = DB::table('employee_prevention_days')
             ->where('id_employee','=', $request['result']['id'])
             ->whereDate('created_at','=', Carbon::now())->pluck('id');
@@ -219,7 +224,7 @@ class MedidaPrevencionController extends Controller
             ->where('id_employee','=', $request['result']['id'])
             ->whereDate('created_at','=', Carbon::now())
             ->update([
-                'time_exit'  =>  $request['result']['hora_salida']
+                'time_exit'  => $date_format
         ]);
 
         DB::table('employee_prevention')
@@ -261,4 +266,27 @@ class MedidaPrevencionController extends Controller
 
         return response()->json(['Guardado con exito'],200);
     }
+
+    public function ingreso_cedula(){
+        return view('medida_prevencion.ingreso_cedula');
+    }
+
+    public function consultar_empleado_invitado_cc(Request $request){
+        try {
+            $tabla_empleado = DB::connection('DMS')
+                ->table('V_CIEV_Personal')
+                ->where('estado','=', 'A')
+                ->where('nit','=',$request->cc)->count();
+
+            if ($tabla_empleado == 0){
+                return response()->json('EL EMPLEADO NO EXISTE');
+            }else{
+                return response()->json('EL EMPLEADO EXISTE');
+            }
+        }catch (\Exception $e){
+            return response()->json($e->getCode());
+        }
+
+    }
+
 }

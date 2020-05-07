@@ -112,7 +112,7 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center">EMPLEADO</th>
-                                <th scope="col" class="text-center">INFO</th>
+                                {{--<th scope="col" class="text-center">INFO</th>--}}
                                 <th scope="col" class="text-center">TEMPERATURA</th>
                                 <th scope="col" class="text-center">ACCIONES</th>
                             </tr>
@@ -121,7 +121,7 @@
                             @foreach($empleados_registrados as $registros)
                                 <tr>
                                     <td class="text-center">{{ $registros->employee }}</td>
-                                    <td class="text-center"><button class="btn btn-primary info" id="{{ $registros->id }}"><i class="fas fa-eye"></i> Info</button> </td>
+                                    {{--<td class="text-center"><button class="btn btn-primary info" id="{{ $registros->id }}"><i class="fas fa-eye"></i> Info</button> </td>--}}
                                     <td class="text-center"><button class="btn btn-success registry_temperature" id="{{ $registros->id }}"><i class="fas fa-thermometer"></i> Temperatura</button></td>
                                     <td class="text-center"><button class="btn btn-danger exit" id="{{ $registros->id }}"><i class="fas fa-door-closed"></i> Salida</button></td>
                                 </tr>
@@ -273,7 +273,7 @@
                             });
                             $('#registry_form').trigger("reset");
                             table.draw();
-                            window.location.reload();
+                            //window.location.reload();
                         }
                     });
                     return false;
@@ -549,5 +549,4 @@
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" ></script>
 @endpush
