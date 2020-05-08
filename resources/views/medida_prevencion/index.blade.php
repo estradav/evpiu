@@ -273,7 +273,7 @@
                             });
                             $('#registry_form').trigger("reset");
                             table.draw();
-                            //window.location.reload();
+                            window.location.reload();
                         }
                     });
                     return false;
@@ -534,7 +534,6 @@
                             });
                             $('#edit_temperature_modal').modal('hide');
                             $('#info_modal').modal('hide');
-
                         }
                     });
                     return false;
