@@ -236,7 +236,11 @@
                 }
             });
 
-            var table = $('#empleados_table').DataTable();
+            let table = $('#empleados_table').DataTable({
+                language: {
+                    url: "/Spanish.json"
+                }
+            });
 
             jQuery.validator.addMethod("selectcheck", function(value){
                 return (value != 'empty');
@@ -547,5 +551,4 @@
             });
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 @endpush

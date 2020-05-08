@@ -55,7 +55,7 @@
         $(document).ready(function () {
             $('#empleados_table').dataTable({
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+                    url: "/spanish.json"
                 }
             });
         });

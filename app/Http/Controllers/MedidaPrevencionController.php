@@ -267,9 +267,11 @@ class MedidaPrevencionController extends Controller
         return response()->json(['Guardado con exito'],200);
     }
 
+
     public function ingreso_cedula(){
         return view('medida_prevencion.ingreso_cedula');
     }
+
 
     public function consultar_empleado_invitado_cc(Request $request){
         try {
@@ -279,9 +281,10 @@ class MedidaPrevencionController extends Controller
                 ->where('nit','=',$request->cc)->count();
 
             if ($tabla_empleado == 0){
-                return response()->json('EL EMPLEADO NO EXISTE');
+                return response()->json(false);
             }else{
-                return response()->json('EL EMPLEADO EXISTE');
+                return response()->json(true);
+
             }
         }catch (\Exception $e){
             return response()->json($e->getCode());

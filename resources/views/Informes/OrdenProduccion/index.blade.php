@@ -93,21 +93,7 @@
                             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
                         ],
                         language: {
-                            processing: "Procesando...",
-                            search: "Buscar&nbsp;:",
-                            lengthMenu: "Mostrar _MENU_ registros",
-                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                            infoPostFix: "",
-                            loadingRecords: "Cargando...",
-                            zeroRecords: "No se encontraron resultados",
-                            emptyTable: "Ningún registro disponible en esta tabla :C",
-                            paginate: {
-                                first: "Primero",
-                                previous: "Anterior",
-                                next: "Siguiente",
-                                last: "Ultimo"
+                                link: '/Spanish.json'
                             },
                             buttons: {
                                 copy: "Copiar",
@@ -233,15 +219,5 @@
                 document.body.innerHTML = originalContents;
             }
         </script>
-        <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" rel="stylesheet"/>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     @endpush
 @endsection

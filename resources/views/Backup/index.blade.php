@@ -2,10 +2,6 @@
 
 @section('page_title', 'Backup')
 
-@section('module_title', 'Backups')
-
-@section('subtitle', 'Este modulo permite hacer backups de la aplicacion.')
-
 @section('content')
     @can('backup')
         <div class="row">
