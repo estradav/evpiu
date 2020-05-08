@@ -115,8 +115,7 @@
     </section>
 </div>
 
-<script src="https://adminlte.io/themes/dev/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="https://adminlte.io/themes/dev/AdminLTE/plugins/jquery/jquery.min.js"></script>
+
 <script src="https://adminlte.io/themes/dev/AdminLTE/dist/js/adminlte.min.js"></script>
 <script src="https://adminlte.io/themes/dev/AdminLTE/dist/js/demo.js"></script>
 </body>

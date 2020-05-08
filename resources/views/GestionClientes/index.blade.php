@@ -6,10 +6,6 @@
     @can('gestion_clientes.view')
         <div class="card">
             <div class="card-header">
-                {{--Clientes
-                <a class="right InfoCustomersTooltip" title="" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Esta tabla muestra los clientes que existen tanto en MAX como en DMS">
-                  <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
-                </a>--}}
                 @can('gestion_clientes.crear_cliente')
                     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModalCenter" style="align-items: flex-end">
                         <i class="fas fa-user-plus"> </i>  Nuevo Cliente
@@ -481,26 +477,7 @@
                         ],
 
                         language: {
-                            processing: "Procesando...",
-                            search: "Buscar&nbsp;:",
-                            lengthMenu: "Mostrar _MENU_ registros",
-                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                            infoPostFix: "",
-                            loadingRecords: "Cargando...",
-                            zeroRecords: "No se encontraron resultados",
-                            emptyTable: "Ningún registro disponible en esta tabla :C",
-                            paginate: {
-                                first: "Primero",
-                                previous: "Anterior",
-                                next: "Siguiente",
-                                last: "Ultimo"
-                            },
-                            aria: {
-                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                                sortDescending: ": Activar para ordenar la columna de manera descendente"
-                            }
+                            url: '/Spanish.json'
                         },
                         rowCallback: function (row, data, index) {
                             if(data.estado == 'R'){
@@ -732,24 +709,8 @@
                 }
             });
         </script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
-        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
-        <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/css/dataTables.checkboxes.css" rel="stylesheet" />
-        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" ></script>
-        <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.3.10/dist/sweetalert2.all.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+
+
         <script src="/jquery-steps/jquery.steps.js"></script>
     @endpush
 @stop

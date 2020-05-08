@@ -370,7 +370,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('Details_Hl1_bitacoraomff','BitacoraOmffController@Details_Hl1');
 
 
-
             Route::resource('informecontrolentrega', 'InformeControlEntregaController');
             Route::get('informecontrolentrega_get','InformeControlEntregaController@index');
 
