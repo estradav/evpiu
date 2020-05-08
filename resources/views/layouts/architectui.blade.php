@@ -891,6 +891,38 @@
         {{--Boostrap Switch--}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.js"></script>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.3/firebase.js"></script>
+        <script type="text/javascript">
+            var session_id = "{!! (Session::getId())?Session::getId():'' !!}";
+            var user_id = "{!! (Auth::user())?Auth::user()->id:'' !!}";
+
+            // Initialize Firebase
+            var config = {
+                apiKey: "firebase.api_key",
+                authDomain: "firebase.auth_domain",
+                databaseURL: "firebase.database_url",
+                storageBucket: "firebase.storage_bucket",
+            };
+            firebase.initializeApp(config);
+
+            var database = firebase.database();
+
+            if({!! Auth::user() !!}) {
+                firebase.database().ref('/users/' + user_id + '/session_id').set(session_id);
+            }
+
+            firebase.database().ref('/users/' + user_id).on('value', function(snapshot2) {
+                var v = snapshot2.val();
+
+                if(v.session_id != session_id) {
+                    toastr.warning('Your account login from another device!!', 'Warning Alert', {timeOut: 3000});
+                    setTimeout(function() {
+                        window.location = '/login';
+                    }, 4000);
+                }
+            });
+        </script>
+
         <script>
                 @if(Session::has('alerts'))
             let alerts = {!! json_encode(Session::get('alerts')) !!};

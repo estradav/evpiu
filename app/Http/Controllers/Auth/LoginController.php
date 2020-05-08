@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
@@ -80,6 +81,47 @@ class LoginController extends Controller
             return '/Requerimientoss';
         }
         return '/home';
+    }
+
+    public function login(Request $request)
+    {
+        $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $user = DB::table('users')->where('username', $request->input('username'))->first();
+
+        if (auth()->guard('web')->attempt(['username' => $request->input('username'), 'password' => $request->input('password')])) {
+
+            $new_sessid   = \Session::getId(); //get new session_id after user sign in
+
+            if($user->session_id != '') {
+                $last_session = \Session::getHandler()->read($user->session_id);
+
+                if ($last_session) {
+                    if (\Session::getHandler()->destroy($user->session_id)) {
+
+                    }
+                }
+            }
+
+            \DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
+
+            $user = auth()->guard('web')->user();
+
+            return redirect($this->redirectTo);
+        }
+        \Session::put('login_error', 'Your email and password wrong!!');
+        return back();
+
+    }
+
+    public function logout(Request $request)
+    {
+        \Session::flush();
+        \Session::put('success','you are logout Successfully');
+        return redirect()->to('/login');
     }
 
 
