@@ -29,6 +29,11 @@
         {{--Boostrap Switch--}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.css">
 
+        {{----}}
+
+        <script type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css"></script>
+        <script type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></script>
+
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta http-equiv="cache-control" content="no-cache">
@@ -890,6 +895,58 @@
 
         {{--Boostrap Switch--}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.js"></script>
+
+
+        {{--Firebase --}}
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-database.js"></script>
+
+
+        {{----}}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script src=""></script>
+
+
+
+        <script type="text/javascript">
+            var session_id = "{!! (Session::getId())?Session::getId():'' !!}";
+            var user_id = "{!! (Auth::user())?Auth::user()->id:'' !!}";
+
+            // Initialize Firebase
+            var firebaseConfig = {
+                apiKey: "AIzaSyCCrUM3pajbhlaAB1IrmCnUgefE5rOZoZM",
+                authDomain: "evpiu-test.firebaseapp.com",
+                databaseURL: "https://evpiu-test.firebaseio.com",
+                projectId: "evpiu-test",
+                storageBucket: "evpiu-test.appspot.com",
+                messagingSenderId: "881208017465",
+                appId: "1:881208017465:web:9809ad0390e83179c683e8",
+                measurementId: "G-7B7ERZP1XC"
+            };
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+
+            var database = firebase.database();
+
+
+            if({!! Auth::user() !!}) {
+                firebase.database().ref('/users/' + user_id + '/session_id').set(session_id);
+            }
+
+            firebase.database().ref('/users/' + user_id).on('value', function(snapshot2) {
+                var v = snapshot2.val();
+
+                if(v.session_id != session_id) {
+                    toastr.warning('se ha iniciado sesión en tu cuenta desde otro dispositivo', 'ALERTA DE SEGURIDAD', {timeOut: 6000});
+                    setTimeout(function() {
+                        window.location = '/login';
+                    }, 8000);
+                }
+            });
+        </script>
 
         <script>
                 @if(Session::has('alerts'))
