@@ -1359,13 +1359,13 @@ class GestionClientesController extends Controller
         $correos_copia = str_replace(",",";",$correos_copia);
 
 
-        $dms_id_def_trib_tipo = DB::connection('MAX')
+        $dms_id_def_trib_tipo = DB::connection('MAXP')
             ->table('Customer_Types')
             ->where('CUSTYP_62','=',$request->M_Tipo_cliente)
             ->pluck('UDFREF_62');
 
 
-        $territorio_cliente = DB::connection('MAX')
+        $territorio_cliente = DB::connection('MAXP')
             ->table('Sales_Rep_Master')
             ->where('SLSREP_26','=',$request->M_vendedor)
             ->pluck('SLSTER_26');
@@ -1464,8 +1464,7 @@ class GestionClientesController extends Controller
                     'CiudadExterior'       =>  ''
                 ]);
 
-
-            DB::connection('DMS')
+            DB::connection('FE') /*Base de datos de prueba*/
                 ->table('terceros')
                 ->insert([
                     'nit'                              =>  $request->M_Nit_cc,
@@ -1509,7 +1508,7 @@ class GestionClientesController extends Controller
                 ]);
 
 
-            DB::connection('DMS')
+            DB::connection('FE')
                 ->table('terceros_nombres')
                 ->insert([
                     'nit'                  =>  $request->M_Nit_cc,

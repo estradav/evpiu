@@ -7,9 +7,9 @@
         <div class="card">
             <div class="card-header">
                 @can('gestion_clientes.crear_cliente')
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModalCenter" style="align-items: flex-end">
+                    <a href="{{url('clientes/nuevo_cliente')}}" class="btn btn-primary btn-lg" style="align-items: flex-end">
                         <i class="fas fa-user-plus"> </i>  Nuevo Cliente
-                    </button>
+                    </a>
                 @endcan
 
             </div>

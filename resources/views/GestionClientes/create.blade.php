@@ -441,11 +441,10 @@
                         data_form.push(username);
 
                         $.ajax({
-                            url: 'save_new_customer',
+                            url: '/save_new_customer',
                             type: 'post',
                             data: data_form,
                             success: function () {
-                                $('#exampleModalCenter').modal('hide');
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Guardardo',
@@ -593,7 +592,7 @@
                 function getPlazo(){
                     $.ajax({
                         type: "get",
-                        url: 'PedidosGetCondicion',
+                        url: '/PedidosGetCondicion',
                         success: function (data) {
                             $('#M_Plazo').append('<option value="" >Seleccione...</option>');
                             for (let j = 0; j <= data.length -1 ; j++) {
