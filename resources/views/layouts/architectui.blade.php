@@ -53,15 +53,15 @@
                 /* Make sure the inner div is not larger than the container
                  * so that we have room to scroll.
                  */
-                max-height: 100%;
+                max-height: 100% !important;
 
                 /* Pick an arbitrary margin/padding that should be bigger
                  * than the max width of all the scroll bars across
                  * the devices you are targeting.
                  * padding = -margin
                  */
-                margin-right: -100px;
-                padding-right: 100px;
+                margin-right: -100px !important;
+                padding-right: 100px !important;
             }
         </style>
 
