@@ -77,7 +77,7 @@
 
             $('#empleados_table').dataTable({
                 language: {
-                    url: "/spanish.json"
+                    url: "/Spanish.json"
                 }
             });
             let star_date = moment().format('YYYY-MM-DD'), end_date = moment().format('YYYY-MM-DD');
@@ -101,7 +101,6 @@
             });
 
             $('#download').on('click',function () {
-                alert(star_date)
                 $.ajax({
                     cache: false,
                     type: 'POST',
