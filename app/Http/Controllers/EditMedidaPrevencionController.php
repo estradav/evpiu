@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Dompdf\Options;
 
 class EditMedidaPrevencionController extends Controller
 {
@@ -116,4 +117,38 @@ class EditMedidaPrevencionController extends Controller
         return response()->json(['Guardado con exito'],200);
     }
 
+    public function download_informe(Request $request ){
+
+
+        $data = DB::table('employee_prevention_days')
+            ->join('employee_prevention','employee_prevention_days.id_employee','=','employee_prevention.id')
+            ->whereBetween('created_at', array($request->star_date, $request->end_date))
+            ->select('employee_prevention_days.id','employee_prevention_days.created_at',
+                'employee_prevention_days.time_enter', 'employee_prevention.employee', 'employee_prevention.id as emp_id')
+            ->get();
+
+
+        $attrs = [];
+        foreach ($data as $key => $value) {
+            $attrs[$value->employee][] = $value;
+        }
+
+        foreach ($attrs as $value){
+            for ($j = 0; $j <= sizeof($value)-1; $j++){
+                $temperatures = DB::table('employee_prevention_temperature_peer_day')
+                    ->where('id_day','=',$value[$j]->id)
+                    ->get('temperature');
+
+                $value[$j]->temperature = $temperatures;
+            }
+        }
+
+        $values = [
+            'fechas'    => $request->star_date.' - '.$request->end_date,
+            'data'      => $attrs
+        ];
+
+        $pdf = PDF::loadView('medida_prevencion.pdf', $values);
+        return $pdf->download('archivo.pdf');
+    }
 }

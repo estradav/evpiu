@@ -4,7 +4,9 @@
         <title>@yield('page_title') - {{ config('app.name') }}</title>
         <meta charset="utf-8">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="cache-control" content="no-cache">
         <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon_192x192.png') }}">
         <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
         <link rel="stylesheet" href="{{ asset('architectui/main.css') }}">
@@ -39,8 +41,10 @@
         <script type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css"></script>
         <script type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"></script>
 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta http-equiv="cache-control" content="no-cache">
+
+        {{--DateRange Picker--}}
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 
         <style>
             .scrollbar-sidebar{
@@ -579,7 +583,9 @@
                 </div>
                 <div class="app-main__outer">
                     <div class="app-main__inner">
-                        @yield('content')
+                        <div class="tab-content">
+                            @yield('content')
+                        </div>
                     </div>
                     <br>
                     <div class="app-wrapper-footer">
@@ -628,8 +634,8 @@
 
 
         {{--Pdf Object--}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
 
 
         {{--ChartJs--}}
@@ -656,8 +662,10 @@
 
         {{--Toastr Alerts--}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <script src=""></script>
 
+        {{--DateRange Picker--}}
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 
         <script type="text/javascript">

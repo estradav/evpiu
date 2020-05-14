@@ -1,75 +1,32 @@
 $(document).ready(function () {
-    var from = $( "#from_date" )
-    .datepicker({
-        dateFormat: "yy-mm-dd 00:00:00",
-        changeMonth: true,
-        changeYear: false,
-        closeText: 'Cerrar',
-        prevText: 'Ant',
-        nextText: 'Sig',
-        currentText: 'Hoy',
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-        weekHeader: 'Sm',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: '',
-        showAnim: "drop"
-    })
-    .on( "change", function() {
-        to.datepicker( "option", "minDate", getDate( this ) );
-    }).datepicker('widget').wrap('<div class="ll-skin-nigran"/>'),
-
-    to = $( "#to_date" ).datepicker({
-        dateFormat: "yy-mm-dd 23:59:59",
-        changeMonth: true,
-        changeYear: false,
-        closeText: 'Cerrar',
-        prevText: 'Ant',
-        nextText: 'Sig',
-        currentText: 'Hoy',
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-        weekHeader: 'Sm',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: '',
-        showAnim: "drop"
-    })
-    .on( "change", function() {
-        from.datepicker( "option", "maxDate", getDate( this ) );
+    let star_date = moment().format('YYYY-MM-DD 00:00:00'), end_date = moment().format('YYYY-MM-DD 23:59:59');
+    moment.locale('es');
+    $('input[id="date_time"]').daterangepicker({
+        drops: 'down',
+        open: 'center',
+        ranges: {
+            'Hoy': [moment(), moment()],
+            'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+            'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
+            'Este mes': [moment().startOf('month'), moment().endOf('month')],
+            'Mes anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+    }, function(start, end, label) {
+        star_date = start.format('YYYY-MM-DD 00:00:00');
+        end_date = end.format('YYYY-MM-DD 23:59:59');
     });
 
-    function getDate( element ) {
-        var date;
-        var dateFormat = "yy-mm-dd";
-        try {
-            date = $.datepicker.parseDate( dateFormat, element.value );
-        } catch( error ) {
-            date = null;
-        }
-        return date;
-    }
     load_data();
-
     var table;
 
-    function load_data(from_date = '', to_date = '')
+    function load_data(from_date, to_date)
     {
         var errors = [];
         var count = 0;
         var id = $(this).data('id');
         table =  $('#tfac').DataTable({
-            scrollX: true,
-
+            responsive: true,
             ajax: {
                 url:'/FacturasIndex',
                 data:{from_date:from_date, to_date:to_date}
@@ -90,34 +47,12 @@ $(document).ready(function () {
                 {data: 'motivo', name: 'motivo', orderable: false, searchable: true},
                 {data: 'EstadoDian',name: 'EstadoDian',orderable: true, searchable: true},
                 {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
-
             ],
             language: {
-                // traduccion de datatables
-                processing: "Cargando Facturas...",
-                search: "Buscar&nbsp;:",
-                lengthMenu: "Mostrar _MENU_ Facturas",
-                info: "Mostrando Facturas del _START_ al _END_ de un total de _TOTAL_ Facturas",
-                infoEmpty: "Mostrando Facturas del 0 al 0 de un total de 0 Facturas",
-                infoFiltered: "(filtrado de un total de _MAX_ facturas)",
-                infoPostFix: "",
-                loadingRecords: "Cargando...",
-                zeroRecords: "No se encontraron resultados",
-                emptyTable: "Ningún registro disponible en esta tabla :C",
-                paginate: {
-                    first: "Primero",
-                    previous: "Anterior",
-                    next: "Siguiente",
-                    last: "Ultimo"
-                },
-                aria: {
-                    sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sortDescending: ": Activar para ordenar la columna de manera descendente"
-                }
+               url: '/Spanish.json'
             },
             rowCallback: function( row, data, index ) {
-                var id = data.id;
-                console.log(id);
+                let id = data.id;
                 $.ajax({
                     url: '/EstadoEnvioDianFacturacionElectronica',
                     type: 'get',
@@ -202,13 +137,12 @@ $(document).ready(function () {
                     $('td', row).css('color', 'red');
                 }
             }
-
         });
     }
 
     var detailRows = [];
 
-    $('#tfac tbody').on( 'click', 'tr td.details-control', function () {
+    $(document).on( 'click', 'tr td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row( tr );
         var idx = $.inArray( tr.attr('id'), detailRows );
@@ -216,8 +150,6 @@ $(document).ready(function () {
         if ( row.child.isShown() ) {
             tr.removeClass( 'details' );
             row.child.hide();
-
-            // Remove from the 'open' array
             detailRows.splice( idx, 1 );
         }
         else {
@@ -238,15 +170,11 @@ $(document).ready(function () {
     });
 
     $('#filter').click(function(){
-        var from_date = $('#from_date').val();
-        var to_date = $('#to_date').val();
-        if(from_date != '' &&  to_date != '')
-        {
+
+        if(star_date !== '' &&  end_date !== ''){
             $('#tfac').DataTable().destroy();
-            load_data(from_date, to_date);
-        }
-        else
-        {
+            load_data(star_date, end_date);
+        } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -255,19 +183,20 @@ $(document).ready(function () {
         }
     });
 
+
+
     $("#CrearXml").click(function () {
         var selected = [];
         $(".checkboxes").each(function () {
             if (this.checked) {
-                var numero = this.id;
-                var factura ={
-                    "numero":numero,
+                const numero = this.id;
+                const factura = {
+                    "numero": numero,
                 };
                 selected.push(factura);
             }
         });
         if (selected.length) {
-
             Swal.fire({
                 icon: false,
                 title: 'Generando XML un momento por favor...',
@@ -298,8 +227,7 @@ $(document).ready(function () {
                         icon: 'success',
                         confirmButtonText: 'Aceptar',
                     });
-                    // preventDefault();  //stop the browser from following
-                    var req = new XMLHttpRequest();
+                    let req = new XMLHttpRequest();
                     req.open("GET", "XML/Facturacion_electronica_Facturas.xml", true);
                     req.responseType = "blob";
                     req.onload = function (event) {
@@ -334,9 +262,8 @@ $(document).ready(function () {
         $(".test").prop("checked", this.checked);
     });
 
-    // if all checkbox are selected, check the selectall checkbox and viceversa
     $(".test").on("click", function() {
-        if ($(".test").length == $(".test:checked").length) {
+        if ($(".test").length === $(".test:checked").length) {
             $("#selectAll").prop("checked", true);
         } else {
             $("#selectAll").prop("checked", false);

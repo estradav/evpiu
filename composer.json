@@ -18,6 +18,7 @@
         "consoletvs/charts": "6.*",
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "doctrine/dbal": "2.9.3",
+        "dompdf/dompdf": "^0.8.5",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^1.0",
         "genealabs/laravel-caffeine": "^7.0",
