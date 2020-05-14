@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Informe de medida de prevencion</title>
 
-        <link rel="stylesheet" href="/bootstrap.min.css">
+        <link rel="stylesheet" href="{{asset('bootstrap.min.css')}}">
         <style>
             .center {
                 text-align: center !important;
