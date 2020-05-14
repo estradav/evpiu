@@ -4,30 +4,26 @@
 
 @section('content')
     @can('artes.view')
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="main-card mb-3 card">
-                    <div class="card-body">
-                        <table class="table table-responsive table-striped dataTable" id="table">
-                            <thead>
-                                <tr>
-                                    <th>REQUERIMIENTO</th>
-                                    <th>ARTE</th>
-                                    <th>PRODUCTO</th>
-                                    <th>MATERIAL</th>
-                                    <th>MARCA</th>
-                                    <th>VENDEDOR</th>
-                                    <th>DISEÑADOR</th>
-                                    <th>SOLICITUD</th>
-                                    <th>CREACION</th>
-                                    <th style="display: none !important;"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <table class="table table-responsive table-striped dataTable" id="table">
+                    <thead>
+                        <tr>
+                            <th>REQUERIMIENTO</th>
+                            <th>ARTE</th>
+                            <th>PRODUCTO</th>
+                            <th>MATERIAL</th>
+                            <th>MARCA</th>
+                            <th>VENDEDOR</th>
+                            <th>DISEÑADOR</th>
+                            <th>SOLICITUD</th>
+                            <th>CREACION</th>
+                            <th style="display: none !important;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     @else
@@ -50,13 +46,8 @@
                 });
 
                 var table = $('.dataTable').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    autoWidth: false,
-                    paging: true,
-                    fixedColumns: false,
                     ajax: "/ViewArtes",
+                    scrollY: true,
                     order: [
                         [ 8, "desc" ]
                     ],
@@ -74,21 +65,19 @@
                         {data: 'CodigoArte', name: 'CodigoArte', visible: false},
                     ],
                     language: {
-                        url: "/spanish.json"
+                        url: "/Spanish.json"
                     }
                 });
 
                 $('body').on('click', '.btnArt', function() {
-                    var Art = $(this).attr("id");
+                    let Art = this.id;
+                    console.log(Art);
                     $('#ViewArtTitle').html('Arte #'+ Art);
-                    PDFObject.embed('//192.168.1.12/intranet_ci/assets/Artes/'+Art+'.pdf', '#ViewArtPdf');
+                    PDFObject.embed("http://192.168.1.12/intranet_ci/assets/Artes/"+Art+".pdf", "#ViewArtPdf");
                     $('#ViewArtModal').modal('show');
                 });
             });
-
         </script>
-
-
     @endpush
 @stop
 @section('modal')
@@ -101,8 +90,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="">
-                    <div id="ViewArtPdf" style="height:750px;" ></div>
+                <div class="modal-body">
+                    <div id="ViewArtPdf" name="ViewArtPdf" style="height:750px !important;" ></div>
                 </div>
                 <div class="modal-footer" style="text-align: center !important;">
                     <button class="btn btn-primary btn-lg" data-dismiss="modal" id="CloseViewArt">Aceptar</button>
