@@ -80,6 +80,8 @@ class EditMedidaPrevencionController extends Controller
      */
     public function edit_time_exit(Request $request)
     {
+        ini_set('max_execution_time', 180);
+
         DB::table('employee_prevention_days')
             ->where('id','=',$request['result']['id'])
             ->update([
