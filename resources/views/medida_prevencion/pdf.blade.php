@@ -7,7 +7,6 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Informe de medida de prevencion</title>
 
-        <link rel="stylesheet" href="{{asset('bootstrap.min.css')}}">
         <style>
             .center {
                 text-align: center !important;
@@ -22,17 +21,33 @@
                 margin-top: 2%;
                 margin-bottom: -1%;
             }
+            table{
+                width:100%;
+                height:auto;
+                margin:10px 0 10px 0;
+                border-collapse:collapse;
+                text-align:center;
+                background-color:white;
+                color: black;
+            }
+
+            table td,th{
+                border:1px solid black;
+            }
+
+
+
         </style>
     </head>
     <body>
         <div class="center">
             <img src="{{public_path().'/img/Logo_v2.png'}}" alt="">
             <h4>CI ESTRADA VELASQUEZ Y CIA. S.A.S </h4>
-            <h5>REPORTE DE MEDIDA DE PREVENCION</h5>
-            <h6>{{$fechas}}</h6>
+            <h4>REPORTE DE MEDIDA DE PREVENCION</h4>
+            <h4>{{$fechas}}</h4>
             <br>
             @foreach($data as $key => $d)
-                <table class="table table-bordered table-sm">
+                <table class="table table-bordered red-border table-sm">
                     <thead>
                         <tr>
                             <th colspan="4">{{$key}}</th>
