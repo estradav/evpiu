@@ -80,7 +80,7 @@
                     url: "/Spanish.json"
                 }
             });
-            let star_date = moment().format('YYYY-MM-DD'), end_date = moment().format('YYYY-MM-DD');
+            let star_date = moment().format('YYYY-MM-DD 00:00:00'), end_date = moment().format('YYYY-MM-DD 23:59:59');
 
             moment.locale('es');
             $('input[id="date"]').daterangepicker({
@@ -96,8 +96,8 @@
                 },
 
             }, function(start, end, label) {
-                star_date = start.format('YYYY-MM-DD');
-                end_date = end.format('YYYY-MM-DD');
+                star_date = start.format('YYYY-MM-DD 00:00:00');
+                end_date = end.format('YYYY-MM-DD 23:59:59');
             });
 
             $('#download').on('click',function () {
