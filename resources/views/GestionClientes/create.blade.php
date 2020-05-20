@@ -458,7 +458,7 @@
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error!',
-                                    text: data.errors,
+                                    text: data,
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: 'Aceptar',
                                 })

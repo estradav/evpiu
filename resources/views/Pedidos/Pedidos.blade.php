@@ -1726,7 +1726,7 @@
                 $('body').on('click', '.ViewArt', function() {
                     var Art = $(this).attr("id");
                     $('#ViewArtTitle').html('Arte #'+ Art);
-                    PDFObject.embed('//192.168.1.12/intranet_ci/assets/Artes/'+Art+'.pdf', '#ViewArtPdf');
+                    PDFObject.embed('//192.168.1.12/intranet_ci/assets/artes/'+Art+'.pdf', '#ViewArtPdf');
                     $('#ViewArtModal').modal('show');
                 });
             })

@@ -2,14 +2,6 @@
 
 @section('page_title', 'Categorías')
 
-@section('module_title', 'Categorías')
-
-@section('subtitle', 'Este módulo gestiona todas las categorías de las publicaciones del blog de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('categories') }}
-@stop
-
 @section('content')
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -46,14 +38,14 @@
                                                 <i class="fas fa-eye"></i> Ver
                                             </a>
                                             @can('categories.edit')
-                                            <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-outline-light edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
+                                                <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-outline-light edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
                                             @endcan
                                             @can('categories.destroy')
-                                            <div class="btn btn-sm btn-outline-light delete" data-id="{{ $category->id }}">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </div>
+                                                <div class="btn btn-sm btn-outline-light delete" data-id="{{ $category->id }}">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </div>
                                             @endcan
                                         </div>
                                     </td>
@@ -86,8 +78,7 @@
                             @csrf
                             @method('delete')
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <input type="submit" class="btn btn-danger delete-confirm"
-                                   value="Sí, eliminar esta categoría">
+                            <input type="submit" class="btn btn-danger delete-confirm" value="Sí, eliminar esta categoría">
                         </form>
                     </div>
                 </div><!-- /.modal-content -->
@@ -113,7 +104,6 @@
 
         $('td').on('click', '.delete', function (e) {
             $('#delete_form')[0].action = '{{ route('categories.destroy', ['category' => '__category']) }}'.replace('__category', $(this).data('id'));
-
             $('#delete_modal').modal('show');
         });
     </script>

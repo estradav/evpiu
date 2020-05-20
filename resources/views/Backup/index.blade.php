@@ -27,12 +27,8 @@
                                     <tr>
                                         <td>{{ $backup['file_name'] }}</td>
                                         <td>{{ formatSizeUnits($backup['file_size']) }}</td>
-                                        <td>
-                                            {{ \Carbon\Carbon::createFromTimestamp($backup['last_modified'])->toDateTimeString() }}
-                                        </td>
-                                        <td>
-                                            {{ \Carbon\Carbon::createFromTimestamp($backup['last_modified'])->diffForHumans( \Carbon\Carbon::now()) }}
-                                        </td>
+                                        <td>{{ \Carbon\Carbon::createFromTimestamp($backup['last_modified'])->toDateTimeString() }}</td>
+                                        <td>{{ \Carbon\Carbon::createFromTimestamp($backup['last_modified'])->diffForHumans( \Carbon\Carbon::now()) }}</td>
                                         <td>
                                             <a class="btn btn-xs btn-success"
                                                href="{{action('BackupController@download', [$backup['file_name']])}}"><i class="fa fa-cloud-download"> </i> Decargar</a>
@@ -68,35 +64,20 @@
 <?php
     function formatSizeUnits($bytes)
     {
-        if ($bytes >= 1073741824)
-        {
+        if ($bytes >= 1073741824) {
             $bytes = number_format($bytes / 1073741824, 2) . ' GB';
-        }
-        elseif ($bytes >= 1048576)
-        {
+        }elseif ($bytes >= 1048576) {
             $bytes = number_format($bytes / 1048576, 2) . ' MB';
-        }
-        elseif ($bytes >= 1024)
-        {
+        }elseif ($bytes >= 1024) {
             $bytes = number_format($bytes / 1024, 2) . ' KB';
-        }
-        elseif ($bytes > 1)
-        {
+        }elseif ($bytes > 1) {
             $bytes = $bytes . ' bytes';
-        }
-        elseif ($bytes == 1)
-        {
+        }elseif ($bytes == 1) {
             $bytes = $bytes . ' byte';
-        }
-        else
-        {
+        }else{
             $bytes = '0 bytes';
         }
-
         return $bytes;
     }
     ?>
-
-
-
 @endsection

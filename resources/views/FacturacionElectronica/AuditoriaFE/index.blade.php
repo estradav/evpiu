@@ -2,10 +2,6 @@
 
 @section('page_title', 'Gestion Facturacion Electronica')
 
-@section('module_title', 'Gestion Facturacion Electronica')
-
-@section('subtitle', 'Este modulo permite buscar facturas en la plataforma factible para su descarga, auditoria o consulta de informacion.')
-
 @section('content')
     @can('AuditoriaFe.view')
         <div class="row">
@@ -75,8 +71,7 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
-
-                var Username = @json( Auth::user()->username);
+                let Username = @json( Auth::user()->username);
 
                 var from = $( "#from_date" ).datepicker({
                     dateFormat: "yy-mm-dd",
@@ -141,7 +136,7 @@
                 load_data();
                 Listado_de_facturas();
 
-                var table;
+                let table;
 
                 function load_data(from_date = '', to_date = '' ,fe_start = '', fe_end = '', type_doc = '')
                 {
@@ -200,8 +195,7 @@
                         load_data(from_date, to_date, fe_start, fe_end, type_doc);
                         Listado_de_facturas(from_date, to_date, fe_start, fe_end, type_doc);
                     }
-                    else
-                    {
+                    else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -210,7 +204,7 @@
                     }
                 });
 
-                $('body').on('click','.download_ws', function () {
+                $(document).on('click','.download_ws', function () {
                     var id = this.id;
                     $.ajaxSetup({
                         headers: {
@@ -226,7 +220,6 @@
                         },
                         success: function (data) {
                             var base64str = data;
-                            // decode base64 string, remove space for IE compatibility
                             var binary = atob(base64str.replace(/\s/g, ''));
                             var len = binary.length;
                             var buffer = new ArrayBuffer(len);
@@ -237,7 +230,6 @@
                             var blob = new Blob( [view], { type: "application/pdf" });
                             var link=document.createElement('a');
                             link.href=window.URL.createObjectURL(blob);
-                            let current_datetime = new Date();
                             link.download="FE_"+id+".pdf";
                             link.click();
                         },
@@ -251,9 +243,8 @@
                     });
                 });
 
-                $('body').on('click','.info_ws',function () {
-                	var id = this.id;
-
+                $(document).on('click','.info_ws',function () {
+                	let id = this.id;
                     $.ajax({
                         type: 'get',
                         url: '/GestionFacturacionElectronica_InfoWs',
@@ -303,7 +294,7 @@
                     });
                 });
 
-                $('body').on('click','.infoObsWs',function () {
+                $(document).on('click','.infoObsWs',function () {
                     $('#InfoWsObserv').modal('show');
                 });
 
@@ -323,28 +314,23 @@
                             Username: Username
                         },
                         success: function (data) {
-                            console.log(data);
                         	var array = [];
-                        	var i = 0;
+                        	var j = 0;
                             $(data).each(function () {
-                                array.push(data[i].numero);
-                                i++;
+                                array.push(data[j].numero);
+                                j++;
                             });
                             array = array.sort();
-                            for(var i = 1; i < array.length; i++)
-                            {
-                                if(array[i] - array[i-1] != 1)
-                                {
+                            for(let i = 1; i < array.length; i++) {
+                                if(array[i] - array[i-1] != 1) {
                                     var x = array[i] - array[i-1];
-                                    var j = 1;
-                                    while (j<x)
-                                    {
-                                        missing.push(array[i-1]+j);
-                                        j++;
+                                    let k = 1;
+                                    while (k<x) {
+                                        missing.push(array[i-1]+k);
+                                        k++;
                                     }
                                 }
                             }
-                            console.log(missing);
                         }
                     });
                 }

@@ -2,11 +2,6 @@
 
 @section('page_title', 'Facturacion electronica')
 
-@section('module_title', 'Configuracion')
-
-@section('subtitle', 'Este módulo permite cambiar la configuracion de la aplicacion de facturacion electronica.')
-
-
 @section('content')
     @can('fe.config')
         <div class="row">
@@ -114,7 +109,7 @@
     @endcan
     @push('javascript')
         <script>
-           $(document).ready(function() {
+            $(document).ready(function() {
            	    getData();
                 function getData() {
                     $.ajaxSetup({
@@ -143,6 +138,7 @@
                         }
                     })
                 }
+
                 $('#SaveFacturas').on('click', function () {
                     var fac_idnumeracion = $('#fac_idnumeracion').val();
                     var fac_idambiente = $('#fac_idambiente').val();
@@ -165,6 +161,7 @@
                         }
                     })
                 });
+
                 $('#SaveNC').on('click', function () {
                      var nc_idnumeracion = $('#nc_idnumeracion').val();
                      var nc_idambiente = $('#nc_idambiente').val();

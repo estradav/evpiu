@@ -9,7 +9,7 @@ $(document).ready(function(){
             }
         });
 
-         table = $('.data-table').DataTable({
+        table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
             ajax: "/MedidasIndex",
@@ -29,27 +29,7 @@ $(document).ready(function(){
                 {data: 'Opciones', name: 'Opciones', orderable: false, searchable: false},
             ],
             language: {
-                // traduccion de datatables
-                processing: "Procesando...",
-                search: "Buscar&nbsp;:",
-                lengthMenu: "Mostrar _MENU_ registros",
-                info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                infoPostFix: "",
-                loadingRecords: "Cargando...",
-                zeroRecords: "No se encontraron resultados",
-                emptyTable: "Ningún registro disponible en esta tabla :C",
-                paginate: {
-                    first: "Primero",
-                    previous: "Anterior",
-                    next: "Siguiente",
-                    last: "Ultimo"
-                },
-                aria: {
-                    sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                    sortDescending: ": Activar para ordenar la columna de manera descendente"
-                }
+                url: '/Spanish.json'
             },
              rowCallback: function (row, data, index) {
                  if (data.diametro == null) {
@@ -83,10 +63,9 @@ $(document).ready(function(){
             $('#medidaForm').trigger("reset");
             $('#modelHeading').html("Nuevo");
             $('#medidamodal').modal('show');
-
         });
 
-        $('body').on('click', '.editmedida', function () {
+        $(document).on('click', '.editmedida', function () {
             $("#medidaForm").validate().resetForm();
             $('#saveBtn').attr('formnovalidate','');
             var medida_id = $(this).data('id');
@@ -120,8 +99,8 @@ $(document).ready(function(){
             });
         });
 
-        $('body').on('click', '.deletemedida', function () {
-            var medida_id = $(this).data("id");
+        $(document).on('click', '.deletemedida', function () {
+            let medida_id = this.id;
             Swal.fire({
                 title: '¿Esta seguro de Eliminar?',
                 text: "¡Esta accion no se puede revertir!",
@@ -152,22 +131,13 @@ $(document).ready(function(){
                             )
                         }
                     });
-                }else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    Swal.fire(
-                        'Cancelado',
-                        'El registro NO fue eliminado :)',
-                        'error'
-                    )
                 }
             })
         });
     });
 
-    $('#med_lineas_id').on('change', function () {
-        var lineas_id = $(this).val();
+    $(document).on('change', '#med_lineas_id', function () {
+        const lineas_id = this.value;
         if ($.trim(lineas_id) != ''){
             $.get('getsublineas',{lineas_id: lineas_id}, function(getsublineas) {
                 $('#med_sublineas_id').empty();
@@ -179,8 +149,8 @@ $(document).ready(function(){
         }
     });
 
-    $('#med_sublineas_id').on('change', function () {
-        var sublineas_id = $(this).val();
+    $(document).on('change','#med_sublineas_id', function () {
+        var sublineas_id = this.value;
         $('#campos').html('');
         if ($.trim(sublineas_id) != ''){
             $.get('getCaractUnidadMedidas',{sublineas_id: sublineas_id}, function(getCaractUnidadMedidas) {
@@ -202,7 +172,6 @@ $(document).ready(function(){
 
                 })
             });
-
         }
     });
 
@@ -232,9 +201,6 @@ $(document).ready(function(){
         return (value != '');
     }, "Por favor, seleciona una opcion.");
 
-
-
-    console.log(sublineas_id,lineas_id);
 
     $("#medidaForm").validate({
         ignore: "",
@@ -270,11 +236,9 @@ $(document).ready(function(){
             }
         },
         highlight: function (element) {
-            // Only validation controls
             $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
         },
         unhighlight: function (element) {
-            // Only validation controls
             $(element).closest('.form-control').removeClass('is-invalid');
         },
         submitHandler: function (form) {
@@ -305,10 +269,9 @@ $(document).ready(function(){
     });
 
     function calcular(){
-
         var diametro = $('#Diametro').val();
         var Umedida = $('#UndMedida').val();
-        var Altura = $('#º').val();
+        var Altura = $('#Altura').val();
         var Base = $('#Base').val();
         var resultado = 0;
         var sub;

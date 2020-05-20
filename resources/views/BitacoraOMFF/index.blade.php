@@ -2,10 +2,6 @@
 
 @section('page_title', 'Bitacora OMFF')
 
-@section('module_title', 'Bitacora OMFF')
-
-@section('subtitle', 'Bitacora de operacion y mantenimiento de fuentes fijas.')
-
 @section('content')
     @can('bitacoraomff')
         <div class="row">
@@ -451,5 +447,4 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
 @endsection

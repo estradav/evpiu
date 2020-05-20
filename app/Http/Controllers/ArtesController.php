@@ -23,9 +23,9 @@ class ArtesController extends Controller
                 return Datatables::of($data)->make(true);
             }
         }catch(Exception $e){
-            Log::error('[Artes]: '. $e->getMessage());
+            Log::error('[artes]: '. $e->getMessage());
         }
 
-        return view('Artes.index');
+        return view('artes.index');
     }
 }
