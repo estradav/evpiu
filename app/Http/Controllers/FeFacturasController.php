@@ -78,7 +78,7 @@ class FeFacturasController extends Controller
                     return $btn;
                 })
                 ->addColumn('selectAll', function($row){
-                    $btn = '<input type="checkbox" class="custom-checkbox test" id="'.$row->id.'" name="'.$row->id.'">';
+                    $btn = '<input type="checkbox" class="checkboxes test" id="'.$row->id.'" name="'.$row->id.'">';
                     return $btn;
                 })
                 ->addColumn('EstadoDian',function($row){
