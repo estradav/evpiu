@@ -210,8 +210,7 @@
     @push('javascript')
         <script>
             $(document).ready(function () {
-                var Username =  @json(Auth::user()->name);
-
+                let Username =  @json(Auth::user()->name);
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -242,7 +241,6 @@
                 jQuery.validator.addMethod("selectcheck", function(value){
                     return (value != '');
                 }, "Por favor, seleciona una opcion.");
-
 
                 $('#new_registry_form').validate({
                     rules: {
@@ -280,13 +278,12 @@
                     submitHandler: function (form) {
                         var data_form = $('#new_registry_form').serializeArray();
 
-                        var created_by = {
+                        const created_by = {
                             name: 'created_by',
                             value: Username
                         };
                         data_form.push(created_by);
 
-                        console.log(data_form);
                         $.ajax({
                             url: '/save_bitacoraomff',
                             type: 'post',
@@ -304,7 +301,6 @@
                                 });
                                 $('#new_registry_form').trigger("reset");
                             }
-
                         });
                         return false;
                     },
@@ -315,7 +311,6 @@
                         $(element).closest('.form-control').removeClass('is-invalid');
                     },
                 });
-
             });
         </script>
     @endpush

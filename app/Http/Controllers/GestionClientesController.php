@@ -1359,13 +1359,13 @@ class GestionClientesController extends Controller
         $correos_copia = str_replace(",",";",$correos_copia);
 
 
-        $dms_id_def_trib_tipo = DB::connection('MAXP')
+        $dms_id_def_trib_tipo = DB::connection('MAX')
             ->table('Customer_Types')
             ->where('CUSTYP_62','=',$request->M_Tipo_cliente)
             ->pluck('UDFREF_62');
 
 
-        $territorio_cliente = DB::connection('MAXP')
+        $territorio_cliente = DB::connection('MAX')
             ->table('Sales_Rep_Master')
             ->where('SLSREP_26','=',$request->M_vendedor)
             ->pluck('SLSTER_26');
@@ -1381,9 +1381,10 @@ class GestionClientesController extends Controller
             $nombre_max = $request->M_primer_nombre;
         }
 
-        DB::transaction(function () use ($request, $nombre_max, $territorio_cliente, $apellidos_lenght, $termino_dms, $dms_id_def_trib_tipo ) {
+        DB::beginTransaction();
 
-            DB::connection('MAXP')
+        try {
+            DB::connection('MAX')
                 ->table('Customer_Master')
                 ->insert([
                     'CUSTID_23'    =>  $request->M_Nit_cc,
@@ -1448,7 +1449,7 @@ class GestionClientesController extends Controller
                     'SHPTHRU_23'   =>  ' '
                 ]);
 
-            DB::connection('MAXP')
+            DB::connection('MAX')
                 ->table('Customer_Master_Ext')
                 ->insert([
                     'CUSTID_23'            =>  $request->M_Nit_cc,
@@ -1459,12 +1460,12 @@ class GestionClientesController extends Controller
                     'RUT'                  =>  $request->M_rut_entregado == 'on' ? '1' : '0',
                     'ResponsableFE'        =>  $request->M_responsable_fe ?? '',
                     'telFE'                =>  $request->M_telefono_fe ?? '',
-                    'CorreosCopia'         =>  $correos_copia  ?? '',
+                    'CorreosCopia'         =>  $correos_copia,
                     'ResponsableIVA'       =>  '',
                     'CiudadExterior'       =>  ''
                 ]);
 
-            DB::connection('FE') /*Base de datos de prueba*/
+            DB::connection('DMS') /*Base de datos de prueba*/
                 ->table('terceros')
                 ->insert([
                     'nit'                              =>  $request->M_Nit_cc,
@@ -1507,8 +1508,7 @@ class GestionClientesController extends Controller
                     'codigoPostal'                     =>  $request->M_Codigo_postal,
                 ]);
 
-
-            DB::connection('FE')
+            DB::connection('DMS')
                 ->table('terceros_nombres')
                 ->insert([
                     'nit'                  =>  $request->M_Nit_cc,
@@ -1518,9 +1518,14 @@ class GestionClientesController extends Controller
                     'segundo_nombre'       =>  $request->M_segundo_nombre
                 ]);
 
+            DB::commit();
+
             return response()->json(['Success' => 'Guardado con exito!'],200);
 
-        });
+        } catch (\Exception $e) {
+            DB::rollback();
+            return  response()->json(['error' => $e->getMessage()],500);
+        }
 
     }
 

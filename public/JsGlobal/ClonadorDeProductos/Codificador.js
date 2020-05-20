@@ -262,6 +262,7 @@ $(document).ready(function(){
     }
 
     function OriginalValue(){
+        let i;
         var incremental     = 0;
         var charStringRange = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         var vectorc         = [];
@@ -270,15 +271,15 @@ $(document).ready(function(){
         var OriginalProductCodes =  datos;
         var OriginalProductCodes2 = $('#CodNam').val();
 
-        for (var f = 0; f < OriginalProductCodes.length; f++) {
+        for (let f = 0; f < OriginalProductCodes.length; f++) {
             if (OriginalProductCodes2  == OriginalProductCodes[f].substring(0,6) && OriginalProductCodes[f].length==10){
                 var cadena = OriginalProductCodes[f].substring(6);
                 var text2  = cadena.split('').reverse().join('');
                 text2      = text2.split('');
 
-                for (var v2 = 0; v2 < 4; v2++) {
-                    for (var i = 0; i < 36; i++) {
-                        if (text2[v2] == charStringRange[i]) {
+                for (let v2 = 0; v2 < 4; v2++) {
+                    for (i = 0; i < 36; i++) {
+                        if (text2[v2] === charStringRange[i]) {
                             break;
                         }
                     }
@@ -296,7 +297,7 @@ $(document).ready(function(){
         }
         var text = '';
         var incretemp = incremental;
-        for (var i = 0; i < 4; i++){
+        for (i = 0; i < 4; i++){
             incretemp = Math.floor(incretemp)/36;
             text += charStringRange.charAt(Math.round((incretemp - Math.floor(incretemp))*36));
         }

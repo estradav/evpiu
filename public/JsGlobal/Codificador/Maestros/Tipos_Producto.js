@@ -18,27 +18,7 @@ $(document).ready(function(){
             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
         ],
         language: {
-            // traduccion de datatables
-            processing: "Procesando...",
-            search: "Buscar&nbsp;:",
-            lengthMenu: "Mostrar _MENU_ registros",
-            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-            infoPostFix: "",
-            loadingRecords: "Cargando...",
-            zeroRecords: "No se encontraron resultados",
-            emptyTable: "Ningún registro disponible en esta tabla :C",
-            paginate: {
-                first: "Primero",
-                previous: "Anterior",
-                next: "Siguiente",
-                last: "Ultimo"
-            },
-            aria: {
-                sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                sortDescending: ": Activar para ordenar la columna de manera descendente"
-            }
+            url: '/Spanish.json'
         }
     });
 
@@ -109,9 +89,7 @@ $(document).ready(function(){
         },
 
         highlight: function (element) {
-            // Only validation controls
             $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
-            //$('#saveBtn').html('Reintentar');
         },
         unhighlight: function (element) {
             // Only validation controls

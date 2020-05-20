@@ -2,16 +2,10 @@
 
 @section('page_title', 'Facturacion Electronica')
 
-@section('module_title', 'Facturacion Electronica')
-
-@section('subtitle', 'Este módulo permite editar facturas.')
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render('fact_electr') }}
-@stop
 @section('content')
     @can('facturacion.edit')
-    <div class="col-12"><h3> Factura #: {{ $var }} </h3></div>
+        <div class="col-12"><h3> Factura #: {{ $var }} </h3>
+        </div>
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -172,16 +166,16 @@
                 <div class="table-responsive">
                     <table class="table table-striped first">
                         <thead>
-                        <tr>
-                            <th style="text-align: center">TOTAL BRUTO</th>
-                            <th style="text-align: center">DESCUENTO</th>
-                            <th style="text-align: center">RETENCION</th>
-                            <th style="text-align: center">SEGURO</th>
-                            <th style="text-align: center">FLETE</th>
-                            <th style="text-align: center">SUBTOTAL</th>
-                            <th style="text-align: center">IVA</th>
-                            <th style="text-align: center">TOTAL</th>
-                        </tr>
+                            <tr>
+                                <th style="text-align: center">TOTAL BRUTO</th>
+                                <th style="text-align: center">DESCUENTO</th>
+                                <th style="text-align: center">RETENCION</th>
+                                <th style="text-align: center">SEGURO</th>
+                                <th style="text-align: center">FLETE</th>
+                                <th style="text-align: center">SUBTOTAL</th>
+                                <th style="text-align: center">IVA</th>
+                                <th style="text-align: center">TOTAL</th>
+                            </tr>
                         </thead>
                         <tbody id="totales_factura">
                             <tr>
@@ -203,28 +197,26 @@
                 <a href="{{ route('fe.index') }}" class="btn btn-secondary btn-lg" role="button">Volver</a>
             </div>
         </div>
-
-
-    <style>
-        .preloader {
-            width: 140px;
-            height: 140px;
-            border: 20px solid #eee;
-            border-top: 20px solid #008000;
-            border-radius: 50%;
-            animation-name: girar;
-            animation-duration: 1s;
-            animation-iteration-count: infinite;
-        }
-        @keyframes girar {
-            from {
-                transform: rotate(0deg);
+        <style>
+            .preloader {
+                width: 140px;
+                height: 140px;
+                border: 20px solid #eee;
+                border-top: 20px solid #008000;
+                border-radius: 50%;
+                animation-name: girar;
+                animation-duration: 1s;
+                animation-iteration-count: infinite;
             }
-            to {
-                transform: rotate(360deg);
+            @keyframes girar {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
             }
-        }
-    </style>
+        </style>
     @else
         <div class="card">
             <div class="card-body text-center">
@@ -250,8 +242,7 @@
                         allowEscapeKey: false
                     });
                 }
-                var Numero_factura = @json( $var );
-                console.log(Numero_factura);
+                let Numero_factura = @json( $var );
                 function ObtenerDatos() {
                	    $.ajax({
                         url: "/DatosxFactura",
@@ -285,7 +276,6 @@
                             $('#Total_iva').val(data['encabezado'][0]['iva']);
                             $('#Total_retencion').val(0);
                             $('#oc').val(data['encabezado'][0]['OC']);
-
 
                             var i = 0;
                             var n = 1;
@@ -321,7 +311,6 @@
                 }
 
                 getMotivo();
-
                 getCondicion();
 
                 function getCondicion(){
@@ -383,7 +372,6 @@
 
                     $('#Total_factura').val(TotalFactura);
                     $('#Total_subtotal').val(TotalSubtotal);
-
                 }
 
                 function Sumar() {
@@ -401,45 +389,41 @@
 
                     $('#Total_bruto').val(Subtotal);
                     $('#Total_iva').val(IVA);
-                    console.log(Subtotal);
-
 
                     var valuedesc = $('#descuento').val();
                     var bruto = $('#Total_bruto').val();
 
-                    if(valuedesc == 0 || valuedesc < 0){
+                    if(valuedesc === 0 || valuedesc < 0){
                         $('#Total_descuento').val(0);
                     }else{
                         var Descuento = (bruto * valuedesc) / 100;
-                        console.log('Descuento:'+Descuento);
                         $('#Total_descuento').val(Descuento);
                     }
 
                     Calcular_Valores();
                 }
 
-                $('form').on('keyup','.item_preciounitario', function () {
-					var id = $(this).attr('id');
+                $(document).on('keyup','.item_preciounitario', function () {
+					let id = this.id;
                     id = id.substring(7);
 
-                    var precio_unitario = 'Precun-'+id;
-                    var item_iva = 'Itmiva-'+id;
-                    var item_cant = 'Cant-'+id;
-                    var item_subtotal = 'ItmPrec-'+id;
-                    var value = document.getElementById(item_cant).value;
-                    var precio_unitarioitm = document.getElementById(precio_unitario).value;
-                    var subtotal = precio_unitarioitm * value;
+                    const precio_unitario = 'Precun-' + id;
+                    const item_iva = 'Itmiva-' + id;
+                    const item_cant = 'Cant-' + id;
+                    const item_subtotal = 'ItmPrec-' + id;
+                    const value = document.getElementById(item_cant).value;
+                    const precio_unitarioitm = document.getElementById(precio_unitario).value;
+                    const subtotal = precio_unitarioitm * value;
 
-                    var Porcdescuento = $('#descuento').val();
-                    var descuento = (subtotal * Porcdescuento) / 100;
+                    const Porcdescuento = $('#descuento').val();
+                    const descuento = (subtotal * Porcdescuento) / 100;
 
-                    var subtotalmenosdesc = subtotal - descuento;
-                    var iva = subtotalmenosdesc * 0.19;
+                    const subtotalmenosdesc = subtotal - descuento;
+                    const iva = subtotalmenosdesc * 0.19;
 
                     document.getElementById(item_subtotal).value=subtotalmenosdesc;
-                  //  document.getElementById(id).value=precio_unitarioitm;
 
-                    if($('#tieneiva').val() == 1){
+                    if($('#tieneiva').val() === 1){
                         document.getElementById(item_iva).value=iva;
                     }else{
                         document.getElementById(item_iva).value=0;
@@ -448,14 +432,11 @@
                 });
 
                 $('#tieneiva').on('change',function () {
-                    var estado = $(this).val();
-                    console.log(estado);
-                    if(estado == 1)
-                    {
+                    const estado = this.value;
+                    if(estado === 1) {
                        Sumar();
                     }
-                    if(estado == 2)
-                    {
+                    if(estado === 2) {
                        $('.item_iva').val(0);
                        Sumar();
                     }
@@ -463,37 +444,21 @@
 
                 $('#condicion_pago').on('change', function () {
                     var fecha_inicio = $('#fecha_factura').val();
-                    console.log('Fecha', fecha_inicio);
                     var dias = $(this).val();
-                    console.log('Días', dias);
 
-                    // Fecha
-                    // Separar las partes de la fecha por /
                     var dateparts = fecha_inicio.split('-').map(d => parseInt(d));
-                    // Si no hay 3 partes o alguna no es un número no es correcto
                     if (dateparts.length !== 3 || !dateparts.every(d => !isNaN(d))){
                         alert('La fecha no tiene un formato correcto');
                         return;
                     }
-                    console.log(dateparts);
-                    // Crea el objeto Date pasando año, mes, día
                     var fechaDate = new Date(dateparts[0], dateparts[1]-1, dateparts[2]);
-
-                    console.log('part:'+dateparts[2]);
-                    // Dias en formato entero
                     var diasNum = parseInt(dias);
 
-                    console.log(diasNum);
-                    // Si no es un número no es correcto
                     if (isNaN(diasNum)){
                       alert('El número de días no tiene un formato correcto');
                     }
 
-                    // Suma los días a la fecha
                     fechaDate.setDate(fechaDate.getDate() + diasNum);
-
-                    console.log('dias:'+ fechaDate.getDate());
-
                     let formatted_date = fechaDate.getFullYear() + "-" + (fechaDate.getMonth() + 1) + "-" + fechaDate.getDate() + " " + fechaDate.getHours() + ":" + fechaDate.getMinutes() + ":" + fechaDate.getSeconds();
 
                     $('#fecha_vencimiento').val(formatted_date);

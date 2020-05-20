@@ -45,16 +45,17 @@
                     }
                 });
 
-                var table = $('.dataTable').DataTable({
+                $('.dataTable').DataTable({
                     ajax: "/ViewArtes",
                     scrollY: true,
                     order: [
-                        [ 8, "desc" ]
+                        [8, "desc"]
                     ],
                     columns: [
-                        {data: 'idRequerimiento', name:'idRequerimiento'},
-                        {data: 'CodigoArte', name: 'idArte', render: function ( data, type, row ) {
-                                return '<a href="javascript:void(0)" class=" btn btn-link btn-sm btnArt" id="'+ data +'" >' + data + '</a>';}},
+                        {data: 'idRequerimiento', name: 'idRequerimiento'},
+                        {data: 'CodigoArte', name: 'idArte', render: function (data, type, row) {
+                                return '<a href="javascript:void(0)" class=" btn btn-link btn-sm btnArt" id="' + data + '" >' + data + '</a>';
+                            }},
                         {data: 'Producto', name: 'Producto'},
                         {data: 'NombreMaterial', name: 'Material'},
                         {data: 'NombreMarca', name: 'NombreMarca'},
@@ -69,7 +70,7 @@
                     }
                 });
 
-                $('body').on('click', '.btnArt', function() {
+                $(document).on('click', '.btnArt', function() {
                     let Art = this.id;
                     console.log(Art);
                     $('#ViewArtTitle').html('Arte #'+ Art);

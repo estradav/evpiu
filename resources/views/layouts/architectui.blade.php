@@ -46,6 +46,9 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 
+        {{--Pe7 Stroke icons--}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
+
         <style>
             .scrollbar-sidebar{
                 overflow: hidden;
@@ -218,8 +221,8 @@
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">Aplicativos</li>
-                                    <li class="{{ request()->route()->named('Artes.index') ? 'mm-active' : '' }}">
-                                        <a href="{{ route('Artes.index') }}">
+                                    <li class="{{ request()->route()->named('artes.index') ? 'mm-active' : '' }}">
+                                        <a href="{{ route('artes.index') }}">
                                             <i class="metismenu-icon  pe-7s-pen"></i>
                                             Artes
                                         </a>

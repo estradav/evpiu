@@ -244,7 +244,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('/UploadfilesSupport','RequerimientosController@UploadfilesSupport');
             Route::get('/ImagesRequerimiento','RequerimientosController@ImagesRequerimiento');
 
-            Route::resource('Artes','ArtesController');
+            Route::resource('artes','ArtesController');
             Route::get('/ViewArtes','ArtesController@index');
             Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
             Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
