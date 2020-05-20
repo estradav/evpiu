@@ -2,10 +2,6 @@
 
 @section('page_title', 'Accesos Remotos')
 
-@section('module_title', 'Accesos Remotos')
-
-@section('subtitle', 'Acceso a aplicaciones externas .')
-
 @section('content')
     @can('aplicativos_externos')
         <div class="main-card mb-3 card">
