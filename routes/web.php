@@ -402,6 +402,14 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
             Route::get('/ingreso_cedula','MedidaPrevencionController@ingreso_cedula');
             Route::get('/consultar_empleado_invitado_cc','MedidaPrevencionController@consultar_empleado_invitado_cc');
+
+
+            Route::resource('sensores','SensorChimeneaController',['only' => [
+                'index'
+            ]]);
+
+            Route::get('sensores_chimenea','SensorChimeneaController@data_chimenea');
+            Route::get('sensores_gas','SensorChimeneaController@data_gas');
         });
     });
 });

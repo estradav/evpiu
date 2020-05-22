@@ -64,6 +64,15 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => '192.168.1.49',
+            'username' => 'admin',
+            'password' => 'CIEV2011ev',
+            'port' => 21,
+            //'passive' => true,
+            'timeout' => 30
+        ],
     ],
 
 ];

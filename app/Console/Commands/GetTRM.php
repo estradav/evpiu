@@ -88,7 +88,6 @@ class GetTRM extends Command
             }
         } catch(Exception $e){
             Log::emergency('[TAREAS AUTOMATICAS]: '. $e->getMessage());
-
             $subject = "ERROR AL SUBIR TRM";
             Mail::send('mails.automatic_task.fail_trm',[], function($msj) use($subject){
                 $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");

@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateSensorChimeneasTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('sensor_chimeneas', function (Blueprint $table) {
+            $table->id();
+            $table->string('time');
+            $table->string('temperature_inyecctora');
+            $table->string('temperature_horno');
+            $table->string('fecha');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('sensor_chimeneas');
+    }
+}

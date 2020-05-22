@@ -1375,7 +1375,7 @@ class GestionClientesController extends Controller
         $apellidos_lenght = strlen($apellidos_lenght ) +1;
 
         $nombre_max = '';
-        if ($request->M_primer_apellido != ''){
+        if (trim($request->M_primer_apellido) != ''){
             $nombre_max = $request->M_primer_apellido.' '.$request->M_segundo_apellido.' '.$request->M_primer_nombre.' '.$request->M_segundo_nombre;
         }else{
             $nombre_max = $request->M_primer_nombre;
@@ -1508,15 +1508,17 @@ class GestionClientesController extends Controller
                     'codigoPostal'                     =>  $request->M_Codigo_postal,
                 ]);
 
-            DB::connection('DMS')
-                ->table('terceros_nombres')
-                ->insert([
-                    'nit'                  =>  $request->M_Nit_cc,
-                    'primer_apellido'      =>  $request->M_primer_apellido,
-                    'segundo_apellido'     =>  $request->M_segundo_apellido,
-                    'primer_nombre'        =>  $request->M_primer_nombre,
-                    'segundo_nombre'       =>  $request->M_segundo_nombre
-                ]);
+            if (trim($request->M_primer_apellido) != ''){
+                DB::connection('DMS')
+                    ->table('terceros_nombres')
+                    ->insert([
+                        'nit'                  =>  $request->M_Nit_cc,
+                        'primer_apellido'      =>  $request->M_primer_apellido,
+                        'segundo_apellido'     =>  $request->M_segundo_apellido,
+                        'primer_nombre'        =>  $request->M_primer_nombre,
+                        'segundo_nombre'       =>  $request->M_segundo_nombre
+                    ]);
+            }
 
             DB::commit();
 

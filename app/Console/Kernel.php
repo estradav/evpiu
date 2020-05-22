@@ -17,7 +17,9 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CloseForecasts',
         'App\Console\Commands\InvoiceAudit',
         'App\Console\Commands\ExitAllEmployees',
-        'App\Console\Commands\PermisionFolder'
+        'App\Console\Commands\PermisionFolder',
+        'App\Console\Commands\GetAllFilesToSensors',
+        'App\Console\Commands\GetSensorsData'
     ];
 
     /**
@@ -33,6 +35,7 @@ class Kernel extends ConsoleKernel
          $schedule->command('invoice:audit')->dailyAt('06:30');
          $schedule->command('exit:employees')->dailyAt('23:50');
          $schedule->command('permission:folder')->dailyAt('03:00');
+         $schedule->command('sensors:day')->hourly();
     }
 
     /**
