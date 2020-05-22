@@ -136,7 +136,7 @@
                 load_data();
                 Listado_de_facturas();
 
-                let table;
+                var table;
 
                 function load_data(from_date = '', to_date = '' ,fe_start = '', fe_end = '', type_doc = '')
                 {
@@ -172,7 +172,7 @@
                         	[ 1, "asc" ]
                         ],
                         language: {
-                            link: '/Spanish.json'
+                            url: '/Spanish.json'
                         }
                     });
                 }
