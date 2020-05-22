@@ -83,56 +83,57 @@
                     success: function (data) {
                         console.log(data);
                         for (let i = 0; i < data.length; i++) {
+                            $('#tables_chimenea').append(`
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bg-success text-center">
+                                            <th scope="col">HORA</th>
+                                            <th scope="col">PROMEDIO DE ºC INYECTORAS</th>
+                                            <th scope="col">PROMEDIO DE ºC HORNO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="chimenea_table_body_`+ i +`"  class="text-center">
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="text-center table-success">
+                                            <td></td>
+                                            <td><b> ºC INYECTORAS</b></td>
+                                            <td><b>ºC HORNO</b></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td><b>VALOR MAXIMO:</b></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td><b>VALOR MINIMO:</b></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <br>
+                            `);
+
                             for (var key in data[i]) {
                                 // skip loop if the property is from prototype
                                 if (!data[i].hasOwnProperty(key)) continue;
 
                                 var obj = data[i][key];
 
-                                console.log(obj['time']);
-
-                                $('#tables_chimenea').append(`
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr class="bg-success text-center">
-                                                <th scope="col">HORA</th>
-                                                <th scope="col">PROMEDIO DE ºC INYECTORAS</th>
-                                                <th scope="col">PROMEDIO DE ºC HORNO</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="chimenea_table_body" class="text-center">
-                                              <tr>
-                                                  <td>`+ obj['time']  +`</td>
-                                                  <td></td>
-                                                  <td></td>
-                                              </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr class="text-center table-success">
-                                                <td></td>
-                                                <td><b> ºC INYECTORAS</b></td>
-                                                <td><b>ºC HORNO</b></td>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <td><b>VALOR MAXIMO:</b></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <td><b>VALOR MINIMO:</b></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                    <br>
+                                $('#chimenea_table_body_'+ i).append(`
+                                    <tr>
+                                       <td>`+ obj['time']  +`</td>
+                                       <td></td>
+                                       <td></td>
+                                    </tr>
                                 `)
+
                             }
                         }
                     }
                 });
-
-
             });
 
 
