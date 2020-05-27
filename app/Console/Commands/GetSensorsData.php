@@ -51,7 +51,7 @@ class GetSensorsData extends Command
         $fecha_actual = Carbon::now()->format('d-m-y');
 
         $registros_db = DB::table('sensor_chimeneas')
-            ->where('fecha','=', Carbon::now()->format('yy-m-d'))
+            ->whereDate('fecha','=', Carbon::now()->format('yy-m-d'))
             ->count();
 
 
@@ -86,37 +86,41 @@ class GetSensorsData extends Command
         }
 
 
+
+
         /* Sensor de gas */
 
         $registros_db_gas = DB::table('sensor_gas')
-            ->where('fecha','=', Carbon::now()->format('yy-m-d'))
+            ->whereDate('fecha','=', Carbon::now()->format('yy-m-d'))
             ->count();
+
 
         $filecontent_gas =  Storage::disk('ftp')->get('Repositorio/GestionAmbiental/MedidorGas/'.$fecha_actual);
         $filecontent_gas =  explode("\n", $filecontent_gas);
 
 
-        $data = [];
+        $data_gas = [];
         foreach($filecontent_gas as $line) {
-            array_push($data, $line);
-        }
-
-        $stream_data = [];
-        foreach($data as $line){
-            array_push($stream_data, explode("\t", $line));
+            array_push($data_gas, $line);
         }
 
 
-        unset($stream_data[sizeof($stream_data)-1]);
+        $stream_data_gas = [];
+        foreach($data_gas as $line){
+            array_push($stream_data_gas, explode("\t", $line));
+        }
+
+
+        unset($stream_data_gas[sizeof($stream_data_gas)-1]);
         $contador_errors_gas = 0;
-        for ($i = $registros_db_gas; $i <= sizeof($stream_data) - 1; $i++){
+        for ($i = $registros_db_gas; $i <= sizeof($stream_data_gas) - 1; $i++){
             DB::table('sensor_gas')->insert([
-                'time'      =>  $stream_data[$i][0],
-                'lectura'   =>  $stream_data[$i][1],
+                'time'      =>  $stream_data_gas[$i][0],
+                'lectura'   =>  $stream_data_gas[$i][1],
                 'fecha'     =>  Carbon::now()->format('yy-m-d')
             ]);
 
-            if ($stream_data[$i][1] == '0,0'){
+            if ($stream_data_gas[$i][1] == '0,0'){
                 $contador_errors_gas++;
             }
         }
