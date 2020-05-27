@@ -93,7 +93,7 @@
                             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
                         ],
                         language: {
-                                link: '/Spanish.json'
+                                url: '/Spanish.json'
                             },
                             buttons: {
                                 copy: "Copiar",

@@ -51,8 +51,9 @@ class GetSensorsData extends Command
         $fecha_actual = Carbon::now()->format('d-m-y');
 
         $registros_db = DB::table('sensor_chimeneas')
-            ->where('fecha','=', $fecha_actual)
+            ->where('fecha','=', Carbon::now()->format('yy-m-d'))
             ->count();
+
 
         $filecontent =  Storage::disk('ftp')->get('Repositorio/GestionAmbiental/Chimenea/'.$fecha_actual);
         $filecontent = explode("\n", $filecontent);
@@ -88,7 +89,7 @@ class GetSensorsData extends Command
         /* Sensor de gas */
 
         $registros_db_gas = DB::table('sensor_gas')
-            ->where('fecha','=', $fecha_actual)
+            ->where('fecha','=', Carbon::now()->format('yy-m-d'))
             ->count();
 
         $filecontent_gas =  Storage::disk('ftp')->get('Repositorio/GestionAmbiental/MedidorGas/'.$fecha_actual);
@@ -108,7 +109,6 @@ class GetSensorsData extends Command
 
         unset($stream_data[sizeof($stream_data)-1]);
         $contador_errors_gas = 0;
-
         for ($i = $registros_db_gas; $i <= sizeof($stream_data) - 1; $i++){
             DB::table('sensor_gas')->insert([
                 'time'      =>  $stream_data[$i][0],
@@ -126,7 +126,7 @@ class GetSensorsData extends Command
         if ($contador_errors_gas > 3 || $contador_errors_chimenea > 3){
             $subject = "SENSORES APAGADOS";
             Mail::send('mails.automatic_task.sensors_off',[], function($msj) use($subject){
-                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->from("notificacionesitciev@gmail.com","Notificaciones EV-PIU");
                 $msj->subject($subject);
                 $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
                 $msj->cc("dcorrea@estradavelasquez.com");

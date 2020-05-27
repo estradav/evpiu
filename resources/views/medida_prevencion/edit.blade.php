@@ -11,11 +11,11 @@
                         {{$employee[0]->employee}}
                     </div>
 
-                    <div class="text-right col-6">
+                    <div class="text-right col-6" >
                         @if ($employee[0]->state == 1)
-                            <span class="badge badge-primary">trabajando</span>
+                            <span class="badge badge-primary change_status" id="{{$employee[0]->id}}" style="cursor: pointer !important;">trabajando</span>
                         @else
-                            <span class="badge badge-success">en casa</span>
+                            <span class="badge badge-success change_status" id="{{$employee[0]->id}}" style="cursor: pointer !important;">en casa</span>
                         @endif
                     </div>
                 </div>
@@ -84,9 +84,8 @@
 
             $(document).on('click','.edit_time_enter', function () {
                 let id = this.id;
-                id = id.split(',')
+                id = id.split(',');
 
-                console.log(id);
                 swal.mixin({
                     icon: 'info',
                     title: 'Hora de entrada',
@@ -114,7 +113,6 @@
                                 'id': id[1],
                                 'time_enter': document.getElementById("time_enter_edit").value,
                             };
-                            console.log(array)
                             return array;
 
                         },
@@ -309,7 +307,6 @@
 
                 function GetFormattedDate(date) {
                     var todayTime = new Date(date);
-                    console.log(todayTime)
 
                     var month   = ("0" + (todayTime.getMonth() + 1)).slice(-2)
                     var day     = ("0" + todayTime.getDate()).slice(-2);
@@ -379,6 +376,40 @@
                         result.dismiss === Swal.DismissReason.cancel
                     }
                 })
+            });
+
+            $(document).on('click', '.change_status', function () {
+                Swal.fire({
+                    title: '¿Cambiar estado?',
+                    text: "Se cambiara el estado del empleado",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Cambiar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: '/edit_medida_prevencion_edit_status',
+                            type: 'post',
+                            data: {
+                                id: this.id
+                            },
+                            success: function (data) {
+                                window.location.reload();
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: data,
+                                })
+                            }
+                        })
+                    }
+                })
+
             });
         });
     </script>

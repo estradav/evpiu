@@ -99,7 +99,7 @@ class CloseForecasts extends Command
 
             $subject = "PRONOSTICOS CERRADOS";
             Mail::send('mails.automatic_task.close_forecast',[], function($msj) use($subject){
-                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->from("notificacionesitciev@gmail.com","Notificaciones EV-PIU");
                 $msj->subject($subject);
                 $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
                 $msj->cc("dcorrea@estradavelasquez.com");
@@ -111,7 +111,7 @@ class CloseForecasts extends Command
 
             $subject = "ERROR AL CERRAR PRONOSTICOS";
             Mail::send('mails.automatic_task.fail_close_forecast',[], function($msj) use($subject){
-                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->from("notificacionesitciev@gmail.com","Notificaciones EV-PIU");
                 $msj->subject($subject);
                 $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
                 $msj->cc("dcorrea@estradavelasquez.com");

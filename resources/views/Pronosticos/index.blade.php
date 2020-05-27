@@ -131,27 +131,7 @@
                             {data: 'vendedor', name: 'vendedor',orderable: true, searchable: true},
                         ],
                         language: {
-                            // traduccion de datatables
-                            processing: "Procesando...",
-                            search: "Buscar&nbsp;:",
-                            lengthMenu: "Mostrar _MENU_ registros",
-                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                            infoPostFix: "",
-                            loadingRecords: "Cargando...",
-                            zeroRecords: "No se encontraron resultados",
-                            emptyTable: "Ningún registro disponible en esta tabla :C",
-                            paginate: {
-                                first: "Primero",
-                                previous: "Anterior",
-                                next: "Siguiente",
-                                last: "Ultimo"
-                            },
-                            aria: {
-                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                                sortDescending: ": Activar para ordenar la columna de manera descendente"
-                            }
+                            url: '/Spanish.json'
                         },
                         rowCallback: function (row, data, index) {
                             if (data.estado == 5) {
@@ -233,34 +213,13 @@
                             {data: 'Pendi', name: 'Pendi', orderable: false, searchable: false},
                         ],
                         language: {
-                            // traduccion de datatables
-                            processing: "Procesando...",
-                            search: "Buscar&nbsp;:",
-                            lengthMenu: "Mostrar _MENU_ registros",
-                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                            infoPostFix: "",
-                            loadingRecords: "Cargando...",
-                            zeroRecords: "No se encontraron resultados",
-                            emptyTable: "No se encontraron Cantidades Comprometidas para esta Referencia",
-                            paginate: {
-                                first: "Primero",
-                                previous: "Anterior",
-                                next: "Siguiente",
-                                last: "Ultimo"
-                            },
-                            aria: {
-                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                                sortDescending: ": Activar para ordenar la columna de manera descendente"
-                            }
+                            url: '/Spanish.json'
                         },
                     })
                 }
 
                 $('#CantComp').click(function () {
                     var CantCompNum = $('.CantComp').val();
-                    console.log('Valor: '+ CantCompNum);
                     if(CantCompNum != '')
                     {
                         $('.CantComprometTable1').DataTable().destroy();
@@ -294,34 +253,13 @@
                             {data: 'cantidad', name: 'cantidad', orderable: false, searchable: false},
                         ],
                         language: {
-                            // traduccion de datatables
-                            processing: "Procesando...",
-                            search: "Buscar&nbsp;:",
-                            lengthMenu: "Mostrar _MENU_ registros",
-                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                            infoPostFix: "",
-                            loadingRecords: "Cargando...",
-                            zeroRecords: "No se encontraron resultados",
-                            emptyTable: "No se encontraron Cantidades Comprometidas para esta Referencia",
-                            paginate: {
-                                first: "Primero",
-                                previous: "Anterior",
-                                next: "Siguiente",
-                                last: "Ultimo"
-                            },
-                            aria: {
-                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                                sortDescending: ": Activar para ordenar la columna de manera descendente"
-                            }
+                            url: '/Spanish.json'
                         }
                     })
                 }
 
                 $('#Detail').click(function () {
                     var DetLot = $('.Detalle').val();
-                    console.log('Valor1: '+ DetLot);
                     if(DetLot != '')
                     {
                         $('.InvlotBodTable1').DataTable().destroy();
@@ -355,7 +293,6 @@
                         data: {Numero: value},
                         success: function (data) {
                             $('#data').html('');
-                            console.log(data);
                             $('#PronosticoTitle').html('PRONOSTICO: ' + value);
                             if(data.pronostico.length != 0 ){
                                 var i = 0;

@@ -251,9 +251,7 @@
                         	numero: Numero_factura
                         },
                         success: function (data) {
-                        	console.log(data);
                         	var ciudad_est_pais = data['encabezado'][0]['ciudad'].trim() + '-'+ data['encabezado'][0]['dpto'].trim() + '-' + data['encabezado'][0]['pais'].trim();
-                        	console.log(data['encabezado']);
                             $('#razon_social').val(data['encabezado'][0]['nombres'].trim());
                             $('#direccion').val(data['encabezado'][0]['direccion'].trim());
                             $('#tipo_cliente').val(data['encabezado'][0]['tipo_cliente'].trim());
@@ -521,7 +519,6 @@
                         };
                         Items.push(values);
                     }
-                    console.log(Items);
 
                     $.ajaxSetup({
                         headers: {
@@ -537,7 +534,6 @@
                             encabezado:encabezado
                         },
                         success: function (data) {
-                            console.log(data);
                             Swal.fire({
                                 icon: 'success',
                                 title: '¡Guardado!',
@@ -560,7 +556,6 @@
                     	Sumar();
                     }else{
                     	var Descuento = (bruto * value) / 100;
-                    	console.log('Descuento:'+Descuento);
                         $('#Total_descuento').val(Descuento);
                         Sumar();
                     }

@@ -451,7 +451,6 @@
             	var table;
                 var CodVenUsuario1 =  @json( Auth::user()->codvendedor );
                 var NombreVendedor = @json( Auth::user()->name );
-                console.log(CodVenUsuario1);
                 LoadTable();
 
                 $.ajaxSetup({
@@ -485,7 +484,7 @@
                             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
                         ],
                         language: {
-                            link: '/Spanish.json'
+                            url: '/Spanish.json'
                         },
                         rowCallback: function (row, data, index) {
                         	if (data.Estado == 1) {
@@ -623,7 +622,6 @@
                                 var resp = $.map(data, function (obj) {
                                     return obj
                                 });
-                                console.log(data);
                                 response(resp);
                             }
                         })
@@ -682,7 +680,6 @@
                 	var Subtotal= $('#TotalItemsSubtotal').val();
                 	var Totaliva = Subtotal * 0.19;
 
-                	console.log(Totaliva);
                 	if(Selectiva == 0)
                 	{
                         $('#TotalItemsIva').val('0');
@@ -729,7 +726,6 @@
                 	var desc  = $('#TotalItemsDiscount').val();
                 	var subtotal = bruto - desc;
                 	$('#TotalItemsSubtotal').val(subtotal);
-                	console.log(bruto , desc);
                 }
 
                 function Totalpedido(){
@@ -896,7 +892,6 @@
                                 destino: e.querySelector('.idestino').innerText
                             };
                             Items.push(fila);
-                            console.log(Items);
                         });
 
                         $.ajax({
@@ -1166,7 +1161,7 @@
                     })
                 });
 
-                $('body').on('click', '.Viewpdf', function () {
+                $(document).on('click', '.Viewpdf', function () {
                     var id = $(this).attr("id");
                     $.ajax({
                         type: "get",
@@ -1174,7 +1169,6 @@
                         data: {id: id},
                         dataType: "json",
                         success: function (data) {
-                        	console.log(data[1]);
                         	if(data != null){
                                 $('#PdfTitle').html('Pedido #'+data[0][0]['id']);
                                 $('#PdfCliente').html(data[0][0]['NombreCliente']);

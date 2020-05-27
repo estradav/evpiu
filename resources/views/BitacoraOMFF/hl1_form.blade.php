@@ -187,7 +187,6 @@
 
                         data_form.push(created_by);
 
-                        console.log(data_form);
                         $.ajax({
                             url: '/save_bitacoraomff_hl1',
                             type: 'post',

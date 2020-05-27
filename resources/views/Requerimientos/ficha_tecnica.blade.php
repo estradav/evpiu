@@ -9,7 +9,7 @@
     @can('show_requerimientos.view')
         <div class="row">
             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
-                <div class="card testvisual">
+                <div class="ain-card mb-3 card testvisual">
                     <div class="card-header">
                         INFORMACION GENERAL
                     </div>
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                <div class="card testvisual">
+                <div class="main-card mb-3 card testvisual">
                     <div class="card-header">
                         ARCHIVOS DE SOPORTE
                     </div>
@@ -69,7 +69,7 @@
         </div>
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
-                <div class="card testvisual">
+                <div class="main-card mb-3 card testvisual">
                     <div class="card-header">
                         DETALLE REQUERIMIENTO
                     </div>
@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
-                <div class="card testvisual">
+                <div class="main-card mb-3 card testvisual">
                     <div class="card-header">
                         OPCIONES
                     </div>
@@ -116,7 +116,7 @@
         </div>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="card">
+                <div class="main-card mb-3 card">
                     <div class="card-header">
                         PROPUESTAS
                     </div>
@@ -146,261 +146,263 @@
             </div>
         </div>
 
-        <div class="modal fade bd-example-modal-lg" id="ViewArtModal" tabindex="-1" role="dialog" aria-labelledby="ViewArtModal" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ViewArtTitle"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="">
-                        <div id="ViewArtPdf" style="height:750px;" ></div>
-                    </div>
-                    <div class="modal-footer" style="text-align: center !important;">
-                        <button class="btn btn-primary" data-dismiss="modal" id="CloseViewArt">Aceptar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" id="timelinemodal" name="timelinemodal" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-align: right !important; margin-top: 10px; margin-right: 12px">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <br>
-                    <div class="col-sm-12">
-                        <div class="container py-2" id="DetallesComentariosReque">
-
+        @section('modal')
+            <div class="modal fade bd-example-modal-lg" id="ViewArtModal" tabindex="-1" role="dialog" aria-labelledby="ViewArtModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ViewArtTitle"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="">
+                            <div id="ViewArtPdf" style="height:750px;" ></div>
+                        </div>
+                        <div class="modal-footer" style="text-align: center !important;">
+                            <button class="btn btn-primary" data-dismiss="modal" id="CloseViewArt">Aceptar</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="modal fade bd-example-modal-xl" id="PdfView" tabindex="-1" role="dialog" aria-labelledby="PdfView" aria-hidden="true" style="overflow-y: scroll;">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="PdfTitle"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" id="timelinemodal" name="timelinemodal" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="text-align: right !important; margin-top: 10px; margin-right: 12px">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
-                    <div class="modal-body" id="TextoImprimir" >
-                        <div class="wrapper">
-                            <section class="invoice" style="text-transform: uppercase">
-                                <div class="row text-center">
-                                    <div class="col-12">
-                                        <img src="/img/Logo_v2.png" alt="" style="width: 150px !important; height: 109px !important;" class="headers">
-                                    </div>
-                                    <div class="col-12">
-                                        <label style="margin: -1px">CI Estrada Velasquez y Cia SAS</label> <br>
-                                        <label style="margin: -1px">CR 55 29 C 14 ZONA IND. DE BELEN, MEDELLIN, TEL 2656665</label><br>
-                                        <label style="margin: -1px;">Requerimiento No.: </label> <label id="PDFnumeroreq"></label> - <label style="margin: -1px">Propuesta No.: </label>
-                                        <label id="PDFnumeroprop"></label>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row text-center">
-                                    <div class="col-12">
-                                        <label>ESPECIFICACIONES DE DISEÑO</label>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row invoice-info text-center" style="margin-left: 15%; margin-right: 15%">
-                                    <div class="col-sm-6 invoice-col text-left">
-                                        <address>
-                                            <b>ARTICULO:</b> <label id="PDFarticulo"></label> <br>
-                                            <b>RELIEVE:</b> <label id="PDFrelieve"></label> <br>
-                                            <b>MARCA:</b> <label id="PDFmarca"></label> <br>
-                                            <b>MEDIDA:</b> <a href="javascript:void(0)" id="PDFMedida"></a>
-                                        </address>
-                                    </div>
-                                    <div class="col-sm-6 invoice-col text-left">
-                                        <address>
-                                            <b>VENDEDOR:</b> <label id="PDFvendedor"></label> <br>
-                                            <b>DISEÑADOR:</b> <label id="PDFdiseñador"></label> <br>
-                                            <b>FECHA:</b> <label id="PDFfecha"></label>
-                                        </address>
-                                    </div>
+                        <br>
+                        <div class="col-sm-12">
+                            <div class="container py-2" id="DetallesComentariosReque">
 
-                                    <div class="col-sm-12 text-center">
-                                        <table style="width: 740px;" heig cellspacing="3" cellpadding="3" border="1">
-                                            <tr>
-                                                <td>
-                                                    <b>DIBUJO 2D  <a href="javascript:void(0)" class="Upload2DProp"> <i class="fas fa-file-upload"></i></a></b>
-                                                </td>
-                                                <td>
-                                                    <b>DIBUJO 3D  <a href="javascript:void(0)" class="Upload3DProp"> <i class="fas fa-file-upload"></i></a></b>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="height: 330px; width: 370px" >
-                                                    <div class="image-container" id="PDFdibujo2d">
-
-                                                    </div>
-                                                </td>
-                                                <td style="height: 330px; width: 370px">
-                                                    <div class="image-container" id="PDFdibujo3d">
-
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <table style="width: 740px;" heig cellspacing="1" cellpadding="2" border="1">
-                                            <tr>
-                                                <td>
-                                                    <b>PLANO  <a href="javascript:void(0)" class="UploadPlanoProp"> <i class="fas fa-file-upload"></i></a></b>
-                                                </td>
-                                                <td>
-                                                    <b>CARACTERISTICAS <a href="javascript:void(0)" class="Add_Caracteristicas"> <i class="fas fa-comment"></i></a></b>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="height: 330px; width: 370px" >
-                                                    <div id="PDFplano">
-
-                                                    </div>
-                                                </td>
-                                                <td style="height: 330px; width: 370px" >
-                                                    <div class="text-center" style="height: 320px; width: 360px" id="PDFcaracteristicas">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="dropdown mr-1">
-                            <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-primary dropdown-toggle">Opciones <span class="caret"></span></button>
-                            <div class="dropdown-menu" aria-labelledby="Opciones_reque">
-                                <a class="dropdown-item AprobarProp" href="javascript:void(0);">Aprobar</a>
-                                <a class="dropdown-item RechazarProp" href="javascript:void(0);">Rechazar</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item FinalizarProp" href="javascript:void(0);">Finalizar</a>
-                                <a class="dropdown-item CrearMedida" href="javascript:void(0);">Crear Medida</a>
-                                <a class="dropdown-item EnviarParaAprobacion" href="javascript:void(0);">Enviar para aprobacion</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item ImprimirPdf" href="javascript:void(0);">Imprimir</a>
                             </div>
-                        </div>
-
-                        <button type="button" class="btn btn-light Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
-                        <div class="btn-group" style="display: none !important;">
-                            <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a  href="javascript:void(0)" class="AprobarProp">Aprobar</a></li>
-                                <button type="button" class="btn btn-light AprobarProp">Aprobar</button>
-                                <button type="button" class="btn btn-light RechazarProp">Rechazar</button>
-                                <button type="button" class="btn btn-light FinalizarProp">Finalizar</button>
-                                <button type="button" class="btn btn-light CrearMedida">Crear Medida</button>
-                                <button type="button" class="btn btn-light ImprimirPdf" id="ImprimirPdf">Imprimir</button>
-                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="modal fade bd-example-modal-lg" id="medidamodal" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modelHeading"> </h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="medidaForm" name="medidaForm" class="form-horizontal">
-                        <div class="modal-body">
-                            <input type="hidden" name="medida_id" id="medida_id">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name" class="col-sm-6 control-label">Linea:</label>
-                                        <div class="col-sm-12">
-                                            <select class="form-control" name="med_lineas_id" id="med_lineas_id">
-                                                @foreach ( $Lineas->get() as $index => $Linea)
-                                                    <option value="{{ $index }}" {{ old('med_lineas_id') == $index ? 'selected' : ''}}>
-                                                        {{ $Linea }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+            <div class="modal fade bd-example-modal-xl" id="PdfView" tabindex="-1" role="dialog" aria-labelledby="PdfView" aria-hidden="true" style="overflow-y: scroll;">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="PdfTitle"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="TextoImprimir" >
+                            <div class="wrapper">
+                                <section class="invoice" style="text-transform: uppercase">
+                                    <div class="row text-center">
+                                        <div class="col-12">
+                                            <img src="/img/Logo_v2.png" alt="" style="width: 150px !important; height: 109px !important;" class="headers">
+                                        </div>
+                                        <div class="col-12">
+                                            <label style="margin: -1px">CI Estrada Velasquez y Cia SAS</label> <br>
+                                            <label style="margin: -1px">CR 55 29 C 14 ZONA IND. DE BELEN, MEDELLIN, TEL 2656665</label><br>
+                                            <label style="margin: -1px;">Requerimiento No.: </label> <label id="PDFnumeroreq"></label> - <label style="margin: -1px">Propuesta No.: </label>
+                                            <label id="PDFnumeroprop"></label>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name" class="col-sm-3 control-label">Sublinea:</label>
-                                        <div class="col-sm-12">
-                                            <select class="form-control" name="med_sublineas_id" id="med_sublineas_id"></select>
+                                    <br>
+                                    <div class="row text-center">
+                                        <div class="col-12">
+                                            <label>ESPECIFICACIONES DE DISEÑO</label>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name" class="col-sm-6 control-label">Codigo:</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="cod" name="cod" value=""  onkeyup="this.value=this.value.toUpperCase();">
+                                    <br>
+                                    <div class="row invoice-info text-center" style="margin-left: 15%; margin-right: 15%">
+                                        <div class="col-sm-6 invoice-col text-left">
+                                            <address>
+                                                <b>ARTICULO:</b> <label id="PDFarticulo"></label> <br>
+                                                <b>RELIEVE:</b> <label id="PDFrelieve"></label> <br>
+                                                <b>MARCA:</b> <label id="PDFmarca"></label> <br>
+                                                <b>MEDIDA:</b> <a href="javascript:void(0)" id="PDFMedida"></a>
+                                            </address>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="mm2" class="col-sm-6 control-label">Milimetros²:</label>
-                                        <div class="col-sm-12">
-                                            <input type="number" class="form-control" id="mm2" name="mm2" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                        <div class="col-sm-6 invoice-col text-left">
+                                            <address>
+                                                <b>VENDEDOR:</b> <label id="PDFvendedor"></label> <br>
+                                                <b>DISEÑADOR:</b> <label id="PDFdiseñador"></label> <br>
+                                                <b>FECHA:</b> <label id="PDFfecha"></label>
+                                            </address>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="denominacion" class="col-sm-6 control-label">Denominacion:</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="denominacion" name="denominacion" value="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="denominacion" class="col-sm-12 control-label">Unidad Medida:</label>
-                                        <div class="col-sm-12">
-                                            <select name="UndMedida" id="UndMedida" class="form-control UndMedida">
 
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                        <div class="col-sm-12 text-center">
+                                            <table style="width: 740px;" heig cellspacing="3" cellpadding="3" border="1">
+                                                <tr>
+                                                    <td>
+                                                        <b>DIBUJO 2D  <a href="javascript:void(0)" class="Upload2DProp"> <i class="fas fa-file-upload"></i></a></b>
+                                                    </td>
+                                                    <td>
+                                                        <b>DIBUJO 3D  <a href="javascript:void(0)" class="Upload3DProp"> <i class="fas fa-file-upload"></i></a></b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 330px; width: 370px" >
+                                                        <div class="image-container" id="PDFdibujo2d">
 
-                            <div class="row" id="campos" name="campos">
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label class="col-sm-12 control-label">Comentarios:</label>
-                                        <div class="col-sm-12">
-                                            <textarea id="coments" name="coments" placeholder="Comentarios" class="form-control"></textarea>
+                                                        </div>
+                                                    </td>
+                                                    <td style="height: 330px; width: 370px">
+                                                        <div class="image-container" id="PDFdibujo3d">
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table style="width: 740px;" heig cellspacing="1" cellpadding="2" border="1">
+                                                <tr>
+                                                    <td>
+                                                        <b>PLANO  <a href="javascript:void(0)" class="UploadPlanoProp"> <i class="fas fa-file-upload"></i></a></b>
+                                                    </td>
+                                                    <td>
+                                                        <b>CARACTERISTICAS <a href="javascript:void(0)" class="Add_Caracteristicas"> <i class="fas fa-comment"></i></a></b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 330px; width: 370px" >
+                                                        <div id="PDFplano">
+
+                                                        </div>
+                                                    </td>
+                                                    <td style="height: 330px; width: 370px" >
+                                                        <div class="text-center" style="height: 320px; width: 360px" id="PDFcaracteristicas">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                     </div>
-                                </div>
+                                </section>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <div class="dropdown mr-1">
+                                <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-primary dropdown-toggle">Opciones <span class="caret"></span></button>
+                                <div class="dropdown-menu" aria-labelledby="Opciones_reque">
+                                    <a class="dropdown-item AprobarProp" href="javascript:void(0);">Aprobar</a>
+                                    <a class="dropdown-item RechazarProp" href="javascript:void(0);">Rechazar</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item FinalizarProp" href="javascript:void(0);">Finalizar</a>
+                                    <a class="dropdown-item CrearMedida" href="javascript:void(0);">Crear Medida</a>
+                                    <a class="dropdown-item EnviarParaAprobacion" href="javascript:void(0);">Enviar para aprobacion</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item ImprimirPdf" href="javascript:void(0);">Imprimir</a>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-light Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
+                            <div class="btn-group" style="display: none !important;">
+                                <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a  href="javascript:void(0)" class="AprobarProp">Aprobar</a></li>
+                                    <button type="button" class="btn btn-light AprobarProp">Aprobar</button>
+                                    <button type="button" class="btn btn-light RechazarProp">Rechazar</button>
+                                    <button type="button" class="btn btn-light FinalizarProp">Finalizar</button>
+                                    <button type="button" class="btn btn-light CrearMedida">Crear Medida</button>
+                                    <button type="button" class="btn btn-light ImprimirPdf" id="ImprimirPdf">Imprimir</button>
+                                </ul>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="modal fade bd-example-modal-lg" id="medidamodal" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modelHeading"> </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="medidaForm" name="medidaForm" class="form-horizontal">
+                            <div class="modal-body">
+                                <input type="hidden" name="medida_id" id="medida_id">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-6 control-label">Linea:</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="med_lineas_id" id="med_lineas_id">
+                                                    @foreach ( $Lineas->get() as $index => $Linea)
+                                                        <option value="{{ $index }}" {{ old('med_lineas_id') == $index ? 'selected' : ''}}>
+                                                            {{ $Linea }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">Sublinea:</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="med_sublineas_id" id="med_sublineas_id"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-6 control-label">Codigo:</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" id="cod" name="cod" value=""  onkeyup="this.value=this.value.toUpperCase();">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="mm2" class="col-sm-6 control-label">Milimetros²:</label>
+                                            <div class="col-sm-12">
+                                                <input type="number" class="form-control" id="mm2" name="mm2" value="" onkeyup="this.value=this.value.toUpperCase();">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="denominacion" class="col-sm-6 control-label">Denominacion:</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" id="denominacion" name="denominacion" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="denominacion" class="col-sm-12 control-label">Unidad Medida:</label>
+                                            <div class="col-sm-12">
+                                                <select name="UndMedida" id="UndMedida" class="form-control UndMedida">
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="campos" name="campos">
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-12 control-label">Comentarios:</label>
+                                            <div class="col-sm-12">
+                                                <textarea id="coments" name="coments" placeholder="Comentarios" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="saveBtn" value="Crear">Guardar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endsection
         <style>
             .preloader {
                 width: 140px;
@@ -457,7 +459,6 @@
                 var Url = window.location.href;
                 var New_reque_Producto;
 
-                console.log(id);
 
                 $('body').on('click','.newcoment',function () {
                     var id = $(this).attr('id');
@@ -534,7 +535,6 @@
                             $('#InfoInfo').html(data.encabezado[0].informacion);
                             $('#InfoMarca').html(data.encabezado[0].marca);
                             $('#InfoDate').html(data.encabezado[0].created_at);
-                            console.log(data.Datos);
 
                             $(data.Datos).each(function () {
                                 if (i % 2 == 0)
@@ -793,29 +793,9 @@
                             targets: [ 5 ]
                         }],
                         language: {
-                            processing: "Procesando...",
-                            search: "Buscar&nbsp;:",
-                            lengthMenu: "Mostrar _MENU_ registros",
-                            info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                            infoPostFix: "",
-                            loadingRecords: "Cargando...",
-                            zeroRecords: "No se encontraron resultados",
-                            emptyTable: "No se encontraron propuestas",
-                            paginate: {
-                                first: "Primero",
-                                previous: "Anterior",
-                                next: "Siguiente",
-                                last: "Ultimo"
-                            },
-                            aria: {
-                                sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                                sortDescending: ": Activar para ordenar la columna de manera descendente"
-                            }
+                           url: '/Spanish.json'
                         },
                         rowCallback: function( row, data, index ) {
-                        	console.log(data);
                             if (data.estado == 1) {
                                 $(row).find('td:eq(3)').html('Propuesta Creada');
                             }
@@ -1124,7 +1104,6 @@
                         focus: function (event, ui) {
                             $('#NewPropArticuloDesc').val([ui.item.Cod_Art]);
                             New_reque_Producto = ui.item.id
-                            console.log(New_reque_Producto);
 
                             return true;
                         },
@@ -1460,8 +1439,6 @@
                             Prop: Prop
                         },
                         success: function (data) {
-                        	console.log(data.archivos);
-
                             $('#PDFnumeroreq').html(id);
                             $('#PDFnumeroprop').html(Prop);
                             $('#PDFarticulo').html(data.propuesta[0].articulo);

@@ -144,26 +144,7 @@
                     ],
 
                     language: {
-                        processing: "Procesando...",
-                        search: "Buscar&nbsp;:",
-                        lengthMenu: "Mostrar _MENU_ registros",
-                        info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                        infoPostFix: "",
-                        loadingRecords: "Cargando...",
-                        zeroRecords: "No se encontraron resultados",
-                        emptyTable: "Ningún registro disponible en esta tabla :C",
-                        paginate: {
-                            first: "Primero",
-                            previous: "Anterior",
-                            next: "Siguiente",
-                            last: "Ultimo"
-                        },
-                        aria: {
-                            sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                            sortDescending: ": Activar para ordenar la columna de manera descendente"
-                        }
+                        url: '/Spanish.json'
                     },
                 });
                 load_hl1();
@@ -178,7 +159,6 @@
                         type: 'get',
                         data: {date: date},
                         success: function (data) {
-                            console.log(data);
                             $('#infoModalHeader').html(date);
                             $('#infoModalBody').html('');
                             $(data).each(function () {
@@ -243,7 +223,6 @@
 
                                     $(data.turno2).each(function () {
 
-                                        console.log(data.turno2);
                                         var total_lingotes = parseInt(data.turno2[i].tb) + parseInt(data.turno2[i].rz) + parseInt(data.turno2[i].vz) + parseInt(data.turno2[i].z);
                                         var carga_operacion = (parseInt(data.turno2[i].tb) * 25)/ 17 + (parseInt(data.turno2[i].rz) * 50)/ 8.3 + (parseInt(data.turno2[i].vz) * 15)/ 14 + (parseInt(data.turno2[i].z) * 10)/ 3;
 
@@ -314,7 +293,6 @@
                             Year: Year
                         },
                         success: function (data) {
-                            console.log(data);
                             $(data).each(function () {
 
                             });
@@ -371,7 +349,7 @@
                         ],
 
                         language: {
-                           link: '/Spanish.json'
+                            url: '/Spanish.json'
                         },
                     });
                 }
@@ -386,7 +364,6 @@
                         type: 'get',
                         data: {date: date},
                         success: function (data) {
-                            console.log(data);
                             $('#infoModalHeader').html(date);
                             $('#infoModalBody').html('');
                             $(data).each(function () {

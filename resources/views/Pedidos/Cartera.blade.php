@@ -307,7 +307,7 @@
 
                         ],
                         language: {
-                            link: '/Spanish.json'
+                            url: '/Spanish.json'
                         },
                         rowCallback: function (row, data, index) {
                             if (data.Estado == 1) {
@@ -467,7 +467,6 @@
                         data: {id: id},
                         dataType: "json",
                         success: function (data) {
-                            console.log(data[1]);
                             if(data != null){
                                 $('#PdfView').modal({
                                     backdrop: 'static',

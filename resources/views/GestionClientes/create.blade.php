@@ -393,7 +393,6 @@
                         if (currentIndex < newIndex)
                         {
                             form.find(".body:eq(" + newIndex + ") label.error").remove();
-                            console.log(newIndex);
                             form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
                         }
                         form.validate().settings.ignore = ":disabled,:hidden";
@@ -633,7 +632,6 @@
                         type: "get",
                         url: '/get_paises',
                         success: function (data) {
-                            console.log(data);
                             $('#M_Pais').append('<option value="">Seleccione...</option>');
                             for (let j = 0; j <= data.length; j++) {
                                 $('#M_Pais').append('<option value="'+data[j].pais +'">'+data[j].descripcion+'</option>');
@@ -786,7 +784,6 @@
                            query: datos
                         },
                         success:function (data) {
-                            console.log(data)
                             if(data.max >= 1 ){
                                 document.getElementById('max_status').className="input-group-text text-success";
                             }else{

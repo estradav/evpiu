@@ -120,8 +120,6 @@ class EditMedidaPrevencionController extends Controller
     }
 
     public function download_informe(Request $request ){
-
-
         $data = DB::table('employee_prevention_days')
             ->join('employee_prevention','employee_prevention_days.id_employee','=','employee_prevention.id')
             ->whereBetween('created_at', array($request->star_date, $request->end_date))
@@ -152,5 +150,27 @@ class EditMedidaPrevencionController extends Controller
 
         $pdf = PDF::loadView('medida_prevencion.pdf', $values);
         return $pdf->download('archivo.pdf');
+    }
+
+    public function change_status(Request $request){
+
+        $status =   DB::table('employee_prevention')->where('id','=', $request->id)->pluck('state');
+
+        try {
+            if ($status[0] === 1){
+                DB::table('employee_prevention')->where('id','=', $request->id)->update([
+                    'state'    =>  0
+                ]);
+            }else {
+                DB::table('employee_prevention')->where('id','=', $request->id)->update([
+                    'state'    =>  1
+                ]);
+            }
+            return response()->json('Guardado', 200);
+        }catch (\Exception $e){
+
+            return response()->json($e->getMessage(), 500);
+        }
+
     }
 }

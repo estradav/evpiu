@@ -217,12 +217,11 @@
                         },
 
                         language: {
-                            link: '/Spanish.json'
+                            url: '/Spanish.json'
                         },
                         rowCallback: function (row, data, index) {
 
                             var id = data.id;
-                            console.log(id);
                             $.ajax({
                                 url: '/EstadoEnvioDianFacturacionElectronica',
                                 type: 'get',
@@ -386,7 +385,6 @@
 
                                 req.onload = function (event) {
                                     var blob = req.response;
-                                    console.log(blob.size);
                                     var link = document.createElement('a');
                                     link.href = window.URL.createObjectURL(blob);
                                     let current_datetime = new Date();
@@ -428,7 +426,6 @@
 
                 var resultado;
                 function format ( d ) {
-                    console.log(d);
                     var porc_iva = (d.valor_iva / d.subtotal) * 100;
                     var count = 0;
                     resultado = [];

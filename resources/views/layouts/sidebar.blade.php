@@ -30,7 +30,6 @@
                 <a href="{{ url('edit_medida_prevencion') }}">
                     <i class="metismenu-icon pe-7s-magic-wand">
                     </i>G. Medida de prevencion
-                    <span class="badge badge-success">New!</span>
                 </a>
             </li>
             <li class="app-sidebar__heading">Aplicativos</li>

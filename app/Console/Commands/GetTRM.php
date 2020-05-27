@@ -79,7 +79,7 @@ class GetTRM extends Command
 
                 $subject = "TRM SUBIDO CORRECTAMENTE";
                 Mail::send('mails.automatic_task.trm',[], function($msj) use($subject){
-                    $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                    $msj->from("notificacionesitciev@gmail.com","Notificaciones EV-PIU");
                     $msj->subject($subject);
                     $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
                     $msj->cc("dcorrea@estradavelasquez.com");
@@ -90,7 +90,7 @@ class GetTRM extends Command
             Log::emergency('[TAREAS AUTOMATICAS]: '. $e->getMessage());
             $subject = "ERROR AL SUBIR TRM";
             Mail::send('mails.automatic_task.fail_trm',[], function($msj) use($subject){
-                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->from("notificacionesitciev@gmail.com","Notificaciones EV-PIU");
                 $msj->subject($subject);
                 $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
                 $msj->cc("dcorrea@estradavelasquez.com");
