@@ -3,43 +3,56 @@
 @section('page_title', 'Sensor de chimenea y gas')
 
 @section('content')
-    <div class="main-card mb-3 card">
-        <div class="card-header">
-            Sensor de chimenea
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="date_chimenea">
-                        <div class="input-group-append">
-                            <button class="btn btn-success btn-lg btn-block" id="info_chimenea">GENERAR INFORME DE CHIMENEA</button>
+    @can('gestion_ambiental.sensores')
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Sensor de chimenea
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="date_chimenea">
+                            <div class="input-group-append">
+                                <button class="btn btn-success btn-lg btn-block" id="info_chimenea">GENERAR INFORME DE CHIMENEA</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 table-responsive" id="tables_chimenea">
+                    <div class="col-12 table-responsive" id="tables_chimenea">
 
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="main-card mb-3 card">
-        <div class="card-header">
-            Sensor de gas
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="date_gas">
-                        <div class="input-group-append">
-                            <button class="btn btn-success btn-lg btn-block" id="info_gas">GENERAR INFORME DE GAS</button>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Sensor de gas
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="date_gas">
+                            <div class="input-group-append">
+                                <button class="btn btn-success btn-lg btn-block" id="info_gas">GENERAR INFORME DE GAS</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 table-responsive" id="tables_gas">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="main-card mb-3 card">
+            <div class="card-body text-center">
+                <i class="fas fa-exclamation-triangle fa-4x" style="color: red"></i>
+                <h3 class="card-title" style="color: red"> ACCESO DENEGADO </h3>
+                <h3 class="card-text" style="color: red">No tiene permiso para usar esta aplicación, por favor comuníquese a la ext: 102 o escribanos al correo electrónico: auxsistemas@estradavelasquez.com para obtener acceso.</h3>
+            </div>
+        </div>
+    @endcan
 @endsection
 @push('javascript')
     <script>
@@ -79,7 +92,6 @@
                         star_date, end_date
                     },
                     success: function (data) {
-                        console.log(data);
                         if(data.length === 0){
                             $('#tables_chimenea').append(`
                                 <div class="alert alert-danger" role="alert">
@@ -92,7 +104,6 @@
                                 <div id="tables" name="tables" style="height: 600px; overflow-y: scroll;"></div>
                             `);
                             for (let i = 0; i < data.length; i++) {
-                                console.log(data.length)
                                 $('#tables').append(`
                                     <table class="table table-bordered table-sm">
                                         <thead>
@@ -174,6 +185,7 @@
             });
 
             $('#info_gas').on('click', function () {
+                $('#tables_gas').html('');
                 $.ajax({
                     url: 'sensores_gas',
                     type: 'GET',
@@ -181,7 +193,52 @@
                         star_date, end_date
                     },
                     success: function (data) {
-                        console.log(data);
+                        if(data.length === 0) {
+                            $('#tables_gas').append(`
+                                <div class="alert alert-danger" role="alert">
+                                    <h5 class="alert-heading">NO SE ENCONTRO INFORMACION!! </h5>
+                                    <p>Por favor, verifique que la fecha ingresada es correcta.</p>
+                                </div>
+                            `);
+                        }else{
+                            $('#tables_gas').append(`
+                                <div id="tables_ga" name="tables_ga" style="height: 600px; overflow-y: scroll;"></div>
+                            `);
+                            for (let i = 0; i < data.length; i++) {
+                                $('#tables_ga').append(`
+                                    <table class="table table-bordered table-sm">
+                                        <thead>
+                                            <tr class="bg-success text-center">
+                                                <th scope="col" colspan="3">`+ data[i]['00:00:00']['fecha'] +`</th>
+                                            </tr>
+                                            <tr class="bg-success text-center">
+                                                <th scope="col">HORA</th>
+                                                <th scope="col">m3 GASTADOS</th>
+                                                <th scope="col">GASTO PROMEDIO</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="gas_table_body_`+ i +`"  class="text-center">  </tbody>
+                                    </table>
+                                    <br>
+                                `);
+
+                                for (var key in data[i]) {
+                                    // skip loop if the property is from prototype
+                                    if (!data[i].hasOwnProperty(key)) continue;
+
+                                    var obj = data[i][key];
+                                    var promedio  = obj['lectura'] / obj['items'];
+
+                                    $('#gas_table_body_'+ i).append(`
+                                        <tr>
+                                           <td>`+ obj['time']  +`</td>
+                                           <td>`+ obj['lectura'].toFixed(2) +`</td>
+                                           <td>`+ promedio.toFixed(2) +`</td>
+                                        </tr>
+                                    `);
+                                }
+                            }
+                        }
                     }
                 });
             });

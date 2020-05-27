@@ -97,14 +97,11 @@ class SensorChimeneaController extends Controller
             $time = explode(':',$value->time);
             $time = $time[0].':00:00';
 
-
             $attrs[$value->fecha][] = array(
                 'fecha'     => $value->fecha,
                 'time'      => $time,
-                'lectura'   => (float)$value->lectura,
+                'lectura'   => floatval(str_replace(',', '.', str_replace('.', '', $value->lectura))),
             );
-
-            dd($attrs);
         }
 
 
@@ -112,10 +109,8 @@ class SensorChimeneaController extends Controller
 
         foreach ($attrs as $day) {
             $groups = array();
-
             foreach ($day as $item) {
                 $key = $item['time'];
-
                 if (!isset($groups[$key])) {
                     $groups[$key] = array(
                         'time' => $key,
@@ -123,7 +118,6 @@ class SensorChimeneaController extends Controller
                         'items' => 1,
                         'fecha' => $item['fecha']
                     );
-                    dd($groups);
                 } else {
                     $groups[$key]['lectura'] =  $item['lectura'] - $groups[$key]['lectura'];
                     $groups[$key]['items']++;
@@ -133,5 +127,6 @@ class SensorChimeneaController extends Controller
             array_push($array, $groups);
         }
 
+        return response()->json($array,200);
     }
 }
