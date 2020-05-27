@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>Iniciar sesión</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <style>
             .corral {
@@ -182,11 +183,23 @@
                                 <button class="button actionContinue" type="submit" id="btnLogin" name="btnLogin">Iniciar sesión</button>
                             </div>
                         </form>
+                        <p class="mt-5 mb-3 text-center">
+                            Copyright © <script>var d = new Date(); document.write(d.getFullYear());</script> <a href="https://estradavelasquez.com/">&nbsp;Estrada Velasquez</a>.
+                            <br> Todos los derechos reservados.
+                        </p>
                     </div>
                 </div>
             </section>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                $('#password').password();
+            })
+        </script>
     </body>
 </html>
