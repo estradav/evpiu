@@ -23,7 +23,7 @@ class GetSensorsData extends Command
      *
      * @var string
      */
-    protected $description = 'Obtiene datos de los archivos planos de los sensores, solo inserta en la base de datos la diferencia';
+    protected $description = 'Lee e inserta todos las lecturas de los sensores de gas y chimenea en la DB, pd: hacer una unica vez';
 
     /**
      * Create a new command instance.
@@ -43,6 +43,11 @@ class GetSensorsData extends Command
      */
     public function handle()
     {
+        $this->info('*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*');
+        $this->info('*   [CARGANDO] Por favor espere mientras termina la ejecucion de la tarea   *');
+        $this->info('*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*');
+        $this->info(' ');
+
         $fecha_actual = Carbon::now()->format('d-m-y');
 
         $registros_db = DB::table('sensor_chimeneas')
@@ -72,7 +77,7 @@ class GetSensorsData extends Command
                 'time'                      =>  $stream_data[$i][0],
                 'temperature_inyecctora'    =>  $stream_data[$i][1],
                 'temperature_horno'         =>  $stream_data[$i][2],
-                'fecha'                     =>  $fecha_actual
+                'fecha'                     =>  Carbon::now()->format('yy-m-d')
             ]);
             if ($stream_data[$i][1] == '0,0' ||  $stream_data[$i][2] == '0,0'){
                 $contador_errors_chimenea++;
@@ -108,7 +113,7 @@ class GetSensorsData extends Command
             DB::table('sensor_gas')->insert([
                 'time'      =>  $stream_data[$i][0],
                 'lectura'   =>  $stream_data[$i][1],
-                'fecha'     =>  $fecha_actual
+                'fecha'     =>  Carbon::now()->format('yy-m-d')
             ]);
 
             if ($stream_data[$i][1] == '0,0'){
@@ -127,5 +132,10 @@ class GetSensorsData extends Command
                 $msj->cc("dcorrea@estradavelasquez.com");
             });
         }
+
+        $this->info('*---*---*---*---*---*---*---*---*---*---*---*---*---*');
+        $this->info('*    [TERMINADO] Proceso terminado correctamente!   *');
+        $this->info('*---*---*---*---*---*---*---*---*---*---*---*---*---*');
+
     }
 }

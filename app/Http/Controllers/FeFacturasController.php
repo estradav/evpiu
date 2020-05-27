@@ -210,7 +210,6 @@ class FeFacturasController extends Controller
                $Regalos                 = [];
                $RegalosString           = '';
 
-
                if($encabezado->tipo_cliente  == 'EX'){
                    $bruto_factura       = $encabezado->bruto_usd;
                    $subtotal_factura    = $encabezado->bruto_usd;
@@ -233,13 +232,11 @@ class FeFacturasController extends Controller
                $total_item_valor        = $subtotal_factura + $total_valor_iva;
 
 
-               if($encabezado->motivo == 27)
-               {
+               if($encabezado->motivo == 27) {
                    $tipo_fac_en = '02';
                } else {
                    $tipo_fac_en = '01';
                }
-
 
                if($encabezado->dias == 0) {
                    $metodo_pago = 1;
@@ -247,41 +244,32 @@ class FeFacturasController extends Controller
                    $metodo_pago = 2;
                }
 
-
-               if($metodo_pago == 2)
-               {
+               if($metodo_pago == 2) {
                    $medio_pago = null;
                } else {
                    $medio_pago = 10;
                }
 
-
-               if ($encabezado->idtipodocumento == 31 )
-               {
+               if ($encabezado->idtipodocumento == 31 ) {
                    $tipo_documento_ide = 31;
                }
                else if ($encabezado->idtipodocumento == 22){
                    $tipo_documento_ide = 42;
-               }
-               else{
+               }else{
                    $tipo_documento_ide = 31;
                }
-
 
                if ($encabezado->iva != null) {
                    $id_total_impuesto_iva = '01';
                }
 
-
                if ($id_total_impuesto_iva == '01'){
                    $factor_total = '19';
                }
 
-
                if ($id_total_impuesto_iva == '01'){
                    $tarifa_unitaria_total = '0';
                }
-
 
                foreach($items_Regalo as $regalo){
                    $Regalos[] =  trim($regalo->codigoproducto).' '.trim($regalo->descripcionproducto).' '.trim($regalo->cantidad);
@@ -290,7 +278,6 @@ class FeFacturasController extends Controller
                foreach ($Regalos as $itm){
                    $RegalosString .= $itm.' + ';
                }
-
 
                $objetoXML->startElement("documento");
                $objetoXML->startElement("idnumeracion");
@@ -343,8 +330,7 @@ class FeFacturasController extends Controller
                $objetoXML->text($encabezado->moneda);
                $objetoXML->endElement();
 
-               if(trim($encabezado->OC)!= '' || trim($encabezado->OC) != null)
-               {
+               if(trim($encabezado->OC)!= '' || trim($encabezado->OC) != null) {
                    $objetoXML->startElement("ordendecompra");
                    $objetoXML->startElement("codigo");
                    $objetoXML->text(trim($encabezado->OC));
@@ -554,7 +540,6 @@ class FeFacturasController extends Controller
                    }
                    $objetoXML->endElement();
                }
-
 
                if($encabezado->tipo_cliente != 'EX' && $encabezado->iva != 0) {
                    $objetoXML->startElement("impuestos");
@@ -1366,8 +1351,7 @@ class FeFacturasController extends Controller
                     $total_cargos        = number_format($encabezado->fletes_usd,2,'.','') + number_format($encabezado->seguros_usd,2,'.','');
                     $totalpagar          = (number_format($encabezado->bruto_usd,2,'.','')  + $total_cargos);
 
-                }
-                else {
+                } else {
                     $bruto_factura       = $encabezado->bruto;
                     $subtotal_factura    = $encabezado->bruto - $encabezado->descuento;
                     $brutomasiva_factura = number_format($encabezado->bruto,2,'.','') + number_format($encabezado->iva,2,'.','');
@@ -1395,22 +1379,19 @@ class FeFacturasController extends Controller
                 }
 
                 // determina el metodo de pago
-                if($metodo_pago == 2)
-                {
+                if($metodo_pago == 2) {
                     $medio_pago = null;
                 }else {
                     $medio_pago = 10;
                 }
 
                 // valida el tipo de documento de identidad
-                if ($encabezado->idtipodocumento == 13 )
-                {
+                if ($encabezado->idtipodocumento == 13 ) {
                     $tipo_documento_ide = 13;
                 }
                 else if ($encabezado->idtipodocumento == 22){
                     $tipo_documento_ide = 42;
-                }
-                else{
+                } else{
                     $tipo_documento_ide = 31;
                 }
 

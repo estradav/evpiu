@@ -41,14 +41,20 @@ class GetAllFilesToSensors extends Command
      */
     public function handle()
     {
+        $this->info('*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*');
+        $this->info('*  [CARGANDO] Por favor espere mientras termina la ejecucion de la tarea    *');
+        $this->info('*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*');
+        $this->info(' ');
+
         $list_to_files = Storage::disk('ftp')->files('Repositorio/GestionAmbiental/Chimenea');
 
         foreach ($list_to_files as $file){
             $filecontent =  Storage::disk('ftp')->get($file);
-            $filecontent = explode("\n", $filecontent);
+            $filecontent =  explode("\n", $filecontent);
 
             $date = explode('/', $file);
-            $date = $date[3];
+            $date = explode('-', $date[3]);
+            $date = "20".$date[2]."-".$date[1]."-".$date[0];
 
             $data = [];
 
@@ -63,14 +69,17 @@ class GetAllFilesToSensors extends Command
 
             unset($stream_data[sizeof($stream_data)-1]);
 
-
             foreach($stream_data as $line){
-                DB::table('sensor_chimeneas')->insert([
-                    'time'                      =>  $line[0],
-                    'temperature_inyecctora'    =>  $line[1],
-                    'temperature_horno'         =>  $line[2],
-                    'fecha'                     =>  $date
-                ]);
+                if(array_key_exists(1,$line)){
+                    DB::table('sensor_chimeneas')->insert([
+                        'time'                      =>  $line[0],
+                        'temperature_inyecctora'    =>  $line[1],
+                        'temperature_horno'         =>  $line[2],
+                        'fecha'                     =>  $date
+                    ]);
+                }else{
+                    continue;
+                }
             }
         }
 
@@ -81,10 +90,11 @@ class GetAllFilesToSensors extends Command
             $filecontent = explode("\n", $filecontent);
 
             $date = explode('/', $file);
-            $date = $date[3];
+            $date = explode('-', $date[3]);
+            $date = "20".$date[2]."-".$date[1]."-".$date[0];
+
 
             $data = [];
-
             foreach($filecontent as $line) {
                 array_push($data, $line);
             }
@@ -93,15 +103,20 @@ class GetAllFilesToSensors extends Command
             foreach($data as $line){
                 array_push($stream_data, explode("\t", $line));
             }
+
             unset($stream_data[sizeof($stream_data)-1]);
 
-
             foreach($stream_data as $line){
-                DB::table('sensor_gas')->insert([
-                    'time'      =>  $line[0],
-                    'lectura'   =>  $line[1],
-                    'fecha'     =>  $date
-                ]);
+                if(array_key_exists(1,$line)){
+                    DB::table('sensor_gas')->insert([
+                        'time'      =>  $line[0],
+                        'lectura'   =>  $line[1],
+                        'fecha'     =>  $date
+                    ]);
+                }else{
+                    continue;
+                }
+
             }
         }
 

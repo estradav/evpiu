@@ -28,7 +28,7 @@ class SensorChimeneaController extends Controller
         $end_date   = $request->end_date;
 
         $data = DB::table('sensor_chimeneas')
-            ->whereBetween('fecha', array($start_date, $end_date))
+            ->whereBetween('fecha',  [$start_date, $end_date])
             ->get();
 
         $attrs = array();
@@ -44,13 +44,18 @@ class SensorChimeneaController extends Controller
             );
         }
 
-
         $array = array();
 
         foreach ($attrs as $day){
             $groups = array();
+            $inyec_array = array();
+            $horno_array = array();
+
             foreach ($day as $item) {
                 $key = $item['time'];
+                array_push($inyec_array,$item['temperature_inyecctora']);
+                array_push($horno_array, $item['temperature_horno']);
+
                 if (!isset($groups[$key])) {
                     $groups[$key] = array(
                         'time' => $key,
@@ -65,6 +70,12 @@ class SensorChimeneaController extends Controller
                     $groups[$key]['items']++;
                 }
             }
+            $groups['max_and_min'] =  [
+                'max_inyecctora' => max($inyec_array),
+                'min_inyecctora' => min($inyec_array),
+                'max_horno'      => max($horno_array),
+                'min_horno'      => min($horno_array)
+            ];
             array_push($array, $groups);
         }
 
@@ -73,9 +84,54 @@ class SensorChimeneaController extends Controller
 
     public function data_gas(Request $request)
     {
+        $start_date = $request->star_date;
+        $end_date   = $request->end_date;
+
+        $data = DB::table('sensor_gas')
+            ->whereBetween('fecha',  [$start_date, $end_date])
+            ->get();
 
 
+        $attrs = array();
+        foreach ($data as $key => $value) {
+            $time = explode(':',$value->time);
+            $time = $time[0].':00:00';
 
-        return response()->json(['data' ],200);
+
+            $attrs[$value->fecha][] = array(
+                'fecha'     => $value->fecha,
+                'time'      => $time,
+                'lectura'   => (float)$value->lectura,
+            );
+
+            dd($attrs);
+        }
+
+
+        $array = array();
+
+        foreach ($attrs as $day) {
+            $groups = array();
+
+            foreach ($day as $item) {
+                $key = $item['time'];
+
+                if (!isset($groups[$key])) {
+                    $groups[$key] = array(
+                        'time' => $key,
+                        'lectura' => floatval($item['lectura']),
+                        'items' => 1,
+                        'fecha' => $item['fecha']
+                    );
+                    dd($groups);
+                } else {
+                    $groups[$key]['lectura'] =  $item['lectura'] - $groups[$key]['lectura'];
+                    $groups[$key]['items']++;
+                }
+            }
+
+            array_push($array, $groups);
+        }
+
     }
 }

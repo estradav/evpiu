@@ -19,7 +19,6 @@
                 </div>
                 <div class="col-12 table-responsive" id="tables_chimenea">
 
-
                 </div>
             </div>
         </div>
@@ -51,9 +50,7 @@
                 }
             });
 
-            let star_date = moment().format('DD-MM-YY'), end_date = moment().format('DD-MM-YY');
-
-            /*  Datepicker and report Chimenea */
+            let star_date = moment().format('YYYY-MM-DD'), end_date = moment().format('YYYY-MM-DD');
 
             moment.locale('es');
             $('input[id="date_chimenea"]').daterangepicker({
@@ -69,11 +66,12 @@
                 },
 
             }, function(start, end, label) {
-                star_date = start.format('DD-MM-YY');
-                end_date = end.format('DD-MM-YY');
+                star_date = start.format('YYYY-MM-DD');
+                end_date = end.format('YYYY-MM-DD');
             });
 
             $('#info_chimenea').on('click', function () {
+                $('#tables_chimenea').html('');
                 $.ajax({
                     url: 'sensores_chimenea',
                     type: 'GET',
@@ -82,53 +80,71 @@
                     },
                     success: function (data) {
                         console.log(data);
-                        for (let i = 0; i < data.length; i++) {
+                        if(data.length === 0){
                             $('#tables_chimenea').append(`
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr class="bg-success text-center">
-                                            <th scope="col">HORA</th>
-                                            <th scope="col">PROMEDIO DE ºC INYECTORAS</th>
-                                            <th scope="col">PROMEDIO DE ºC HORNO</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="chimenea_table_body_`+ i +`"  class="text-center">
-
-                                    </tbody>
-                                    <tfoot>
-                                        <tr class="text-center table-success">
-                                            <td></td>
-                                            <td><b> ºC INYECTORAS</b></td>
-                                            <td><b>ºC HORNO</b></td>
-                                        </tr>
-                                        <tr class="text-center">
-                                            <td><b>VALOR MAXIMO:</b></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr class="text-center">
-                                            <td><b>VALOR MINIMO:</b></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                <br>
+                                <div class="alert alert-danger" role="alert">
+                                    <h5 class="alert-heading">NO SE ENCONTRO INFORMACION!! </h5>
+                                    <p>Por favor, verifique que la fecha ingresada es correcta.</p>
+                                </div>
                             `);
+                        }else{
+                            $('#tables_chimenea').append(`
+                                <div id="tables" name="tables" style="height: 600px; overflow-y: scroll;"></div>
+                            `);
+                            for (let i = 0; i < data.length; i++) {
+                                console.log(data.length)
+                                $('#tables').append(`
+                                    <table class="table table-bordered table-sm">
+                                        <thead>
+                                            <tr class="bg-success text-center">
+                                                <th scope="col" colspan="3">`+ data[i]['00:00:00']['fecha'] +`</th>
+                                            </tr>
+                                            <tr class="bg-success text-center">
+                                                <th scope="col">HORA</th>
+                                                <th scope="col">PROMEDIO DE ºC INYECTORAS</th>
+                                                <th scope="col">PROMEDIO DE ºC HORNO</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="chimenea_table_body_`+ i +`"  class="text-center"></tbody>
+                                        <tfoot>
+                                            <tr class="text-center table-success">
+                                                <td></td>
+                                                <td><b> ºC INYECTORAS</b></td>
+                                                <td><b>ºC HORNO</b></td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td><b>VALOR MAXIMO:</b></td>
+                                                <td>`+ data[i]['max_and_min']['max_inyecctora'].toFixed(2) +`</td>
+                                                <td>`+ data[i]['max_and_min']['max_horno'].toFixed(2) +`</td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td><b>VALOR MINIMO:</b></td>
+                                                <td>`+ data[i]['max_and_min']['min_inyecctora'].toFixed(2) +`</td>
+                                                <td>`+ data[i]['max_and_min']['min_horno'].toFixed(2) +`</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    <br>
+                                `);
 
-                            for (var key in data[i]) {
-                                // skip loop if the property is from prototype
-                                if (!data[i].hasOwnProperty(key)) continue;
+                                for (var key in data[i]) {
+                                    // skip loop if the property is from prototype
+                                    if (!data[i].hasOwnProperty(key)) continue;
+                                    if(key === 'max_and_min') continue;
 
-                                var obj = data[i][key];
+                                    var obj = data[i][key];
+                                    var temp_inyec  = obj['temperature_inyecctora'] / obj['items'];
+                                    var temp_horn   = obj['temperature_horno'] / obj['items'];
 
-                                $('#chimenea_table_body_'+ i).append(`
-                                    <tr>
-                                       <td>`+ obj['time']  +`</td>
-                                       <td></td>
-                                       <td></td>
-                                    </tr>
-                                `)
+
+                                    $('#chimenea_table_body_'+ i).append(`
+                                        <tr>
+                                           <td>`+ obj['time']  +`</td>
+                                           <td>`+ temp_inyec.toFixed(2) +`</td>
+                                           <td>`+ temp_horn.toFixed(2) +`</td>
+                                        </tr>
+                                    `);
+                                }
 
                             }
                         }
@@ -153,15 +169,22 @@
                 },
 
             }, function(start, end, label) {
-                star_date = start.format('DD-MM-YY');
-                end_date = end.format('DD-MM-YY');
+                star_date = start.format('YYYY-MM-DD');
+                end_date = end.format('YYYY-MM-DD');
             });
 
             $('#info_gas').on('click', function () {
-                alert(star_date+' - '+ end_date);
+                $.ajax({
+                    url: 'sensores_gas',
+                    type: 'GET',
+                    data: {
+                        star_date, end_date
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
             });
-
-
         })
     </script>
 @endpush

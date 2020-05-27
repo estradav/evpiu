@@ -18,7 +18,7 @@ class CreateSensorChimeneasTable extends Migration
             $table->string('time');
             $table->string('temperature_inyecctora');
             $table->string('temperature_horno');
-            $table->string('fecha');
+            $table->date('fecha');
         });
     }
 

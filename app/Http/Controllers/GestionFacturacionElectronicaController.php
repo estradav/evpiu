@@ -15,7 +15,7 @@ class GestionFacturacionElectronicaController extends Controller
         $todate = Carbon::now()->format('Y-m-d');
 
         if (request()->ajax()) {
-            if (!empty($request->from_date) || !empty($requsalidaest->fe_start)) {
+            if (!empty($request->from_date) || !empty($request->fe_start)) {
                 $login1 = $request->Username;
                 $password = "FE2020ev*";
                 $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
@@ -98,7 +98,6 @@ class GestionFacturacionElectronicaController extends Controller
                 );
                 $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
                 $return = json_decode($return->return);
-
                 $values = $return->data;
             }
             return datatables::of($values)
@@ -109,7 +108,7 @@ class GestionFacturacionElectronicaController extends Controller
                 ->rawColumns(['opciones'])
                 ->make(true);
         }
-       return view('FacturacionElectronica.AuditoriaFE.index');
+        return view('FacturacionElectronica.AuditoriaFE.index');
     }
 
     public function DownloadPdf(Request $request)

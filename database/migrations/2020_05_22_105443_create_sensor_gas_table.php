@@ -17,7 +17,7 @@ class CreateSensorGasTable extends Migration
             $table->id();
             $table->string('time');
             $table->string('lectura');
-            $table->string('fecha');
+            $table->date('fecha');
         });
     }
 
