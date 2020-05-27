@@ -2232,6 +2232,7 @@ class FeFacturasController extends Controller
                 'idDocumento' => '',
                 'idVerficacionFuncional' => ''
             );
+
             $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
             $return = json_decode($return->return);
 

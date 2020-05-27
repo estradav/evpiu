@@ -295,7 +295,7 @@
 
                         ],
                         language: {
-                            link: '/Spanish.json'
+                            url: '/Spanish.json'
                         },
                         rowCallback: function (row, data, index) {
                             if (data.Estado == 1) {
@@ -447,7 +447,6 @@
                         data: {id: id},
                         dataType: "json",
                         success: function (data) {
-                            console.log(data);
                             if(data != null){
                                 $('#PdfTitle').html('Pedido #'+data[0][0]['id']);
                                 $('#PdfCliente').html(data[0][0]['NombreCliente']);

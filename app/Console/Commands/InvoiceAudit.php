@@ -110,7 +110,7 @@ class InvoiceAudit extends Command
 
             $subject = "AUDITORIA DE FACTURACION ELECTRONICA";
             Mail::send('mails.automatic_task.invoice_audit',['missing' => $missing], function($msj) use($subject){
-                $msj->from("dcorrea@estradavelasquez.com","Notificaciones EV-PIU");
+                $msj->from("notificacionesitciev@gmail.com","Notificaciones EV-PIU");
                 $msj->subject($subject);
                 $msj->to(['dcorrea@estradavelasquez.com','adcano@estradavelasquez.com','auxsistemas@estradavelasquez.com']);
                 $msj->cc("dcorrea@estradavelasquez.com");

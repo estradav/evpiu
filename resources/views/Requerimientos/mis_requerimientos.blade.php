@@ -95,27 +95,7 @@
                         {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
                     ],
                     language: {
-                        // traduccion de datatables
-                        processing: "Procesando...",
-                        search: "Buscar&nbsp;:",
-                        lengthMenu: "Mostrar _MENU_ registros",
-                        info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                        infoPostFix: "",
-                        loadingRecords: "Cargando...",
-                        zeroRecords: "No se encontraron resultados",
-                        emptyTable: "Ningún registro disponible en esta tabla :C",
-                        paginate: {
-                            first: "Primero",
-                            previous: "Anterior",
-                            next: "Siguiente",
-                            last: "Ultimo"
-                        },
-                        aria: {
-                            sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                            sortDescending: ": Activar para ordenar la columna de manera descendente"
-                        }
+                        url: '/Spanish.json'
                     },
                     rowCallback: function (row, data, index) {
                         if (data.name == null) {
@@ -186,7 +166,6 @@
                                 var resp = $.map(data, function (obj) {
                                     return obj
                                 });
-                                console.log(data);
                                 response(resp);
                             }
                         })
@@ -209,14 +188,12 @@
                                 var resp = $.map(data, function (obj) {
                                     return obj
                                 });
-                                console.log(data);
                                 response(resp);
                             },
                         })
                     },
                     focus: function (event, ui) {
                         New_reque_Marca = ui.item.id;
-                        console.log(New_reque_Marca);
                         return true;
                     },
                     select: function (event, ui) {
@@ -251,7 +228,6 @@
                     },
                     focus: function (event, ui) {
                         New_reque_Producto = ui.item.id;
-                        console.log(New_reque_Producto);
                         return true;
                     },
                     select: function (event, ui) {
@@ -279,7 +255,6 @@
                             medida: medida
                         },
                         success: function (data) {
-                            console.log(data);
                             $('#CodReqDescription').val(data);
                             $('#CodificadorModal').modal('hide');
                         }
@@ -604,7 +579,6 @@
 
                 $('body').on('click','.Anular',function () {
                     var id = $(this).attr('id');
-                    console.log(id);
                     Swal.fire({
                         title: '¿Esta seguro de anular el requerimiento # '+ id +'?',
                         text: "¡Esta accion no se puede revertir!",
@@ -656,7 +630,6 @@
                        	   id: id
                         },
                         success: function (data) {
-                           console.log(data);
                         	var i = 0;
                         	$('#InfoCliente').html(data.encabezado[0].cliente);
                             $('#InfoDescripcion').html(data.encabezado[0].producto);
@@ -725,11 +698,8 @@
 
                             var tes = 1;
 
-                            console.log(data.propuestas.length);
-
                             if(data.propuestas.length == 0){
                                 $('#PropuestasDiv').append('<div class="alert alert-danger" role="alert">ESTE REQUERIMIENTO AUN NO TIENE PROPUESTAS...</div>');
-
                             }else{
                                var ii = 0;
                                $(data.propuestas).each(function () {

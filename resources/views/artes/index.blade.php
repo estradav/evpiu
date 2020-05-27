@@ -72,7 +72,6 @@
 
                 $(document).on('click', '.btnArt', function() {
                     let Art = this.id;
-                    console.log(Art);
                     $('#ViewArtTitle').html('Arte #'+ Art);
                     PDFObject.embed("http://192.168.1.12/intranet_ci/assets/Artes/"+Art+".pdf", "#ViewArtPdf");
                     $('#ViewArtModal').modal('show');

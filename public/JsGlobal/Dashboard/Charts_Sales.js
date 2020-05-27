@@ -9,7 +9,6 @@ $(document).ready(function() {
             var User_Count_data = data.User_Count_data;
             var color = ['rgb(66,133,244)', 'rgb(219,68,55)', 'rgb(244,180,0)', 'rgb(15,157,88)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'];
             var bordercolor = ['rgb(66,133,244)', 'rgb(219,68,55)', 'rgb(244,180,0)', 'rgb(15,157,88)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'];
-            console.log(data);
 
             var chartdata = {
                 labels: months,
