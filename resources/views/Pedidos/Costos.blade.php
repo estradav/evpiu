@@ -34,162 +34,164 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="Options" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="PedidoTitle"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="" class="form-horizontal" id="FormCartera">
-                        <div class="modal-body">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="EstadoPedido" class="control-label" ><b>Estado:&nbsp;&nbsp;</b></label>
-                                    <select name="EstadoPedido" id="EstadoPedido" class="form-control">
-                                        <option value="" selected>Seleccione...</option>
-                                        <option value="5">Rechazar y enviar al vendedor</option>
-                                        <option value="6">Aprobar y enviar a produccion</option>
-                                    </select>
+        @section('modal')
+            <div class="modal fade" id="Options" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="PedidoTitle"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="" class="form-horizontal" id="FormCartera">
+                            <div class="modal-body">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="EstadoPedido" class="control-label" ><b>Estado:&nbsp;&nbsp;</b></label>
+                                        <select name="EstadoPedido" id="EstadoPedido" class="form-control">
+                                            <option value="" selected>Seleccione...</option>
+                                            <option value="5">Rechazar y enviar al vendedor</option>
+                                            <option value="6">Aprobar y enviar a produccion</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="DescripccionPedido" class="control-label" ><b>Descripcion:&nbsp;&nbsp;</b></label>
+                                        <textarea name="DescripccionPedido" id="DescripccionPedido" cols="30" rows="5" class="form-control" placeholder="Por favor escriba una descripcion"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="DescripccionPedido" class="control-label" ><b>Descripcion:&nbsp;&nbsp;</b></label>
-                                    <textarea name="DescripccionPedido" id="DescripccionPedido" cols="30" rows="5" class="form-control" placeholder="Por favor escriba una descripcion"></textarea>
-                                </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary Save_Est">Guardar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade bd-example-modal-xl" id="PdfView" tabindex="-1" role="dialog" aria-labelledby="PdfView" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="PdfTitle"></h5>
+                        </div>
+                        <br>
+                        <div class="container">
+                            <ul class="progressbar">
+                                <li class="active" id="ProgBorrador"><a href="javascript:void(0);" style="color: #008000" class="StepBorrador">Borrador</a></li>
+                                <li class="" id="ProgCartera"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepCartera" id="StepCartera">Cartera</a></li>
+                                <li id="ProgCostos"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepCostos" id="StepCostos">Costos</a></li>
+                                <li id="ProgProduccion"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepProduccion" id="StepProduccion">Produccion</a></li>
+                                <li id="ProgBodega"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepBodega" id="StepBodega">Bodega</a></li>
+                            </ul>
+                        </div>
+                        <div align="center" style="text-align: center !important; margin-left: 70px; margin-right: 70px;">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated ProgressPed" role="progressbar" style="width: 80%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" id="ProgressPed"></div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="modal-body" id="TextoImprimir" name="TextoImprimir">
+                            <div class="wrapper">
+                                <section class="invoice">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h2 class="page-header">
+                                                <img src="/img/Logo_v2.png" alt="" style="width: 195px !important; height: 142px !important;" class="headers">
+                                                <small class="float-right">Fecha: <b><label id="Pdffecha"></label></b></small>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="row invoice-info">
+                                        <div class="col-sm-4 invoice-col">
+                                            <address>
+                                                <strong>CI Estrada Velasquez y CIA. SAS</strong><br>
+                                                <b>NIT:</b> 890926617-8 <br>
+                                                <b>Telefono:</b> 265-66-65<br>
+                                                <b>Email:</b> Comercial@estradavelasquez.com <br>
+                                                <b>Direccion:</b> KR 55 # 29 C 14 - Zona industrial de belen.
+                                            </address>
+                                        </div>
+                                        <div class="col-sm-4 invoice-col">
+                                            <address>
+                                                <strong>Cliente: </strong><label id="PdfCliente"></label><br>
+                                                <b>Codigo Cliente:</b> <label id="PdfCodigoCliente"></label> <br>
+                                                <b>Ciudad:</b> <label id="PdfCity"></label><br>
+                                                <b>Direccion:</b> <label id="PdfAddress"></label> <br>
+                                                <b>Telefono:</b> <label id="PdfPhone"></label>
+                                            </address>
+                                        </div>
+                                        <div class="col-sm-4 invoice-col">
+                                            <b>Pedido #: </b><label id="PdfNumeroPedio"></label> <br>
+                                            <b>Orden Compra: </b><label id="PdfOrdenCompra"></label> <br>
+                                            <b>Condicion de pago: </b><label id="PdfCondicionPago"></label> <br>
+                                            <b>Vendedor: </b><label id="PdfVendedor"></label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12 table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>Codigo</th>
+                                                    <th>Descripcion</th>
+                                                    <th>Notas</th>
+                                                    <th>Unidad</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Precio</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="ItemsInvoice">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12 table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th style="text-align: center" >Valor Bruto</th>
+                                                    <th style="text-align: center">Descuento</th>
+                                                    <th style="text-align: center">Subtotal</th>
+                                                    <th style="text-align: center">IVA</th>
+                                                    <th style="text-align: center">Total</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td id="PdfBrutoInvoice" style="text-align: center"></td>
+                                                    <td id="PdfDescuentoInvoice" style="text-align: center"></td>
+                                                    <td id="PdfSubtotalInvoice" style="text-align: center"></td>
+                                                    <td id="PdfIvaInvoice"style="text-align: center"></td>
+                                                    <td id="PdfTotalInvoice" style="text-align: center"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row invoice-info">
+                                        <div class="col-sm-12 invoice-col">
+                                            <strong>NOTAS GENERALES:</strong> <label id="PdfGeneralNotes"></label><br>
+                                        </div>
+                                    </div>
+                                </section>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary Save_Est">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary ImprimirPdf" id="ImprimirPdf">Imprimir</button>
+                            <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade bd-example-modal-xl" id="PdfView" tabindex="-1" role="dialog" aria-labelledby="PdfView" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="PdfTitle"></h5>
-                    </div>
-                    <br>
-                    <div class="container">
-                        <ul class="progressbar">
-                            <li class="active" id="ProgBorrador"><a href="javascript:void(0);" style="color: #008000" class="StepBorrador">Borrador</a></li>
-                            <li class="" id="ProgCartera"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepCartera" id="StepCartera">Cartera</a></li>
-                            <li id="ProgCostos"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepCostos" id="StepCostos">Costos</a></li>
-                            <li id="ProgProduccion"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepProduccion" id="StepProduccion">Produccion</a></li>
-                            <li id="ProgBodega"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepBodega" id="StepBodega">Bodega</a></li>
-                        </ul>
-                    </div>
-                    <div align="center" style="text-align: center !important; margin-left: 70px; margin-right: 70px;">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated ProgressPed" role="progressbar" style="width: 80%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" id="ProgressPed"></div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="modal-body" id="TextoImprimir" name="TextoImprimir">
-                        <div class="wrapper">
-                            <section class="invoice">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h2 class="page-header">
-                                            <img src="/img/Logo_v2.png" alt="" style="width: 195px !important; height: 142px !important;" class="headers">
-                                            <small class="float-right">Fecha: <b><label id="Pdffecha"></label></b></small>
-                                        </h2>
-                                    </div>
-                                </div>
-                                <div class="row invoice-info">
-                                    <div class="col-sm-4 invoice-col">
-                                        <address>
-                                            <strong>CI Estrada Velasquez y CIA. SAS</strong><br>
-                                            <b>NIT:</b> 890926617-8 <br>
-                                            <b>Telefono:</b> 265-66-65<br>
-                                            <b>Email:</b> Comercial@estradavelasquez.com <br>
-                                            <b>Direccion:</b> KR 55 # 29 C 14 - Zona industrial de belen.
-                                        </address>
-                                    </div>
-                                    <div class="col-sm-4 invoice-col">
-                                        <address>
-                                            <strong>Cliente: </strong><label id="PdfCliente"></label><br>
-                                            <b>Codigo Cliente:</b> <label id="PdfCodigoCliente"></label> <br>
-                                            <b>Ciudad:</b> <label id="PdfCity"></label><br>
-                                            <b>Direccion:</b> <label id="PdfAddress"></label> <br>
-                                            <b>Telefono:</b> <label id="PdfPhone"></label>
-                                        </address>
-                                    </div>
-                                    <div class="col-sm-4 invoice-col">
-                                        <b>Pedido #: </b><label id="PdfNumeroPedio"></label> <br>
-                                        <b>Orden Compra: </b><label id="PdfOrdenCompra"></label> <br>
-                                        <b>Condicion de pago: </b><label id="PdfCondicionPago"></label> <br>
-                                        <b>Vendedor: </b><label id="PdfVendedor"></label>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-12 table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th>Codigo</th>
-                                                <th>Descripcion</th>
-                                                <th>Notas</th>
-                                                <th>Unidad</th>
-                                                <th>Cantidad</th>
-                                                <th>Precio</th>
-                                                <th>Total</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="ItemsInvoice">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-12 table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th style="text-align: center" >Valor Bruto</th>
-                                                <th style="text-align: center">Descuento</th>
-                                                <th style="text-align: center">Subtotal</th>
-                                                <th style="text-align: center">IVA</th>
-                                                <th style="text-align: center">Total</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td id="PdfBrutoInvoice" style="text-align: center"></td>
-                                                <td id="PdfDescuentoInvoice" style="text-align: center"></td>
-                                                <td id="PdfSubtotalInvoice" style="text-align: center"></td>
-                                                <td id="PdfIvaInvoice"style="text-align: center"></td>
-                                                <td id="PdfTotalInvoice" style="text-align: center"></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row invoice-info">
-                                    <div class="col-sm-12 invoice-col">
-                                        <strong>NOTAS GENERALES:</strong> <label id="PdfGeneralNotes"></label><br>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary ImprimirPdf" id="ImprimirPdf">Imprimir</button>
-                        <button type="button" class="btn btn-secondary Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
                     </div>
                 </div>
             </div>
-        </div>
+        @endsection
         <style>
             .container {
                 width: 750px;

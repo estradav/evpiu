@@ -47,7 +47,7 @@ class PedidoProduccionController extends Controller
             return Datatables::of($data)
                 ->addColumn('opciones', function($row){
                     $btn = '<div class="btn-group ml-auto">'.'<button class="btn btn-light btn-sm Option" name="Option" id="'.$row->id.'"><i class="fas fa-cogs"></i></button>';
-                    $btn = $btn.'<button class="btn btn-light btn-sm Viewpdf" name="Viewpdf" id="'.$row->id.'"><i class="far fa-file-pdf"></i></button>'.'</div>';
+                    $btn = $btn.'<button class="btn btn-light btn-sm Viewpdf" name="Viewpdf" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>'.'</div>';
                     return $btn;
                 })
                 ->rawColumns(['opciones'])

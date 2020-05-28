@@ -36,7 +36,7 @@ class PedidoController extends Controller
                     $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Promover" name="Promover" id="'.$row->id.'"><i class="fas fa-check"></i></button>';
                     $btn = $btn.'<button class="btn btn-light btn-sm Anular" name="Anular" id="'.$row->id.'"><i class="fas fa-times"></i></button>';
                     $btn = $btn.'<button class="btn btn-light btn-sm Reopen" name="Reopen" id="'.$row->id.'"><i class="fas fa-door-open"></i></button>';
-                    $btn = $btn.'<button class="btn btn-light btn-sm Viewpdf" name="Viewpdf" id="'.$row->id.'"><i class="far fa-file-pdf"></i></button>'.'</div>';
+                    $btn = $btn.'<button class="btn btn-light btn-sm Viewpdf" name="Viewpdf" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>'.'</div>';
 
                     return $btn;
                 })

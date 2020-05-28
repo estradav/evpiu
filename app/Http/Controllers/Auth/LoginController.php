@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -106,14 +107,16 @@ class LoginController extends Controller
                 }
             }
 
-            \DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
+            DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
 
             $user = auth()->guard('web')->user();
 
             return redirect($this->redirectTo);
         }
-        \Session::put('login_error', 'Your email and password wrong!!');
-        return back();
+        \Session::put('login_error', 'Su email o contraseña son incorrectos');
+        return back()->withInput()->withErrors([
+            'login' => 'Usuario o contraseña ingresados son incorrectos.'
+        ]);
 
     }
 

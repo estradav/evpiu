@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Traits\LockableTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
@@ -34,7 +35,7 @@ class User extends Authenticatable
     /**
      * Obtiene todas las publicaciones que posee el usuario.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function posts() {
         return $this->hasMany(Post::class);
