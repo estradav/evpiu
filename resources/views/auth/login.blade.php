@@ -158,23 +158,18 @@
                                 <div class="textInput" id="login_emaildiv">
                                     <div class="fieldWrapper">
                                         <label for="username" class="fieldLabel">Email</label>
-                                        <input id="username" name="username" type="text" class="form-control form-control-lg{{ $errors->has('username') ? ' is-invalid' : '' }}" required="required" aria-required="true" autocomplete="off" placeholder="Usuario" value="{{ old('username') }}" autofocus>
-                                        @if ($errors->has('username'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('username') }}</strong>
-                                            </span>
-                                        @endif
+                                        <input id="username" name="username" type="text" class="form-control form-control-lg{{ $errors->has('login') ? ' is-invalid' : '' }}" required="required" aria-required="true" autocomplete="off" placeholder="Usuario" value="{{ old('username') }}" autofocus>
                                     </div>
                                 </div>
 
-                                <div class="textInput lastInputField" id="login_passworddiv">
+                                <div class="textInput" id="login_passworddiv">
                                     <div class="fieldWrapper">
                                         <label for="password" class="fieldLabel">Password</label>
-                                        <input id="password" name="password" type="password" class="form-control form-control-lg{{ $errors->has('password') ? ' is-invalid' : '' }}" required="required" aria-required="true"   placeholder="Contraseña">
-                                        @if ($errors->has('password'))
-                                            <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
+                                        <input id="password" name="password" type="password" class="form-control form-control-lg{{ $errors->has('login') ? ' is-invalid' : '' }}" required="required" aria-required="true"   placeholder="Contraseña">
+                                        @if ($errors->has('login'))
+                                            <span class="invalid-feedback text-center" role="alert" style="display: block !important; font-size: 96% !important;">
+                                                <strong>{{ $errors->first('login') }}</strong>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
