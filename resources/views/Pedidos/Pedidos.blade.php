@@ -535,7 +535,7 @@
                         success: function (data) {
                             var i = 0;
                             $(data).each(function () {
-                                $('#SelectVendedor').append('<option value="'+data[i].codvendedor +'">'+data[i].name+' - '+ data[i].codvendedor +'</option>');
+                                $('#SelectVendedor').append('<option value="'+data[i].codvendedor +'">'+ data[i].name +'</option>');
                                 i++;
                             });
                         }
@@ -677,12 +677,12 @@
                 	var Subtotal= $('#TotalItemsSubtotal').val();
                 	var Totaliva = Subtotal * 0.19;
 
-                	if(Selectiva == 0)
-                	{
+                	if(Selectiva == 'N') {
                         $('#TotalItemsIva').val('0');
                     }else{
                         $('#TotalItemsIva').val(Totaliva);
                     }
+                    Totalpedido();
                 }
 
                 function LimpiarCampos(){
@@ -778,7 +778,7 @@
                     $('#AddItem').prop("disabled", true);
                 });
 
-                $('body').on('click', '.BorrarItem', function () {
+                $(document).on('click', '.BorrarItem', function () {
                     id = $(this).parents("tr").find("td").eq(0).html();
                     Swal.fire({
                         title: '¿Esta seguro de Eliminar?',
@@ -854,9 +854,11 @@
                     submitHandler: function (form) {
                     	var encabezado = [];
                         let Items = [];
+                        var e = document.getElementById("SelectVendedor");
+                        var dspText = e.options[e.selectedIndex].text;
                         var Inputs = {
-                            NombreVendedor: NombreVendedor,
-                        	CodVendedor: CodVenUsuario1,
+                            NombreVendedor: dspText,
+                        	CodVendedor: $('#SelectVendedor').val(),
                         	NombreCliente: $('#NombreCliente').val(),
                             OrdComp: $('#OrdComp').val(),
                             CodCliente: $('#CodCliente').val(),
@@ -1714,11 +1716,15 @@
                     })
                 });
 
-                $('body').on('click', '.ViewArt', function() {
+                $(document).on('click', '.ViewArt', function() {
                     var Art = $(this).attr("id");
                     $('#ViewArtTitle').html('Arte #'+ Art);
                     PDFObject.embed('//192.168.1.12/intranet_ci/assets/artes/'+Art+'.pdf', '#ViewArtPdf');
                     $('#ViewArtModal').modal('show');
+                });
+
+                $('#SelectIva').on('change', function () {
+                    CalcularIva();
                 });
             })
         </script>
