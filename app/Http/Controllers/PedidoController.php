@@ -17,12 +17,11 @@ class PedidoController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            if (!empty($request->CodVenUsuario != 999)) {
+            if ($request->CodVenUsuario != 999) {
                 $data = DB::table('encabezado_pedidos')
                     ->select('id', 'OrdenCompra','NombreCliente', 'CodCliente','CodCliente','DireccionCliente','Ciudad','Telefono',
                         'CodVendedor','NombreVendedor','CondicionPago','Descuento','Iva','Estado','created_at')
                     ->where('CodVendedor', '=', $request->CodVenUsuario)
-                    ->where('estado', '=', $request->Estado)
                     ->get();
             }else{
                 $data = DB::table('encabezado_pedidos')
