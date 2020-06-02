@@ -395,7 +395,7 @@ class FeFacturasController extends Controller
                $objetoXML->text($tipo_documento_ide);
                $objetoXML->endElement();
                $objetoXML->startElement("digitoverificacion");
-               if($encabezado->tipo_cliente == 'EX' || $encabezado->tipo_cliente == 'PN' ){
+               if($encabezado->tipo_cliente == 'EX' || $encabezado->idtipodocumento == '13' ){
                    $objetoXML->text('');
                }else{
                    $objetoXML->text($encabezado->digito_verificador);
@@ -1541,8 +1541,7 @@ class FeFacturasController extends Controller
                 $objetoXML->text($tipo_documento_ide);
                 $objetoXML->endElement();
                 $objetoXML->startElement("digitoverificacion");
-                if($encabezado->tipo_cliente == 'EX' || $encabezado->tipo_cliente == 'PN' )
-                {
+                if($encabezado->tipo_cliente == 'EX' || $encabezado->idtipodocumento == '13' ){
                     $objetoXML->text('');
                 }else{
                     $objetoXML->text($encabezado->digito_verificador);

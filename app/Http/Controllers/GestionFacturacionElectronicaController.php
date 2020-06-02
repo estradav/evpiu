@@ -97,6 +97,7 @@ class GestionFacturacionElectronicaController extends Controller
                     'idVerficacionFuncional' => ''
                 );
                 $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+
                 $return = json_decode($return->return);
                 $values = $return->data;
             }

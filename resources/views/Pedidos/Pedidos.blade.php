@@ -47,9 +47,6 @@
 
 
         @section('modal')
-
-
-
             <div class="modal fade bd-example-modal-lg" id="ViewArtModal" tabindex="-1" role="dialog" aria-labelledby="ViewArtModal" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -158,39 +155,39 @@
                                 <br>
                                 <table class="table table-bordered">
                                     <thead>
-                                    <tr>
-                                        <th style="width: 25%">Producto</th>
-                                        <th style="width: 10%">Stock</th>
-                                        <th style="width: 12%">Arte</th>
-                                        <th style="width: 10%">Notas</th>
-                                        <th style="width: 10%">Unidad</th>
-                                        <th style="width: 8%">Precio</th>
-                                        <th style="width: 10%">Cantidad</th>
-                                        <th style="width: 17%">Total</th>
-                                        <th></th>
-                                    </tr>
+                                        <tr>
+                                            <th style="width: 25%">Producto</th>
+                                            <th style="width: 10%">Stock</th>
+                                            <th style="width: 12%">Arte</th>
+                                            <th style="width: 10%">Notas</th>
+                                            <th style="width: 10%">Unidad</th>
+                                            <th style="width: 8%">Precio</th>
+                                            <th style="width: 10%">Cantidad</th>
+                                            <th style="width: 17%">Total</th>
+                                            <th></th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <input type="hidden" value="" id="CodigoProductoMax" name="CodigoProductoMax">
-                                        <input type="hidden" value="" id="DescripcionProductoMax" name="DescripcionProductoMax">
+                                        <tr>
+                                            <input type="hidden" value="" id="CodigoProductoMax" name="CodigoProductoMax">
+                                            <input type="hidden" value="" id="DescripcionProductoMax" name="DescripcionProductoMax">
 
-                                        <td style="width: 25% !important; "><input type="text" id="ProductoMax" name="ProductoMax" class="form-control"></td>
-                                        <td style="width: 10%"><input type="number" id="StockItem" name="StockItem" class="form-control" readonly="readonly"></td>
-                                        <td style="width: 12%"><input type="text" id="AddArt" name="AddArt" class="form-control"></td>
-                                        <td style="width: 10%"><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
-                                        <td style="width: 10%">
-                                            <select name="AddUnidad" id="AddUnidad" class="form-control">
-                                                <option value="Unidad" selected >Unidad</option>
-                                                <option value="Kilos">Kilos</option>
-                                                <option value="Millar">Millar</option>
-                                            </select>
-                                        </td>
-                                        <td style="width: 8%"><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
-                                        <td style="width: 10%"><input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="1"></td>
-                                        <td style="width: 17%"><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
-                                        <td><button type="button" class="btn btn-success btn-sm" id="AddItem" disabled><i class="fa fa-plus"></i></button></td>
-                                    </tr>
+                                            <td style="width: 25% !important; "><input type="text" id="ProductoMax" name="ProductoMax" class="form-control"></td>
+                                            <td style="width: 10%"><input type="number" id="StockItem" name="StockItem" class="form-control" readonly="readonly"></td>
+                                            <td style="width: 12%"><input type="text" id="AddArt" name="AddArt" class="form-control"></td>
+                                            <td style="width: 10%"><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
+                                            <td style="width: 10%">
+                                                <select name="AddUnidad" id="AddUnidad" class="form-control">
+                                                    <option value="Unidad" selected >Unidad</option>
+                                                    <option value="Kilos">Kilos</option>
+                                                    <option value="Millar">Millar</option>
+                                                </select>
+                                            </td>
+                                            <td style="width: 8%"><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
+                                            <td style="width: 10%"><input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="1"></td>
+                                            <td style="width: 17%"><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
+                                            <td><button type="button" class="btn btn-success btn-sm" id="AddItem" disabled><i class="fa fa-plus"></i></button></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <br>
