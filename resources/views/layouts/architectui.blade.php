@@ -281,8 +281,10 @@
 
 
         <script type="text/javascript">
-            var session_id = "{!! (Session::getId())?Session::getId():'' !!}";
-            var user_id = "{!! (Auth::user())?Auth::user()->id:'' !!}";
+            var session_id  = "{!! (Session::getId())?Session::getId():'' !!}";
+            var username    = "{!! (Auth::user())?Auth::user()->username:'' !!}";
+            var user_id     = "{!! (Auth::user())?Auth::user()->id:'' !!}";
+            var name        = "{!! (Auth::user())?Auth::user()->name:'' !!}";
 
             // Initialize Firebase
             var firebaseConfig = {
@@ -294,6 +296,7 @@
                 messagingSenderId: "881208017465",
                 appId: "1:881208017465:web:9809ad0390e83179c683e8",
                 measurementId: "G-7B7ERZP1XC"
+
             };
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
@@ -302,40 +305,40 @@
 
 
             if({!! Auth::user() !!}) {
-                firebase.database().ref('/users/' + user_id + '/session_id').set(session_id);
+                firebase.database().ref('/users/' + username + '/id').set(user_id);
+                firebase.database().ref('/users/' + username + '/session_id').set(session_id);
+                firebase.database().ref('/users/' + username + '/name').set(name);
             }
 
-            firebase.database().ref('/users/' + user_id).on('value', function(snapshot2) {
-                var v = snapshot2.val();
 
+            firebase.database().ref('/users/' + username).on('value', function(snapshot2) {
+                var v = snapshot2.val();
                 if(v.session_id != session_id) {
                     toastr.warning('se ha iniciado sesión en tu cuenta desde otro dispositivo', 'ALERTA DE SEGURIDAD', {timeOut: 6000});
                     setTimeout(function() {
                         window.location = '/login';
-                    }, 8000);
+                    }, 4000);
                 }
             });
         </script>
 
         <script>
-                @if(Session::has('alerts'))
-            let alerts = {!! json_encode(Session::get('alerts')) !!};
-            helpers.displayAlerts(alerts, toastr);
+            @if(Session::has('alerts'))
+                let alerts = {!! json_encode(Session::get('alerts')) !!};
+                helpers.displayAlerts(alerts, toastr);
             @endif
 
             @if(Session::has('message'))
+                // TODO: change Controllers to use AlertsMessages trait... then remove this
+                var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
+                var alertMessage = {!! json_encode(Session::get('message')) !!};
+                var alerter = toastr[alertType];
 
-            // TODO: change Controllers to use AlertsMessages trait... then remove this
-            var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
-            var alertMessage = {!! json_encode(Session::get('message')) !!};
-            var alerter = toastr[alertType];
-
-            if (alerter) {
-                alerter(alertMessage);
-            } else {
-                toastr.error("toastr alert-type " + alertType + " is unknown");
-            }
-
+                if (alerter) {
+                    alerter(alertMessage);
+                } else {
+                    toastr.error("toastr alert-type " + alertType + " is unknown");
+                }
             @endif
         </script>
         @stack('javascript')
