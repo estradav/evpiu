@@ -1161,13 +1161,14 @@
                 });
 
                 $(document).on('click', '.Viewpdf', function () {
-                    var id = $(this).attr("id");
+                    let id = this.id;
                     $.ajax({
                         type: "get",
                         url: "/ImprimirPedidoPdf",
                         data: {id: id},
                         dataType: "json",
                         success: function (data) {
+                            console.log(data);
                         	if(data != null){
                                 $('#PdfTitle').html('Pedido #'+data[0][0]['id']);
                                 $('#PdfCliente').html(data[0][0]['NombreCliente']);
@@ -1342,12 +1343,10 @@
                     })
                 });
 
-                var public_path = '{{ public_path() }}';
                 function imprimirElemento(elemento) {
                     var ventana =  window.open('Print','','width=900');
                     ventana.document.write('<html lang="es"><head><title>' + document.title + '</title>');
-                    ventana.document.write('<link rel="stylesheet" href="'+ public_path +'/dashboard/styles/app.css">' +
-                      '<link rel="stylesheet" href="'+ public_path +'/dashboard/styles/main.css">');
+                    ventana.document.write('<link rel="stylesheet" href="/bootstrap.min.css">');
                     ventana.document.write('</head><body>');
                     ventana.document.write(elemento.innerHTML);
                     ventana.document.write('</body></html>');
@@ -1365,7 +1364,7 @@
                     imprimirElemento(div);
                 });
 
-                $('body').on('click', '.Cerrar', function () {
+                $(document).on('click', '.Cerrar', function () {
                     $('#PdfTitle').html('');
                     $('#PdfCliente').html('');
                     $('#Pdffecha').html('');

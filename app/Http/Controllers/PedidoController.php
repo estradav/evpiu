@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EncabezadoPedido;
 use App\User;
+use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Http\Request;
@@ -116,12 +117,11 @@ class PedidoController extends Controller
          $destino = $request->Items;
          $produccion = [];
          $bodega = [];
-         $date = date('Y-m-d H:i:s');
+         $date = Carbon::now();
          foreach($destino as $dest){
              if ($dest['destino'] == 1){
                  $produccion[] = $dest;
-             }
-             else{
+             } else{
                  $bodega[] = $dest;
              }
          }
@@ -169,7 +169,9 @@ class PedidoController extends Controller
                  }
 
                  DB::table('pedidos_detalles_area')->insert([
-                     'idPedido'  =>  $invoice,
+                     'idPedido'     =>  $invoice,
+                     'created_at'   =>  $date,
+                     'updated_at'   =>  $date
                  ]);
 
 
@@ -231,14 +233,14 @@ class PedidoController extends Controller
                 }
 
                 DB::table('pedidos_detalles_area')->insert([
-                    'idPedido'  =>  $invoice,
+                    'idPedido'     =>  $invoice,
+                    'created_at'   =>  $date,
+                    'updated_at'   =>  $date
                 ]);
 
 
                 DB::commit();
                 return response()->json(['Success' => 'Todo Ok']);
-
-
 
             } catch (\Exception $e){
                 DB::rollback();
@@ -295,7 +297,9 @@ class PedidoController extends Controller
                  }
 
                  DB::table('pedidos_detalles_area')->insert([
-                     'idPedido'  =>  $invoice,
+                     'idPedido'     =>  $invoice,
+                     'created_at'   =>  $date,
+                     'updated_at'   =>  $date
                  ]);
 
 
@@ -339,7 +343,9 @@ class PedidoController extends Controller
                  }
 
                  DB::table('pedidos_detalles_area')->insert([
-                     'idPedido'  =>  $invoice,
+                     'idPedido'     =>  $invoice,
+                     'created_at'   =>  $date,
+                     'updated_at'   =>  $date
                  ]);
 
                  DB::commit();
@@ -378,7 +384,6 @@ class PedidoController extends Controller
             $resultado = DB::table('encabezado_pedidos')->where('id', '=', $request->id)->select('estado')->get();
             return response()->json($resultado);
         }
-
     }
 
     public function PedidoReabrir(Request $request)
@@ -411,6 +416,8 @@ class PedidoController extends Controller
             $encabezado = DB::table('encabezado_pedidos')
                 ->join('pedidos_detalles_area','encabezado_pedidos.id','=','pedidos_detalles_area.idPedido')
                 ->where('id', '=', $request->id)->get();
+
+
             $detalle = DB::table('detalle_pedidos')->where('idPedido', '=', $request->id)->get();
 
             return response()->json([$encabezado, $detalle]);
