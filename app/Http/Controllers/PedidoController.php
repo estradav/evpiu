@@ -452,4 +452,14 @@ class PedidoController extends Controller
         }
         return response()->json($results);
     }
+
+    public function nuevo_pedido_index()
+    {
+        $vendedores =  DB::table('users')
+            ->where('app_roll','=','vendedor')
+            ->orderBy('name','asc')
+            ->get();
+
+        return view('Pedidos.nuevo_pedido',compact('vendedores'));
+    }
 }
