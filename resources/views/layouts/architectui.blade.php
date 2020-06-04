@@ -205,9 +205,10 @@
                     </div>
                 </div>
             </div>
+            @yield('modal')
         </div>
 
-        @yield('modal')
+
 
         <script src="{{ asset('architectui/assets/scripts/main.js') }}"></script>
 
