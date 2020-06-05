@@ -50,6 +50,8 @@ class GetSensorsData extends Command
 
         $fecha_actual = Carbon::now()->format('d-m-y');
 
+
+
         $registros_db = DB::table('sensor_chimeneas')
             ->whereDate('fecha','=', Carbon::now()->format('yy-m-d'))
             ->count();
