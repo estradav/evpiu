@@ -107,8 +107,8 @@
                             </td>
                             <td style="width: 10%">
                                 <select name="dest_item" id="dest_item" class="form-control">
-                                    <option value="2">Produccion</option>
-                                    <option value="1">Bodega</option>
+                                    <option value="1">Produccion</option>
+                                    <option value="2">Bodega</option>
                                 </select>
                             </td>
                             <td style="width: 12%"><input type="text" id="AddArt" name="AddArt" class="form-control"></td>
