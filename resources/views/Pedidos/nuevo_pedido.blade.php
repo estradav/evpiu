@@ -12,7 +12,7 @@
                             <label for="SelectVendedor" class="control-label" ><b>Vendedor:&nbsp;&nbsp; </b></label>
                             <select name="SelectVendedor" id="SelectVendedor" class="custom-select">
                                 @foreach($vendedores as $vendedor)
-                                    <option value="{{$vendedor->id}}">{{$vendedor->name }}</option>
+                                    <option value="{{$vendedor->codvendedor}}">{{$vendedor->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -494,12 +494,9 @@
                     SelectVendedor: {selectcheck: true},
                 },
                 highlight: function (element) {
-                    // Only validation controls
                     $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
-                    //$('#saveBtn').html('Reintentar');
                 },
                 unhighlight: function (element) {
-                    // Only validation controls
                     $(element).closest('.form-control').removeClass('is-invalid');
                 },
 
@@ -564,9 +561,14 @@
                             }else {
                                 $('#ProductForm').trigger("reset");
                                 $('#NewPedido').modal('hide');
-                                toastr.success("Registro Guardado con Exito!");
                                 $('#SavePed').html('Guardar');
                                 $('#ProductosAdd').html('')
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Guardado!',
+                                    text: 'El pedido fue guardado con exito!',
+                                });
                             }
                         },
                     });
