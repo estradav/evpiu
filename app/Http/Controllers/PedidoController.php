@@ -36,7 +36,8 @@ class PedidoController extends Controller
                     $btn = '<div class="btn-group ml-auto">'.'<button class="edit btn btn-light btn-sm Promover" name="Promover" id="'.$row->id.'"><i class="fas fa-check"></i></button>';
                     $btn = $btn.'<button class="btn btn-light btn-sm Anular" name="Anular" id="'.$row->id.'"><i class="fas fa-times"></i></button>';
                     $btn = $btn.'<button class="btn btn-light btn-sm Reopen" name="Reopen" id="'.$row->id.'"><i class="fas fa-door-open"></i></button>';
-                    $btn = $btn.'<button class="btn btn-light btn-sm Viewpdf" name="Viewpdf" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>'.'</div>';
+                    $btn = $btn.'<button class="btn btn-light btn-sm Viewpdf" name="Viewpdf" id="'.$row->id.'"><i class="fas fa-file-pdf"></i></button>';
+                    $btn = $btn.'<a href="'.route('pedidos.edit', $row->id).'" class="btn btn-light btn-sm edit" id="edit"><i class="fas fa-edit"></i></a></div>';
 
                     return $btn;
                 })
@@ -461,5 +462,101 @@ class PedidoController extends Controller
             ->get();
 
         return view('Pedidos.nuevo_pedido',compact('vendedores'));
+    }
+
+
+    public function edit($id){
+        $encabezado = DB::table('encabezado_pedidos')
+            ->where('id','=',$id)
+            ->first();
+
+        $detalle = DB::table('detalle_pedidos')
+            ->where('idPedido','=',$id)
+            ->get();
+
+        return view('Pedidos.edit',compact('encabezado','detalle'));
+    }
+
+    public function update(Request $request){
+        $encabezado = $request->encabezado[0];
+
+
+        $detalle = $request->Items;
+
+
+        DB::table('encabezado_pedidos')
+            ->where('id','=', $encabezado['id'])
+            ->update([
+                'OrdenCompra'       =>  $encabezado['OrdComp'],
+                'Descuento'         =>  $encabezado['descuento'],
+                'Iva'               =>  $encabezado['SelectIva'],
+                'Notas'             =>  $encabezado['GeneralNotes'],
+                'Bruto'             =>  $encabezado['TotalItemsBruto'],
+                'TotalDescuento'    =>  $encabezado['TotalItemsDiscount'],
+                'TotalSubtotal'     =>  $encabezado['TotalItemsSubtotal'],
+                'TotalIVA'          =>  $encabezado['TotalItemsIva'],
+                'TotalPedido'       =>  $encabezado['TotalItemsPrice']
+            ]);
+
+
+        $id_no_borrar = array();
+
+        $registros = DB::table('detalle_pedidos')
+            ->where('idPedido','=',$encabezado['id'])
+            ->pluck('id')->toArray();
+
+
+        foreach ($detalle as $det){
+            $existe = DB::table('detalle_pedidos')
+                ->where('id','=', $det['id'])
+                ->count();
+
+            if ($existe === 1){
+                DB::table('detalle_pedidos')
+                    ->where('id','=',$det['id'])
+                    ->update([
+                    'idPedido'          =>  $encabezado['id'],
+                    'CodigoProducto'    =>  $det['codproducto'] ,
+                    'Descripcion'       =>  $det['producto'],
+                    'Arte'              =>  $det['arte'],
+                    'Notas'             =>  $det['notas'],
+                    'Unidad'            =>  $det['unidad'],
+                    'Precio'            =>  $det['precio'],
+                    'Cantidad'          =>  $det['cantidad'],
+                    'Total'             =>  $det['total'],
+                    'Destino'           =>  $det['destino']
+                ]);
+
+                array_push($id_no_borrar, intval($det['id']));
+
+            }elseif ($det['id'] === null ){
+                $id = DB::table('detalle_pedidos')
+                    ->insertGetId([
+                    'idPedido'          =>  $encabezado['id'],
+                    'CodigoProducto'    =>  $det['codproducto'] ,
+                    'Descripcion'       =>  $det['producto'],
+                    'Arte'              =>  $det['arte'],
+                    'Notas'             =>  $det['notas'],
+                    'Unidad'            =>  $det['unidad'],
+                    'Precio'            =>  $det['precio'],
+                    'Cantidad'          =>  $det['cantidad'],
+                    'Total'             =>  $det['total'],
+                    'Destino'           =>  $det['destino']
+                ]);
+                array_push($id_no_borrar, intval($id));
+            }
+        }
+
+
+        $eliminar = array_diff($registros, $id_no_borrar);
+
+        foreach ($eliminar as $e){
+            DB::table('detalle_pedidos')
+                ->where('idPedido','=',$encabezado['id'])
+                ->delete($e);
+        }
+
+
+        return response()->json('success',200);
     }
 }
