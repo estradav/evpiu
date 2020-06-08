@@ -170,6 +170,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/PedidosSearchProductsMax','PedidoController@SearchProductsMax');
             Route::get('/SearchArts','PedidoController@SearchArts');
             Route::post('/SavePedido','PedidoController@SavePedido');
+            Route::post('/update_pedido','PedidoController@update');
 
             Route::get('/pedidos_nuevo','PedidoController@nuevo_pedido_index');
 

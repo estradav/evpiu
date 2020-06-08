@@ -1,184 +1,229 @@
 @extends('layouts.architectui')
 
-@section('page_title', 'Creacion de pedido')
+@section('page_title', 'Editar Pedido')
 
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <form class="form-horizontal" id="ProductForm" name="ProductForm">
-                <div class="row" >
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="SelectVendedor" class="control-label" ><b>Vendedor:&nbsp;&nbsp; </b></label>
-                            <select name="SelectVendedor" id="SelectVendedor" class="custom-select">
-                                @foreach($vendedores as $vendedor)
-                                    <option value="{{$vendedor->codvendedor}}">{{$vendedor->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="NombreCliente" class="control-label" ><b>Nombre Cliente:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" id="NombreCliente" name="NombreCliente" placeholder="Buscar Cliente">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="OrdComp" class="control-label" ><b>Orden de Compra:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control"  id="OrdComp" name="OrdComp">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label" ><b>Codigo Cliente:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="" id="CodCliente" name="CodCliente" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label" ><b>Direccion:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="" id="address" name="address" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label" ><b>Ciudad:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="" id="city" name="city" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label" ><b>Telefono:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="" id="phone" name="phone" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="CondicionPago" class="control-label" ><b>Condicion de pago:&nbsp;&nbsp;</b></label>
-                            <select name="CondicionPago" id="CondicionPago" class="form-control" disabled >
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label"><b>Descuento:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="0" id="descuento">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label"><b>IVA:&nbsp;&nbsp;</b></label>
-                            <select name="SelectIva" id="SelectIva" class="form-control">
-                                <option value="" selected>Seleccione...</option>
-                                <option value="Y">Si</option>
-                                <option value="N">No</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="GeneralNotes"><b>Notas Generales:</b></label>
-                            <textarea name="GeneralNotes" id="GeneralNotes" cols="71" rows="2" class="form-control"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <b>Stock:</b> <label id="StockItem" name="StockItem"></label>
-                <table class="table table-bordered table-sm">
-                    <thead>
-                        <tr>
-                            <th style="width: 25%">Producto</th>
-                            <th style="width: 10%">Destino</th>
-                            <th style="width: 12%">Arte</th>
-                            <th style="width: 10%">Notas</th>
-                            <th style="width: 10%">Unidad</th>
-                            <th style="width: 8%">Precio</th>
-                            <th style="width: 10%">Cantidad</th>
-                            <th style="width: 17%">Total</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <input type="hidden" value="" id="CodigoProductoMax" name="CodigoProductoMax">
-                            <input type="hidden" value="" id="DescripcionProductoMax" name="DescripcionProductoMax">
-                            <td style="width: 25% !important; "><input type="text" id="ProductoMax" name="ProductoMax" class="form-control">
-                            </td>
-                            <td style="width: 10%">
-                                <select name="dest_item" id="dest_item" class="form-control">
-                                    <option value="1">Produccion</option>
-                                    <option value="2">Bodega</option>
+    @can('pedidos.edit')
+        <div class="card">
+            <div class="card-header">
+                Pedido #{{$encabezado->id}}
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal" id="ProductForm" name="ProductForm">
+                    <input type="text" value="{{$encabezado->id}}" style="display: none !important;" id="id" name="id">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Vendedor:&nbsp;&nbsp; </b>
+                                <select name="vendedor" id="vendedor" class="form-control" disabled>
+                                    <option value="{{$encabezado->CodVendedor}}">{{$encabezado->NombreVendedor }}</option>
                                 </select>
-                            </td>
-                            <td style="width: 12%"><input type="text" id="AddArt" name="AddArt" class="form-control"></td>
-                            <td style="width: 10%"><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
-                            <td style="width: 10%">
-                                <select name="AddUnidad" id="AddUnidad" class="form-control">
-                                    <option value="Unidad" selected >Unidad</option>
-                                    <option value="Kilos">Kilos</option>
-                                    <option value="Millar">Millar</option>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Nombre Cliente:&nbsp;&nbsp;</b>
+                                <input type="text" class="form-control" id="NombreCliente" name="NombreCliente" value="{{$encabezado->NombreCliente}}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Orden de Compra:&nbsp;&nbsp;</b>
+                                <input type="text" class="form-control"  id="OrdComp" name="OrdComp" value="{{$encabezado->OrdenCompra}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Codigo Cliente:&nbsp;&nbsp;</b>
+                                <input type="text" class="form-control" id="CodCliente" name="CodCliente" value="{{$encabezado->CodCliente}}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Direccion:&nbsp;&nbsp;</b>
+                                <input type="text" class="form-control" id="address" name="address" value="{{$encabezado->DireccionCliente}}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Ciudad:&nbsp;&nbsp;</b>
+                                <input type="text" class="form-control" id="city" name="city" value="{{$encabezado->Ciudad}}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Telefono:&nbsp;&nbsp;</b>
+                                <input type="text" class="form-control" id="phone" name="phone" value="{{$encabezado->Telefono}}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Condicion de pago:&nbsp;&nbsp;</b>
+                                <select name="CondicionPago" id="CondicionPago" class="form-control" disabled >
+                                    <option value="{{$encabezado->CondicionPago}}">{{$encabezado->CondicionPago}}</option>
                                 </select>
-                            </td>
-                            <td style="width: 8%"><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
-                            <td style="width: 10%"><input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="1"></td>
-                            <td style="width: 17%"><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
-                            <td><button type="button" class="btn btn-success btn-sm" id="AddItem" disabled><i class="fa fa-plus"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>Descuento:&nbsp;&nbsp;</b>
+                                <input type="text" class="form-control" value="{{$encabezado->Descuento}}" id="descuento">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <b>IVA:&nbsp;&nbsp;</b>
+                                <select name="SelectIva" id="SelectIva" class="form-control">
+                                    <option value="" selected>Seleccione...</option>
+                                    <option value="Y" {{ $encabezado->Iva == 'Y' ? 'selected' : '' }}>Si</option>
+                                    <option value="N" {{ $encabezado->Iva == 'N' ? 'selected' : '' }}>No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <b>Notas Generales:</b>
+                                <textarea name="GeneralNotes" id="GeneralNotes" cols="71" rows="2" class="form-control">{{$encabezado->Notas}}</textarea>
+                            </div>
+                        </div>
+                    </div>
 
-                <br>
-                <br>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm ItemsTable" id="ItemsTable">
+
+                    <b>Stock:</b> <label id="StockItem" name="StockItem"></label>
+                    <table class="table table-bordered table-sm">
                         <thead>
                             <tr>
-                                <th>Codigo</th>
-                                <th>Descripcion</th>
-                                <th>Arte</th>
-                                <th>Notas</th>
-                                <th>Unidad</th>
-                                <th>Precio</th>
-                                <th>Cantidad</th>
-                                <th>Total</th>
+                                <th style="width: 25%">Producto</th>
+                                <th style="width: 10%">Destino</th>
+                                <th style="width: 12%">Arte</th>
+                                <th style="width: 10%">Notas</th>
+                                <th style="width: 10%">Unidad</th>
+                                <th style="width: 8%">Precio</th>
+                                <th style="width: 10%">Cantidad</th>
+                                <th style="width: 17%">Total</th>
                                 <th></th>
-                                <th style="display: none !important;"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="ProductosAdd">
-                        </tbody>
-                    </table>
-                </div>
-                <br>
-                <div class="table-responsive">
-                    <table class="table table-bordered first" id="TotalesTable">
-                        <thead>
-                            <tr>
-                                <th>Cantidad Items</th>
-                                <th>Valor Bruto</th>
-                                <th>Descuento</th>
-                                <th>Subtotal</th>
-                                <th>IVA</th>
-                                <th>Total Pedido</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input type="number" class="form-control totalCol" id="TotalQuantityItems" name="TotalQuantityItems" readonly="readonly"></td>
-                                <td><input type="number" class="form-control totalCol" id="TotalItemsBruto" name="TotalItemsBruto" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" id="TotalItemsDiscount" name="TotalItemsDiscount" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" id="TotalItemsSubtotal" name="TotalItemsSubtotal" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" id="TotalItemsIva" name="TotalItemsIva" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" id="TotalItemsPrice" name="TotalItemsPrice" readonly="readonly"></td>
+                                <input type="hidden" value="" id="CodigoProductoMax" name="CodigoProductoMax">
+                                <input type="hidden" value="" id="DescripcionProductoMax" name="DescripcionProductoMax">
+                                <td style="width: 25% !important; "><input type="text" id="ProductoMax" name="ProductoMax" class="form-control">
+                                </td>
+                                <td style="width: 10%">
+                                    <select name="dest_item" id="dest_item" class="form-control">
+                                        <option value="1">Produccion</option>
+                                        <option value="2">Bodega</option>
+                                    </select>
+                                </td>
+                                <td style="width: 12%"><input type="text" id="AddArt" name="AddArt" class="form-control"></td>
+                                <td style="width: 10%"><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
+                                <td style="width: 10%">
+                                    <select name="AddUnidad" id="AddUnidad" class="form-control">
+                                        <option value="Unidad" selected >Unidad</option>
+                                        <option value="Kilos">Kilos</option>
+                                        <option value="Millar">Millar</option>
+                                    </select>
+                                </td>
+                                <td style="width: 8%"><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
+                                <td style="width: 10%"><input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="1"></td>
+                                <td style="width: 17%"><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
+                                <td><button type="button" class="btn btn-success btn-sm" id="AddItem" disabled><i class="fa fa-plus"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <button type="submit" class="btn btn-primary btn-lg" id="SavePed">Crear Pedido</button>
-            </form>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm ItemsTable" id="ItemsTable">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Descripcion</th>
+                                    <th>Arte</th>
+                                    <th>Notas</th>
+                                    <th>Unidad</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th style="display: none !important;"></th>
+                                    <th style="display: none !important;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="ProductosAdd">
+                                @foreach($detalle as $d)
+                                    <tr>
+                                        <td class="ipcodproducto">{{ $d->CodigoProducto }}</td>
+                                        <td class="iproducto">{{ $d->Descripcion }}</td>
+                                        <td class="iarte"><a href="javascript:void(0);" id="{{ $d->Arte }}" class="ViewArt">{{ $d->Arte }}</a></td>
+                                        <td class="inotas">{{ $d->Notas }}</td>
+                                        <td class="iunidad">{{ $d->Unidad }}</td>
+                                        <td class="iprecio">{{ $d->Precio }}</td>
+                                        <td class="rowDataSd icantidad">{{ $d->Cantidad }}</td>
+                                        <td class="rowDataSd itotal">{{ $d->Total }}</td>
+                                        <td style="align-content: center">
+                                            <a href="javascript:void(0)" data-id="{{ $d->CodigoProducto }}" class="btn btn-danger btn-sm BorrarItem">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                        <td class="rowDataSd idestino" style="display: none !important;">1</td>
+                                        <td class="rowDataSd id" style="display: none !important;">{{$d->id}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered first" id="TotalesTable">
+                            <thead>
+                                <tr>
+                                    <th>Cantidad Items</th>
+                                    <th>Valor Bruto</th>
+                                    <th>Descuento</th>
+                                    <th>Subtotal</th>
+                                    <th>IVA</th>
+                                    <th>Total Pedido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="number" class="form-control totalCol" id="TotalQuantityItems" name="TotalQuantityItems" value="" readonly="readonly">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control totalCol" id="TotalItemsBruto" name="TotalItemsBruto" value="{{$encabezado->Bruto}}" readonly="readonly">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" id="TotalItemsDiscount" name="TotalItemsDiscount" value="{{$encabezado->TotalDescuento}}" readonly="readonly">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" id="TotalItemsSubtotal" name="TotalItemsSubtotal" value="{{$encabezado->TotalSubtotal}}" readonly="readonly">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" id="TotalItemsIva" name="TotalItemsIva" value="{{$encabezado->TotalIVA}}" readonly="readonly">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" id="TotalItemsPrice" name="TotalItemsPrice" value="{{$encabezado->TotalPedido}}" readonly="readonly">
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg" id="SavePed">Actualizar Pedido</button>
+                </form>
+            </div>
         </div>
-    </div>
+    @else
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-exclamation-triangle fa-4x" style="color: red"></i>
+                <h3 class="card-title" style="color: red"> ACCESO DENEGADO </h3>
+                <h3 class="card-text" style="color: red">No tiene permiso para usar esta aplicación, por favor comuníquese a la ext: 102 o escribanos al correo electrónico: auxsistemas@estradavelasquez.com para obtener acceso.</h3>
+            </div>
+        </div>
+    @endcan
 @stop
 @section('modal')
     <div class="modal fade bd-example-modal-lg" id="ViewArtModal" tabindex="-1" role="dialog" aria-labelledby="ViewArtModal" aria-hidden="true">
@@ -200,6 +245,7 @@
         </div>
     </div>
 @endsection
+
 @push('javascript')
     <script>
         $(document).ready(function () {
@@ -208,9 +254,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            getCondicion();
 
-            /*Autocomplete */
             $("#ProductoMax").autocomplete({
                 appendTo: "#NewPedido",
                 source: function (request, response) {
@@ -248,46 +292,6 @@
                 minlength: 2
             });
 
-            $("#NombreCliente" ).autocomplete({
-                appendTo: "#NewPedido",
-                source: function (request, response) {
-                    var client = $("#NombreCliente").val();
-                    $.ajax({
-                        url: "/SearchClients",
-                        method: "get",
-                        data: {
-                            query: client,
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            var resp = $.map(data, function (obj) {
-                                return obj
-                            });
-                            response(resp);
-                        }
-                    })
-                },
-                focus: function( event, ui ) {
-                    $('#CodCliente').val([ui.item.CodigoCliente]);
-                    $('#address').val([ui.item.Direccion]);
-                    $('#city').val([ui.item.Ciudad]);
-                    $('#phone').val([ui.item.Telefono]);
-                    $('#CondicionPago').val([ui.item.Plazo]);
-                    $('#descuento').val([ui.item.descuento]);
-
-                    return true;
-                },
-                select: function(event, ui)	{
-                    $('#CodCliente').val([ui.item.CodigoCliente]);
-                    $('#address').val([ui.item.Direccion]);
-                    $('#city').val([ui.item.Ciudad]);
-                    $('#phone').val([ui.item.Telefono]);
-                    $('#CondicionPago').val([ui.item.Plazo]);
-                    $('#descuento').val([ui.item.descuento])
-                },
-                minlength: 2
-            });
-
             $("#AddArt").autocomplete({
                 appendTo: "#NewPedido",
                 source: function (request, response) {
@@ -309,19 +313,7 @@
                 },
             });
 
-            /*Functions*/
-            function getCondicion(){
-                $.ajax({
-                    type: "get",
-                    url: 'PedidosGetCondicion',
-                    success: function (data) {
-                        $('#CondicionPago').append('<option value="" >Seleccione...</option>');
-                        for (let j = 0; j <= data.length - 1 ; j++) {
-                            $('#CondicionPago').append('<option value="'+ data[j].DESC_36.trim() +'" >'+ data[j].DESC_36.trim() +'</option>');
-                        }
-                    }
-                });
-            }
+
 
             function Calcular(){
                 const Cantidad = $('#AddQuantity').val();
@@ -388,7 +380,6 @@
             }
 
 
-            /* Targets*/
             $(document).on('keyup', '#AddQuantity', function () {
                 Calcular();
             });
@@ -420,6 +411,7 @@
                     '<td class="rowDataSd itotal">'+ total +'</td>' +
                     '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td>' +
                     '<td class="rowDataSd idestino" style="display: none !important;">'+ destino +'</td>' +
+                    '<td class="rowDataSd id" style="display: none !important;"> </td>' +
                     '</tr> ');
                 LimpiarCampos();
                 SumarItems();
@@ -503,10 +495,8 @@
                 submitHandler: function (form) {
                     var encabezado = [];
                     let Items = [];
-                    var e = document.getElementById("SelectVendedor");
-                    var dspText = e.options[e.selectedIndex].text;
                     var Inputs = {
-                        NombreVendedor: dspText,
+                        id: $('#id').val(),
                         CodVendedor: $('#SelectVendedor').val(),
                         NombreCliente: $('#NombreCliente').val(),
                         OrdComp: $('#OrdComp').val(),
@@ -537,20 +527,22 @@
                             precio: e.querySelector('.iprecio').innerText,
                             cantidad: e.querySelector('.icantidad').innerText,
                             total: e.querySelector('.itotal').innerText,
-                            destino: e.querySelector('.idestino').innerText
+                            destino: e.querySelector('.idestino').innerText,
+                            id: e.querySelector('.id').innerHTML
+
                         };
                         Items.push(fila);
                     });
 
                     $.ajax({
                         data:{Items,encabezado},
-                        url: "/SavePedido",
+                        url: "/update_pedido",
                         type: "POST",
                         dataType: 'json',
                         success: function (data) {
                             if (data.hasOwnProperty('error')) {
                                 /*toastr.error('SQLSTATE[' + data.error.code + ']: ¡El Producto ya existe!');*/
-                                if(data.error.code2 == 664)  {
+                                if(data.error.code2 === 664)  {
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
@@ -559,15 +551,10 @@
                                     $('#SavePed').html('Reintentar');
                                 }
                             }else {
-                                $('#ProductForm').trigger("reset");
-                                $('#NewPedido').modal('hide');
-                                $('#SavePed').html('Guardar');
-                                $('#ProductosAdd').html('')
-
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Guardado!',
-                                    text: 'El pedido fue guardado con exito!',
+                                    text: 'El pedido fue actualizado con exito!',
                                 });
                             }
                         },
@@ -575,6 +562,14 @@
                     return false; // required to block normal submit since you used ajax
                 }
             });
+
+
+
+
+
+
+
+
 
             $(document).on('click', '.ViewArt', function() {
                 var Art = $(this).attr("id");
@@ -594,8 +589,6 @@
                 CalcularIva();
                 Totalpedido();
             });
-
-
 
         });
     </script>
