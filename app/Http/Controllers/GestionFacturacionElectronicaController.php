@@ -28,6 +28,7 @@ class GestionFacturacionElectronicaController extends Controller
                 );
 
                 $auth = $client->autenticar($params);
+
                 $respuesta = json_decode($auth->return);
                 $token = $respuesta->data->salida;
 
@@ -71,6 +72,8 @@ class GestionFacturacionElectronicaController extends Controller
                 );
 
                 $auth = $client->autenticar($params);
+
+
                 $respuesta = json_decode($auth->return);
                 $token = $respuesta->data->salida;
 
@@ -96,7 +99,27 @@ class GestionFacturacionElectronicaController extends Controller
                     'idDocumento' => '',
                     'idVerficacionFuncional' => ''
                 );
-                $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+                $params2  = array(
+                    'token' => $token,
+                    'idEmpresa' => '',
+                    'idUsuario' => '',
+                    'idEstadoEnvioCliente' => '',
+                    'idEstadoEnvioDian' => '',
+                    'idEstadoGeneracion' => '',
+                    'idTipoDocElectronico' => '1',
+                    'numeroInicial' => '',
+                    'numeroFinal'   => '',
+                    'idnumeracion'  => '',
+                    'estadoAcuse'   => '',
+                    'tipoDocumento' => '',
+                    'idVerficacionFuncional' => ''
+                );
+
+                $return = $client->ListarDocumentosElectronicosSuperAdmin($params2);
+
+                $return = $client->hello('hola mundo');
+
+                dd($return);
 
                 $return = json_decode($return->return);
                 $values = $return->data;

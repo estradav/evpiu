@@ -33,6 +33,35 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
     Route::middleware(['auth'])->group(function() {
         Route::middleware(['auth.lock'])->group(function() {
+
+            Route::prefix('aplicaciones')->group(function () {
+
+                /*Facturacion electronica*/
+                Route::prefix('facturacion_electronica')->group(function () {
+
+                    /*facturas*/
+                    Route::resource('factura','FacturacionElectronica\FacturasController');
+
+                    /*notas credito*/
+                    Route::resource('notas_credito','FacturacionElectronica\NotasCreditoController');
+
+                    /*configuracion*/
+                    Route::resource('configuracions','FacturacionElectronica\ConfiguracionController');
+                    Route::post('configuracions/facturas','FacturacionElectronica\ConfiguracionController@guardar_config_facturas');
+                    Route::post('configuracions/notas_credito','FacturacionElectronica\ConfiguracionController@guardar_config_notas_credito');
+
+
+                    /*web service*/
+                    Route::resource('web_service','FacturacionElectronica\WebServiceController');
+                    Route::post('/web_service/descargar_documento', 'FacturacionElectronica\WebServiceController@descarga_documento');
+                    Route::get('/web_service/listado_documentos','FacturacionElectronica\WebServiceController@listado_documentos');
+                    Route::get('/web_service/info_documento','FacturacionElectronica\WebServiceController@info_documento');
+
+                    /*gestion*/
+                    Route::resource('gestions','FacturacionElectronica\GestionController');
+                });
+            });
+
             Route::get('/home', 'HomeController@index')
                 ->name('home')
                 ->middleware('role:user');
