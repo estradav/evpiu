@@ -38,12 +38,13 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
                 /*Facturacion electronica*/
                 Route::prefix('facturacion_electronica')->group(function () {
-
                     /*facturas*/
                     Route::resource('factura','FacturacionElectronica\FacturasController');
+                    Route::post('/factura/generar_xml','FacturacionElectronica\FacturasController@generar_archivo_xml');
 
                     /*notas credito*/
-                    Route::resource('notas_credito','FacturacionElectronica\NotasCreditoController');
+                    Route::resource('nota_credito','FacturacionElectronica\NotasCreditoController');
+                    Route::post('/nota_credito/generar_xml','FacturacionElectronica\NotasCreditoController@generar_archivo_xml');
 
                     /*configuracion*/
                     Route::resource('configuracions','FacturacionElectronica\ConfiguracionController');
@@ -54,12 +55,16 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     /*web service*/
                     Route::resource('web_service','FacturacionElectronica\WebServiceController');
                     Route::post('/web_service/descargar_documento', 'FacturacionElectronica\WebServiceController@descarga_documento');
+                    Route::post('/web_service/envio_facturas','FacturacionElectronica\WebServiceController@envio_facturas');
+                    Route::post('/web_service/envio_notas_credito','FacturacionElectronica\WebServiceController@envio_notas_credito');
                     Route::get('/web_service/listado_documentos','FacturacionElectronica\WebServiceController@listado_documentos');
                     Route::get('/web_service/info_documento','FacturacionElectronica\WebServiceController@info_documento');
+                    Route::get('/web_service/estado_dian','FacturacionElectronica\WebServiceController@estado_dian');
 
                     /*gestion*/
                     Route::resource('gestions','FacturacionElectronica\GestionController');
                 });
+
             });
 
             Route::get('/home', 'HomeController@index')
@@ -82,26 +87,10 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::put('/menus/{menu}/item/', 'MenuItemController@update')->name('menus.item.update');
             Route::delete('/menus/{menu}/item/{id}', 'MenuItemController@destroy')->name('menus.item.destroy');
 
-            //Facturacion Electronica facturas
-            Route::resource('fe','FeFacturasController');
-            Route::post('fe/xml','FeFacturasController@CrearXml');
-            Route::get('fe/{fe}/edit','FeFacturasController@editfactura')->name('fe.edit');
-            Route::put('/fe/{fe}', 'FeFacturasController@updatefactura');
-            Route::get('/fe/getDownload/{file}','FeFacturasController@getDownload');
-            Route::get('/fe_configs','FeFacturasController@config')->name('fe_configs');
-            Route::post('/savefeConfigs','FeFacturasController@savefeConfigs');
-            Route::post('/savefeConfigsNc','FeFacturasController@savefeConfigsNc');
-            Route::post('/ReenviarFacturas','FeFacturasController@ReenviarFacturas');
 
 
 
-            // Facturacion electronica Notas credito
-            Route::resource('nc','FeNotasCreditoController');
-            Route::post('nc/xml','FeNotasCreditoController@CrearXmlnc')->name('fe.nc.xml');
-            Route::get('nc/{nc}/edit','FeNotasCreditoController@editfactura')->name('fe.nc.edit');
-            Route::put('/nc/{nc}', 'FeNotasCreditoController@updatefactura')->name('fe.nc.update');
 
-            Route::resource('ConfigFe','FeConfigController');
 
             // Productos CIEV --> Codificador
             Route::resource('maestros','ProdCievMaestroController');
@@ -377,8 +366,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
             Route::get('/accesos_remotos','HomeController@AccesosRemotos');
-
-
 
 
             //Backup

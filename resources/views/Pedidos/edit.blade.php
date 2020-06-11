@@ -167,7 +167,7 @@
                                             </a>
                                         </td>
                                         <td class="rowDataSd idestino" style="display: none !important;">1</td>
-                                        <td class="rowDataSd id" style="display: none !important;">{{$d->id}}</td>
+                                        <td class="rowDataSd id" style="display: none !important;">{{ $d->id }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

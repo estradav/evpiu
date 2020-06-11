@@ -50,10 +50,10 @@
                                         <th>Plazo</th>
                                         <th>Razon social</th>
                                         <th>NIT</th>
-                                        <th class="init-hide">vendedor</th>
-                                        <th class="init-hide">Bruto</th>
-                                        <th class="init-hide">Descuento</th>
-                                        <th class="init-hide">IVA</th>
+                                        <th>vendedor</th>
+                                        <th>Bruto</th>
+                                        <th>Descuento</th>
+                                        <th>IVA</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -125,5 +125,5 @@
 
 @push('javascript')
     <script> let Username = @json( Auth::user()->username); </script>
-    <script type="text/javascript" src="{{asset('aplicaciones/facturacion_electronica/facturas/index.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('aplicaciones/facturacion_electronica/facturas/index.js') }}"></script>
 @endpush

@@ -107,7 +107,7 @@ class FacturasController extends Controller
      * Generacion de archivos XML actualmente v3.0.
      *
      * @param Request $request
-     * @return BinaryFileResponse
+     * @return JsonResponse
      */
     public function generar_archivo_xml(Request $request){
 
@@ -115,7 +115,7 @@ class FacturasController extends Controller
         $facturas_seleccionadas = json_decode($facturas_seleccionadas);
 
         $objetoXML = new XMLWriter();
-        $objetoXML->openURI("factura_electronica.xml");
+        $objetoXML->openURI(public_path()."/factura_electronica.xml");
         $objetoXML->openMemory();
         $objetoXML->setIndent(true);
         $objetoXML->setIndentString("\t");
@@ -983,7 +983,7 @@ class FacturasController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("clave");
-                    $objetoXML->text('notas_documento');
+                    $objetoXML->text('NOTAS_DOCUMENTO');
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("valor");
@@ -1004,9 +1004,9 @@ class FacturasController extends Controller
         $objetoXML->endDocument();// Final del documento
         $cadenaXML = $objetoXML->outputMemory();
 
-        file_put_contents('XML/Facturacion_electronica_Facturas.xml', $cadenaXML);
+        file_put_contents(public_path().'/Facturacion_electronica_Facturas.xml', $cadenaXML);
 
-        return $objetoXML->flush();
+        return response()->json('terminado');
     }
 
 

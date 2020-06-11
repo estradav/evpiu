@@ -23,11 +23,13 @@ class PedidoController extends Controller
                     ->select('id', 'OrdenCompra','NombreCliente', 'CodCliente','CodCliente','DireccionCliente','Ciudad','Telefono',
                         'CodVendedor','NombreVendedor','CondicionPago','Descuento','Iva','Estado','created_at')
                     ->where('CodVendedor', '=', $request->CodVenUsuario)
+                    ->orderBy('id','desc')
                     ->get();
             }else{
                 $data = DB::table('encabezado_pedidos')
                     ->select('id', 'OrdenCompra', 'CodCliente','CodCliente','NombreCliente','DireccionCliente','Ciudad','Telefono',
                         'CodVendedor','NombreVendedor','CondicionPago','Descuento','Iva','Estado','created_at')
+                    ->orderBy('id','desc')
                     ->get();
             }
 

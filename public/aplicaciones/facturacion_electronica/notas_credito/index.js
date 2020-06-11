@@ -27,17 +27,17 @@ $(document).ready(function () {
         table =  $('#tfac').DataTable({
             responsive: true,
             ajax: {
-                url:'/aplicaciones/facturacion_electronica/factura',
+                url:'/aplicaciones/facturacion_electronica/nota_credito',
                 data:{from_date:from_date, to_date:to_date}
             },
             columns: [
                 {data: 'selectAll', name: 'selectAll', orderable: false, searchable: false },
                 {data: 'id', name: 'id', orderable: false, searchable: true},
-                {data: 'ov', name: 'ov', orderable: false, searchable: true},
+                {data: 'OC', name: 'OC', orderable: false, searchable: true},
                 {data: 'fecha', name: 'fecha', orderable: false, searchable: false},
-                {data: 'plazo', name: 'plazo', orderable: false, searchable: false},
                 {data: 'razon_social', name: 'razon_social'},
                 {data: 'nit_cliente', name: 'nit_cliente'},
+                {data: 'tipo_cliente', name: 'tipo_cliente', orderable: false, searchable: true},
                 {data: 'vendedor', name: 'vendedor'},
                 {data: 'bruto', name:'bruto', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
                 {data: 'desc', name: 'desc', orderable: false, searchable: false, render: $.fn.dataTable.render.number('.', ',', 2, '$')},
@@ -215,8 +215,8 @@ $(document).ready(function () {
                 cache: false,
                 type: 'post',
                 dataType: 'json', // importante para que
-                data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
-                url: '/aplicaciones/facturacion_electronica/factura/generar_xml',
+                data: {selected: JSON.stringify(selected)},
+                url: '/aplicaciones/facturacion_electronica/nota_credito/generar_xml',
                 success: function () {
                     sweetAlert.close();
                     Swal.fire({
@@ -226,7 +226,7 @@ $(document).ready(function () {
                         confirmButtonText: 'Aceptar',
                     });
                     let req = new XMLHttpRequest();
-                    req.open("GET", "/factura_electronica.xml", true);
+                    req.open("GET", "/notas_credito.xml", true);
                     req.responseType = "blob";
                     req.onload = function (event) {
                         var blob = req.response;
@@ -234,7 +234,7 @@ $(document).ready(function () {
                         link.href=window.URL.createObjectURL(blob);
                         let current_datetime = new Date();
                         let formatted_date = current_datetime.getDate() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getFullYear();
-                        link.download="factura" + formatted_date + "_.xml";
+                        link.download="nota_credito" + formatted_date + "_.xml";
                         link.click();
                     };
                     req.send();
@@ -251,7 +251,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Debes seleccionar al menos una factura...!',
+                text: 'Debes seleccionar al menos una nota credito...!',
             });
         return false;
     });
@@ -380,7 +380,7 @@ $(document).ready(function () {
         if (selected.length) {
             Swal.fire({
                 icon: false,
-                title: 'Enviando Facturas seleccionadas a traves de WebService, un momento por favor...',
+                title: 'Enviando Nota credito seleccionadas a traves de WebService, un momento por favor...',
                 html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
                 showConfirmButton: false,
                 showCancelButton: false,
@@ -400,8 +400,8 @@ $(document).ready(function () {
                 data: {
                     selected: JSON.stringify(selected),
                     Username: Username
-                }, // jQuery convierta el array a JSON
-                url: '/aplicaciones/facturacion_electronica/web_service/envio_facturas',
+                },
+                url: '/aplicaciones/facturacion_electronica/web_service/envio_notas_credito',
                 success: function (data) {
                     console.log(data);
                     $('#Errors').html('');
@@ -442,7 +442,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Debes seleccionar al menos una factura...!',
+                text: 'Debes seleccionar al menos una nota credito...!',
             });
         return false;
     });
@@ -479,14 +479,14 @@ $(document).ready(function () {
                 link.href=window.URL.createObjectURL(blob);
                 let current_datetime = new Date();
                 // let formatted_date = 'Fecha: '+current_datetime.getDate() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getFullYear()+ " Hora:" + current_datetime.getHours()+':'+ current_datetime.getMinutes()+':'+current_datetime.getSeconds();
-                link.download="Factura_Electronica_"+id+".pdf";
+                link.download="nota_credito"+id+".pdf";
                 link.click();
             },
             error: function () {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error en la Descarga...',
-                    text: 'Hubo un error al descargar el pdf de esta factura...!',
+                    text: 'Hubo un error al descargar el pdf de esta nota credito...!',
                 });
             }
         });
@@ -497,11 +497,9 @@ $(document).ready(function () {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'La  Factura '+id+'  no ha sido subida a Factible!',
+            text: 'La  Nota credito '+id+'  no ha sido subida a Factible!',
         });
     });
-
-
 
     $(document).on('click','.ErrorDianFac', function () {
         var id =  this.id;
@@ -512,13 +510,14 @@ $(document).ready(function () {
             success: function (data) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Esta factura tiene errores !',
-                    html: '<label>La  Factura '+id+'  no ha podido ser enviarda a la DIAN!</label><br>' +
+                    title: 'Esta nota credito tiene errores !',
+                    html: '<label>La  nota credito '+id+'  no ha podido ser enviarda a la DIAN!</label><br>' +
                         '<label> <b>Error: </b> '+data.data.comments+'</label>',
                 });
             }
         });
     });
+
 
 });
 

@@ -412,11 +412,11 @@
                 $('#ProductosAdd').append('<tr>' +
                     '<td class="ipcodproducto">'+ codigo +'</td>' +
                     '<td class="iproducto">'+ producto +'</td>' +
-                    '<td class="iarte">'+ '<a href="javascript:void(0);" id="'+arte+'" class="ViewArt">' + arte +'</a>' + '</td>' +
-                    '<td class="inotas">'+ notas  +'</td>' +
+                    '<td class="iarte" contenteditable="true">'+ '<a href="javascript:void(0);" id="'+arte+'" class="ViewArt">' + arte +'</a>' + '</td>' +
+                    '<td class="inotas" contenteditable="true">'+ notas  +'</td>' +
                     '<td class="iunidad">'+ unidad +'</td>' +
-                    '<td class="iprecio">'+ precio +'</td>' +
-                    '<td class="rowDataSd icantidad">'+ cantidad +'</td>' +
+                    '<td class="iprecio" contenteditable="true">'+ precio +'</td>' +
+                    '<td class="rowDataSd icantidad" contenteditable="true">'+ cantidad +'</td>' +
                     '<td class="rowDataSd itotal">'+ total +'</td>' +
                     '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td>' +
                     '<td class="rowDataSd idestino" style="display: none !important;">'+ destino +'</td>' +
@@ -595,6 +595,15 @@
                 Totalpedido();
             });
 
+            $("#ItemsTable").bind("DOMSubtreeModified", function() {
+
+
+                SumarItems();
+                CalcularDescuento();
+                CalcularSubtotal();
+                CalcularIva();
+                Totalpedido();
+            });
 
 
         });

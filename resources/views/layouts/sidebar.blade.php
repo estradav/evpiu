@@ -48,26 +48,26 @@
                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                 </a>
                 <ul>
-                    <li class="{{ request()->route()->named('fe.*') ? 'mm-active' : '' }}">
-                        <a href="{{ route('fe.index') }}">
+                    <li class="{{ request()->route()->named('factura.*') ? 'mm-active' : '' }}">
+                        <a href="{{ route('factura.index') }}">
                             <i class="metismenu-icon"></i>
                             Facturas
                         </a>
                     </li>
-                    <li class="{{ request()->route()->named('nc.*') ? 'mm-active' : '' }}">
-                        <a href="{{ route('nc.index') }}">
+                    <li class="{{ request()->route()->named('nota_credito.*') ? 'mm-active' : '' }}">
+                        <a href="{{ route('nota_credito.index') }}">
                             <i class="metismenu-icon">
                             </i>Notas credito
                         </a>
                     </li>
-                    <li class="{{ request()->route()->named('GestionFacturacionElectronica.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('GestionFacturacionElectronica.index') }}">
+                    <li class="{{ request()->route()->named('gestions.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('gestions.index') }}">
                             <i class="metismenu-icon">
-                            </i>Gestion FE
+                            </i>Gestion Facturacion
                         </a>
                     </li>
-                    <li class="{{ request()->is('ConfigFe') ? 'mm-active' : '' }}">
-                        <a href="{{ url('ConfigFe') }}">
+                    <li class="{{ request()->route()->named('configuracions.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('configuracions.index') }}">
                             <i class="metismenu-icon">
                             </i>Configuracion
                         </a>
