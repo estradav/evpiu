@@ -1458,7 +1458,7 @@ class GestionClientesController extends Controller
                     'GranContr'            =>  $request->M_gran_contribuyente == 'on' ? '1': '0',
                     'ActividadPrincipal'   =>  $request->M_actividad_principal,
                     'RUT'                  =>  $request->M_rut_entregado == 'on' ? '1' : '0',
-                    'ResponsableFE'        =>  $request->M_responsable_fe ?? '',
+                    'ResponsableFE'        =>  strtoupper($request->M_responsable_fe ?? ''),
                     'telFE'                =>  $request->M_telefono_fe ?? '',
                     'CorreosCopia'         =>  $correos_copia,
                     'ResponsableIVA'       =>  '',
@@ -1532,6 +1532,7 @@ class GestionClientesController extends Controller
     }
 
     public function CrearCliente(){
+
         return view('GestionClientes.create');
     }
 

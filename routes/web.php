@@ -34,10 +34,19 @@ Route::group(['middleware' => ['caffeinated']], function () {
     Route::middleware(['auth'])->group(function() {
         Route::middleware(['auth.lock'])->group(function() {
 
+            Route::prefix('home')->group(function () {
+
+                /* accesos remotos */
+                route::get('/accesos_remotos','homecontroller@accesosremotos')->name('accesos_remotos.index');
+
+            });
+
+
             Route::prefix('aplicaciones')->group(function () {
 
                 /*Facturacion electronica*/
                 Route::prefix('facturacion_electronica')->group(function () {
+
                     /*facturas*/
                     Route::resource('factura','FacturacionElectronica\FacturasController');
                     Route::post('/factura/generar_xml','FacturacionElectronica\FacturasController@generar_archivo_xml');
@@ -51,7 +60,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     Route::post('configuracions/facturas','FacturacionElectronica\ConfiguracionController@guardar_config_facturas');
                     Route::post('configuracions/notas_credito','FacturacionElectronica\ConfiguracionController@guardar_config_notas_credito');
 
-
                     /*web service*/
                     Route::resource('web_service','FacturacionElectronica\WebServiceController');
                     Route::post('/web_service/descargar_documento', 'FacturacionElectronica\WebServiceController@descarga_documento');
@@ -64,6 +72,48 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     /*gestion*/
                     Route::resource('gestions','FacturacionElectronica\GestionController');
                 });
+
+
+
+                /* artes */
+                Route::resource('arte','Artes\ArtesController');
+
+
+                /* Gestion de terceros */
+                Route::prefix('terceros')->group(function () {
+                    Route::resource('cliente','Terceros\Clientes\ClientesController')->only('index');
+                    Route::get('cliente/nuevo','Terceros\Clientes\ClientesController@nuevo');
+                    Route::get('cliente/buscar_cliente','Terceros\Clientes\ClientesController@buscar_cliente');
+
+                    Route::get('listar_ciudades','Terceros\Clientes\ClientesController@listar_ciudades');
+                    Route::get('listar_departamentos','Terceros\Clientes\ClientesController@listar_departamentos');
+
+
+                });
+
+
+
+
+
+
+
+                Route::resource('GestionClientes','GestionClientesController');
+                Route::get('GestionClientes_Index','GestionClientesController@index');
+                Route::get('/FormaEnvio','GestionClientesController@FormaEnvio');
+                Route::get('/get_paises','GestionClientesController@Paises');
+                Route::get('/get_departamentos','GestionClientesController@Departamentos');
+                Route::get('/get_ciudades','GestionClientesController@Ciudades');
+                Route::get('/get_tipo_cliente','GestionClientesController@TipoCliente');
+                Route::get('/ClientesFaltantesDMS','GestionClientesController@ClientesFaltantesDMS');
+                Route::get('GestionClientes/{GestionCliente}/show','GestionClientesController@show');
+                Route::get('/ProductosEnTendenciaPorMes','GestionClientesController@ProductosEnTendenciaPorMes');
+                Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');
+
+                Route::group(['prefix' => 'clientes'], function (){
+                    Route::get('nuevo_cliente','GestionClientesController@CrearCliente');
+                    Route::get('search_client','GestionClientesController@search_client');
+                });
+
 
             });
 
@@ -89,7 +139,8 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-
+            Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
+            Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
 
 
             // Productos CIEV --> Codificador
@@ -165,8 +216,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/SearchProducts', 'CreateProductController@SearchProducts');
             Route::get('/SearchCodes', 'CreateProductController@SearchCodes');
             Route::post('/SaveProducts','CreateProductController@SaveProducts');
-            Route::get('/FacturasIndex','FeFacturasController@index');
-            Route::get('/NotasCreditoIndex','FeNotasCreditoController@index');
+
+
+
 
             Route::get('/test', 'ProdCievCodCodigoController@GetCodigos');
 
@@ -239,7 +291,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('/NewRequerimiento','RequerimientosController@NewRequerimiento');
             Route::get('/getUnidadMedidasMed','ProdCievCodMedidaController@getUnidadMedidasMed');
 
-            Route::get('/DatosxFactura','FeFacturasController@DatosxFactura');
             Route::get('/VerCondicionesPago','FeFacturasController@VerCondicionesPago');
             Route::post('/GuardarFacturaEdit', 'FeFacturasController@GuardarFacturaEdit');
             Route::get('/misrequerimientos','RequerimientosController@MisRequerimientos');
@@ -265,13 +316,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('/UploadfilesSupport','RequerimientosController@UploadfilesSupport');
             Route::get('/ImagesRequerimiento','RequerimientosController@ImagesRequerimiento');
 
-            Route::resource('artes','ArtesController');
-            Route::get('/ViewArtes','ArtesController@index');
-            Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
-            Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
-            Route::post('/FacturaElectronicaWebService','FeFacturasController@FacturasWebService');
-            Route::post('/NotasCreditoWebService','FeNotasCreditoController@NotasCreditoWebService');
-            Route::post('/DescargarVersionGrafica','FeFacturasController@DescargarVersionGrafica');
+
 
 
 
@@ -303,35 +348,10 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('/EnviaraDiseño','RequerimientosController@EnviaraDiseño');
 
 
-            Route::get('/EstadoEnvioDianFacturacionElectronica','FeFacturasController@EstadoEnvioDianFacturacionElectronica');
-            Route::get('/AuditoriaDian','FeFacturasController@AuditoriaDian');
-            Route::get('/InfoFacturaWebService','FeFacturasController@InfoFacturaWebService');
 
 
-            Route::resource('GestionFacturacionElectronica','GestionFacturacionElectronicaController');
-            Route::get('/GestionFacturacionElectronica_data','GestionFacturacionElectronicaController@index');
-            Route::post('/GestionFacturacionElectronica_DownloadPdf','GestionFacturacionElectronicaController@DownloadPdf');
-            Route::get('/GestionFacturacionElectronica_InfoWs','GestionFacturacionElectronicaController@InfoWs');
-            Route::get('/GestionFacturacionElectronica_ListadeFacturas','GestionFacturacionElectronicaController@ListadeFacturas');
-            Route::get('/GestionFacturacionElectronica_ObtenerCuidades','GestionFacturacionElectronicaController@ObtenerCuidades');
 
 
-            Route::resource('GestionClientes','GestionClientesController');
-            Route::get('GestionClientes_Index','GestionClientesController@index');
-            Route::get('/FormaEnvio','GestionClientesController@FormaEnvio');
-            Route::get('/get_paises','GestionClientesController@Paises');
-            Route::get('/get_departamentos','GestionClientesController@Departamentos');
-            Route::get('/get_ciudades','GestionClientesController@Ciudades');
-            Route::get('/get_tipo_cliente','GestionClientesController@TipoCliente');
-            Route::get('/ClientesFaltantesDMS','GestionClientesController@ClientesFaltantesDMS');
-            Route::get('GestionClientes/{GestionCliente}/show','GestionClientesController@show');
-            Route::get('/ProductosEnTendenciaPorMes','GestionClientesController@ProductosEnTendenciaPorMes');
-            Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');
-
-            Route::group(['prefix' => 'clientes'], function (){
-                Route::get('nuevo_cliente','GestionClientesController@CrearCliente');
-                Route::get('search_client','GestionClientesController@search_client');
-            });
 
 
 
@@ -365,7 +385,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('save_new_customer','GestionClientesController@SaveNewCustomer');
 
 
-            Route::get('/accesos_remotos','HomeController@AccesosRemotos');
 
 
             //Backup

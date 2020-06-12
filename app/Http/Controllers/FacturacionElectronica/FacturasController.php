@@ -246,7 +246,7 @@ class FacturasController extends Controller
                 else if ($enc->idtipodocumento == 22){
                     $tipo_documento_ide = 42;
                 }else{
-                    $tipo_documento_ide = 31;
+                    $tipo_documento_ide = 13;
                 }
 
                 if ($enc->iva != null) {
