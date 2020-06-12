@@ -115,7 +115,7 @@ class FacturasController extends Controller
         $facturas_seleccionadas = json_decode($facturas_seleccionadas);
 
         $objetoXML = new XMLWriter();
-        $objetoXML->openURI(public_path()."/factura_electronica.xml");
+        $objetoXML->openURI("factura_electronica.xml");
         $objetoXML->openMemory();
         $objetoXML->setIndent(true);
         $objetoXML->setIndentString("\t");
@@ -1004,7 +1004,7 @@ class FacturasController extends Controller
         $objetoXML->endDocument();// Final del documento
         $cadenaXML = $objetoXML->outputMemory();
 
-        file_put_contents(public_path().'/Facturacion_electronica_Facturas.xml', $cadenaXML);
+        file_put_contents('factura_electronica.xml', $cadenaXML);
 
         return response()->json('terminado');
     }
