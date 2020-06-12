@@ -91,8 +91,7 @@ class FeFacturasController extends Controller
         return view('FacturacionElectronica.Facturas.index');
     }
 
-    public function CrearXml(Request $request)
-   {
+    public function CrearXml(Request $request){
        $Facturas_Seleccionadas = $request->selected;
        $Facturas_Seleccionadas = json_decode($Facturas_Seleccionadas);
 
@@ -949,8 +948,7 @@ class FeFacturasController extends Controller
 
     public function editfactura($numero)
     {
-       $var = $numero;
-       return view('FacturacionElectronica.Facturas.edit', ["var" => $var] );
+       return view('FacturacionElectronica.Facturas.edit', ["var" => $numero] );
     }
 
     public function config(Request $request)
@@ -1047,7 +1045,7 @@ class FeFacturasController extends Controller
             ->where('CIEV_V_FacturasDetalladas.factura', '=', $request->numero)
             ->get();
 
-         return response()->json(['encabezado' => $encabezado, 'detalle' => $detalle]);
+        return response()->json(['encabezado' => $encabezado, 'detalle' => $detalle]);
     }
 
     public function VerCondicionesPago(Request $request)

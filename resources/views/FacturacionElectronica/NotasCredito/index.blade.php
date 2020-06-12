@@ -636,6 +636,6 @@
                 });
 
             });
-        </script
+        </script>
     @endpush
 @stop
