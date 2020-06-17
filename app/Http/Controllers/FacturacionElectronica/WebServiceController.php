@@ -878,8 +878,8 @@ class WebServiceController extends Controller
 
             // Inicio de sesion
             $params = array(
-                'login' => $login1,
-                'password' => $password
+                'login'     => $login1,
+                'password'  => $password
             );
 
 
@@ -1624,9 +1624,9 @@ class WebServiceController extends Controller
             $respuesta = json_decode($auth->return);
             $token = $respuesta->data->salida;
 
+
             $params = array(
                 'token' => $token,
-                'idEmpresa' => '',
                 'idUsuario' => '',
                 'idEstadoEnvioCliente' => '',
                 'idEstadoEnvioDian' => '',
@@ -1646,26 +1646,17 @@ class WebServiceController extends Controller
                 'idDocumento' => '',
                 'idVerficacionFuncional' => ''
             );
-            $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+            $return = $client->ListarDocumentosElectronicos($params);
+
+
+            dd($return);
+
             $return = json_decode($return->return);
+
 
             $id_factible = $return->data[0]->DT_RowId;
 
-            $login1 = $request->Username;
-            $password = "FE2020ev*";
-            $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
-            $client = new SoapClient($wsdl_url);
-            $client->__setLocation($wsdl_url);
 
-            // Inicio de sesion
-            $params = array(
-                'login' => $login1,
-                'password' => $password
-            );
-
-            $auth = $client->autenticar($params);
-            $respuesta = json_decode($auth->return);
-            $token = $respuesta->data->salida;
 
             $params = array(
                 'token'                     => $token,
@@ -1673,6 +1664,9 @@ class WebServiceController extends Controller
             );
 
             $return = $client->descargarDocumentoElectronico_VersionGrafica($params);
+
+
+
 
             $resultados = json_decode($return->return);
 

@@ -11,7 +11,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use XMLWriter;
 use Yajra\DataTables\DataTables;
 
@@ -83,7 +82,7 @@ class FacturasController extends Controller
             }
             return datatables::of($data)
                 ->addColumn('opciones', function($row){
-                    $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/fe/'.$row->id.'/edit" class="btn btn-sm" id="edit-fac"><i class="fas fa-edit" style="color: #3085d6"></i></a>';
+                    $btn = '<div class="btn-group ml-auto float-right">'.'<a href="/aplicaciones/facturacion_electronica/factura/'.$row->id.'/edit" class="btn btn-sm" id="edit-fac"><i class="fas fa-edit" style="color: #3085d6"></i></a>';
                     $btn = $btn.'<button class="btn btn-sm download-vg" id="'.$row->id.'"><i class="fas fa-file-pdf" style="color: #FF0000"></i></button>';
                     $btn = $btn. '<button class="btn btn-sm details-control"><i class="fas fa-info" style="color: #00dc94"></i></button> </div>';
                     return $btn;
@@ -246,7 +245,7 @@ class FacturasController extends Controller
                 else if ($enc->idtipodocumento == 22){
                     $tipo_documento_ide = 42;
                 }else{
-                    $tipo_documento_ide = 31;
+                    $tipo_documento_ide = 13;
                 }
 
                 if ($enc->iva != null) {
@@ -1073,7 +1072,7 @@ class FacturasController extends Controller
             ->where('CIEV_V_FacturasDetalladas.factura', '=', $numero_factura)
             ->get();
 
-        return view('FacturacionElectronica.Facturas.edit', compact('encabezado','detalle') );
+        return view('aplicaciones.facturacion_electronica.facturas.edit', compact('encabezado','detalle', 'numero_factura') );
     }
 
 

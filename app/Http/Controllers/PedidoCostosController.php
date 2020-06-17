@@ -62,11 +62,15 @@ class PedidoCostosController extends Controller
             if ($request->EstadoPedido == 5) {
                 DB::beginTransaction();
                 try {
-                    DB::table('encabezado_pedidos')->where('id', '=', $request->id)->update([
+                    DB::table('encabezado_pedidos')
+                        ->where('id', '=', $request->id)
+                        ->update([
                         'Estado' => $request->EstadoPedido
                     ]);
 
-                    DB::table('pedidos_detalles_area')->where('idPedido', '=', $request->id)->update([
+                    DB::table('pedidos_detalles_area')
+                        ->where('idPedido', '=', $request->id)
+                        ->update([
                         'Costos' => $request->EstadoPedido,
                         'DetalleCostos' => $request->DescripccionPedido,
                     ]);
@@ -86,13 +90,18 @@ class PedidoCostosController extends Controller
             }
 
             if ($request->EstadoPedido == 6){
-                $destino = DB::table('encabezado_pedidos')->where('id','=',$request->id)->select('Destino')->get();
+                $destino = DB::table('encabezado_pedidos')
+                    ->where('id','=',$request->id)
+                    ->select('Destino')
+                    ->get();
 
                 if ($destino[0]->Destino == 1){
                     DB::beginTransaction();
                     try {
-                        DB::table('encabezado_pedidos')->where('id', '=', $request->id)->update([
-                            'Estado' => $request->EstadoPedido
+                        DB::table('encabezado_pedidos')
+                            ->where('id', '=', $request->id)
+                            ->update([
+                                'Estado' => $request->EstadoPedido
                         ]);
 
                         DB::table('pedidos_detalles_area')->where('idPedido', '=', $request->id)->update([
@@ -118,18 +127,22 @@ class PedidoCostosController extends Controller
                 if($destino[0]->Destino == 2){
                     DB::beginTransaction();
                     try {
-                        DB::table('encabezado_pedidos')->where('id', '=', $request->id)->update([
-                            'Estado' => '8'
+                        DB::table('encabezado_pedidos')
+                            ->where('id', '=', $request->id)
+                            ->update([
+                                'Estado' => '8'
                         ]);
 
-                        DB::table('pedidos_detalles_area')->where('idPedido', '=', $request->id)->update([
-                            'Costos' => '6',
-                            'DetalleCostos' => $request->DescripccionPedido,
-                            'AproboCostos' => $request->User,
-                            'Produccion' => '8',
-                            'DetalleProduccion' => 'Este pedido es de bodega',
-                            'AproboProduccion'  => $request->User,
-                            'Bodega' => '8'
+                        DB::table('pedidos_detalles_area')
+                            ->where('idPedido', '=', $request->id)
+                            ->update([
+                                'Costos' => '6',
+                                'DetalleCostos' => $request->DescripccionPedido,
+                                'AproboCostos' => $request->User,
+                                'Produccion' => '8',
+                                'DetalleProduccion' => 'Este pedido es de bodega',
+                                'AproboProduccion'  => $request->User,
+                                'Bodega' => '8'
                         ]);
                         DB::commit();
                         return response()->json(['Success' => 'Todo Ok']);

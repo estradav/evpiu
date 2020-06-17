@@ -37,6 +37,6 @@ class PermisionFolder extends Command
      */
     public function handle()
     {
-       echo shell_exec('sudo chmod -R 777 /var/www/evpiu/storage');
+       echo shell_exec('chmod -R 777 /var/www/evpiu/storage');
     }
 }

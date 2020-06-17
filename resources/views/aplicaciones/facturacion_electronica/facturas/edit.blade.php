@@ -1,11 +1,10 @@
 @extends('layouts.architectui')
 
-@section('page_title', 'Facturacion Electronica')
+@section('page_title', 'Editar factura')
 
 @section('content')
     @can('facturacion.edit')
-        <div class="col-12"><h3> Factura #: {{ $var }} </h3>
-        </div>
+        <div class="col-12"><h3> Factura #: {{ $numero_factura }} </h3></div>
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <div class="card">
@@ -144,16 +143,16 @@
                     <div class="table-responsive">
                         <table class="table table-striped first tabla_productos">
                             <thead>
-                                <tr>
-                                    <th style="width: 10% !important; text-align: center">ORDEN</th>
-                                    <th style="width: 12% !important; text-align: center">CODIGO</th>
-                                    <th style="width: 15% !important; text-align: center">DESCRIPCION</th>
-                                    <th style="width: 5%  !important; text-align: center">U/M</th>
-                                    <th style="width: 10% !important; text-align: center">CANTIDAD</th>
-                                    <th style="width: 10% !important; text-align: center">PRECIO UNITARIO</th>
-                                    <th style="width: 10% !important; text-align: center">IVA</th>
-                                    <th style="width: 15% !important; text-align: center">SUBTOTAL</th>
-                                </tr>
+                            <tr>
+                                <th style="width: 10% !important; text-align: center">ORDEN</th>
+                                <th style="width: 12% !important; text-align: center">CODIGO</th>
+                                <th style="width: 15% !important; text-align: center">DESCRIPCION</th>
+                                <th style="width: 5%  !important; text-align: center">U/M</th>
+                                <th style="width: 10% !important; text-align: center">CANTIDAD</th>
+                                <th style="width: 10% !important; text-align: center">PRECIO UNITARIO</th>
+                                <th style="width: 10% !important; text-align: center">IVA</th>
+                                <th style="width: 15% !important; text-align: center">SUBTOTAL</th>
+                            </tr>
                             </thead>
                             <tbody id="items_factura" name="items_factura">
                             </tbody>
@@ -166,37 +165,39 @@
                 <div class="table-responsive">
                     <table class="table table-striped first">
                         <thead>
-                            <tr>
-                                <th style="text-align: center">TOTAL BRUTO</th>
-                                <th style="text-align: center">DESCUENTO</th>
-                                <th style="text-align: center">RETENCION</th>
-                                <th style="text-align: center">SEGURO</th>
-                                <th style="text-align: center">FLETE</th>
-                                <th style="text-align: center">SUBTOTAL</th>
-                                <th style="text-align: center">IVA</th>
-                                <th style="text-align: center">TOTAL</th>
-                            </tr>
+                        <tr>
+                            <th style="text-align: center">TOTAL BRUTO</th>
+                            <th style="text-align: center">DESCUENTO</th>
+                            <th style="text-align: center">RETENCION</th>
+                            <th style="text-align: center">SEGURO</th>
+                            <th style="text-align: center">FLETE</th>
+                            <th style="text-align: center">SUBTOTAL</th>
+                            <th style="text-align: center">IVA</th>
+                            <th style="text-align: center">TOTAL</th>
+                        </tr>
                         </thead>
                         <tbody id="totales_factura">
-                            <tr>
-                                <td><input type="number" class="form-control" style="text-align: right" id="Total_bruto" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="Total_descuento" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="Total_retencion" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="Total_seguro" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="Total_flete" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="Total_subtotal" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="Total_iva" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="Total_factura" readonly="readonly"></td>
-                            </tr>
+                        <tr>
+                            <td><input type="number" class="form-control" style="text-align: right" id="Total_bruto" readonly="readonly"></td>
+                            <td><input type="number" class="form-control" style="text-align: right" id="Total_descuento" readonly="readonly"></td>
+                            <td><input type="number" class="form-control" style="text-align: right" id="Total_retencion" readonly="readonly"></td>
+                            <td><input type="number" class="form-control" style="text-align: right" id="Total_seguro" readonly="readonly"></td>
+                            <td><input type="number" class="form-control" style="text-align: right" id="Total_flete" readonly="readonly"></td>
+                            <td><input type="number" class="form-control" style="text-align: right" id="Total_subtotal" readonly="readonly"></td>
+                            <td><input type="number" class="form-control" style="text-align: right" id="Total_iva" readonly="readonly"></td>
+                            <td><input type="number" class="form-control" style="text-align: right" id="Total_factura" readonly="readonly"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="card-footer">
                 <button id="SaveBtn" class="btn btn-primary btn-lg">Guardar cambios</button> &nbsp;
-                <a href="{{ route('fe.index') }}" class="btn btn-secondary btn-lg" role="button">Volver</a>
+                <a href="{{ route('factura.index') }}" class="btn btn-secondary btn-lg" role="button">Volver</a>
             </div>
         </div>
+
+
         <style>
             .preloader {
                 width: 140px;
@@ -242,16 +243,18 @@
                         allowEscapeKey: false
                     });
                 }
-                let Numero_factura = @json( $var );
+                var Numero_factura = @json( $numero_factura );
                 function ObtenerDatos() {
-               	    $.ajax({
+                    $.ajax({
                         url: "/DatosxFactura",
                         type: "get",
                         data: {
-                        	numero: Numero_factura
+                            numero: Numero_factura
                         },
                         success: function (data) {
-                        	var ciudad_est_pais = data['encabezado'][0]['ciudad'].trim() + '-'+ data['encabezado'][0]['dpto'].trim() + '-' + data['encabezado'][0]['pais'].trim();
+                            console.log(data);
+                            var ciudad_est_pais = data['encabezado'][0]['ciudad'].trim() + '-'+ data['encabezado'][0]['dpto'].trim() + '-' + data['encabezado'][0]['pais'].trim();
+                            console.log(data['encabezado']);
                             $('#razon_social').val(data['encabezado'][0]['nombres'].trim());
                             $('#direccion').val(data['encabezado'][0]['direccion'].trim());
                             $('#tipo_cliente').val(data['encabezado'][0]['tipo_cliente'].trim());
@@ -274,6 +277,7 @@
                             $('#Total_iva').val(data['encabezado'][0]['iva']);
                             $('#Total_retencion').val(0);
                             $('#oc').val(data['encabezado'][0]['OC']);
+
 
                             var i = 0;
                             var n = 1;
@@ -309,6 +313,7 @@
                 }
 
                 getMotivo();
+
                 getCondicion();
 
                 function getCondicion(){
@@ -359,9 +364,9 @@
                 }
 
                 function Calcular_Valores(){
-                	var TotalBruto      = $('#Total_bruto').val();
-                	var TotalDescuento  = $('#Total_descuento').val();
-                	var TotalRetencion  = $('#Total_retencion').val();
+                    var TotalBruto      = $('#Total_bruto').val();
+                    var TotalDescuento  = $('#Total_descuento').val();
+                    var TotalRetencion  = $('#Total_retencion').val();
                     var TotalSeguro     = $('#Total_seguro').val();
                     var TotalFlete      = $('#Total_flete').val();
                     var TotalSubtotal   = parseFloat(TotalBruto) - parseFloat(TotalDescuento);
@@ -370,6 +375,7 @@
 
                     $('#Total_factura').val(TotalFactura);
                     $('#Total_subtotal').val(TotalSubtotal);
+
                 }
 
                 function Sumar() {
@@ -387,41 +393,45 @@
 
                     $('#Total_bruto').val(Subtotal);
                     $('#Total_iva').val(IVA);
+                    console.log(Subtotal);
+
 
                     var valuedesc = $('#descuento').val();
                     var bruto = $('#Total_bruto').val();
 
-                    if(valuedesc === 0 || valuedesc < 0){
+                    if(valuedesc == 0 || valuedesc < 0){
                         $('#Total_descuento').val(0);
                     }else{
                         var Descuento = (bruto * valuedesc) / 100;
+                        console.log('Descuento:'+Descuento);
                         $('#Total_descuento').val(Descuento);
                     }
 
                     Calcular_Valores();
                 }
 
-                $(document).on('keyup','.item_preciounitario', function () {
-					let id = this.id;
+                $('form').on('keyup','.item_preciounitario', function () {
+                    var id = $(this).attr('id');
                     id = id.substring(7);
 
-                    const precio_unitario = 'Precun-' + id;
-                    const item_iva = 'Itmiva-' + id;
-                    const item_cant = 'Cant-' + id;
-                    const item_subtotal = 'ItmPrec-' + id;
-                    const value = document.getElementById(item_cant).value;
-                    const precio_unitarioitm = document.getElementById(precio_unitario).value;
-                    const subtotal = precio_unitarioitm * value;
+                    var precio_unitario = 'Precun-'+id;
+                    var item_iva = 'Itmiva-'+id;
+                    var item_cant = 'Cant-'+id;
+                    var item_subtotal = 'ItmPrec-'+id;
+                    var value = document.getElementById(item_cant).value;
+                    var precio_unitarioitm = document.getElementById(precio_unitario).value;
+                    var subtotal = precio_unitarioitm * value;
 
-                    const Porcdescuento = $('#descuento').val();
-                    const descuento = (subtotal * Porcdescuento) / 100;
+                    var Porcdescuento = $('#descuento').val();
+                    var descuento = (subtotal * Porcdescuento) / 100;
 
-                    const subtotalmenosdesc = subtotal - descuento;
-                    const iva = subtotalmenosdesc * 0.19;
+                    var subtotalmenosdesc = subtotal - descuento;
+                    var iva = subtotalmenosdesc * 0.19;
 
                     document.getElementById(item_subtotal).value=subtotalmenosdesc;
+                    //  document.getElementById(id).value=precio_unitarioitm;
 
-                    if($('#tieneiva').val() === 1){
+                    if($('#tieneiva').val() == 1){
                         document.getElementById(item_iva).value=iva;
                     }else{
                         document.getElementById(item_iva).value=0;
@@ -430,33 +440,52 @@
                 });
 
                 $('#tieneiva').on('change',function () {
-                    const estado = this.value;
-                    if(estado === 1) {
-                       Sumar();
+                    var estado = $(this).val();
+                    console.log(estado);
+                    if(estado == 1)
+                    {
+                        Sumar();
                     }
-                    if(estado === 2) {
-                       $('.item_iva').val(0);
-                       Sumar();
+                    if(estado == 2)
+                    {
+                        $('.item_iva').val(0);
+                        Sumar();
                     }
                 });
 
                 $('#condicion_pago').on('change', function () {
                     var fecha_inicio = $('#fecha_factura').val();
+                    console.log('Fecha', fecha_inicio);
                     var dias = $(this).val();
+                    console.log('Días', dias);
 
+                    // Fecha
+                    // Separar las partes de la fecha por /
                     var dateparts = fecha_inicio.split('-').map(d => parseInt(d));
+                    // Si no hay 3 partes o alguna no es un número no es correcto
                     if (dateparts.length !== 3 || !dateparts.every(d => !isNaN(d))){
                         alert('La fecha no tiene un formato correcto');
                         return;
                     }
+                    console.log(dateparts);
+                    // Crea el objeto Date pasando año, mes, día
                     var fechaDate = new Date(dateparts[0], dateparts[1]-1, dateparts[2]);
+
+                    console.log('part:'+dateparts[2]);
+                    // Dias en formato entero
                     var diasNum = parseInt(dias);
 
+                    console.log(diasNum);
+                    // Si no es un número no es correcto
                     if (isNaN(diasNum)){
-                      alert('El número de días no tiene un formato correcto');
+                        alert('El número de días no tiene un formato correcto');
                     }
 
+                    // Suma los días a la fecha
                     fechaDate.setDate(fechaDate.getDate() + diasNum);
+
+                    console.log('dias:'+ fechaDate.getDate());
+
                     let formatted_date = fechaDate.getFullYear() + "-" + (fechaDate.getMonth() + 1) + "-" + fechaDate.getDate() + " " + fechaDate.getHours() + ":" + fechaDate.getMinutes() + ":" + fechaDate.getSeconds();
 
                     $('#fecha_vencimiento').val(formatted_date);
@@ -464,11 +493,11 @@
                 });
 
                 $('#SaveBtn').on('click', function () {
-					var notas =	$('#notas_factura').val();
-					var motivo = $('#motivo').val();
-					var condicionpago = $('#condicion_pago').val();
-					var fechavencimiento = $('#fecha_vencimiento').val();
-					var total_bruto = $('#Total_bruto').val();
+                    var notas =	$('#notas_factura').val();
+                    var motivo = $('#motivo').val();
+                    var condicionpago = $('#condicion_pago').val();
+                    var fechavencimiento = $('#fecha_vencimiento').val();
+                    var total_bruto = $('#Total_bruto').val();
                     var total_descuento = $('#Total_descuento').val();
                     var total_retencion = $('#Total_retencion').val();
                     var total_seguro = $('#Total_seguro').val();
@@ -496,7 +525,7 @@
                         Numero_factura: Numero_factura,
                         ordencompra: orden_compra
                     };
-                   // encabezado.push(Inputs);
+                    // encabezado.push(Inputs);
 
 
                     var filas = $("#items_factura").find("tr"); //devulve las filas del body
@@ -519,6 +548,7 @@
                         };
                         Items.push(values);
                     }
+                    console.log(Items);
 
                     $.ajaxSetup({
                         headers: {
@@ -534,6 +564,7 @@
                             encabezado:encabezado
                         },
                         success: function (data) {
+                            console.log(data);
                             Swal.fire({
                                 icon: 'success',
                                 title: '¡Guardado!',
@@ -552,10 +583,11 @@
                     var bruto = $('#Total_bruto').val();
 
                     if(value == 0 || value < 0){
-                    	$('#Total_descuento').val(0);
-                    	Sumar();
+                        $('#Total_descuento').val(0);
+                        Sumar();
                     }else{
-                    	var Descuento = (bruto * value) / 100;
+                        var Descuento = (bruto * value) / 100;
+                        console.log('Descuento:'+Descuento);
                         $('#Total_descuento').val(Descuento);
                         Sumar();
                     }
@@ -573,9 +605,13 @@
                         var subtotal = $($(celdas[7]).children("input")[0]).val();
 
                         var items = [cantidad, precio_unitario, iva, subtotal];
+
+                        console.log(items);
                         resultado.push(items);
                     }
+                    console.log(items);
                 }
+
             });
         </script>
     @endpush

@@ -112,9 +112,8 @@ class GestionController extends Controller
                     'idVerficacionFuncional' => ''
                 );
 
-
-
                 $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+
 
                 $return2 = $client->cerrarsesion($token);
 
@@ -123,6 +122,8 @@ class GestionController extends Controller
 
 
                 $values = $return->data;
+
+
             }
             return datatables::of($values)
                 ->addColumn('opciones', function($row){

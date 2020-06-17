@@ -137,6 +137,7 @@ $(document).ready(function () {
                 type_doc:type_doc,
             },
             success: function (data) {
+                console.log(data);
                 var array = [];
                 for (let i = 0; i < data.length ; i++) {
                     array.push(data[i].numero);

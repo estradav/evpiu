@@ -3,180 +3,224 @@
 @section('page_title', 'Creacion de pedido')
 
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <form class="form-horizontal" id="ProductForm" name="ProductForm">
-                <div class="row" >
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="SelectVendedor" class="control-label" ><b>Vendedor:&nbsp;&nbsp; </b></label>
-                            <select name="SelectVendedor" id="SelectVendedor" class="custom-select">
-                                @foreach($vendedores as $vendedor)
-                                    <option value="{{$vendedor->codvendedor}}">{{$vendedor->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="NombreCliente" class="control-label" ><b>Nombre Cliente:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" id="NombreCliente" name="NombreCliente" placeholder="Buscar Cliente">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="OrdComp" class="control-label" ><b>Orden de Compra:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control"  id="OrdComp" name="OrdComp">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label" ><b>Codigo Cliente:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="" id="CodCliente" name="CodCliente" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label" ><b>Direccion:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="" id="address" name="address" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label" ><b>Ciudad:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="" id="city" name="city" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label" ><b>Telefono:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="" id="phone" name="phone" disabled>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="CondicionPago" class="control-label" ><b>Condicion de pago:&nbsp;&nbsp;</b></label>
-                            <select name="CondicionPago" id="CondicionPago" class="form-control" disabled >
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label"><b>Descuento:&nbsp;&nbsp;</b></label>
-                            <input type="text" class="form-control" value="0" id="descuento">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name" class="control-label"><b>IVA:&nbsp;&nbsp;</b></label>
-                            <select name="SelectIva" id="SelectIva" class="form-control">
-                                <option value="" selected>Seleccione...</option>
-                                <option value="Y">Si</option>
-                                <option value="N">No</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="GeneralNotes"><b>Notas Generales:</b></label>
-                            <textarea name="GeneralNotes" id="GeneralNotes" cols="71" rows="2" class="form-control"></textarea>
-                        </div>
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-note2 icon-gradient bg-mean-fruit"></i>
+                </div>
+                <div>Pedidos
+                    <div class="page-title-subheading">
+                        Creacion de nuevo pedido.
                     </div>
                 </div>
-                <br>
-                <b>Stock:</b> <label id="StockItem" name="StockItem"></label>
-                <table class="table table-bordered table-sm">
-                    <thead>
-                        <tr>
-                            <th style="width: 25%">Producto</th>
-                            <th style="width: 10%">Destino</th>
-                            <th style="width: 12%">Arte</th>
-                            <th style="width: 10%">Notas</th>
-                            <th style="width: 10%">Unidad</th>
-                            <th style="width: 8%">Precio</th>
-                            <th style="width: 10%">Cantidad</th>
-                            <th style="width: 17%">Total</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <input type="hidden" value="" id="CodigoProductoMax" name="CodigoProductoMax">
-                            <input type="hidden" value="" id="DescripcionProductoMax" name="DescripcionProductoMax">
-                            <td style="width: 25% !important; "><input type="text" id="ProductoMax" name="ProductoMax" class="form-control">
-                            </td>
-                            <td style="width: 10%">
-                                <select name="dest_item" id="dest_item" class="form-control">
-                                    <option value="1">Produccion</option>
-                                    <option value="2">Bodega</option>
-                                </select>
-                            </td>
-                            <td style="width: 12%"><input type="text" id="AddArt" name="AddArt" class="form-control"></td>
-                            <td style="width: 10%"><input type="text" id="AddNotes" name="AddNotes" class="form-control"></td>
-                            <td style="width: 10%">
-                                <select name="AddUnidad" id="AddUnidad" class="form-control">
-                                    <option value="Unidad" selected >Unidad</option>
-                                    <option value="Kilos">Kilos</option>
-                                    <option value="Millar">Millar</option>
-                                </select>
-                            </td>
-                            <td style="width: 8%"><input type="number" id="AddPrice" name="AddPrice" class="form-control"></td>
-                            <td style="width: 10%"><input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="1"></td>
-                            <td style="width: 17%"><input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0"></td>
-                            <td><button type="button" class="btn btn-success btn-sm" id="AddItem" disabled><i class="fa fa-plus"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <form id="ProductForm" name="ProductForm">
 
-                <br>
-                <br>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm ItemsTable" id="ItemsTable">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Descripcion</th>
-                                <th>Arte</th>
-                                <th>Notas</th>
-                                <th>Unidad</th>
-                                <th>Precio</th>
-                                <th>Cantidad</th>
-                                <th>Total</th>
-                                <th></th>
-                                <th style="display: none !important;"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="ProductosAdd">
-                        </tbody>
-                    </table>
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="SelectVendedor" class="control-label" ><b>Vendedor:&nbsp;&nbsp; </b></label>
+                                    <select name="SelectVendedor" id="SelectVendedor" class="custom-select">
+                                        @foreach($vendedores as $vendedor)
+                                            <option value="{{$vendedor->codvendedor}}">{{$vendedor->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="NombreCliente" class="control-label" ><b>Nombre Cliente:&nbsp;&nbsp;</b></label>
+                                    <input type="text" class="form-control" id="NombreCliente" name="NombreCliente" placeholder="Buscar Cliente">
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="OrdComp" class="control-label" ><b>Orden de Compra:&nbsp;&nbsp;</b></label>
+                                    <input type="text" class="form-control"  id="OrdComp" name="OrdComp">
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="name" class="control-label" ><b>Codigo Cliente:&nbsp;&nbsp;</b></label>
+                                    <input type="text" class="form-control" value="" id="CodCliente" name="CodCliente" disabled>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="name" class="control-label" ><b>Direccion:&nbsp;&nbsp;</b></label>
+                                    <input type="text" class="form-control" value="" id="address" name="address" disabled>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="name" class="control-label" ><b>Ciudad:&nbsp;&nbsp;</b></label>
+                                    <input type="text" class="form-control" value="" id="city" name="city" disabled>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="name" class="control-label" ><b>Telefono:&nbsp;&nbsp;</b></label>
+                                    <input type="text" class="form-control" value="" id="phone" name="phone" disabled>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="CondicionPago" class="control-label" ><b>Condicion de pago:&nbsp;&nbsp;</b></label>
+                                    <select name="CondicionPago" id="CondicionPago" class="form-control" disabled >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="name" class="control-label"><b>Descuento:&nbsp;&nbsp;</b></label>
+                                    <input type="text" class="form-control" value="0" id="descuento">
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="form-group">
+                                    <label for="name" class="control-label"><b>IVA:&nbsp;&nbsp;</b></label>
+                                    <select name="SelectIva" id="SelectIva" class="form-control">
+                                        <option value="" selected>Seleccione...</option>
+                                        <option value="Y">Si</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="form-group">
+                                    <label for="GeneralNotes"><b>Notas Generales:</b></label>
+                                    <textarea name="GeneralNotes" id="GeneralNotes" cols="71" rows="2" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <b>Stock:</b> <label id="StockItem" name="StockItem"></label>
+                    <form id="add_items_form" name="add_items_form">
+                        <table class="table table-bordered table-sm text-center">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%">Producto</th>
+                                    <th style="width: 10%">Destino</th>
+                                    <th>N/R</th>
+                                    <th style="width: 12%">Arte</th>
+                                    <th style="width: 10%">Notas</th>
+                                    <th style="width: 10%">Unidad</th>
+                                    <th style="width: 8%">Precio</th>
+                                    <th style="width: 10%">Cantidad</th>
+                                    <th style="width: 17%">Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <input type="hidden" value="" id="CodigoProductoMax" name="CodigoProductoMax">
+                                    <input type="hidden" value="" id="DescripcionProductoMax" name="DescripcionProductoMax">
+                                    <td style="width: 20% !important; ">
+                                        <input type="text" id="ProductoMax" name="ProductoMax" class="form-control">
+                                    </td>
+                                    <td style="width: 10%">
+                                        <select name="dest_item" id="dest_item" class="form-control">
+                                            <option value="" selected>Seleccione..</option>
+                                            <option value="Produccion">Produccion</option> //ojo validar value 1
+                                            <option value="Bodega">Bodega</option> // ojo value 2
+                                        </select>
+                                    </td>
+                                    <td style="width: 7%">
+                                        <select name="n_r" id="n_r" class="form-control" required>
+                                            <option value="" selected>Seleccione..</option>
+                                            <option value="Nuevo">Nuevo</option>
+                                            <option value="Repro">Repro.</option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 12%">
+                                        <input type="text" id="AddArt" name="AddArt" class="form-control">
+                                    </td>
+                                    <td style="width: 10%">
+                                        <input type="text" id="AddNotes" name="AddNotes" class="form-control">
+                                    </td>
+                                    <td style="width: 10%">
+                                        <select name="AddUnidad" id="AddUnidad" class="form-control">
+                                            <option value="Unidad" selected >Unidad</option>
+                                            <option value="Kilos">Kilos</option>
+                                            <option value="Millar">Millar</option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 8%">
+                                        <input type="number" id="AddPrice" name="AddPrice" class="form-control">
+                                    </td>
+                                    <td style="width: 10%">
+                                        <input type="number" id="AddQuantity" name="AddQuantity" class="form-control" value="1">
+                                    </td>
+                                    <td style="width: 21%">
+                                        <input type="text" id="TotalItem" name="TotalItem" class="form-control" readonly="readonly" value="0">
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success btn-sm" id="AddItem" disabled><i class="fa fa-plus"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <br>
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm text-center ItemsTable" id="ItemsTable">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Descripcion</th>
+                                    <th>Dest.</th>
+                                    <th>N/R</th>
+                                    <th>Arte</th>
+                                    <th>Notas</th>
+                                    <th>Unidad</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th style="display: none !important;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="ProductosAdd">
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center" id="TotalesTable">
+                            <thead>
+                                <tr>
+                                    <th>Cantidad Items</th>
+                                    <th>Valor Bruto</th>
+                                    <th>Descuento</th>
+                                    <th>Subtotal</th>
+                                    <th>IVA</th>
+                                    <th>Total Pedido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="number" class="form-control totalCol" id="TotalQuantityItems" name="TotalQuantityItems" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control totalCol" id="TotalItemsBruto" name="TotalItemsBruto" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" id="TotalItemsDiscount" name="TotalItemsDiscount" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" id="TotalItemsSubtotal" name="TotalItemsSubtotal" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" id="TotalItemsIva" name="TotalItemsIva" readonly="readonly"></td>
+                                    <td><input type="number" class="form-control" id="TotalItemsPrice" name="TotalItemsPrice" readonly="readonly"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-lg" id="SavePed">Crear Pedido</button>
                 </div>
-                <br>
-                <div class="table-responsive">
-                    <table class="table table-bordered first" id="TotalesTable">
-                        <thead>
-                            <tr>
-                                <th>Cantidad Items</th>
-                                <th>Valor Bruto</th>
-                                <th>Descuento</th>
-                                <th>Subtotal</th>
-                                <th>IVA</th>
-                                <th>Total Pedido</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="number" class="form-control totalCol" id="TotalQuantityItems" name="TotalQuantityItems" readonly="readonly"></td>
-                                <td><input type="number" class="form-control totalCol" id="TotalItemsBruto" name="TotalItemsBruto" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" id="TotalItemsDiscount" name="TotalItemsDiscount" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" id="TotalItemsSubtotal" name="TotalItemsSubtotal" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" id="TotalItemsIva" name="TotalItemsIva" readonly="readonly"></td>
-                                <td><input type="number" class="form-control" id="TotalItemsPrice" name="TotalItemsPrice" readonly="readonly"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <button type="submit" class="btn btn-primary btn-lg" id="SavePed">Crear Pedido</button>
-            </form>
+            </div>
         </div>
     </div>
 @stop
@@ -200,6 +244,20 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <style>
+        .select2-selection__rendered {
+            line-height: 31px !important;
+        }
+        .select2-container .select2-selection--single {
+            height: 35px !important;
+        }
+        .select2-selection__arrow {
+            height: 34px !important;
+        }
+    </style>
+@endpush
 @push('javascript')
     <script>
         $(document).ready(function () {
@@ -345,6 +403,8 @@
                 $('#ProductoMax').val('');
                 $('#AddNotes').val('');
                 $('#AddUnidad').val('Unidad');
+                $('#dest_item').val('');
+                $('#n_r').val('');
                 $('#AddPrice').val(0);
                 $('#AddQuantity').val(1);
                 $('#StockItem').html('');
@@ -397,38 +457,7 @@
                 Calcular();
             });
 
-            $('#AddItem').click(function(){
-                const producto = $('#DescripcionProductoMax').val();
-                const codigo = $('#CodigoProductoMax').val();
-                const arte = $('#AddArt').val();
-                const notas = $('#AddNotes').val();
-                const unidad = $('#AddUnidad').val();
-                const precio = $('#AddPrice').val();
-                const cantidad = $('#AddQuantity').val();
-                const total = $('#TotalItem').val();
-                const destino = $('#dest_item').val();
 
-
-                $('#ProductosAdd').append('<tr>' +
-                    '<td class="ipcodproducto">'+ codigo +'</td>' +
-                    '<td class="iproducto">'+ producto +'</td>' +
-                    '<td class="iarte" contenteditable="true">'+ '<a href="javascript:void(0);" id="'+arte+'" class="ViewArt">' + arte +'</a>' + '</td>' +
-                    '<td class="inotas" contenteditable="true">'+ notas  +'</td>' +
-                    '<td class="iunidad">'+ unidad +'</td>' +
-                    '<td class="iprecio" contenteditable="true">'+ precio +'</td>' +
-                    '<td class="rowDataSd icantidad" contenteditable="true">'+ cantidad +'</td>' +
-                    '<td class="rowDataSd itotal">'+ total +'</td>' +
-                    '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td>' +
-                    '<td class="rowDataSd idestino" style="display: none !important;">'+ destino +'</td>' +
-                    '</tr> ');
-                LimpiarCampos();
-                SumarItems();
-                CalcularDescuento();
-                CalcularSubtotal();
-                CalcularIva();
-                Totalpedido();
-                $('#AddItem').prop("disabled", true);
-            });
 
             $(document).on('click', '.BorrarItem', function () {
                 id = $(this).parents("tr").find("td").eq(0).html();
@@ -450,7 +479,7 @@
                             CalcularSubtotal();
                             CalcularIva();
                             Totalpedido();
-                        })
+                        });
                     }
                 });
             });
@@ -500,7 +529,12 @@
                     $(element).closest('.form-control').removeClass('is-invalid');
                 },
 
-                submitHandler: function (form) {
+            });
+
+
+            $('#SavePed').click(function() {
+                var form = $("#ProductForm").valid();
+                if(form === true){
                     var encabezado = [];
                     let Items = [];
                     var e = document.getElementById("SelectVendedor");
@@ -537,7 +571,8 @@
                             precio: e.querySelector('.iprecio').innerText,
                             cantidad: e.querySelector('.icantidad').innerText,
                             total: e.querySelector('.itotal').innerText,
-                            destino: e.querySelector('.idestino').innerText
+                            destino: e.querySelector('.idestino').innerText,
+                            n_r: e.querySelector('.in_r').innerText
                         };
                         Items.push(fila);
                     });
@@ -549,7 +584,6 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.hasOwnProperty('error')) {
-                                /*toastr.error('SQLSTATE[' + data.error.code + ']: ¡El Producto ya existe!');*/
                                 if(data.error.code2 == 664)  {
                                     Swal.fire({
                                         icon: 'error',
@@ -562,7 +596,7 @@
                                 $('#ProductForm').trigger("reset");
                                 $('#NewPedido').modal('hide');
                                 $('#SavePed').html('Guardar');
-                                $('#ProductosAdd').html('')
+                                $('#ProductosAdd').html('');
 
                                 Swal.fire({
                                     icon: 'success',
@@ -572,14 +606,82 @@
                             }
                         },
                     });
-                    return false; // required to block normal submit since you used ajax
+                }else{
+                    return false;
                 }
             });
+
+
+
+
+           $('#add_items_form').validate({
+               ignore: "",
+               rules: {
+                   n_r: {
+                       selectcheck: true
+                   },
+                   dest_item: {
+                       selectcheck: true
+                   },
+                   AddPrice: "required",
+                   AddQuantity: "required"
+               },
+               errorPlacement: function(error,element) {
+                   return true;
+               },
+               highlight: function (element) {
+                   $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+               },
+               unhighlight: function (element) {
+                   $(element).closest('.form-control').removeClass('is-invalid');
+               },
+
+               submitHandler: function (form) {
+                   const producto = $('#DescripcionProductoMax').val();
+                   const codigo = $('#CodigoProductoMax').val();
+                   const arte = $('#AddArt').val();
+                   const notas = $('#AddNotes').val();
+                   const unidad = $('#AddUnidad').val();
+                   const precio = $('#AddPrice').val();
+                   const cantidad = $('#AddQuantity').val();
+                   const total = $('#TotalItem').val();
+                   const destino = $('#dest_item').val();
+                   const n_r = $('#n_r').val();
+
+
+
+                   $('#ProductosAdd').append('<tr>' +
+                       '<td class="ipcodproducto">'+ codigo +'</td>' +
+                       '<td class="iproducto">'+ producto +'</td>' +
+                       '<td class="idestino">'+ destino +'</td>' +
+                       '<td class="in_r">'+ n_r +'</td>' +
+                       '<td class="iarte">'+ '<a href="javascript:void(0);" id="'+arte+'" class="ViewArt">' + arte +'</a>' + '</td>' +
+                       '<td class="inotas">'+ notas  +'</td>' +
+                       '<td class="iunidad">'+ unidad +'</td>' +
+                       '<td class="iprecio" contenteditable="true">'+ precio +'</td>' +
+                       '<td class="rowDataSd icantidad" contenteditable="true">'+ cantidad +'</td>' +
+                       '<td class="rowDataSd itotal">'+ total +'</td>' +
+                       '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td>' +
+                       '</tr> '
+                   );
+                   LimpiarCampos();
+                   SumarItems();
+                   CalcularDescuento();
+                   CalcularSubtotal();
+                   CalcularIva();
+                   Totalpedido();
+                   $('#AddItem').prop("disabled", true);
+
+                   return false;
+               }
+           });
+
+
 
             $(document).on('click', '.ViewArt', function() {
                 var Art = $(this).attr("id");
                 $('#ViewArtTitle').html('Arte #'+ Art);
-                PDFObject.embed('//192.168.1.12/intranet_ci/assets/artes/'+Art+'.pdf', '#ViewArtPdf');
+                PDFObject.embed('//192.168.1.12/intranet_ci/assets/Artes/'+Art+'.pdf', '#ViewArtPdf');
                 $('#ViewArtModal').modal('show');
             });
 
@@ -596,8 +698,6 @@
             });
 
             $("#ItemsTable").bind("DOMSubtreeModified", function() {
-
-
                 SumarItems();
                 CalcularDescuento();
                 CalcularSubtotal();

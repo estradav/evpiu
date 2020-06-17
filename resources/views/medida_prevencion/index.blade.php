@@ -4,101 +4,116 @@
 
 @section('content')
     @can('medida_prevencion')
-        <div class="main-card mb-3 card">
-            <div class="card-header">
-                Registro de personal que ingresa
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="pe-7s-like icon-gradient bg-mean-fruit"></i>
+                    </div>
+                    <div>Ingreso de personal
+                        <div class="page-title-subheading">
+                            Formulario de ingreso del personal por medida de prevencion.
+                        </div>
+                    </div>
+                </div>
             </div>
-            <form id="registry_form" name="registry_form">
-                <div class="card-body">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="">Empleado:</label>
-                                <select name="empleado" id="empleado" class="form-control" autofocus>
-                                    <option value="empty" selected>Seleccione...</option>
-                                    @foreach($empleados as $empleado)
-                                        <option value="{{$empleado}}">{{$empleado}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <label for="">Temperatura:</label>
-                                <input type="number" class="form-control" max="40" min="20" id="temperatura" name="temperatura">
-                            </div>
-                            <div class="col-4" onload="new_clock()">
-                                <label for="">Hora de ingreso:</label>
-                                <div class="input-group">
-                                    <input type="text" name="datetime" id="datetime" class="form-control" value="" readonly="readonly">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-danger" type="button" id="stop_time">
-                                            <i id="stop_time_ico" class="fas fa-stop"></i>
-                                        </button>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="main-card mb-3 card">
+                    <div class="card-header">
+                        Registro de personal que ingresa
+                    </div>
+                    <form id="registry_form" name="registry_form">
+                        <div class="card-body">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                                        <label for="">Empleado:</label>
+                                        <select name="empleado" id="empleado" class="form-control" autofocus>
+                                            <option value="empty" selected>Seleccione...</option>
+                                            @foreach($empleados as $empleado)
+                                                <option value="{{$empleado}}">{{$empleado}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                                        <label for="">Temperatura:</label>
+                                        <input type="number" class="form-control" max="40" min="20" id="temperatura" name="temperatura">
+                                    </div>
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4" onload="new_clock()">
+                                        <label for="">Hora de ingreso:</label>
+                                        <div class="input-group">
+                                            <input type="text" name="datetime" id="datetime" class="form-control" value="" readonly="readonly">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-danger" type="button" id="stop_time">
+                                                    <i id="stop_time_ico" class="fas fa-stop"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>PREGUNTAS</th>
+                                            <th class="text-center">SI</th>
+                                            <th class="text-center">NO</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th>¿Fiebre?</th>
+                                            <td><input class="form-control" type="radio" name="question_1" id="question_1" value="question_1"></td>
+                                            <td><input class="form-control" type="radio" name="question_1" id="question_1" value="question_1" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <th>¿Tos seca?</th>
+                                            <td><input class="form-control" type="radio" name="question_2" id="question_2" value="question_2"></td>
+                                            <td><input class="form-control" type="radio" name="question_2" id="question_2" value="question_2" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <th>¿Dolor de garganta?</th>
+                                            <td><input class="form-control" type="radio" name="question_3" id="question_3" value="question_3"></td>
+                                            <td><input class="form-control" type="radio" name="question_3" id="question_3" value="question_3" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <th>¿Dificultad para respirar?</th>
+                                            <td><input class="form-control" type="radio" name="question_4" id="question_4" value="question_4"></td>
+                                            <td><input class="form-control" type="radio" name="question_4" id="question_4" value="question_4" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <th>¿Pérdida del gusto y/o del olfato?</th>
+                                            <td><input class="form-control" type="radio" name="question_5" id="question_5" value="question_5"></td>
+                                            <td><input class="form-control" type="radio" name="question_5" id="question_5" value="question_5" checked></td>
+                                        </tr>
+                                        <tr>
+                                            <th>¿Ha tenido Usted contacto durante los últimos 14 días con alguna persona <br> a quien le sospechen o le haya diagnosticado coronavirus?</th>
+                                            <td><input class="form-control" type="radio" name="question_6" id="question_6" value="question_6"></td>
+                                            <td><input class="form-control" type="radio" name="question_6" id="question_6" value="question_6" checked></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <label for="notas">Notas/Observaciones: </label>
+                                        <textarea name="notas" id="notas" cols="10" rows="3" class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-3">
-                                <label for="">¿Fiebre?</label>
-                                <select name="question_1" id="question_1" class="form-control">
-                                    <option value="1">SI</option>
-                                    <option value="0" selected>NO</option>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <label for="">¿Tos seca?</label>
-                                <select name="question_2" id="question_2" class="form-control">
-                                    <option value="1">SI</option>
-                                    <option value="0" selected>NO</option>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <label for="">¿Dolor de garganta?</label>
-                                <select name="question_3" id="question_3" class="form-control">
-                                    <option value="1">SI</option>
-                                    <option value="0" selected>NO</option>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <label for="">¿Dificultad para respirar?</label>
-                                <select name="question_4" id="question_4" class="form-control">
-                                    <option value="1">SI</option>
-                                    <option value="0" selected>NO</option>
-                                </select>
-                            </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success btn-block btn-lg" id="save" name="save">REGISTRAR INGRESO</button>
                         </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-3">
-                                <label for="">¿Pérdida del gusto y/o del olfato?</label>
-                                <select name="question_5" id="question_5" class="form-control">
-                                    <option value="1">SI</option>
-                                    <option value="0" selected>NO</option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <label for="">¿Ha tenido Usted contacto durante los últimos 14 días con alguna persona a quien le sospechen o le haya diagnosticado coronavirus?</label>
-                                <select name="question_6" id="question_6" class="form-control">
-                                    <option value="1">SI</option>
-                                    <option value="0" selected>NO</option>
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-12">
-                                <label for="">Notas/Observaciones: </label>
-                                <textarea name="notas" id="notas" cols="10" rows="3" class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-success btn-block btn-lg" id="save" name="save">REGISTRAR INGRESO</button>
-                </div>
-            </form>
+            </div>
         </div>
+
 
         <div class="main-card mb-3 card">
             <div class="card-header">
@@ -109,7 +124,6 @@
                     <thead>
                         <tr>
                             <th scope="col" class="text-center">EMPLEADO</th>
-                            {{--<th scope="col" class="text-center">INFO</th>--}}
                             <th scope="col" class="text-center">TEMPERATURA</th>
                             <th scope="col" class="text-center">ACCIONES</th>
                         </tr>
@@ -118,7 +132,6 @@
                         @foreach($empleados_registrados as $registros)
                             <tr>
                                 <td class="text-center">{{ $registros->employee }}</td>
-                                {{--<td class="text-center"><button class="btn btn-primary info" id="{{ $registros->id }}"><i class="fas fa-eye"></i> Info</button> </td>--}}
                                 <td class="text-center"><button class="btn btn-success registry_temperature" id="{{ $registros->id }}"><i class="fas fa-thermometer"></i> Temperatura</button></td>
                                 <td class="text-center"><button class="btn btn-danger exit" id="{{ $registros->id }}"><i class="fas fa-door-closed"></i> Salida</button></td>
                             </tr>
@@ -137,56 +150,7 @@
         </div>
     @endcan
 @stop
-@section('modal')
-    <div class="modal modal-danger fade" tabindex="-1" id="info_modal" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="info_modal_title">Info</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="info_modal_body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal modal-danger fade" tabindex="-1" id="edit_temperature_modal" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar info</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="form_edit_temperature">
-                    <div class="modal-body">
-                        <input type="text" id="id_edit_temperature" name="id_edit_temperature" style="display: none !important;">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="">Temperatura: </label>
-                                <input type="number" class="form-control" id="temperature_edit_temperature" name="temperature_edit_temperature">
-                            </div>
-                            <div class="col-6">
-                                <label for="">Fecha registro: </label>
-                                <input type="text" class="form-control" id="date_edit_temperature" name="date_edit_temperature">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-outline-success">Guardar</button>
-                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+@push('styles')
     <style>
         .select2-selection__rendered {
             line-height: 31px !important;
@@ -198,13 +162,17 @@
             height: 34px !important;
         }
     </style>
-@endsection
+@endpush
+
 @push('javascript')
     <script type="text/javascript">
         var clock_on = true;
         function new_clock(){
             if(clock_on === true){
                 clock = new Date();
+                year = clock.getFullYear();
+                month = ("0" + (clock.getMonth() + 1)).slice(-2);
+                day =  ("0" + (clock.getDay() + 1)).slice(-2);;
                 hour =   clock.getHours();
                 minutes = clock.getMinutes();
                 seconds = clock.getSeconds();
@@ -213,7 +181,7 @@
                 hour = hour % 12;
                 hour = hour ? hour : 12; // the hour '0' should be '12'
                 minutes = minutes < 10 ? '0'+minutes : minutes;
-                var strTime = hour + ':' + minutes + ':' + seconds + ' ' +  ampm;
+                var strTime =year+'-'+month+'-'+day+' '+ hour + ':' + minutes + ':' + seconds + ' ' +  ampm;
 
                 $('#datetime').val(strTime);
                 $('#exit_clock').val(strTime);
@@ -498,7 +466,7 @@
             });
             $(document).on('click','.edit_temperature_modal', function () {
                 let data = this.id;
-                data = data.split(',')
+                data = data.split(',');
 
                 $('#id_edit_temperature').val(data[0]);
                 $('#temperature_edit_temperature').val(data[1]);
@@ -545,6 +513,21 @@
                     $(element).closest('.form-control').removeClass('is-invalid');
                 }
             });
+
+            moment.locale('es');
+            $('#datetime').daterangepicker({
+                singleDatePicker: true,
+                showWeekNumbers: true,
+                showISOWeekNumbers: true,
+                timePicker: true,
+                timePickerSeconds: true,
+                locale: {
+                    format: 'YYYY-MM-DD h:mm:ss A'
+                }
+            }, function(start, end, label) {
+                console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+            });
+
         });
     </script>
 @endpush

@@ -14,8 +14,8 @@
                     Blog
                 </a>
             </li>
-            <li class="{{ request()->is('accesos_remotos') ? 'mm-active' : '' }}">
-                <a href="{{ url('accesos_remotos') }}">
+            <li class="{{ request()->route()->named('accesos_remotos.index') ? 'mm-active' : '' }}">
+                <a href="{{ route('accesos_remotos.index') }}">
                     <i class="metismenu-icon pe-7s-paper-plane">
                     </i>Accesos remotos
                 </a>
@@ -34,8 +34,8 @@
             </li>
             <li class="app-sidebar__heading">Aplicativos</li>
 
-            <li class="{{ request()->route()->named('artes.index') ? 'mm-active' : '' }}">
-                <a href="{{ route('artes.index') }}">
+            <li class="{{ request()->route()->named('arte.index') ? 'mm-active' : '' }}">
+                <a href="{{ route('arte.index') }}">
                     <i class="metismenu-icon  pe-7s-pen"></i>
                     Artes
                 </a>
@@ -257,8 +257,8 @@
                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                 </a>
                 <ul>
-                    <li class="{{ request()->route()->named('GestionClientes.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('GestionClientes.index') }}">
+                    <li class="{{ request()->route()->named('cliente.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('cliente.index') }}">
                             <i class="metismenu-icon">
                             </i>Clientes
                         </a>

@@ -97,16 +97,16 @@ class PedidoController extends Controller
         $query = $request->get('query');
         $results = array();
 
-        $queries = DB::connection('MAX')->table('CIEV_V_Inventario')
+        $queries = DB::connection('MAX')->table('CIEV_V_productos')
             ->where('Descripcion', 'LIKE', '%'.$query.'%')
-            ->orWhere('Pieza', 'LIKE', '%'.$query.'%')->take(10)
+            ->orWhere('Pieza', 'LIKE', '%'.$query.'%')
+            ->take(20)
             ->get();
 
         foreach ($queries as $q) {
             $results[] = [
                 'value'         => trim($q->Pieza).' - '.trim($q->Descripcion),
-                'PriceItem'     => trim('0'),
-                'Stock'         => trim($q->CantLiquidable),
+                'Stock'         => trim($q->Cant),
                 'Code'          => trim($q->Pieza),
                 'Descripcion'   => trim($q->Descripcion)
 
@@ -122,7 +122,7 @@ class PedidoController extends Controller
          $bodega = [];
          $date = Carbon::now();
          foreach($destino as $dest){
-             if ($dest['destino'] == 1){
+             if ($dest['destino'] == 'Produccion'){
                  $produccion[] = $dest;
              } else{
                  $bodega[] = $dest;
@@ -156,6 +156,14 @@ class PedidoController extends Controller
                  ]);
 
                  foreach ($bodega as $d){
+
+                     $destino_n = null;
+                     if ($d['destino'] === 'Produccion'){
+                         $destino_n = 1;
+                     }else{
+                         $destino_n = 2;
+                     }
+
                      DB::table('detalle_pedidos')->insert([
                          'idPedido'         => $invoice,
                          'CodigoProducto'   => $d['codproducto'],
@@ -166,7 +174,8 @@ class PedidoController extends Controller
                          'Cantidad'         => $d['cantidad'],
                          'Precio'           => $d['precio'],
                          'Total'            => $d['total'],
-                         'Destino'          => $d['destino'],
+                         'Destino'          => $destino_n,
+                         'R_N'              => $d['n_r'],
                          'created_at'       => $date,
                      ]);
                  }
@@ -220,6 +229,12 @@ class PedidoController extends Controller
                 ]);
 
                 foreach ($produccion as $d){
+                    $destino_n = null;
+                    if ($d['destino'] === 'Produccion'){
+                        $destino_n = 1;
+                    }else{
+                        $destino_n = 2;
+                    }
                     DB::table('detalle_pedidos')->insert([
                         'idPedido'         => $invoice,
                         'CodigoProducto'   => $d['codproducto'],
@@ -230,7 +245,8 @@ class PedidoController extends Controller
                         'Cantidad'         => $d['cantidad'],
                         'Precio'           => $d['precio'],
                         'Total'            => $d['total'],
-                        'Destino'          => $d['destino'],
+                        'Destino'          => $destino_n,
+                        'R_N'              => $d['n_r'],
                         'created_at'       => $date,
                     ]);
                 }
@@ -295,6 +311,7 @@ class PedidoController extends Controller
                          'Precio'           => $d['precio'],
                          'Total'            => $d['total'],
                          'Destino'          => $d['destino'],
+                         'R_N'              => $d['n_r'],
                          'created_at'       => $date,
                      ]);
                  }
@@ -341,6 +358,7 @@ class PedidoController extends Controller
                          'Precio'           => $d['precio'],
                          'Total'            => $d['total'],
                          'Destino'          => $d['destino'],
+                         'R_N'              => $d['n_r'],
                          'created_at'       => $date,
                      ]);
                  }
@@ -476,6 +494,7 @@ class PedidoController extends Controller
             ->where('idPedido','=',$id)
             ->get();
 
+
         return view('Pedidos.edit',compact('encabezado','detalle'));
     }
 
@@ -497,7 +516,8 @@ class PedidoController extends Controller
                 'TotalDescuento'    =>  $encabezado['TotalItemsDiscount'],
                 'TotalSubtotal'     =>  $encabezado['TotalItemsSubtotal'],
                 'TotalIVA'          =>  $encabezado['TotalItemsIva'],
-                'TotalPedido'       =>  $encabezado['TotalItemsPrice']
+                'TotalPedido'       =>  $encabezado['TotalItemsPrice'],
+                'Estado'            =>  0
             ]);
 
 
