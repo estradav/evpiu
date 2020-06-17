@@ -503,10 +503,7 @@ class PedidoController extends Controller
 
 
         $detalle = $request->Items;
-
-
-        dd($detalle);
-
+        
 
         DB::table('encabezado_pedidos')
             ->where('id','=', $encabezado['id'])
