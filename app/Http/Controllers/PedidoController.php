@@ -505,6 +505,9 @@ class PedidoController extends Controller
         $detalle = $request->Items;
 
 
+        dd($detalle);
+
+
         DB::table('encabezado_pedidos')
             ->where('id','=', $encabezado['id'])
             ->update([
@@ -517,7 +520,7 @@ class PedidoController extends Controller
                 'TotalSubtotal'     =>  $encabezado['TotalItemsSubtotal'],
                 'TotalIVA'          =>  $encabezado['TotalItemsIva'],
                 'TotalPedido'       =>  $encabezado['TotalItemsPrice'],
-                'Estado'            =>  0
+                'Estado'            =>  1
             ]);
 
 
@@ -525,7 +528,8 @@ class PedidoController extends Controller
 
         $registros = DB::table('detalle_pedidos')
             ->where('idPedido','=',$encabezado['id'])
-            ->pluck('id')->toArray();
+            ->pluck('id')
+            ->toArray();
 
 
         foreach ($detalle as $det){
@@ -537,16 +541,16 @@ class PedidoController extends Controller
                 DB::table('detalle_pedidos')
                     ->where('id','=',$det['id'])
                     ->update([
-                    'idPedido'          =>  $encabezado['id'],
-                    'CodigoProducto'    =>  $det['codproducto'] ,
-                    'Descripcion'       =>  $det['producto'],
-                    'Arte'              =>  $det['arte'],
-                    'Notas'             =>  $det['notas'],
-                    'Unidad'            =>  $det['unidad'],
-                    'Precio'            =>  $det['precio'],
-                    'Cantidad'          =>  $det['cantidad'],
-                    'Total'             =>  $det['total'],
-                    'Destino'           =>  $det['destino']
+                        'idPedido'          =>  $encabezado['id'],
+                        'CodigoProducto'    =>  $det['codproducto'] ,
+                        'Descripcion'       =>  $det['producto'],
+                        'Arte'              =>  $det['arte'],
+                        'Notas'             =>  $det['notas'],
+                        'Unidad'            =>  $det['unidad'],
+                        'Precio'            =>  $det['precio'],
+                        'Cantidad'          =>  $det['cantidad'],
+                        'Total'             =>  $det['total'],
+                        'Destino'           =>  $det['destino']
                 ]);
 
                 array_push($id_no_borrar, intval($det['id']));
