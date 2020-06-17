@@ -257,8 +257,8 @@
                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                 </a>
                 <ul>
-                    <li class="{{ request()->route()->named('GestionClientes.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('GestionClientes.index') }}">
+                    <li class="{{ request()->route()->named('cliente.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('cliente.index') }}">
                             <i class="metismenu-icon">
                             </i>Clientes
                         </a>

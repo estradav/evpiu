@@ -23,7 +23,7 @@
                 <div class="main-card mb-3 card">
                     <div class="card-header">
                         @can('aplicaciones.gestion_terceros.clientes.index.btn_nuevo_cliente')
-                            <a href="{{ url('terceros/cliente/nuevo') }}" class="btn btn-primary btn-lg" style="align-items: flex-end">
+                            <a href="{{ url('aplicaciones/terceros/cliente/nuevo') }}" class="btn btn-primary btn-lg" style="align-items: flex-end">
                                 <i class="fas fa-user-plus"> </i>  Crear Cliente
                             </a>
                         @endcan

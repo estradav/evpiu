@@ -81,6 +81,6 @@
         </div>
     @endcan
     @push('javascript')
-        <script type="text/javascript" src="{{asset('aplicaciones/facturacion_electronica/gestion/index.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('aplicaciones/facturacion_electronica/gestion/index.js') }}"></script>
     @endpush
 @endsection

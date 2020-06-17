@@ -71,17 +71,11 @@ class PedidoProduccionController extends Controller
                         'DetalleProduccion' => $request->DescripccionPedido,
                     ]);
                     DB::commit();
-                    return response()->json(['Success' => 'Todo Ok']);
+                    return response()->json('Guardado correctamente',200);
                 }
                 catch (\Exception $e){
                     DB::rollback();
-                    echo json_encode(array(
-                        'error' => array(
-                            'msg' => $e->getMessage(),
-                            'code' => $e->getCode(),
-                            'code2' =>$e->getLine(),
-                        ),
-                    ));
+                    return response()->json($e->getMessage(),500);
                 }
             }
 
@@ -99,17 +93,36 @@ class PedidoProduccionController extends Controller
                         'Bodega' => $request->EstadoPedido,
                     ]);
                     DB::commit();
-                    return response()->json(['Success' => 'Todo Ok']);
+                    return response()->json('Guardado correctamente',200);
                 }
                 catch (\Exception $e){
                     DB::rollback();
-                    echo json_encode(array(
-                        'error' => array(
-                            'msg' => $e->getMessage(),
-                            'code' => $e->getCode(),
-                            'code2' =>$e->getLine(),
-                        ),
-                    ));
+                    return response()->json($e->getMessage(),500);
+                }
+            }
+
+            if ($request->EstadoPedido == 10){
+                DB::beginTransaction();
+                try {
+                    DB::table('encabezado_pedidos')
+                        ->where('id', '=', $request->id)
+                        ->update([
+                            'Estado' => $request->EstadoPedido
+                    ]);
+
+                    DB::table('pedidos_detalles_area')
+                        ->where('idPedido', '=', $request->id)
+                        ->update([
+                            'Bodega' => $request->EstadoPedido,
+                            'DetalleBodega' => $request->DescripccionPedido,
+                            'AproboBodega' => $request->User,
+                    ]);
+                    DB::commit();
+                    return response()->json('Guardado correctamente',200);
+                }
+                catch (\Exception $e){
+                    DB::rollback();
+                    return response()->json($e->getMessage(),500);
                 }
             }
         }

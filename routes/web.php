@@ -51,14 +51,17 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     Route::resource('factura','FacturacionElectronica\FacturasController');
                     Route::post('/factura/generar_xml','FacturacionElectronica\FacturasController@generar_archivo_xml');
 
+
                     /*notas credito*/
                     Route::resource('nota_credito','FacturacionElectronica\NotasCreditoController');
                     Route::post('/nota_credito/generar_xml','FacturacionElectronica\NotasCreditoController@generar_archivo_xml');
+
 
                     /*configuracion*/
                     Route::resource('configuracions','FacturacionElectronica\ConfiguracionController');
                     Route::post('configuracions/facturas','FacturacionElectronica\ConfiguracionController@guardar_config_facturas');
                     Route::post('configuracions/notas_credito','FacturacionElectronica\ConfiguracionController@guardar_config_notas_credito');
+
 
                     /*web service*/
                     Route::resource('web_service','FacturacionElectronica\WebServiceController');
@@ -68,6 +71,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     Route::get('/web_service/listado_documentos','FacturacionElectronica\WebServiceController@listado_documentos');
                     Route::get('/web_service/info_documento','FacturacionElectronica\WebServiceController@info_documento');
                     Route::get('/web_service/estado_dian','FacturacionElectronica\WebServiceController@estado_dian');
+
 
                     /*gestion*/
                     Route::resource('gestions','FacturacionElectronica\GestionController');
@@ -87,32 +91,52 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
                     Route::get('listar_ciudades','Terceros\Clientes\ClientesController@listar_ciudades');
                     Route::get('listar_departamentos','Terceros\Clientes\ClientesController@listar_departamentos');
+                    Route::get('listar_plazos','Terceros\Clientes\ClientesController@listar_plazos');
+                    Route::get('listar_vendedores','Terceros\Clientes\ClientesController@listar_vendedores');
 
+
+                    Route::get('cliente/editar/{cliente}/show','Terceros\Clientes\ClientesController@show');
+
+                    Route::post('cliente/guardar_cliente','Terceros\Clientes\ClientesController@guardar_cliente');
+
+
+
+                    /*actualizacion de datos de cliente*/
+                    Route::post('cliente/actualizar/actualizar_direccion1','Terceros\Clientes\ClientesController@actualizar_direccion1');
+                    Route::post('cliente/actualizar/actualizar_direccion2','Terceros\Clientes\ClientesController@actualizar_direccion2');
+                    Route::post('cliente/actualizar/actualizar_moneda','Terceros\Clientes\ClientesController@actualizar_moneda');
+                    Route::post('cliente/actualizar/cambiar_tipo_cliente','Terceros\Clientes\ClientesController@cambiar_tipo_cliente');
+                    Route::post('cliente/actualizar/actualizar_contacto','Terceros\Clientes\ClientesController@actualizar_contacto');
+                    Route::post('cliente/actualizar/actualizar_telefono1','Terceros\Clientes\ClientesController@actualizar_telefono1');
+                    Route::post('cliente/actualizar/actualizar_telefono2','Terceros\Clientes\ClientesController@actualizar_telefono2');
+                    Route::post('cliente/actualizar/actualizar_celular','Terceros\Clientes\ClientesController@actualizar_celular');
+                    Route::post('cliente/actualizar/actualizar_email_contacto','Terceros\Clientes\ClientesController@actualizar_email_contacto');
+                    Route::post('cliente/actualizar/actualizar_email_facturacion_electronica','Terceros\Clientes\ClientesController@actualizar_email_facturacion_electronica');
+                    Route::post('cliente/actualizar/actualizar_termino_pago','Terceros\Clientes\ClientesController@actualizar_termino_pago');
+                    Route::post('cliente/actualizar/actualizar_descuento','Terceros\Clientes\ClientesController@actualizar_descuento');
+                    Route::post('cliente/actualizar/actualizar_vendedor','Terceros\Clientes\ClientesController@actualizar_vendedor');
+                    Route::post('cliente/actualizar/actualizar_correos_copia','Terceros\Clientes\ClientesController@actualizar_correos_copia');
+                    Route::post('cliente/actualizar/actualizar_rut','Terceros\Clientes\ClientesController@actualizar_rut');
+                    Route::post('cliente/actualizar/actualizar_gran_contribuyente','Terceros\Clientes\ClientesController@actualizar_gran_contribuyente');
+                    Route::post('cliente/actualizar/actualizar_responsable_iva','Terceros\Clientes\ClientesController@actualizar_responsable_iva');
+                    Route::post('cliente/actualizar/actualizar_responsable_facturacion_electronica','Terceros\Clientes\ClientesController@actualizar_responsable_facturacion_electronica');
+                    Route::post('cliente/actualizar/actualizar_telefono_facturacion_electronica','Terceros\Clientes\ClientesController@actualizar_telefono_facturacion_electronica');
+                    Route::post('cliente/actualizar/actualizar_codigo_ciudad_ext','Terceros\Clientes\ClientesController@actualizar_codigo_ciudad_ext');
+                    Route::post('cliente/actualizar/actualizar_grupo_economico','Terceros\Clientes\ClientesController@actualizar_grupo_economico');
+
+
+                    Route::get('cliente/obtener_log_cambios','Terceros\Clientes\ClientesController@obtener_log_cambios');
 
                 });
 
 
 
-
-
-
-
-                Route::resource('GestionClientes','GestionClientesController');
-                Route::get('GestionClientes_Index','GestionClientesController@index');
-                Route::get('/FormaEnvio','GestionClientesController@FormaEnvio');
-                Route::get('/get_paises','GestionClientesController@Paises');
-                Route::get('/get_departamentos','GestionClientesController@Departamentos');
-                Route::get('/get_ciudades','GestionClientesController@Ciudades');
-                Route::get('/get_tipo_cliente','GestionClientesController@TipoCliente');
-                Route::get('/ClientesFaltantesDMS','GestionClientesController@ClientesFaltantesDMS');
-                Route::get('GestionClientes/{GestionCliente}/show','GestionClientesController@show');
                 Route::get('/ProductosEnTendenciaPorMes','GestionClientesController@ProductosEnTendenciaPorMes');
                 Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');
+                //edit items from clients
 
-                Route::group(['prefix' => 'clientes'], function (){
-                    Route::get('nuevo_cliente','GestionClientesController@CrearCliente');
-                    Route::get('search_client','GestionClientesController@search_client');
-                });
+
+
 
 
             });
@@ -291,6 +315,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('/NewRequerimiento','RequerimientosController@NewRequerimiento');
             Route::get('/getUnidadMedidasMed','ProdCievCodMedidaController@getUnidadMedidasMed');
 
+
+
+
             Route::get('/VerCondicionesPago','FeFacturasController@VerCondicionesPago');
             Route::post('/GuardarFacturaEdit', 'FeFacturasController@GuardarFacturaEdit');
             Route::get('/misrequerimientos','RequerimientosController@MisRequerimientos');
@@ -355,34 +382,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-            //edit items from clients
-            Route::get('get_paymentterm','GestionClientesController@Plazo');
-            Route::get('get_sellerlist','GestionClientesController@GetSellerList');
-            Route::get('get_transactionsClients','GestionClientesController@GetTransactionsData');
 
 
-            Route::post('update_ddr1','GestionClientesController@UpdateAddress1');
-            Route::post('update_ddr2','GestionClientesController@UpdateAddress2');
-            Route::post('update_moneda','GestionClientesController@UpdateMoneda');
-            Route::post('update_type_client','GestionClientesController@UpdateTypeClient');
-            Route::post('update_contact','GestionClientesController@UpdateContact');
-            Route::post('update_phone1','GestionClientesController@UpdatePhone1');
-            Route::post('update_phone2','GestionClientesController@UpdatePhone2');
-            Route::post('update_cellphone','GestionClientesController@UpdateCellphone');
-            Route::post('update_contactemail','GestionClientesController@UpdateContactEmail');
-            Route::post('update_invoiceemail','GestionClientesController@UpdateInvoiceEmail');
-            Route::post('update_paymentterm','GestionClientesController@UpdatePaymentTerm');
-            Route::post('update_discount','GestionClientesController@UpdateDiscount');
-            Route::post('update_seller','GestionClientesController@UpdateSeller');
-            Route::post('update_mailscopy','GestionClientesController@UpdateMailsCopy');
-            Route::post('update_rutentregado','GestionClientesController@UpdateRut');
-            Route::post('update_greatcontributor','GestionClientesController@UpdateGreatContributor');
-            Route::post('update_responsableiva','GestionClientesController@UpdateResponsableIva');
-            Route::post('update_responsablefe','GestionClientesController@UpdateResponsableFe');
-            Route::post('update_phonefe','GestionClientesController@UpdatePhoneFe');
-            Route::post('update_codecityext','GestionClientesController@UpdateCodeCityExt');
-            Route::post('update_groupeconomic','GestionClientesController@UpdateGroupEconomic');
-            Route::post('save_new_customer','GestionClientesController@SaveNewCustomer');
+
 
 
 

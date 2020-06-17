@@ -110,8 +110,7 @@ class GestionClientesController extends Controller
         return response()->json($User);
     }
 
-    public function show($numero)
-    {
+    public function show($numero){
         $facturas = DB::connection('MAX')
             ->table('invoice_master')
             ->where('CUSTID_31','=',$numero)
@@ -149,8 +148,7 @@ class GestionClientesController extends Controller
         ]);
     }
 
-    public function ProductosEnTendenciaPorMes(Request $request)
-    {
+    public function ProductosEnTendenciaPorMes(Request $request){
         $current_year = Carbon::now();
         $current_year = $current_year->year;
 
@@ -529,8 +527,7 @@ class GestionClientesController extends Controller
     }
 
     //Esta pendiente el cambio de tipo de cliente, por que martin debe validar los equivalentes para DMS
-    public function UpdateTypeClient(Request $request)
-    {
+    public function UpdateTypeClient(Request $request){
         dd($request);
         DB::beginTransaction();
         try {
@@ -818,8 +815,7 @@ class GestionClientesController extends Controller
         }
     }
 
-    public function UpdatePaymentTerm(Request $request)
-    {
+    public function UpdatePaymentTerm(Request $request){
         $termino_dms = '';
 
         if ($request->result['value'][0]['plazo_pago'] == '00'){
@@ -1034,8 +1030,7 @@ class GestionClientesController extends Controller
         }
     }
 
-    public function UpdateRut(Request $request)
-    {
+    public function UpdateRut(Request $request){
         DB::beginTransaction();
         try {
             DB::connection('MAX')
