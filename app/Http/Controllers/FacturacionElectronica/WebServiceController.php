@@ -7,8 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use SoapClient;
-use SoapFault;
 use XMLWriter;
 
 class WebServiceController extends Controller
@@ -18,7 +16,7 @@ class WebServiceController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws SoapFault
+     * @throws \SoapFault
      */
     public function envio_facturas(Request $request){
         $Facturas_Seleccionadas = $request->selected;
@@ -662,7 +660,7 @@ class WebServiceController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("unidaddemedida");
-                    $objetoXML->text($umed);
+                    $objetoXML->text($it->UM);
                     $objetoXML->endElement();
 
                     if ($encabezado->tipo_cliente == 'EX'){
@@ -911,13 +909,12 @@ class WebServiceController extends Controller
     }
 
 
-
     /**
      * Envia un conjunto de notas credito al WebService de fenalco
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws SoapFault
+     * @throws \SoapFault
      */
     public function envio_notas_credito(Request $request){
         $Notas_credito = $request->selected;
@@ -1597,13 +1594,12 @@ class WebServiceController extends Controller
     }
 
 
-
     /**
      * Descarga version grafica desde el web service
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws SoapFault
+     * @throws \SoapFault
      */
     public function descarga_documento(Request $request){
         $Numero_Factura = $request->id;
@@ -1611,9 +1607,23 @@ class WebServiceController extends Controller
         if (request()->ajax()) {
             $login1 = "dcorreah";
             $password = "FE2020ev*";
-            $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
-            $client = new SoapClient($wsdl_url);
-            $client->__setLocation($wsdl_url);
+            $client = new \SoapClient("https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl",array(
+                'soap_version'   => SOAP_1_1,
+                'trace' => 1,
+                "location" => "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService"));
+
+            $ns = "http://servers.pcfe.andesscd.com.co";
+
+
+
+            $header = new \SOAPHeader($ns, 'RequestorCredentials');
+
+
+            $client->__setSoapHeaders($header);
+
+
+
+            var_dump($client->__getFunctions());
 
             $params = array(
                 'login' => $login1,
@@ -1621,8 +1631,15 @@ class WebServiceController extends Controller
             );
 
             $auth = $client->autenticar($params);
+
             $respuesta = json_decode($auth->return);
+
             $token = $respuesta->data->salida;
+
+
+
+
+
 
 
             $params = array(
@@ -1637,7 +1654,7 @@ class WebServiceController extends Controller
                 'idEstadoGeneracion' => '',
                 'idTipoDocElectronico' => '',
                 'numeroInicial' => $Numero_Factura,
-                'numeroFinal' => $Numero_Factura,
+                'numeroFinal' => $Numero_Factura ,
                 'idnumeracion' => '',
                 'estadoAcuse' => '',
                 'razonSocial' => '',
@@ -1646,12 +1663,21 @@ class WebServiceController extends Controller
                 'idDocumento' => '',
                 'idVerficacionFuncional' => ''
             );
+
+
+
+
+            var_dump($params);
+
             $return = $client->ListarDocumentosElectronicos($params);
 
 
-            dd($return);
 
             $return = json_decode($return->return);
+
+
+            var_dump($return->data);
+            dd($return);
 
 
             $id_factible = $return->data[0]->DT_RowId;
@@ -1675,6 +1701,7 @@ class WebServiceController extends Controller
                 'token' => $token
             );
             $logout = $client->cerrarSesion($params);
+
             $respuesta = json_decode($logout->return);
 
             return response()->json($resultados->data->salida);
@@ -1747,7 +1774,7 @@ class WebServiceController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws SoapFault
+     * @throws \SoapFault
      */
     public function listado_documentos(Request $request){
         $fromdate = Carbon::now()->format('Y-m-d');
@@ -1853,7 +1880,7 @@ class WebServiceController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws SoapFault
+     * @throws \SoapFault
      */
     public function info_documento(Request $request){
         $id = $request->id;
