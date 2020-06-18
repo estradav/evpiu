@@ -871,7 +871,7 @@ class WebServiceController extends Controller
             $login1 = $request->Username;
             $password = "FE2020ev*";
             $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
-            $client = new SoapClient($wsdl_url);
+            $client = new \SoapClient($wsdl_url);
             $client->__setLocation($wsdl_url);
 
             // Inicio de sesion
