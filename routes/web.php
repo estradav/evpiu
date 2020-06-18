@@ -37,7 +37,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::prefix('home')->group(function () {
 
                 /* accesos remotos */
-                route::get('/accesos_remotos','homecontroller@accesosremotos')->name('accesos_remotos.index');
+                route::get('/accesos_remotos','HomeController@accesosremotos')->name('accesos_remotos.index');
 
             });
 
@@ -453,6 +453,11 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('sensores_chimenea','SensorChimeneaController@data_chimenea');
             Route::get('sensores_gas','SensorChimeneaController@data_gas');
         });
+
+        
+
+
+
     });
 });
 
