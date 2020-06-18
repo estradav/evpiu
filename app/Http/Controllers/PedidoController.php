@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\EncabezadoPedido;
+use App\Notifications\NuevoPedido;
 use App\User;
 use Carbon\Carbon;
-use Dompdf\Dompdf;
-use Dompdf\Options;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Types\Null_;
 use Yajra\DataTables\DataTables;
-use Barryvdh\DomPDF\Facade as PDF;
 
 class PedidoController extends Controller
 {
@@ -158,7 +156,7 @@ class PedidoController extends Controller
                  foreach ($bodega as $d){
 
                      $destino_n = null;
-                     if ($d['destino'] === 'Produccion'){
+                     if ($d['destino'] == 'Produccion'){
                          $destino_n = 1;
                      }else{
                          $destino_n = 2;
@@ -229,8 +227,9 @@ class PedidoController extends Controller
                 ]);
 
                 foreach ($produccion as $d){
+
                     $destino_n = null;
-                    if ($d['destino'] === 'Produccion'){
+                    if ($d['destino'] == 'Produccion'){
                         $destino_n = 1;
                     }else{
                         $destino_n = 2;
@@ -300,6 +299,12 @@ class PedidoController extends Controller
                  ]);
 
                  foreach ($bodega as $d){
+                     $destino_n = null;
+                     if ($d['destino'] == 'Produccion'){
+                         $destino_n = 1;
+                     }else{
+                         $destino_n = 2;
+                     }
                      DB::table('detalle_pedidos')->insert([
                          'idPedido'         => $invoice,
                          'CodigoProducto'   => $d['codproducto'],
@@ -310,7 +315,7 @@ class PedidoController extends Controller
                          'Cantidad'         => $d['cantidad'],
                          'Precio'           => $d['precio'],
                          'Total'            => $d['total'],
-                         'Destino'          => $d['destino'],
+                         'Destino'          => $destino_n,
                          'R_N'              => $d['n_r'],
                          'created_at'       => $date,
                      ]);
@@ -347,6 +352,12 @@ class PedidoController extends Controller
                  ]);
 
                  foreach ($produccion as $d){
+                     $destino_n = null;
+                     if ($d['destino'] == 'Produccion'){
+                         $destino_n = 1;
+                     }else{
+                         $destino_n = 2;
+                     }
                      DB::table('detalle_pedidos')->insert([
                          'idPedido'         => $invoice,
                          'CodigoProducto'   => $d['codproducto'],
@@ -357,7 +368,7 @@ class PedidoController extends Controller
                          'Cantidad'         => $d['cantidad'],
                          'Precio'           => $d['precio'],
                          'Total'            => $d['total'],
-                         'Destino'          => $d['destino'],
+                         'Destino'          => $destino_n,
                          'R_N'              => $d['n_r'],
                          'created_at'       => $date,
                      ]);
@@ -371,6 +382,9 @@ class PedidoController extends Controller
 
                  DB::commit();
                  return response()->json(['Success' => 'Todo Ok']);
+                 $user_name = Auth::user();
+
+                 $this->sendNotification('nuevo_pedido',$invoice,  $user_name);
 
              }catch (\Exception $e){
                  DB::rollback();
@@ -589,5 +603,24 @@ class PedidoController extends Controller
 
 
         return response()->json('success',200);
+    }
+
+
+
+    public function sendNotification($type, $id_pedido, $user_name)
+    {
+        if ($type == 'nuevo_pedido'){
+            $users = User::all();
+
+            foreach ($users as $user){
+                if ($user->hasRole('super-admin')){
+                    $user_name->notify(new NuevoPedido([
+                        'title'   => 'Se creo un pedido',
+                        'user'    => $user_name,
+                        'content' => 'El usuario '.$user_name.' creo el pedido # '.$id_pedido
+                    ]));
+                }
+            }
+        }
     }
 }
