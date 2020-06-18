@@ -714,12 +714,6 @@ class FacturasController extends Controller
                     }
 
 
-                    if ($item->UM == 'UN') {
-                        $umed = '94';
-                    } else {
-                        $umed = 'KGM';
-                    }
-
 
                     $id_item_iva = null;
                     if ($item->iva_item != null) {
@@ -776,7 +770,7 @@ class FacturasController extends Controller
                     $objetoXML->endElement();
 
                     $objetoXML->startElement("unidaddemedida");
-                    $objetoXML->text($umed);
+                    $objetoXML->text($item->UM);
                     $objetoXML->endElement();
 
                     if ($enc->tipo_cliente == 'EX'){
