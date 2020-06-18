@@ -22,7 +22,6 @@
             <div class="main-card mb-3 card">
                 <div class="card-body">
                     <form id="ProductForm" name="ProductForm">
-
                         <div class="row">
                             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                                 <div class="form-group">
@@ -169,8 +168,7 @@
                             </tbody>
                         </table>
                     </form>
-                    <br>
-                    <br>
+
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm text-center ItemsTable" id="ItemsTable">
                             <thead>
@@ -614,67 +612,67 @@
 
 
 
-           $('#add_items_form').validate({
-               ignore: "",
-               rules: {
-                   n_r: {
-                       selectcheck: true
-                   },
-                   dest_item: {
-                       selectcheck: true
-                   },
-                   AddPrice: "required",
-                   AddQuantity: "required"
-               },
-               errorPlacement: function(error,element) {
-                   return true;
-               },
-               highlight: function (element) {
-                   $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
-               },
-               unhighlight: function (element) {
-                   $(element).closest('.form-control').removeClass('is-invalid');
-               },
+            $('#add_items_form').validate({
+                ignore: "",
+                rules: {
+                    n_r: {
+                        selectcheck: true
+                    },
+                    dest_item: {
+                        selectcheck: true
+                    },
+                    AddPrice: "required",
+                    AddQuantity: "required"
+                },
+                errorPlacement: function(error,element) {
+                    return true;
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-invalid');
+                },
 
-               submitHandler: function (form) {
-                   const producto = $('#DescripcionProductoMax').val();
-                   const codigo = $('#CodigoProductoMax').val();
-                   const arte = $('#AddArt').val();
-                   const notas = $('#AddNotes').val();
-                   const unidad = $('#AddUnidad').val();
-                   const precio = $('#AddPrice').val();
-                   const cantidad = $('#AddQuantity').val();
-                   const total = $('#TotalItem').val();
-                   const destino = $('#dest_item').val();
-                   const n_r = $('#n_r').val();
+                submitHandler: function (form) {
+                    const producto = $('#DescripcionProductoMax').val();
+                    const codigo = $('#CodigoProductoMax').val();
+                    const arte = $('#AddArt').val();
+                    const notas = $('#AddNotes').val();
+                    const unidad = $('#AddUnidad').val();
+                    const precio = $('#AddPrice').val();
+                    const cantidad = $('#AddQuantity').val();
+                    const total = $('#TotalItem').val();
+                    const destino = $('#dest_item').val();
+                    const n_r = $('#n_r').val();
 
 
 
-                   $('#ProductosAdd').append('<tr>' +
-                       '<td class="ipcodproducto">'+ codigo +'</td>' +
-                       '<td class="iproducto">'+ producto +'</td>' +
-                       '<td class="idestino">'+ destino +'</td>' +
-                       '<td class="in_r">'+ n_r +'</td>' +
-                       '<td class="iarte">'+ '<a href="javascript:void(0);" id="'+arte+'" class="ViewArt">' + arte +'</a>' + '</td>' +
-                       '<td class="inotas">'+ notas  +'</td>' +
-                       '<td class="iunidad">'+ unidad +'</td>' +
-                       '<td class="iprecio" contenteditable="true">'+ precio +'</td>' +
-                       '<td class="rowDataSd icantidad" contenteditable="true">'+ cantidad +'</td>' +
-                       '<td class="rowDataSd itotal">'+ total +'</td>' +
-                       '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td>' +
-                       '</tr> '
-                   );
-                   LimpiarCampos();
-                   SumarItems();
-                   CalcularDescuento();
-                   CalcularSubtotal();
-                   CalcularIva();
-                   Totalpedido();
-                   $('#AddItem').prop("disabled", true);
+                    $('#ProductosAdd').append('<tr>' +
+                        '<td class="ipcodproducto">'+ codigo +'</td>' +
+                        '<td class="iproducto">'+ producto +'</td>' +
+                        '<td class="idestino">'+ destino +'</td>' +
+                        '<td class="in_r">'+ n_r +'</td>' +
+                        '<td class="iarte">'+ '<a href="javascript:void(0);" id="'+arte+'" class="ViewArt">' + arte +'</a>' + '</td>' +
+                        '<td class="inotas">'+ notas  +'</td>' +
+                        '<td class="iunidad">'+ unidad +'</td>' +
+                        '<td class="iprecio" contenteditable="true">'+ precio +'</td>' +
+                        '<td class="rowDataSd icantidad" contenteditable="true">'+ cantidad +'</td>' +
+                        '<td class="rowDataSd itotal">'+ total +'</td>' +
+                        '<td style="align-content: center"><a href="javascript:void(0)" data-toggle="tooltip" data-id="'+ producto +'" data-original-title="Eliminar" class="btn btn-danger btn-sm BorrarItem"><i class="fas fa-trash"></i></a></td>' +
+                        '</tr> '
+                    );
+                    LimpiarCampos();
+                    SumarItems();
+                    CalcularDescuento();
+                    CalcularSubtotal();
+                    CalcularIva();
+                    Totalpedido();
+                    $('#AddItem').prop("disabled", true);
 
-                   return false;
-               }
-           });
+                    return false;
+                }
+            });
 
 
 

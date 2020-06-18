@@ -484,7 +484,6 @@ class PedidoController extends Controller
         return view('Pedidos.nuevo_pedido',compact('vendedores'));
     }
 
-
     public function edit($id){
         $encabezado = DB::table('encabezado_pedidos')
             ->where('id','=',$id)
@@ -534,7 +533,15 @@ class PedidoController extends Controller
                 ->where('id','=', $det['id'])
                 ->count();
 
+            $destino_n = null;
+            if ($det['destino'] === 'Produccion'){
+                $destino_n = 1;
+            }else{
+                $destino_n = 2;
+            }
+
             if ($existe === 1){
+
                 DB::table('detalle_pedidos')
                     ->where('id','=',$det['id'])
                     ->update([
@@ -547,7 +554,6 @@ class PedidoController extends Controller
                         'Precio'            =>  $det['precio'],
                         'Cantidad'          =>  $det['cantidad'],
                         'Total'             =>  $det['total'],
-                        'Destino'           =>  $det['destino']
                 ]);
 
                 array_push($id_no_borrar, intval($det['id']));
@@ -555,16 +561,18 @@ class PedidoController extends Controller
             }elseif ($det['id'] === null ){
                 $id = DB::table('detalle_pedidos')
                     ->insertGetId([
-                    'idPedido'          =>  $encabezado['id'],
-                    'CodigoProducto'    =>  $det['codproducto'] ,
-                    'Descripcion'       =>  $det['producto'],
-                    'Arte'              =>  $det['arte'],
-                    'Notas'             =>  $det['notas'],
-                    'Unidad'            =>  $det['unidad'],
-                    'Precio'            =>  $det['precio'],
-                    'Cantidad'          =>  $det['cantidad'],
-                    'Total'             =>  $det['total'],
-                    'Destino'           =>  $det['destino']
+                        'idPedido'          =>  $encabezado['id'],
+                        'CodigoProducto'    =>  $det['codproducto'] ,
+                        'Descripcion'       =>  $det['producto'],
+                        'Arte'              =>  $det['arte'],
+                        'Notas'             =>  $det['notas'],
+                        'Unidad'            =>  $det['unidad'],
+                        'Precio'            =>  $det['precio'],
+                        'Cantidad'          =>  $det['cantidad'],
+                        'Total'             =>  $det['total'],
+                        'Destino'           =>  $destino_n,
+                        'R_N'               =>  $det['n_r'],
+
                 ]);
                 array_push($id_no_borrar, intval($id));
             }
