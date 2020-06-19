@@ -557,7 +557,7 @@
 
                 var nombre_cliente = @json($cliente->RAZON_SOCIAL);
 
-                var table_fact =  $('#facturacion_electronica').DataTable({
+                /*var table_fact =  $('#facturacion_electronica').DataTable({
                     processing: true,
                     serverSide: true,
                     responsive: true,
@@ -566,7 +566,7 @@
                     scrollCollapse: true,
                     paging: true,
                     ajax: {
-                        url:'/FacturacionElectronicaGc',
+                        url:'/facturacion_electronica/web_service/listado_documentos',
                         data:{
                             nombre_cliente: nombre_cliente
                         }
@@ -587,7 +587,7 @@
                     language: {
                         url: '/Spanish.json'
                     }
-                });
+                });*/
 
                 $('#transacciones').DataTable({
                     processing: true,
@@ -598,7 +598,7 @@
                     scrollCollapse: true,
                     paging: true,
                     ajax: {
-                        url:'aplicaciones/terceros/cliente/obtener_log_cambios',
+                        url:'/aplicaciones/terceros/cliente/obtener_log_cambios',
                         data:{
                             cod_cliente: cod_cliente
                         }
@@ -617,7 +617,7 @@
                     }
                 });
 
-                $('body').on('click','.download_ws', function () {
+                $(document).on('click','.download_ws', function () {
                     var username = 'dcorreah';
                     var id = this.id;
                     $.ajaxSetup({
@@ -966,7 +966,7 @@
                     function getOptionsTipoCliente(){
                         $.ajax({
                             type: "get",
-                            url: '/get_tipo_cliente',
+                            url: '/aplicaciones/terceros/listar_tipo_cliente',
                             success: function (data) {
                                 var i = 0;
                                 $('#tipo_cliente').append('<option value="">Seleccione...</option>');
@@ -1542,7 +1542,7 @@
                     function getOptionsPlazo(){
                         $.ajax({
                             type: "get",
-                            url: '/get_paymentterm',
+                            url: '/aplicaciones/terceros/listar_plazos',
                             success: function (data) {
                                 var i = 0;
                                 $('#plazo_pago').append('<option value="" >Seleccione...</option>');
@@ -1716,7 +1716,7 @@
                     function getOptionsVendedores(){
                         $.ajax({
                             type: "get",
-                            url: '/get_sellerlist',
+                            url: '/aplicaciones/terceros/listar_vendedores',
                             success: function (data) {
                                 var i = 0;
                                 $('#vendedor').append('<option value="" >Seleccione...</option>');
