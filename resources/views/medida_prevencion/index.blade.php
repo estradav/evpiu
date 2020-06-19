@@ -170,9 +170,10 @@
         function new_clock(){
             if(clock_on === true){
                 clock = new Date();
+                console.log(clock.getDate());
                 year = clock.getFullYear();
                 month = ("0" + (clock.getMonth() + 1)).slice(-2);
-                day =  ("0" + (clock.getDay() + 1)).slice(-2);;
+                day =  ("0" + (clock.getDate())).slice(-2);
                 hour =   clock.getHours();
                 minutes = clock.getMinutes();
                 seconds = clock.getSeconds();
