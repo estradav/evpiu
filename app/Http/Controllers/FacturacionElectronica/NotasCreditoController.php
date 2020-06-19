@@ -46,7 +46,11 @@ class NotasCreditoController extends Controller
                         'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo',
                         'CIEV_V_FE_FacturasTotalizadas.motivo',
                         'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente',
-                        'CIEV_V_FE.codigo_alterno as cod_alter')
+                        'CIEV_V_FE.codigo_alterno as cod_alter',
+                        'CIEV_V_FE.emailcontacto as emailcontacto',
+                        'CIEV_V_FE.nombres as nombres'
+
+                    )
                     ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc','=','CR')
                     ->whereBetween('fecha', array($request->from_date, $request->to_date))
                     ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')
@@ -68,7 +72,11 @@ class NotasCreditoController extends Controller
                         'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo',
                         'CIEV_V_FE_FacturasTotalizadas.motivo',
                         'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente',
-                        'CIEV_V_FE.codigo_alterno as cod_alter')
+                        'CIEV_V_FE.codigo_alterno as cod_alter',
+                        'CIEV_V_FE.emailcontacto as emailcontacto',
+                        'CIEV_V_FE.nombres as nombres'
+
+                    )
                     ->where('CIEV_V_FE_FacturasTotalizadas.tipodoc','=','CR')
                     ->whereBetween('fecha', array($fromdate, $todate))
                     ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')

@@ -62,17 +62,17 @@ $(document).ready(function () {
     }
 
     $('#filter').click(function(){
-        var fe_start = $('#fe_start').val();
-        var fe_end = $('#fe_end').val();
-        var type_doc = $('#type_doc').val();
+        const fe_start = $('#fe_start').val();
+        const fe_end = $('#fe_end').val();
+        const type_doc = $('#type_doc').val();
 
         if(start_date !== '' &&  end_date !== '') {
-            $('#tfac').DataTable().destroy();
+            $('#table').DataTable().destroy();
             load_table(start_date, end_date, fe_start, fe_end, type_doc);
             Listado_de_facturas(start_date, end_date, fe_start, fe_end, type_doc);
         }
         else if(fe_start !== '' &&  fe_end !== '') {
-            $('#tfac').DataTable().destroy();
+            $('#table').DataTable().destroy();
             load_table(start_date, end_date, fe_start, fe_end, type_doc);
             Listado_de_facturas(start_date, end_date, fe_start, fe_end, type_doc);
         } else {
@@ -94,7 +94,7 @@ $(document).ready(function () {
         });
         $.ajax({
             type: 'post',
-            url: '/aplicaciones/facturacion_electronica/webservice/descargar_documento',
+            url: '/aplicaciones/facturacion_electronica/web_service/descargar_documento',
             data: {
                 id: id,
             },
@@ -107,7 +107,7 @@ $(document).ready(function () {
                 for (var i = 0; i < len; i++) {
                     view[i] = binary.charCodeAt(i);
                 }
-                var blob = new Blob( [view], { type: "application/pdf" });
+                var blob = new Blob([view], { type: "application/pdf" });
                 var link=document.createElement('a');
                 link.href=window.URL.createObjectURL(blob);
                 link.download="FE_"+id+".pdf";
@@ -127,7 +127,7 @@ $(document).ready(function () {
     function Listado_de_facturas(from_date = '', to_date = '' ,fe_start = '', fe_end = '', type_doc = '') {
         missing = [];
         $.ajax({
-            url: '/aplicaciones/facturacion_electronica/webservice/listado_documentos',
+            url: '/aplicaciones/facturacion_electronica/web_service/listado_documentos',
             type: 'get',
             data: {
                 from_date:from_date,
@@ -137,15 +137,20 @@ $(document).ready(function () {
                 type_doc:type_doc,
             },
             success: function (data) {
-                console.log(data);
                 var array = [];
                 for (let i = 0; i < data.length ; i++) {
                     array.push(data[i].numero);
                 }
+                console.log(array);
+
 
                 array = array.sort();
+
+                console.log(array.length);
                 for(let i = 1; i < array.length; i++) {
+
                     if(array[i] - array[i-1] !== 1) {
+                        console.log(array[i]);
                         var x = array[i] - array[i-1];
                         let k = 1;
                         while (k<x) {
@@ -153,13 +158,14 @@ $(document).ready(function () {
                             k++;
                         }
                     }
+                    console.log(missing)
                 }
             }
         });
     }
 
     $(document).on('click', '#Auditar', function () {
-        if(missing === ''){
+        if(missing.length === 0){
             Swal.fire({
                 icon: 'success',
                 title: 'Todo en orden...',
@@ -185,12 +191,13 @@ $(document).ready(function () {
     $(document).on('click','.info_ws',function () {
         let id = this.id;
         $.ajax({
-            url: '/aplicaciones/facturacion_electronica/webservice/info_documento',
+            url: '/aplicaciones/facturacion_electronica/web_service/info_documento',
             type: 'get',
             data: {
                 id : id,
             },
             success: function (data) {
+                console.log(data);
                 $('#nombreAdquiriente').html(data.nombreAdquiriente);
                 $('#identificacionAdquiriente').html(data.identificacionAdquiriente);
                 $('#correoenvio').html(data.correoenvio);
@@ -229,6 +236,13 @@ $(document).ready(function () {
             error: function () {
                 alert('error');
             }
+        });
+
+
+
+
+        $('body').on('click','.infoObsWs',function () {
+            $('#InfoWsObserv').modal('show');
         });
     });
 });
