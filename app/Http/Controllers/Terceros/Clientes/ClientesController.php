@@ -227,6 +227,7 @@ class ClientesController extends Controller
             $nombre_max = $request->M_primer_nombre;
         }
 
+
         DB::beginTransaction();
 
         try {
@@ -295,84 +296,84 @@ class ClientesController extends Controller
                     'SHPTHRU_23'   =>  ' '
                 ]);
 
-            DB::connection('MAX')
-                ->table('Customer_Master_Ext')
-                ->insert([
-                    'CUSTID_23'            =>  $request->M_Nit_cc,
-                    'GRUPOECON'            =>  $request->M_grupo_economico ?? '',
-                    'TipoIdent'            =>  $request->M_tipo_doc,
-                    'GranContr'            =>  $request->M_gran_contribuyente == 'on' ? '1': '0',
-                    'ActividadPrincipal'   =>  $request->M_actividad_principal,
-                    'RUT'                  =>  $request->M_rut_entregado == 'on' ? '1' : '0',
-                    'ResponsableFE'        =>  strtoupper($request->M_responsable_fe ?? ''),
-                    'telFE'                =>  $request->M_telefono_fe ?? '',
-                    'CorreosCopia'         =>  $correos_copia,
-                    'ResponsableIVA'       =>  '',
-                    'CiudadExterior'       =>  ''
-                ]);
-
-            DB::connection('DMS') /*Base de datos de prueba*/
-            ->table('terceros')
-                ->insert([
-                    'nit'                              =>  $request->M_Nit_cc,
-                    'digito'                           =>  $request->M_Nit_cc_dg,
-                    'nombres'                          =>  $nombre_max,
-                    'direccion'                        =>  $request->M_direccion1,
-                    'ciudad'                           =>  $request->ciudad,
-                    'telefono_1'                       =>  $request->M_Telefono,
-                    'telefono_2'                       =>  $request->M_Telefono2,
-                    'tipo_identificacion'              =>  $request->M_tipo_doc, // pendiente por que los valores deben ser equivalentes en max
-                    'pais'                             =>  $request->pais,
-                    'gran_contribuyente'               =>  '0',
-                    'autoretenedor'                    =>  '0',
-                    'bloqueo'                          =>  '0',
-                    'concepto_1'                       =>  $request->M_tipo_tercero_dms,
-                    'concepto_2'                       =>  '1', // territorio del vendedor
-                    'concepto_3'                       =>  '15',
-                    'concepto_4'                       =>  $request->M_tipo_client_dms,
-                    'mail'                             =>  $request->M_Email_contacto,
-                    'pos_num'                          =>  $apellidos_lenght,
-                    'regimen'                          =>  'S', // validar con martin
-                    'cupo_credito'                     =>  '0',
-                    'nit_real'                         =>  intval($request->M_Nit_cc),
-                    'condicion'                        =>  $termino_dms,
-                    'vendedor'                         =>  intval($request->M_vendedor),
-                    'contacto_1'                       =>  $request->M_Contacto,
-                    'fecha_creacion'                   =>  Carbon::now(),
-                    'descuento_fijo'                   =>  $request->M_Porcentaje_descuento,
-                    'centro_fijo'                      =>  '0',
-                    'y_dpto'                           =>  $request->M_Departamento,
-                    'y_ciudad'                         =>  $request->M_Ciudad,
-                    'celular'                          =>  $request->M_Celular,
-                    'razon_comercial'                  =>  $request->M_Razon_comercial,
-                    'y_pais'                           =>  $request->M_Pais,
-                    'codigo_alterno'                   =>  $request->M_Nit_cc,
-                    'usuario'                          =>  $request->username,
-                    'sincronizado'                     =>  'N',
-                    'id_definicion_tributaria_tipo'    =>  $dms_id_def_trib_tipo[0],
-                    'tieneRUT'                         =>  $request->M_rut_entregado == 'on' ? '1' : '0',
-                    'codigoPostal'                     =>  $request->M_Codigo_postal,
-                ]);
-
-            if (trim($request->M_primer_apellido) != ''){
-                DB::connection('DMS')
-                    ->table('terceros_nombres')
+                DB::connection('MAX')
+                    ->table('Customer_Master_Ext')
                     ->insert([
-                        'nit'                  =>  $request->M_Nit_cc,
-                        'primer_apellido'      =>  $request->M_primer_apellido,
-                        'segundo_apellido'     =>  $request->M_segundo_apellido,
-                        'primer_nombre'        =>  $request->M_primer_nombre,
-                        'segundo_nombre'       =>  $request->M_segundo_nombre
+                        'CUSTID_23'            =>  $request->M_Nit_cc,
+                        'GRUPOECON'            =>  $request->M_grupo_economico ?? '',
+                        'TipoIdent'            =>  $request->M_tipo_doc,
+                        'GranContr'            =>  $request->M_gran_contribuyente == 'on' ? '1': '0',
+                        'ActividadPrincipal'   =>  $request->M_actividad_principal,
+                        'RUT'                  =>  $request->M_rut_entregado == 'on' ? '1' : '0',
+                        'ResponsableFE'        =>  strtoupper($request->M_responsable_fe ?? ''),
+                        'telFE'                =>  $request->M_telefono_fe ?? '',
+                        'CorreosCopia'         =>  $correos_copia,
+                        'ResponsableIVA'       =>  '',
+                        'CiudadExterior'       =>  ''
                     ]);
-            }
+
+                DB::connection('DMS') /*Base de datos de prueba*/
+                    ->table('terceros')
+                    ->insert([
+                        'nit'                              =>  $request->M_Nit_cc,
+                        'digito'                           =>  $request->M_Nit_cc_dg,
+                        'nombres'                          =>  $nombre_max,
+                        'direccion'                        =>  $request->M_direccion1,
+                        'ciudad'                           =>  $request->ciudad,
+                        'telefono_1'                       =>  $request->M_Telefono,
+                        'telefono_2'                       =>  $request->M_Telefono2,
+                        'tipo_identificacion'              =>  $request->M_tipo_doc, // pendiente por que los valores deben ser equivalentes en max
+                        'pais'                             =>  $request->pais,
+                        'gran_contribuyente'               =>  '0',
+                        'autoretenedor'                    =>  '0',
+                        'bloqueo'                          =>  '0',
+                        'concepto_1'                       =>  $request->M_tipo_tercero_dms,
+                        'concepto_2'                       =>  '1', // territorio del vendedor
+                        'concepto_3'                       =>  '15',
+                        'concepto_4'                       =>  $request->M_tipo_client_dms,
+                        'mail'                             =>  $request->M_Email_contacto,
+                        'pos_num'                          =>  $apellidos_lenght,
+                        'regimen'                          =>  'S', // validar con martin
+                        'cupo_credito'                     =>  '0',
+                        'nit_real'                         =>  intval($request->M_Nit_cc),
+                        'condicion'                        =>  $termino_dms,
+                        'vendedor'                         =>  intval($request->M_vendedor),
+                        'contacto_1'                       =>  $request->M_Contacto,
+                        'fecha_creacion'                   =>  Carbon::now(),
+                        'descuento_fijo'                   =>  $request->M_Porcentaje_descuento,
+                        'centro_fijo'                      =>  '0',
+                        'y_dpto'                           =>  $request->M_Departamento,
+                        'y_ciudad'                         =>  $request->M_Ciudad,
+                        'celular'                          =>  $request->M_Celular,
+                        'razon_comercial'                  =>  $request->M_Razon_comercial,
+                        'y_pais'                           =>  $request->M_Pais,
+                        'codigo_alterno'                   =>  $request->M_Nit_cc,
+                        'usuario'                          =>  $request->username,
+                        'sincronizado'                     =>  'N',
+                        'id_definicion_tributaria_tipo'    =>  $dms_id_def_trib_tipo[0],
+                        'tieneRUT'                         =>  $request->M_rut_entregado == 'on' ? '1' : '0',
+                        'codigoPostal'                     =>  $request->M_Codigo_postal,
+                    ]);
+
+                if (trim($request->M_primer_apellido) != ''){
+                    DB::connection('DMS')
+                        ->table('terceros_nombres')
+                        ->insert([
+                            'nit'                  =>  $request->M_Nit_cc,
+                            'primer_apellido'      =>  $request->M_primer_apellido,
+                            'segundo_apellido'     =>  $request->M_segundo_apellido,
+                            'primer_nombre'        =>  $request->M_primer_nombre,
+                            'segundo_nombre'       =>  $request->M_segundo_nombre
+                        ]);
+                }
 
             DB::commit();
 
-            return response()->json(['Success' => 'Guardado con exito!'],200);
+            return response()->json('Guardado con exito!',200);
 
         } catch (\Exception $e) {
             DB::rollback();
-            return  response()->json(['error' => $e->getMessage()],500);
+            return  response()->json($e->getMessage(),500);
         }
 
     }
@@ -1372,6 +1373,21 @@ class ClientesController extends Controller
         }
     }
 
+
+
+    public function listar_tipo_cliente(Request $request)
+    {
+        if ($request->ajax()){
+            try {
+                $tipo_cliente =  DB::connection('MAX')->table('Customer_Types')
+                    ->get();
+                return response()->json($tipo_cliente, 200);
+
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(),500);
+            }
+        }
+    }
 
 
 

@@ -92,6 +92,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     Route::get('listar_departamentos','Terceros\Clientes\ClientesController@listar_departamentos');
                     Route::get('listar_plazos','Terceros\Clientes\ClientesController@listar_plazos');
                     Route::get('listar_vendedores','Terceros\Clientes\ClientesController@listar_vendedores');
+                    Route::get('listar_tipo_cliente','Terceros\Clientes\ClientesController@listar_tipo_cliente');
 
 
                     Route::get('cliente/editar/{cliente}/show','Terceros\Clientes\ClientesController@show');
