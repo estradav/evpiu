@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SoapClient;
+use SoapFault;
 use XMLWriter;
 
 class WebServiceController extends Controller
@@ -1604,6 +1606,7 @@ class WebServiceController extends Controller
     public function descarga_documento(Request $request){
         $Numero_Factura = $request->id;
 
+
         if (request()->ajax()) {
             $login1 = "dcorreah";
             $password = "FE2020ev*";
@@ -1612,18 +1615,6 @@ class WebServiceController extends Controller
                 'trace' => 1,
                 "location" => "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService"));
 
-            $ns = "http://servers.pcfe.andesscd.com.co";
-
-
-
-            $header = new \SOAPHeader($ns, 'RequestorCredentials');
-
-
-            $client->__setSoapHeaders($header);
-
-
-
-            var_dump($client->__getFunctions());
 
             $params = array(
                 'login' => $login1,
@@ -1638,11 +1629,7 @@ class WebServiceController extends Controller
 
 
 
-
-
-
-
-            $params = array(
+            $params = [
                 'token' => $token,
                 'idUsuario' => '',
                 'idEstadoEnvioCliente' => '',
@@ -1659,25 +1646,20 @@ class WebServiceController extends Controller
                 'estadoAcuse' => '',
                 'razonSocial' => '',
                 'mulCodEstDian' => '',
+                'mulCodEstCliente'  => '',
                 'tipoDocumento' => '',
                 'idDocumento' => '',
                 'idVerficacionFuncional' => ''
-            );
+            ];
 
 
 
-
-            var_dump($params);
 
             $return = $client->ListarDocumentosElectronicos($params);
 
 
 
             $return = json_decode($return->return);
-
-
-            var_dump($return->data);
-            dd($return);
 
 
             $id_factible = $return->data[0]->DT_RowId;
@@ -1753,12 +1735,13 @@ class WebServiceController extends Controller
                 'estadoAcuse' => '',
                 'razonSocial' => '',
                 'mulCodEstDian' => '',
+                'mulCodEstCliente'  => '',
                 'tipoDocumento' => '',
                 'idDocumento' => '',
                 'idVerficacionFuncional' => ''
             );
 
-            $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+            $return = $client->ListarDocumentosElectronicos($params);
             $return = json_decode($return->return);
 
             $values = $return->data[0]->descestadoenviodian;
@@ -1816,11 +1799,12 @@ class WebServiceController extends Controller
                     'estadoAcuse' => '',
                     'razonSocial' => '',
                     'mulCodEstDian' => '',
+                    'mulCodEstCliente'  => '',
                     'tipoDocumento' => '',
                     'idDocumento' => '',
                     'idVerficacionFuncional' => ''
                 );
-                $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+                $return = $client->ListarDocumentosElectronicos($params);
                 $return = json_decode($return->return);
                 $values = $return->data;
 
@@ -1828,7 +1812,7 @@ class WebServiceController extends Controller
                 return response()->json($values);
 
             } else {
-                $login1 = $request->Username;
+                $login1 = "dcorreah";
                 $password = "FE2020ev*";
                 $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
                 $client = new SoapClient($wsdl_url);
@@ -1841,7 +1825,9 @@ class WebServiceController extends Controller
 
                 $auth = $client->autenticar($params);
                 $respuesta = json_decode($auth->return);
+
                 $token = $respuesta->data->salida;
+
 
                 $params = array(
                     'token' => $token,
@@ -1861,11 +1847,13 @@ class WebServiceController extends Controller
                     'estadoAcuse' => '',
                     'razonSocial' => '',
                     'mulCodEstDian' => '',
+                    'mulCodEstCliente'  => '',
                     'tipoDocumento' => '',
                     'idDocumento' => '',
                     'idVerficacionFuncional' => ''
                 );
-                $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+                $return = $client->ListarDocumentosElectronicos($params);
+
                 $return = json_decode($return->return);
                 $values = $return->data;
 
@@ -1919,11 +1907,12 @@ class WebServiceController extends Controller
                 'estadoAcuse' => '',
                 'razonSocial' => '',
                 'mulCodEstDian' => '',
+                'mulCodEstCliente'  => '',
                 'tipoDocumento' => '',
                 'idDocumento' => '',
                 'idVerficacionFuncional' => ''
             );
-            $return = $client->ListarDocumentosElectronicosSuperAdmin($params);
+            $return = $client->ListarDocumentosElectronicos($params);
             $return = json_decode($return->return);
 
             $values = $return->data[0];

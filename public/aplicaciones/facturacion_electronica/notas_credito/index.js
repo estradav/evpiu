@@ -55,7 +55,6 @@ $(document).ready(function () {
                     type: 'get',
                     data: {
                         id:id,
-                        Username: Username
                     },
                     success: function (data) {
                         if (data !== ''){
@@ -118,7 +117,7 @@ $(document).ready(function () {
                     $(row).find('td:eq(12)').css('color', 'red');
                 }
 
-                if (data.email == null || data.email == '') {
+                if (data.email == null || data.email === '') {
                     $('td', row).css('color', 'red');
                 }
 
@@ -126,7 +125,7 @@ $(document).ready(function () {
                     $('td', row).css('color', 'red');
                 }
 
-                if (data.emailcontacto == '' || data.emailcontacto == null){
+                if (data.emailcontacto === '' || data.emailcontacto == null){
                     $('td', row).css('color', 'red');
                 }
 

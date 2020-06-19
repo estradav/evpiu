@@ -64,7 +64,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
                     /*web service*/
-                    Route::resource('web_service','FacturacionElectronica\WebServiceController');
                     Route::post('/web_service/descargar_documento', 'FacturacionElectronica\WebServiceController@descarga_documento');
                     Route::post('/web_service/envio_facturas','FacturacionElectronica\WebServiceController@envio_facturas');
                     Route::post('/web_service/envio_notas_credito','FacturacionElectronica\WebServiceController@envio_notas_credito');
@@ -454,7 +453,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('sensores_gas','SensorChimeneaController@data_gas');
         });
 
-        
+
 
 
 
