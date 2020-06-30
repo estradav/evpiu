@@ -263,8 +263,37 @@
                             </i>Clientes
                         </a>
                     </li>
+                    <li>
+                        <a href="#">
+                            <i class="metismenu-icon  pe-7s-graph1"></i>
+                            Recibos de caja
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li class="{{ request()->route()->named('recibos_caja.index') ? 'mm-active' : '' }}">
+                                <a href="{{ route('recibos_caja.index') }}">
+                                    <i class="metismenu-icon"></i>
+                                    Mis recibos de caja
+                                </a>
+                            </li>
+                            <li class="{{ request()->route()->named('recibos_caja.nuevo') ? 'mm-active' : '' }}">
+                                <a href="{{ route('recibos_caja.nuevo') }}">
+                                    <i class="metismenu-icon"></i>
+                                    Nuevo
+                                </a>
+                            </li>
+                            <li class="{{ request()->route()->named('recibos_caja.cartera') ? 'mm-active' : '' }}">
+                                <a href="{{ route('recibos_caja.cartera') }}">
+                                    <i class="metismenu-icon">
+                                    </i>Gestion
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
+
             </li>
+
             <li class="{{ request()->route()->named('pronosticos.index') ? 'mm-active' : '' }}">
                 <a href="{{ route('pronosticos.index') }}">
                     <i class="metismenu-icon  pe-7s-umbrella"></i>

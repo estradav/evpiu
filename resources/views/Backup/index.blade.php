@@ -28,7 +28,7 @@
                                         <td>{{ $backup['file_name'] }}</td>
                                         <td>{{ formatSizeUnits($backup['file_size']) }}</td>
                                         <td>{{ \Carbon\Carbon::createFromTimestamp($backup['last_modified'])->toDateTimeString() }}</td>
-                                        <td>{{ \Carbon\Carbon::createFromTimestamp($backup['last_modified'])->diffForHumans( \Carbon\Carbon::now()) }}</td>
+                                        <td>{{ \Carbon\Carbon::createFromTimestamp($backup['last_modified'])->diffForHumans() }}</td>
                                         <td>
                                             <a class="btn btn-xs btn-success"
                                                href="{{action('BackupController@download', [$backup['file_name']])}}"><i class="fa fa-cloud-download"> </i> Decargar</a>

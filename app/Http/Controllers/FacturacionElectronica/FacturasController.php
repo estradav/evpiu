@@ -691,6 +691,7 @@ class FacturasController extends Controller
                         $subtotal_item = $item->totalitem - $item->Desc_Item;
                         $total_valor_item_iva = $subtotal_item * 0.19;
                         $valor_item = $item->precio * $item->cantidad;
+                        $valorDescItem = $item->Desc_Item;
                         $descuento_por_item = ($item->Desc_Item / $valor_item) * 100;
                         $precio_unitario = $item-> precio;
                     }

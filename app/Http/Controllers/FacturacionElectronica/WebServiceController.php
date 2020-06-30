@@ -574,6 +574,7 @@ class WebServiceController extends Controller
                         $subtotal_item = $it->totalitem - $it->Desc_Item;
                         $total_valor_item_iva = $subtotal_item * 0.19;
                         $valor_item = $it->precio * $it->cantidad;
+                        $valorDescItem = $it->Desc_Item;
                         $DescuentoPorItem = ($it->Desc_Item / $valor_item) * 100;
                         $precio_unitario = $it-> precio;
                     }
