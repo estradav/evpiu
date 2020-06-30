@@ -282,6 +282,38 @@
 
 
         <script type="text/javascript">
+            var logger = function()
+            {
+                var oldConsoleLog = null;
+                var pub = {};
+
+                pub.enableLogger =  function enableLogger()
+                {
+                    if(oldConsoleLog == null)
+                        return;
+
+                    window['console']['log'] = oldConsoleLog;
+                };
+
+                pub.disableLogger = function disableLogger()
+                {
+                    oldConsoleLog = console.log;
+                    window['console']['log'] = function() {};
+                };
+
+                return pub;
+            }();
+
+            $(document).ready(
+                function()
+                {
+                    console.log('Console log disabled');
+                    logger.disableLogger();
+                }
+            );
+        </script>
+
+        <script type="text/javascript">
             var session_id  = "{!! (Session::getId())?Session::getId():'' !!}";
             var username    = "{!! (Auth::user())?Auth::user()->username:'' !!}";
             var user_id     = "{!! (Auth::user())?Auth::user()->id:'' !!}";
