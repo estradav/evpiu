@@ -281,37 +281,7 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 
-        <script type="text/javascript">
-            var logger = function()
-            {
-                var oldConsoleLog = null;
-                var pub = {};
 
-                pub.enableLogger =  function enableLogger()
-                {
-                    if(oldConsoleLog == null)
-                        return;
-
-                    window['console']['log'] = oldConsoleLog;
-                };
-
-                pub.disableLogger = function disableLogger()
-                {
-                    oldConsoleLog = console.log;
-                    window['console']['log'] = function() {};
-                };
-
-                return pub;
-            }();
-
-            $(document).ready(
-                function()
-                {
-                    console.log('Console log disabled');
-                    logger.disableLogger();
-                }
-            );
-        </script>
 
         <script type="text/javascript">
             var session_id  = "{!! (Session::getId())?Session::getId():'' !!}";

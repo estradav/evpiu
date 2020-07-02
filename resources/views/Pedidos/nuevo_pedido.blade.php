@@ -581,28 +581,25 @@
                         type: "POST",
                         dataType: 'json',
                         success: function (data) {
-                            if (data.hasOwnProperty('error')) {
-                                if(data.error.code2 == 664)  {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops...',
-                                        text: 'No puedes ingresar un pedido sin productos...',
-                                    });
-                                    $('#SavePed').html('Reintentar');
-                                }
-                            }else {
-                                $('#ProductForm').trigger("reset");
-                                $('#NewPedido').modal('hide');
-                                $('#SavePed').html('Guardar');
-                                $('#ProductosAdd').html('');
+                            $('#ProductForm').trigger("reset");
+                            $('#NewPedido').modal('hide');
+                            $('#SavePed').html('Guardar');
+                            $('#ProductosAdd').html('');
 
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Guardado!',
-                                    text: 'El pedido fue guardado con exito!',
-                                });
-                            }
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Guardado!',
+                                text: 'El pedido fue guardado con exito!',
+                            });
                         },
+                        error: function (data) {
+                            console.log(data.responseText);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: data,
+                            });
+                        }
                     });
                 }else{
                     return false;

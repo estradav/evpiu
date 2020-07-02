@@ -12,7 +12,7 @@
                     </div>
                     <div>Recibos de caja
                         <div class="page-title-subheading">
-                            Abono de capital a clientes
+                            Creacion de recibos de caja
                         </div>
                     </div>
                 </div>

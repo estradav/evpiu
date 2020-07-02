@@ -329,9 +329,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-
-            Route::get('/VerCondicionesPago','FeFacturasController@VerCondicionesPago');
-            Route::post('/GuardarFacturaEdit', 'FeFacturasController@GuardarFacturaEdit');
             Route::get('/misrequerimientos','RequerimientosController@MisRequerimientos');
             Route::post('/MisRequerimientosAddComent','RequerimientosController@MisRequerimientosAddComent');
 
