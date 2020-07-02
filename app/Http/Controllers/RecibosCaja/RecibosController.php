@@ -4,6 +4,7 @@ namespace App\Http\Controllers\RecibosCaja;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Doctrine\DBAL\Cache\ArrayStatement;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\JsonResponse;
@@ -55,7 +56,7 @@ class RecibosController extends Controller
             $query = $request->get('query');
             $results = array();
 
-            $queries = DB::connection('DMS')
+            $queries = DB::connection('FE')
                 ->table('V_CIEV_Clientes')
                 ->where('nombres', 'LIKE', '%' . $query . '%')
                 ->orWhere('nit', 'LIKE', '%' . $query . '%')
@@ -73,6 +74,7 @@ class RecibosController extends Controller
     }
 
 
+
     /**
      * Consulta de facturas pendientes por cliente
      * Cuyo saldo pendiente sea mayor a 0
@@ -84,7 +86,7 @@ class RecibosController extends Controller
             $nit = $request->get('nit');
 
             try {
-                $consulta = DB::connection('DMS')
+                $consulta = DB::connection('FE')
                     ->table('V_CIEV_Saldofacturas')
                     ->where('nit', '=', $nit)
                     ->where('saldo', '>', 0)
@@ -216,7 +218,7 @@ class RecibosController extends Controller
             ->orderBy('invoice','asc')
             ->get()->toArray();
 
-        $facturas_pendientes = DB::connection('DMS')
+        $facturas_pendientes = DB::connection('FE')
             ->table('V_CIEV_Saldofacturas')
             ->where('nit','=', $encabezado->nit)
             ->where('saldo', '>', 0)
@@ -391,61 +393,74 @@ class RecibosController extends Controller
 
 
     /**
-     * Ingresa el recibo de caja en DMS
+     * Ingresa el recibo de caja en DMS.
+     * Tablas Insert: documentos, documentos_cruce, movimiento, documentos_che
+     * Tablas Update: documentos, recibos_caja
+     * las transacciones funcionan correctamente
      *
      * @param Request $request
      * @return JsonResponse
      */
     public function finalizar_rc(Request $request){
         if ($request->ajax()){
-            DB::beginTransaction();
+            $enc = DB::table('recibos_caja')
+                ->where('id','=', $request->id)
+                ->first();
+
+            $det = DB::table('recibos_caja_detalle')
+                ->where('id_recibo','=', $request->id)
+                ->orderBy('invoice', 'asc')
+                ->get();
+
+            $sum_bruto = DB::table('recibos_caja_detalle')
+                ->where('id_recibo','=', $request->id)
+                ->sum('bruto');
+
+            $sum_rete = DB::table('recibos_caja_detalle')
+                ->where('id_recibo','=', $request->id)
+                ->sum('retencion');
+
+            $sum_reteiva = DB::table('recibos_caja_detalle')
+                ->where('id_recibo','=', $request->id)
+                ->sum('reteiva');
+
+            $sum_reteica = DB::table('recibos_caja_detalle')
+                ->where('id_recibo','=', $request->id)
+                ->sum('reteica');
+
+            $sum_descuento = DB::table('recibos_caja_detalle')
+                ->where('id_recibo','=', $request->id)
+                ->sum('descuento');
+
+            $sum_otros_ingr = DB::table('recibos_caja_detalle')
+                ->where('id_recibo','=', $request->id)
+                ->sum('otros_ingre');
+
+            $sum_otras_deduc = DB::table('recibos_caja_detalle')
+                ->where('id_recibo','=', $request->id)
+                ->sum('otras_deduc');
+
+            $numero_rc =  DB::connection('FE')
+                ->table('documentos')
+                ->where('tipo','=', 'RCCO')
+                ->max('numero');
+
+            $vendedor_asociado = DB::connection('FE')
+                ->table('terceros')
+                ->where('nit','=', $enc->nit)
+                ->pluck('vendedor');
+
+
+            $concepto_cliente = DB::connection('FE')
+                ->table('terceros')
+                ->where('nit','=',$enc->nit)
+                ->pluck('concepto_4')->first();
+
+
+
+            DB::connection('FE')->beginTransaction();
+
             try {
-                $enc = DB::table('recibos_caja')
-                    ->where('id','=', $request->id)
-                    ->first();
-
-                $det = DB::table('recibos_caja_detalle')
-                    ->where('id_recibo','=', $request->id)
-                    ->orderBy('invoice', 'asc')
-                    ->get();
-
-                $sum_rete = DB::table('recibos_caja_detalle')
-                    ->where('id_recibo','=', $request->id)
-                    ->sum('retencion');
-
-                $sum_reteiva = DB::table('recibos_caja_detalle')
-                    ->where('id_recibo','=', $request->id)
-                    ->sum('reteiva');
-
-                $sum_reteica = DB::table('recibos_caja_detalle')
-                    ->where('id_recibo','=', $request->id)
-                    ->sum('reteica');
-
-                $sum_descuento = DB::table('recibos_caja_detalle')
-                    ->where('id_recibo','=', $request->id)
-                    ->sum('descuento');
-
-                $sum_otros_ingr = DB::table('recibos_caja_detalle')
-                    ->where('id_recibo','=', $request->id)
-                    ->sum('otros_ingre');
-
-                $numero_rc =  DB::connection('FE')
-                    ->table('documentos')
-                    ->where('tipo','=', 'RCCO')
-                    ->max('numero');
-
-                $vendedor_asociado = DB::connection('FE')
-                    ->table('terceros')
-                    ->where('nit','=', $enc->nit)
-                    ->pluck('vendedor');
-
-
-                $concepto_cliente = DB::connection('FE')
-                    ->table('terceros')
-                    ->where('nit','=',$enc->nit)
-                    ->pluck('concepto_4');
-
-
                 DB::connection('FE')
                     ->table('documentos')
                     ->insert([
@@ -455,22 +470,22 @@ class RecibosController extends Controller
                         'nit'                   =>  $enc->nit,
                         'fecha'                 =>  $enc->fecha_pago, /* crear input para fecha */
                         'condicion'             =>  null,
-                        'vencimiento'           =>  Carbon::now(), /*mismo valor de fecha*/
+                        'vencimiento'           =>  $enc->fecha_pago, /*mismo valor de fecha*/
                         'valor_total'           =>  $enc->total, /* valor pagado en RC*/
                         'iva'                   =>  null,
                         'retencion'             =>  $sum_rete, /* retencion RC*/
                         'retencion_causada'     =>  null,
                         'retencion_iva'         =>  $sum_reteiva,
                         'retencion_ica'         =>  $sum_reteica,
-                        'descuento_pie'         =>  '',
-                        'fletes'                =>  $sum_otros_ingr, /* otros ingresos */
-                        'iva_fletes'            =>  null,
+                        'descuento_pie'         =>  $sum_descuento,
+                        'fletes'                =>  null, /* otros ingresos */
+                        'iva_fletes'            =>  gmp_neg(intval($sum_otros_ingr)),
                         'costo'                 =>  null,
                         'vendedor'              =>  intval($vendedor_asociado[0]), /* vendedor asociado a la factura*/
                         'valor_aplicado'        =>  $enc->total, /* valor pagado en RC*/
                         'anulado'               =>  '0',
                         'modelo'                =>  '1',
-                        'documento'             =>  '', /* dejar en blanco*/
+                        'documento'             =>  null, /* dejar en blanco*/
                         'notas'                 =>  $enc->comments, /* comentarios del RC*/
                         'usuario'               =>  Auth::user()->username,
                         'pc'                    =>  gethostname(),
@@ -478,164 +493,221 @@ class RecibosController extends Controller
                         'retencion2'            =>  '0',
                         'retencion3'            =>  '0',
                         'bodega'                =>  '1',
-                        'impoconsumo'           =>  null,
-                        'descuento2'            =>  null,
                         'duracion'              =>  '5',
                         'concepto'              =>  '1',
-                        'vencimiento_presup'    =>  null,
-                        'exportado'             =>  null,
-                        'impuesto_deporte'      =>  null,
-                        'prefijo'               =>  null,
-                        'moneda'                =>  null,
-                        'tasa'                  =>  null,
                         'centro_doc'            =>  '0',
-                        'valor_mercancia'       =>  null,
-                        'numero_cuotas'         =>  null,
-                        'codigo_direccion'      =>  null,
-                        'descuento_1'           =>  null,
-                        'descuento_2'           =>  null,
-                        'descuento_3'           =>  null,
-                        'abono'                 =>  null,
-                        'fecha_consignacion'    =>  null,
-                        'ajuste'                =>  null,
-                        'concepto_Retencion'    =>  null,
-                        'porc_RteFuente'        =>  null,
-                        'porc_RteIva'           =>  null,
-                        'porc_RteIvaSimpl'      =>  null,
-                        'porc_RteIca'           =>  null,
-                        'porc_RteA'             =>  null,
-                        'porc_RteB'             =>  null,
-                        'bodega_ot'             =>  null,
-                        'numero_ot'             =>  null,
-                        'porc_RteCree'          =>  null,
-                        'retencion_cree'        =>  null,
-                        'codigo_retencion_cree' =>  null,
-                        'cree_causado'          =>  null,
-                        'provision'             =>  null,
-                        'numincapacidad'        =>  null,
-                        'idincapacidad'         =>  null
+                    ]);
+
+                $concepto_cli = null;
+
+
+                if ($concepto_cliente == '1'){
+                    $concepto_cli = 13050505;
+                }elseif ($concepto_cliente == '2' || $concepto_cliente == '4'){
+                    $concepto_cli = 13052005;
+                }
+
+
+                DB::connection('FE')
+                    ->table('movimiento')
+                    ->insert([
+                        'tipo'                  =>  'RCCO',
+                        'numero'                =>  $numero_rc+1,
+                        'seq'                   =>  1,
+                        'cuenta'                =>  $concepto_cli,
+                        'centro'                =>  '0',
+                        'nit'                   =>  $enc->nit,
+                        'fec'                   =>  $enc->fecha_pago,
+                        'valor'                 =>  gmp_neg(intval($sum_bruto)),
+                        'documento'             =>  '1',
+                    ]);
+
+
+                DB::connection('FE')
+                    ->table('movimiento')
+                    ->insert([
+                        'tipo'                  =>  'RCCO',
+                        'numero'                =>  $numero_rc+1,
+                        'seq'                   =>  2,
+                        'cuenta'                =>  $enc->cuenta_pago,
+                        'centro'                =>  0,
+                        'nit'                   =>  0,
+                        'fec'                   =>  $enc->fecha_pago,
+                        'valor'                 =>  $sum_bruto - $sum_descuento + $sum_otros_ingr - $sum_otras_deduc - $sum_reteica - $sum_reteiva,
+                        'documento'             =>  '1',
+                        'explicacion'           =>  $enc->comments,
+                        'concilio'              =>  'S',
                     ]);
 
 
                 $contador = 2;
 
-                if($sum_rete > 0){
-                    $contador++;
-                }if($sum_reteiva > 0){
-                    $contador++;
-                }if($sum_reteica > 0){
-                    $contador++;
-                }if($sum_otros_ingr > 0){
-                    $contador++;
+                if ($sum_descuento > 0){
+                    $contador+=1;
+                    DB::connection('FE')
+                        ->table('movimiento')
+                        ->insert([
+                            'tipo'                  =>  'RCCO',
+                            'numero'                =>  $numero_rc+1,
+                            'seq'                   =>  $contador,
+                            'cuenta'                =>  53053505,
+                            'centro'                =>  0,
+                            'nit'                   =>  $enc->nit,
+                            'fec'                   =>  $enc->fecha_pago,
+                            'valor'                 =>  $sum_descuento,
+                            'documento'             =>  '1',
+                        ]);
+                }
+                if ($sum_otros_ingr > 0){
+                    $contador+=1;
+                    DB::connection('FE')
+                        ->table('movimiento')
+                        ->insert([
+                            'tipo'                  =>  'RCCO',
+                            'numero'                =>  $numero_rc+1,
+                            'seq'                   =>  $contador,
+                            'cuenta'                =>  42950505,
+                            'centro'                =>  0,
+                            'nit'                   =>  $enc->nit,
+                            'fec'                   =>  $enc->fecha_pago,
+                            'valor'                 =>  gmp_neg(intval($sum_otros_ingr)),
+                            'documento'             =>  '1',
+
+                        ]);
+                }
+                if ($sum_reteica > 0){
+                    $contador+=1;
+                    DB::connection('FE')
+                        ->table('movimiento')
+                        ->insert([
+                            'tipo'                  =>  'RCCO',
+                            'numero'                =>  $numero_rc+1,
+                            'seq'                   =>  $contador,
+                            'cuenta'                =>  13551005,
+                            'centro'                =>  0,
+                            'nit'                   =>  $enc->nit,
+                            'fec'                   =>  $enc->fecha_pago,
+                            'valor'                 =>  $sum_reteica,
+                            'documento'             =>  '1',
+                        ]);
+
+                }
+                if ($sum_otras_deduc > 0 ){
+                    $contador+=1;
+                    DB::connection('FE')
+                        ->table('movimiento')
+                        ->insert([
+                            'tipo'                  =>  'RCCO',
+                            'numero'                =>  $numero_rc+1,
+                            'seq'                   =>  $contador,
+                            'cuenta'                =>  53059505,
+                            'centro'                =>  0,
+                            'nit'                   =>  $enc->nit,
+                            'fec'                   =>  $enc->fecha_pago,
+                            'valor'                 =>  $sum_otras_deduc,
+                            'documento'             =>  '1',
+
+                        ]);
+                }
+                if ($sum_reteiva > 0 ){
+                    $contador+=1;
+                    DB::connection('FE')
+                        ->table('movimiento')
+                        ->insert([
+                            'tipo'                  =>  'RCCO',
+                            'numero'                =>  $numero_rc+1,
+                            'seq'                   =>  $contador,
+                            'cuenta'                =>  24080590,
+                            'centro'                =>  0,
+                            'nit'                   =>  $enc->nit,
+                            'fec'                   =>  $enc->fecha_pago,
+                            'valor'                 =>  $sum_reteiva,
+                            'documento'             =>  '1',
+                        ]);
+                }
+
+                foreach ($det as $f){
+                    $documento =  DB::connection('FE')
+                        ->table('documentos')
+                        ->where('tipo','=', 'FAC')
+                        ->where('numero','=', $f->invoice)
+                        ->get(['fecha','valor_aplicado'])->first();
+
+                    DB::connection('FE')
+                        ->table('documentos_cruce')
+                        ->insert([
+                            'tipo'          =>  'RCCO',
+                            'numero'        =>  $numero_rc+1,
+                            'sw'            =>  '1',
+                            'tipo_aplica'   =>  'FAC',
+                            'numero_aplica' =>  $f->invoice,
+                            'numero_cuota'  =>  '0',
+                            'valor'         =>  $f->bruto,
+                            'descuento'     =>  $f->descuento,
+                            'retencion'     =>  $f->retencion,
+                            'retencion_iva' =>  $f->reteiva,
+                            'retencion_ica' =>  $f->reteica,
+                            'fecha'         =>  $documento->fecha,
+                            'fecha_cruce'   =>  Carbon::now(),
+                    ]);
+
+                    DB::connection('FE')
+                        ->table('documentos')
+                        ->where('tipo','=', 'FAC')
+                        ->where('numero','=', $f->invoice)
+                        ->update([
+                            'valor_aplicado'    =>  $documento->valor_aplicado + $f->bruto
+                        ]);
                 }
 
 
-                for($i = 1; $i <= $contador; $i++){
-                    if ($i == 1){
-                        $concepto_cli = null;
-
-                        if ($concepto_cliente == 1){
-                            $concepto_cli = 13050505;
-                        }elseif ($concepto_cliente == 2 || $concepto_cliente == 4){
-                            $concepto_cli = 13052005;
-                        }
-
-                        DB::connection('FE')
-                            ->table('movimiento')
-                            ->insert([
-                                'tipo'                  =>  'RCCO',
-                                'numero'                =>  $numero_rc+1,
-                                'seq'                   =>  1,
-                                'cuenta'                =>  $concepto_cli,
-                                'centro'                =>  '0',
-                                'nit'                   =>  $enc->nit,
-                                'fec'                   =>  $enc->fecha_pago,
-                                'valor'                 =>  $enc->total,
-                                'base'                  =>  null,
-                                'documento'             =>  '1',
-                                'explicacion'           =>  null,
-                                'concilio'              =>  null,
-                                'concepto_mov'          =>  null,
-                                'concilio_ano'          =>  null,
-                                'forma_pago'            =>  null,
-                                'secuencia_extracto'    =>  null,
-                                'ano_concilia'          =>  null,
-                                'mes_concilia'          =>  null,
-                                'ID_CRUCE'              =>  null,
-                                'TIPO_CRUCE'            =>  null
-                            ]);
-
-                        /*consultar tabla terceros concepto_4 cuando el cliente es 1 = 13050505 si es 2 = 13052005 si es 4 = 13052005 */
-
-                    }elseif ($i == 2){
-                        DB::connection('FE')
-                            ->table('movimiento')
-                            ->insert([
-                                'tipo'                  =>  'RCCO',
-                                'numero'                =>  $numero_rc+1,
-                                'seq'                   =>  2,
-                                'cuenta'                =>  $enc->cuenta_pago,
-                                'centro'                =>  '0',
-                                'nit'                   =>  '0',
-                                'fec'                   =>  $enc->fecha_pago,
-                                'valor'                 =>  $enc->total,
-                                'base'                  =>  null,
-                                'documento'             =>  '1',
-                                'explicacion'           =>  $enc->comments,
-                                'concilio'              =>  'S',
-                                'concepto_mov'          =>  null,
-                                'concilio_ano'          =>  null,
-                                'forma_pago'            =>  null,
-                                'secuencia_extracto'    =>  null,
-                                'ano_concilia'          =>  null,
-                                'mes_concilia'          =>  null,
-                                'ID_CRUCE'              =>  null,
-                                'TIPO_CRUCE'            =>  null
-                            ]);
-                    }
-
-                    if ($sum_descuento > 0 && $i == 3){
-
-                    }
-                }
+                $banco = DB::connection('FE')
+                    ->table('bancos')
+                    ->where('cuenta','=',$enc->cuenta_pago)
+                    ->pluck('banco')->first();
 
 
-
-
-
-                /*DB::connection('FE')
-                    ->table('documentos_cruce')
+                DB::connection('FE')
+                    ->table('documentos_che')
                     ->insert([
-                        'tipo'          =>  '',
-                        'numero'        =>  '',
-                        'sw'            =>  '',
-                        'tipo_aplica'   =>  '',
-                        'numero_aplica' =>  '',
-                        'numero_cuota'  =>  '',
-                        'valor'         =>  '',
-                        'descuento'     =>  '',
-                        'retencion'     =>  '',
-                        'ajuste'        =>  '',
-                        'retencion_iva' =>  '',
-                        'retencion_ica' =>  '',
-                        'fecha'         =>  '',
-                        'retencion2'    =>  '',
-                        'retencion3'    =>  '',
-                        'trasporte'     =>  '',
-                        'fecha_cruce'   =>  '',
-                        'id'            =>  '',
-                        'cree'          =>  ''
-                    ]);*/
+                        'sw'                    =>  '5',
+                        'tipo'                  =>  'RCCO',
+                        'numero'                =>  $numero_rc+1,
+                        'banco'                 =>  $banco, //id banco
+                        'documento'             =>  '1',
+                        'forma_pago'            =>  '1', // vacio
+                        'fecha'                 =>  $enc->fecha_pago,
+                        'valor'                 =>  $enc->total,
+                        'consignar_en'          =>  $banco,
+                        'devuelto'              =>  null,
+                        'tipo_consignacion'     =>  null,
+                        'numero_consignacion'   =>  null,
+                        'fecha_devolucion'      =>  null,
+                        'cuenta_banco'          =>  null,
+                        'iva_tarjeta'           =>  null,
+                        'notas'                 =>  null,
+                        'fecha_forma'           =>  null,
+                        'tipo_devuelto'         =>  null,
+                        'numero_devuelto'       =>  null
+                    ]);
 
+                DB::table('recibos_caja')
+                    ->where('id','=', $request->id)
+                    ->update([
+                        'state' => '3'
+                    ]);
 
-                DB::commit();
-                return response()->json('RC subido a DMS');
+                $rc = $numero_rc+1;
+
+                DB::connection('FE')->commit();
+                return response()->json('RC ha sido finalizado y subido a DMS con el numero '.$rc, 200);
             }catch (\Exception $e){
-                DB::rollBack();
+                DB::connection('FE')->rollBack();
                 return response()->json($e->getMessage(), 500);
             }
         }
     }
+
 
 
     /**
@@ -647,7 +719,7 @@ class RecibosController extends Controller
     public function consultar_documento (Request $request){
         if ($request->ajax()){
             try {
-                $consulta = DB::connection('DMS')
+                $consulta = DB::connection('FE')
                     ->table('V_CIEV_Saldofacturas')
                     ->where('numero','=', $request->id)
                     ->first();

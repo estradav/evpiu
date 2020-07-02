@@ -20,8 +20,8 @@ $(document).ready(function () {
         if (estado === 2){
             Swal.fire({
                 icon: 'question',
-                title: '¿Rechazar?',
-                text: "¿Esta seguro de rechazar este RC?",
+                title: '¿Rechazar RC?',
+                text: "El RC sera devuelto al vendedor, ¿Esta seguro de continuar?",
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -44,7 +44,7 @@ $(document).ready(function () {
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: 'Aceptar',
                             });
-                            window.location.reload(true);
+                            //window.location.reload(true);
                         },
                         error: function (data) {
                             console.log(data)
@@ -116,23 +116,25 @@ $(document).ready(function () {
                     <hr>
                     <br>
                     <div class="row">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col">NUMERO</th>
-                                    <th scope="col">BRUTO</th>
-                                    <th scope="col">DESCUENTO</th>
-                                    <th scope="col">RETENCION</th>
-                                    <th scope="col">RETEIVA</th>
-                                    <th scope="col">RETEICA</th>
-                                    <th scope="col">OTRAS DEDUCCIONES</th>
-                                    <th scope="col">OTROS INGRESOS</th>
-                                    <th scope="col">TOTAL</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table_itm">
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">NUMERO</th>
+                                        <th scope="col">BRUTO</th>
+                                        <th scope="col">DESCUENTO</th>
+                                        <th scope="col">RETENCION</th>
+                                        <th scope="col">RETEIVA</th>
+                                        <th scope="col">RETEICA</th>
+                                        <th scope="col">OTRAS DEDUCCIONES</th>
+                                        <th scope="col">OTROS INGRESOS</th>
+                                        <th scope="col">TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_itm">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <hr>
                     <br>
@@ -175,11 +177,14 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.aprobar', function () {
-        const id = this.id;
+        let id_val = this.id;
+        id_val = id_val.split(',');
+        let id = id_val[0];
+
         Swal.fire({
             icon: 'question',
             title: '¿Aprobar RC y subir a DMS?',
-            html: "Esta accion <b class='text-danger'>NO</b> es reversible, verifique la informacion antes de continuar.",
+            html: "Esta accion <b class='text-danger'>NO</b> es reversible, verifique la toda informacion antes de continuar.",
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -201,7 +206,7 @@ $(document).ready(function () {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'Aceptar',
                         });
-                        window.location.reload(true);
+                        //window.location.reload(true);
                     },
                     error: function (data) {
                         console.log(data)

@@ -184,19 +184,11 @@ class PedidoController extends Controller
                      'updated_at'   =>  $date
                  ]);
 
-
                  DB::commit();
-                 return response()->json(['Success' => 'Todo Ok']);
-
+                 return response()->json('pedido guardado', 200);
              }catch (\Exception $e){
                  DB::rollback();
-                 echo json_encode(array(
-                     'error' => array(
-                         'msg' => $e->getMessage(),
-                         'code' => $e->getCode(),
-                         'code2' =>$e->getLine(),
-                     ),
-                 ));
+                 return response()->json($e->getMessage(), 500);
              }
          }
 
