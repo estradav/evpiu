@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\RecibosCaja;
+namespace App\Http\Controllers\Terceros\RecibosCaja;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Doctrine\DBAL\Cache\ArrayStatement;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use phpDocumentor\Reflection\Types\Array_;
 
 class RecibosController extends Controller
 {
@@ -29,7 +26,7 @@ class RecibosController extends Controller
         $data = DB::table('recibos_caja')
             ->where('created_by', '=', $user)
             ->get();
-        return view('aplicaciones.recibos_caja.index', compact('data'));
+        return view('aplicaciones.gestion_terceros.recibos_caja.index', compact('data'));
     }
 
 
@@ -40,7 +37,7 @@ class RecibosController extends Controller
      * @return Factory|View
      */
     public function create(){
-        return view('aplicaciones.recibos_caja.create');
+        return view('aplicaciones.gestion_terceros.recibos_caja.create');
     }
 
 
@@ -143,13 +140,10 @@ class RecibosController extends Controller
                             'created_at' => Carbon::now(),
                             'updated_at' => Carbon::now()
                         ]);
-
                 }
 
                 DB::commit();
-
                 return response()->json('Datos guardados correctamente', 200);
-
             } catch (\Exception $e) {
                 DB::rollBack();
                 return response()->json($e->getMessage(), 500);
@@ -169,7 +163,7 @@ class RecibosController extends Controller
             ->where('state','=', [2,3])
             ->get();
 
-        return view('aplicaciones.recibos_caja.cartera', compact('data'));
+        return view('aplicaciones.gestion_terceros.recibos_caja.cartera', compact('data'));
     }
 
 
@@ -266,7 +260,7 @@ class RecibosController extends Controller
             }
 
             $final_array = left_join_array($facturas_pendientes, $detalles, 'numero', 'invoice');
-            return view('aplicaciones.recibos_caja.edit', compact('encabezado','final_array'));
+            return view('aplicaciones.gestion_terceros.recibos_caja.edit', compact('encabezado','final_array'));
         }
     }
 

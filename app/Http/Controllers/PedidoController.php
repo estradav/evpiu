@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Notifications\NuevoPedido;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -87,7 +85,9 @@ class PedidoController extends Controller
                 ->where('Code_Master.CDEKEY_36','=','TERM')
                 ->get();
         }
+
         return response()->json($Condicion);
+
     }
 
     public function SearchProductsMax(Request $request)

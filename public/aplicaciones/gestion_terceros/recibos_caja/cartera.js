@@ -44,7 +44,9 @@ $(document).ready(function () {
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: 'Aceptar',
                             });
-                            //window.location.reload(true);
+                            setInterval(function(){
+                                window.location.reload(true);
+                            }, 6000);
                         },
                         error: function (data) {
                             console.log(data)
@@ -206,7 +208,10 @@ $(document).ready(function () {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'Aceptar',
                         });
-                        //window.location.reload(true);
+                        setInterval(function(){
+                            window.location.reload(true);
+                            }, 6000);
+
                     },
                     error: function (data) {
                         console.log(data)
