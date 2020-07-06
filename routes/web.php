@@ -50,6 +50,8 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     /*facturas*/
                     Route::resource('factura','FacturacionElectronica\FacturasController');
                     Route::post('/factura/generar_xml','FacturacionElectronica\FacturasController@generar_archivo_xml');
+                    Route::get('/factura/edit/calcular_retencion','FacturacionElectronica\FacturasController@calcular_retencion');
+                    Route::post('/factura_edit/guardar_facura','FacturacionElectronica\FacturasController@guardar_factura_edit');
 
 
                     /*notas credito*/
@@ -123,9 +125,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     Route::post('cliente/actualizar/actualizar_codigo_ciudad_ext','Terceros\Clientes\ClientesController@actualizar_codigo_ciudad_ext');
                     Route::post('cliente/actualizar/actualizar_grupo_economico','Terceros\Clientes\ClientesController@actualizar_grupo_economico');
 
-
                     Route::get('cliente/obtener_log_cambios','Terceros\Clientes\ClientesController@obtener_log_cambios');
-
                 });
 
 
@@ -135,19 +135,19 @@ Route::group(['middleware' => ['caffeinated']], function () {
                 //edit items from clients
 
 
-                Route::get('recibos_caja','RecibosCaja\RecibosController@index')->name('recibos_caja.index');
-                Route::get('recibos_caja/nuevo','RecibosCaja\RecibosController@create')->name('recibos_caja.nuevo');
-                Route::get('recibos_caja/cartera','RecibosCaja\RecibosController@cartera')->name('recibos_caja.cartera');
-                Route::get('recibos_caja/buscar_cliente','RecibosCaja\RecibosController@buscar_cliente');
-                Route::get('recibos_caja/consultar_recibos_cliente','RecibosCaja\RecibosController@consultar_recibos_cliente');
-                Route::get('recibos_caja/consultar_recibo','RecibosCaja\RecibosController@consultar_recibo');
-                Route::get('recibos_caja/consultar_tipo_venta', 'RecibosCaja\RecibosController@consultar_tipo_venta');
-                Route::get('recibos_caja/{recibo}/edit','RecibosCaja\RecibosController@edit')->name('recibos_caja.edit');
-                Route::get('recibos_caja/consultar_documento', 'RecibosCaja\RecibosController@consultar_documento');
-                Route::post('recibos_caja/guardar_recibo_caja','RecibosCaja\RecibosController@guardar_recibo_caja');
-                Route::post('recibos_caja/guardar_recibo_caja_edit','RecibosCaja\RecibosController@guardar_recibo_caja_edit');
-                Route::post('recibos_caja/cambiar_estado','RecibosCaja\RecibosController@cambiar_estado');
-                Route::post('recibos_caja/finalizar_rc','RecibosCaja\RecibosController@finalizar_rc');
+                Route::get('recibos_caja','Terceros\RecibosCaja\RecibosController@index')->name('recibos_caja.index');
+                Route::get('recibos_caja/nuevo','Terceros\RecibosCaja\RecibosController@create')->name('recibos_caja.nuevo');
+                Route::get('recibos_caja/cartera','Terceros\RecibosCaja\RecibosController@cartera')->name('recibos_caja.cartera');
+                Route::get('recibos_caja/buscar_cliente','Terceros\RecibosCaja\RecibosController@buscar_cliente');
+                Route::get('recibos_caja/consultar_recibos_cliente','Terceros\RecibosCaja\RecibosController@consultar_recibos_cliente');
+                Route::get('recibos_caja/consultar_recibo','Terceros\RecibosCaja\RecibosController@consultar_recibo');
+                Route::get('recibos_caja/consultar_tipo_venta', 'Terceros\RecibosCaja\RecibosController@consultar_tipo_venta');
+                Route::get('recibos_caja/{recibo}/edit','Terceros\RecibosCaja\RecibosController@edit')->name('recibos_caja.edit');
+                Route::get('recibos_caja/consultar_documento', 'Terceros\RecibosCaja\RecibosController@consultar_documento');
+                Route::post('recibos_caja/guardar_recibo_caja','Terceros\RecibosCaja\RecibosController@guardar_recibo_caja');
+                Route::post('recibos_caja/guardar_recibo_caja_edit','Terceros\RecibosCaja\RecibosController@guardar_recibo_caja_edit');
+                Route::post('recibos_caja/cambiar_estado','Terceros\RecibosCaja\RecibosController@cambiar_estado');
+                Route::post('recibos_caja/finalizar_rc','Terceros\RecibosCaja\RecibosController@finalizar_rc');
 
 
 
@@ -312,6 +312,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::resource('PedidoProduccion','PedidoProduccionController');
             Route::get('/PedidoProduccionIndex','PedidoProduccionController@index');
             Route::post('/PedidoProduccionUpdate','PedidoProduccionController@PedidoProduccionUpdate');
+
+            Route::get('/load_pedidos_terminados','PedidoProduccionController@load_pedidos_terminados');
+
 
             Route::resource('PedidoBodega','PedidoBodegaController');
             Route::get('/PedidoBodegaIndex','PedidoBodegaController@index');

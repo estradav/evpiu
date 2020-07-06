@@ -44,7 +44,7 @@ $(document).ready(function () {
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: 'Aceptar',
                             });
-                            //window.location.reload(true);
+                            window.location.reload(true);
                         },
                         error: function (data) {
                             console.log(data)
@@ -206,7 +206,7 @@ $(document).ready(function () {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'Aceptar',
                         });
-                        //window.location.reload(true);
+                        window.location.reload(true);
                     },
                     error: function (data) {
                         console.log(data)

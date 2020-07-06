@@ -450,17 +450,21 @@ $(document).ready(function () {
                     encabezado, items
                 },
                 success: function (data) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Recibo de caja creado correctamente!',
-                        text: data,
-                    });
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Recibo de caja creado correctamente!',
+                            text: data,
+                        }, function() {
+                            window.location.href = "{{ route('recibos_caja')}}";
+                        });
+                    }, 1000);
                 },
                 error: function (data) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Hubo un error al crear RC',
-                        text: data,
+                        text: data.responseText,
                     });
                     console.log(data)
                 }
@@ -520,17 +524,22 @@ $(document).ready(function () {
                     encabezado, items
                 },
                 success: function (data) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Recibo de caja creado correctamente!',
-                        text: data,
-                    });
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Recibo de caja creado correctamente!',
+                            text: data,
+                        }, function() {
+                            window.location.href = "{{ route('recibos_caja')}}";
+                        });
+                    }, 1000);
+
                 },
                 error: function (data) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Hubo un error al crear RC',
-                        text: data,
+                        text: data.responseText,
                     });
                     console.log(data)
                 }

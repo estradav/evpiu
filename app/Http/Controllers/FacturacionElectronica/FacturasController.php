@@ -5,12 +5,14 @@ namespace App\Http\Controllers\FacturacionElectronica;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use SoapClient;
 use XMLWriter;
 use Yajra\DataTables\DataTables;
 
@@ -1008,66 +1010,134 @@ class FacturasController extends Controller
      * Vista para la edicion de factura.
      *
      * @param $numero_factura
-     * @return Application|Factory|View
+     * @return Factory|RedirectResponse|View
+     * @throws \SoapFault
      */
     public function edit($numero_factura){
-        $encabezado =  DB::connection('MAX')
-            ->table('CIEV_V_FE')
-            ->leftJoin('CIEV_V_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FacturasTotalizadas.numero')
-            ->select('CIEV_V_FE.numero',
-                'CIEV_V_FE.notas',
-                'CIEV_V_FE.identificacion as nit_cliente',
-                'CIEV_V_FE.nombres',
-                'CIEV_V_FE.apellidos',
-                'CIEV_V_FE.emailcontacto',
-                'CIEV_V_FE.direccion',
-                'CIEV_V_FE.emailentrega',
-                'CIEV_V_FE.digito_verificador',
-                'CIEV_V_FE.telefono',
-                'CIEV_V_FE.notas',
-                'CIEV_V_FE.ciudad',
-                'CIEV_V_FE.dpto',
-                'CIEV_V_FE.pais',
-                'CIEV_V_FacturasTotalizadas.bruto',
-                'CIEV_V_FE.codigocliente',
-                'CIEV_V_FE.fechadocumento',
-                'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                'CIEV_V_FacturasTotalizadas.bruto',
-                'CIEV_V_FacturasTotalizadas.descuento',
-                'CIEV_V_FacturasTotalizadas.subtotal',
-                'CIEV_V_FacturasTotalizadas.iva',
-                'CIEV_V_FacturasTotalizadas.fletes',
-                'CIEV_V_FacturasTotalizadas.seguros',
-                'CIEV_V_FacturasTotalizadas.moneda',
-                'CIEV_V_FacturasTotalizadas.ov',
-                'CIEV_V_FacturasTotalizadas.dias',
-                'CIEV_V_FacturasTotalizadas.motivo',
-                'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                'CIEV_V_FacturasTotalizadas.descmotivo',
-                'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente',
-                'CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento',
-                'CIEV_V_FE.OC')
-            ->where('CIEV_V_FE.numero', '=', $numero_factura)
-            ->get();
 
-        $detalle = DB::connection('MAX')->table('CIEV_V_FacturasDetalladas')
-            ->select('CIEV_V_FacturasDetalladas.factura',
-                'CIEV_V_FacturasDetalladas.descripcionproducto',
-                'CIEV_V_FacturasDetalladas.CodigoProducto',
-                'CIEV_V_FacturasDetalladas.OV',
-                'CIEV_V_FacturasDetalladas.item',
-                'CIEV_V_FacturasDetalladas.cantidad',
-                'CIEV_V_FacturasDetalladas.precio',
-                'CIEV_V_FacturasDetalladas.totalitem',
-                'CIEV_V_FacturasDetalladas.iva as iva_item',
-                'CIEV_V_FacturasDetalladas.valormercancia',
-                'CIEV_V_FacturasDetalladas.descuento',
-                'CIEV_V_FacturasDetalladas.item',
-                'CIEV_V_FacturasDetalladas.UM')
-            ->where('CIEV_V_FacturasDetalladas.factura', '=', $numero_factura)
-            ->get();
 
-        return view('aplicaciones.facturacion_electronica.facturas.edit', compact('encabezado','detalle', 'numero_factura') );
+        $login1   = "dcorreah";
+        $password = "FE2020ev*";
+        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
+        $client = new SoapClient($wsdl_url);
+        $client->__setLocation($wsdl_url);
+
+        $params = array(
+            'login' => $login1,
+            'password' => $password
+        );
+
+        $auth = $client->autenticar($params);
+        $respuesta = json_decode($auth->return);
+        $token = $respuesta->data->salida;
+
+        $params = array(
+            'token' => $token,
+            'idEmpresa' => '',
+            'idUsuario' => '',
+            'idEstadoEnvioCliente' => '',
+            'idEstadoEnvioDian' => '',
+            'fechaInicial' => '',
+            'fechaFinal' => '',
+            'fechaInicialReg' => '',
+            'fechaFinalReg' => '',
+            'idEstadoGeneracion' => '',
+            'idTipoDocElectronico' => '',
+            'numeroInicial' => $numero_factura,
+            'numeroFinal' => $numero_factura,
+            'idnumeracion' => '',
+            'estadoAcuse' => '',
+            'razonSocial' => '',
+            'mulCodEstDian' => '',
+            'mulCodEstCliente'  => '',
+            'tipoDocumento' => '',
+            'idDocumento' => '',
+            'idVerficacionFuncional' => ''
+        );
+
+        $return = $client->ListarDocumentosElectronicos($params);
+        $return = json_decode($return->return);
+
+        if (sizeof($return->data) > 0){
+
+            return redirect()
+                ->route('factura.index')
+                ->with([
+                    'message'    => 'Esta factura ya fue subida a la DIAN y no puede ser editada.',
+                    'alert-type' => 'error'
+                ]);
+        }else{
+            $encabezado =  DB::connection('MAXP')
+                ->table('CIEV_V_FE')
+                ->leftJoin('CIEV_V_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FacturasTotalizadas.numero')
+                ->select('CIEV_V_FE.numero',
+                    'CIEV_V_FE.notas',
+                    'CIEV_V_FE.identificacion as nit_cliente',
+                    'CIEV_V_FE.nombres',
+                    'CIEV_V_FE.apellidos',
+                    'CIEV_V_FE.emailcontacto',
+                    'CIEV_V_FE.direccion',
+                    'CIEV_V_FE.emailentrega',
+                    'CIEV_V_FE.digito_verificador',
+                    'CIEV_V_FE.telefono',
+                    'CIEV_V_FE.notas',
+                    'CIEV_V_FE.ciudad',
+                    'CIEV_V_FE.dpto',
+                    'CIEV_V_FE.pais',
+                    'CIEV_V_FacturasTotalizadas.bruto',
+                    'CIEV_V_FE.codigocliente',
+                    'CIEV_V_FE.fechadocumento',
+                    'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
+                    'CIEV_V_FacturasTotalizadas.bruto',
+                    'CIEV_V_FacturasTotalizadas.descuento',
+                    'CIEV_V_FacturasTotalizadas.subtotal',
+                    'CIEV_V_FacturasTotalizadas.iva',
+                    'CIEV_V_FacturasTotalizadas.fletes',
+                    'CIEV_V_FacturasTotalizadas.seguros',
+                    'CIEV_V_FacturasTotalizadas.retefte',
+                    'CIEV_V_FacturasTotalizadas.moneda',
+                    'CIEV_V_FacturasTotalizadas.ov',
+                    'CIEV_V_FacturasTotalizadas.dias',
+                    'CIEV_V_FacturasTotalizadas.motivo',
+                    'CIEV_V_FacturasTotalizadas.descplazo as plazo',
+                    'CIEV_V_FacturasTotalizadas.descmotivo',
+                    'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente',
+                    'CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento',
+                    'CIEV_V_FE.OC')
+                ->where('CIEV_V_FE.numero', '=', $numero_factura)
+                ->first();
+
+            $detalles = DB::connection('MAXP')
+                ->table('CIEV_V_FacturasDetalladas')
+                ->select('CIEV_V_FacturasDetalladas.factura',
+                    'CIEV_V_FacturasDetalladas.descripcionproducto',
+                    'CIEV_V_FacturasDetalladas.CodigoProducto',
+                    'CIEV_V_FacturasDetalladas.OV',
+                    'CIEV_V_FacturasDetalladas.item',
+                    'CIEV_V_FacturasDetalladas.cantidad',
+                    'CIEV_V_FacturasDetalladas.precio',
+                    'CIEV_V_FacturasDetalladas.totalitem',
+                    'CIEV_V_FacturasDetalladas.iva as iva_item',
+                    'CIEV_V_FacturasDetalladas.valormercancia',
+                    'CIEV_V_FacturasDetalladas.descuento',
+                    'CIEV_V_FacturasDetalladas.item',
+                    'CIEV_V_FacturasDetalladas.UM')
+                ->where('CIEV_V_FacturasDetalladas.factura', '=', $numero_factura)
+                ->get();
+
+            $motivos = DB::connection('MAXP')
+                ->table('Code_Master')
+                ->where('CDEKEY_36','=','REAS')
+                ->get();
+
+            $condicion_pago = DB::connection('MAXP')
+                ->table('Code_Master')
+                ->where('Code_Master.CDEKEY_36','=','TERM')
+                ->get();
+
+            return view('aplicaciones.facturacion_electronica.facturas.edit',
+                compact('encabezado','detalles', 'numero_factura', 'motivos', 'condicion_pago'));
+        }
     }
 
 
@@ -1077,143 +1147,392 @@ class FacturasController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function GuardarFacturaEdit(Request $request)
-    {
-        $CondicionPago =  DB::connection('MAXP')
-            ->table('Code_Master')
-            ->where('CDEKEY_36','=','TERM')
-            ->where('DAYS_36','=', $request->encabezado['condicionpago'])
-            ->pluck('CODE_36');
+    public function guardar_factura_edit(Request $request){
+        if ($request->ajax()){
+            $num_factura = '00'.$request->encabezado['factura'];
+            $items = $request->items;
 
-        $Numero_de_factura = '00'.$request->encabezado['Numero_factura'];
-        $Detalle = $request->Items;
-
-        $ConIVA = [];
-        $SinIVA = [];
-
-
-        foreach($Detalle as $dest){
-            if ($dest['iva'] > 0 ){
-                array_push($ConIVA,$dest);
-            }
-            else{
-                array_push($SinIVA,$dest);
-            }
-        }
-
-
-        if(!empty($ConIVA)) {
-            DB::beginTransaction();
+            DB::connection('MAXP')->beginTransaction();
             try {
-                DB::connection('MAXP')
-                    ->table('Invoice_master')
-                    ->where('INVCE_31', '=', $Numero_de_factura)
-                    ->update([
-                        'COMNT1_31' => $request->encabezado['notas'],
-                        'REASON_31' => $request->encabezado['motivo'],
-                        'TAX1_31'   => $request->encabezado['total_iva'],
-                        'LNETOT_31' => $request->encabezado['total_bruto'],
-                        'ORDDSC_31' => $request->encabezado['total_descuento'],
-                        'UDFKEY_31' => $request->encabezado['total_retencion'],
-                        'MSCAMT_31' => $request->encabezado['total_seguro'],
-                        'FRTAMT_31' => $request->encabezado['total_flete'],
-                        'TAXTOT_31' => $request->encabezado['total_subtotal'],
-                        'CUSTPO_31' => $request->encabezado['ordencompra'],
-                        'TAXCD1_31' => 'IVA-V19',
-                        'TAXABL_31' => 'Y',
-                        'TERMS_31'  => $CondicionPago[0],
-                    ]);
+                if ($request->encabezado['iva'] > 0){
 
-                foreach ($ConIVA as $Det) {
-                    $limnnum = substr($Det['item'], 0, 2);
-                    $delnum = substr($Det['item'], 2, 4);
+                    $test =  DB::connection('MAXP')
+                        ->table('Invoice_master')
+                        ->where('INVCE_31', '=', $num_factura)
+                        ->get();
+
+
+                    dd($test);
 
                     DB::connection('MAXP')
-                        ->table('Invoice_detail')
-                        ->where('INVCE_32', '=', $Numero_de_factura)
-                        ->where('LINNUM_32', '=', $limnnum)
-                        ->where('DELNUM_32', '=', $delnum)
-                        ->where('ORDNUM_32', '=', $Det['ordencompra'])
+                        ->table('Invoice_master')
+                        ->where('INVCE_31', '=', $num_factura)
                         ->update([
-                            'PRICE_32'      => $Det['preciounitario'],
-                            'TAX1_32'       => $Det['iva'],
-                            'TAXCDE1_32'    => 'IVA-V19',
-                            'TAXABL_32'     => 'Y'
+                            'COMNT1_31' => $request->encabezado['notas'],
+                            'REASON_31' => $request->encabezado['motivo'],
+                            'TAX1_31'   => $request->encabezado['iva'],
+                            'LNETOT_31' => $request->encabezado['bruto'],
+                            'ORDDSC_31' => $request->encabezado['descuento'],
+                            'UDFKEY_31' => $request->encabezado['retencion'],
+                            'MSCAMT_31' => $request->encabezado['seguro'],
+                            'FRTAMT_31' => $request->encabezado['flete'],
+                            'TAXTOT_31' => $request->encabezado['subtotal'],
+                            'CUSTPO_31' => $request->encabezado['oc'],
+                            'TAXCD1_31' => 'IVA-V19',
+                            'TAXABL_31' => 'Y',
+                            'TERMS_31'  => $request->encabezado['condicion_pago'],
                         ]);
-                }
 
-                foreach ($SinIVA as $Det) {
-                    $limnnum = substr($Det['item'], 0, 2);
-                    $delnum = substr($Det['item'], 2, 4);
+                    foreach ($items as $item){
+                        $id_reg = $item['id_reg'];
+                        $id_reg = explode('-', $id_reg);
+                        $limnnum = substr($id_reg[2], 0, 2);
+                        $delnum = substr($id_reg[2], 2, 4);
 
+                        DB::connection('MAXP')
+                            ->table('Invoice_detail')
+                            ->where('INVCE_32', '=', $num_factura)
+                            ->where('LINNUM_32', '=', $limnnum)
+                            ->where('DELNUM_32', '=', $delnum)
+                            ->where('ORDNUM_32', '=', $request->encabezado['ov'])
+                            ->update([
+                                'PRICE_32'      => floatval($item['precio_uni']),
+                                'TAX1_32'       => floatval($item['iva_item']),
+                                'TAXCDE1_32'    => 'IVA-V19',
+                                'TAXABL_32'     => 'Y'
+                            ]);
+                    }
+                }else{
                     DB::connection('MAXP')
-                        ->table('Invoice_detail')
-                        ->where('INVCE_32', '=', $Numero_de_factura)
-                        ->where('LINNUM_32', '=', $limnnum)
-                        ->where('DELNUM_32', '=', $delnum)
-                        ->where('ORDNUM_32', '=', $Det['ordencompra'])
+                        ->table('Invoice_master')
+                        ->where('INVCE_31', '=', $num_factura)
                         ->update([
-                            'PRICE_32'      => $Det['preciounitario'],
-                            'TAX1_32'       => $Det['iva'],
-                            'TAXCDE1_32'    => 'IVA-V19',
-                            'TAXABL_32'     => 'Y'
+                            'COMNT1_31' => $request->encabezado['notas'],
+                            'REASON_31' => $request->encabezado['motivo'],
+                            'TAX1_31'   => $request->encabezado['iva'],
+                            'LNETOT_31' => $request->encabezado['bruto'],
+                            'ORDDSC_31' => $request->encabezado['descuento'],
+                            'UDFKEY_31' => $request->encabezado['retencion'],
+                            'MSCAMT_31' => $request->encabezado['seguro'],
+                            'FRTAMT_31' => $request->encabezado['flete'],
+                            'TAXTOT_31' => $request->encabezado['subtotal'],
+                            'CUSTPO_31' => $request->encabezado['oc'],
+                            'TAXCD1_31' => '',
+                            'TAXABL_31' => 'N',
+                            'TERMS_31'  => $request->encabezado['condicion_pago'],
                         ]);
+
+                    foreach ($items as $item){
+                        $id_reg = $item['id_reg'];
+                        $id_reg = explode('-', $id_reg);
+                        $limnnum = substr($id_reg[2], 0, 2);
+                        $delnum = substr($id_reg[2], 2, 4);
+
+                        DB::connection('MAXP')
+                            ->table('Invoice_detail')
+                            ->where('INVCE_32', '=', $num_factura)
+                            ->where('LINNUM_32', '=', $limnnum)
+                            ->where('DELNUM_32', '=', $delnum)
+                            ->where('ORDNUM_32', '=', $request->encabezado['oc'])
+                            ->update([
+                                'PRICE_32'      => $item['precio_uni'],
+                                'TAX1_32'       => $item['iva_item'],
+                                'TAXCDE1_32'    => '',
+                                'TAXABL_32'     => 'N'
+                            ]);
+                    }
                 }
-                DB::commit();
-                return response()->json('Datos guardados correctamente',200);
-            }
-            catch (\Exception $e){
-                DB::rollback();
-                return response()->json($e->getMessage(),500);
-            }
-        }
+                 $fac_max = DB::connection('MAXP')
+                     ->table('Invoice_master')
+                     ->where('INVCE_31', '=', $num_factura)
+                     ->get('TAX1_31')
+                     ->first();
 
 
-        if(empty($ConIVA)) {
-            DB::beginTransaction();
-            try {
-                DB::connection('MAXP')->table('Invoice_master')
-                    ->where('INVCE_31', '=', $Numero_de_factura)
-                    ->update([
-                        'COMNT1_31' => $request->encabezado[0]['notas'],
-                        'REASON_31' => $request->encabezado[0]['motivo'],
-                        'TAX1_31'   => $request->encabezado[0]['total_iva'],
-                        'LNETOT_31' => $request->encabezado[0]['total_bruto'],
-                        'ORDDSC_31' => $request->encabezado[0]['total_descuento'],
-                        'UDFKEY_31' => $request->encabezado[0]['total_retencion'],
-                        'MSCAMT_31' => $request->encabezado[0]['total_seguro'],
-                        'FRTAMT_31' => $request->encabezado[0]['total_flete'],
-                        'TAXTOT_31' => $request->encabezado[0]['total_subtotal'],
-                        'CUSTPO_31' => $request->encabezado[0]['ordencompra'],
-                        'TAXCD1_31' => '',
-                        'TAXABL_31' => 'N',
-                        'TERMS_31'  => $CondicionPago[0]->CODE_36,
-                    ]);
+                /*Si se agrega iva o se actualiza */
+                if($request->encabezado['iva'] > 0  &&  $request->encabezado['iva'] != $fac_max){
+                    $doc = DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->get();
 
-                foreach ($SinIVA as $Det) {
-                    $limnnum = substr($Det['item'], 0, 2);
-                    $delnum = substr($Det['item'], 2, 4);
-                    DB::connection('MAXP')
+
+                    $registro_iva = DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->where('ACCOUNT_58','=','24080507') /* 53*/
+                        ->get();
+
+
+                    $detalle = DB::connection('MAXP')
                         ->table('Invoice_detail')
-                        ->where('INVCE_32', '=', $Numero_de_factura)
-                        ->where('LINNUM_32', '=', $limnnum)
-                        ->where('DELNUM_32', '=', $delnum)
-                        ->where('ORDNUM_32', '=', $Det['ordencompra'])
-                        ->update([
-                            'PRICE_32'      => $Det['preciounitario'],
-                            'TAX1_32'       => $Det['iva'],
-                            'TAXCDE1_32'    => '',
-                            'TAXABL_32'     => 'N'
-                        ]);
+                        ->where('INVCE_32', '=', $num_factura)
+                        ->first();
+
+
+                    if (sizeof($registro_iva) === 0){
+                        DB::connection('MAXP')
+                            ->table('Work_General_Ledger')
+                            ->insert([
+                                'TNXDTE_58'         =>  $request->encabezado['fecha_factura'],
+                                'FILL01_58'         =>  ' ',
+                                'ACCOUNT_58'        =>  '24080507',
+                                'POSTDTE_58'        =>  $request->encabezado['fecha_factura'],
+                                'FILL02_58'         =>  ' ',
+                                'FROM_58'           =>  'AR',
+                                'BATCH_58'          =>  $doc[0]->BATCH_58, /* CONSULTARLO  CON DOC ID*/
+                                'RECNUM_58'         =>  intval($doc->max('RECNUM_58')) + 1,  /* CONSULTAR CONSCUTIVO  DEL DOC ID*/
+                                'TYPE_58'           =>  'D',
+                                'MAXGL_58'          =>  'XIVA-V19',
+                                'TNXCDE_58'         =>  '2',
+                                'ORDER_58'          =>  $request->encabezado['ov'].$detalle->LINNUM_32.$detalle->DELNUM_32, /* NUMERO ORDEN DE VENTA MAS EL ITEM*/
+                                'OPRSEQ_58'         =>  '0000',
+                                'DOCID_58'          =>  $num_factura,
+                                'CUSTVENID_58'      =>  $request->encabezado['codigo_cliente'],
+                                'USRNAM_58'         =>  Auth::user()->username,
+                                'POSTED_58'         =>  '2',
+                                'UPDATED_58'        =>  'Y',
+                                'DEBIT_58'          =>  '0',
+                                'CREDIT_58'         =>  $request->encabezado['iva'],
+                                'REFDES_58'         =>  ' ',
+                                'INVCE_58'          =>  ' ',
+                                'FOB_58'            =>  ' ',
+                                'SHPVIA_58'         =>  ' ',
+                                'TERMS_58'          =>  ' ',
+                                'DISC_58'           =>  '0',
+                                'DAYS_58'           =>  '000',
+                                'DISCDY_58'         =>  '0',
+                                'DAYOMN_58'         =>  '0',
+                                'MAXBATCH_58'       =>  $doc[0]->MAXBATCH_58, /* CONSULTARLO  CON DOC ID*/
+                                'USER_58'           =>  ' ',
+                                'EXCRTE_58'         =>  '1',
+                                'FIXVAR_58'         =>  ' ',
+                                'CURR_58'           =>  ' ',
+                                'MCOMP_58'          =>  ' ',
+                                'MSITE_58'          =>  ' ',
+                                'UDFKEY_58'         =>  ' ',
+                                'UDFREF_58'         =>  $request->encabezado['bruto'], /* VALOR BRUTO DE LA FACTURA*/
+                                'GOODS_58'          =>  $request->encabezado['bruto'],/* VALOR BRUTO DE LA FACTURA*/
+                                'ORDEBIT_58'        =>  '0',
+                                'ORCREDIT_58'       =>  $request->encabezado['iva'],
+                                'XDFINT_58'         =>  '0',
+                                'XDFFLT_58'         =>  '0',
+                                'XDFBOL_58'         =>  ' ',
+                                'XDFDTE_58'         =>  null,
+                                'XDFTXT_58'         =>  ' ',
+                                'FILLER_58'         =>  ' ',
+                                'Createdby'         =>  Auth::user()->username,
+                                'CreationDate'      =>  Carbon::now(),
+                                'ModifiedBy'        =>  Auth::user()->username,
+                                'ModificationDate'  =>  Carbon::now(),
+                                'CLASS_58'          =>  ' ',
+                                'TNXID_58'          =>  '0'
+                            ]);
+                    }else{
+                        DB::connection('MAXP')
+                            ->table('Work_General_Ledger')
+                            ->where('DOCID_58', '=', $num_factura)
+                            ->where('ACCOUNT_58','=','24080507')
+                            ->update([
+                                'CREDIT_58'         =>  $request->encabezado['iva'],
+                                'UDFREF_58'         =>  $request->encabezado['bruto'], /* VALOR BRUTO DE LA FACTURA*/
+                                'GOODS_58'          =>  $request->encabezado['bruto'],/* VALOR BRUTO DE LA FACTURA*/
+                                'ORCREDIT_58'       =>  $request->encabezado['iva'],
+                                'ModifiedBy'        =>  Auth::user()->username,
+                                'ModificationDate'  =>  Carbon::now(),
+                            ]);
+                    }
+                }elseif ($request->encabezado['iva'] == 0){
+                    $registro_iva = DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->where('ACCOUNT_58','=','24080507')
+                        ->get();
+
+                    if (sizeof($registro_iva) > 0){
+                        DB::connection('MAXP')
+                            ->table('Work_General_Ledger')
+                            ->where('DOCID_58', '=', $num_factura)
+                            ->where('ACCOUNT_58','=','24080507')
+                            ->delete();
+                    }
                 }
-                DB::commit();
-                return response()->json('Datos guardados correctamente',200);
-            }
-            catch (\Exception $e){
-                DB::rollback();
-                return response()->json($e->getMessage(),500);
+
+                if ($request->encabezado['descuento'] > 0 ){
+                    $doc = DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->get();
+
+                    $doc_account = DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->where('ACCOUNT_58', 'like', '41%')
+                        ->first();
+
+                    $registro_descuento = DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->where('ACCOUNT_58','=',$doc_account->ACCOUNT_58)
+                        ->get();
+
+
+                    $detalle = DB::connection('MAXP')
+                        ->table('Invoice_detail')
+                        ->where('INVCE_32', '=', $num_factura)
+                        ->first();
+
+                    if (sizeof($registro_descuento) === 0){
+                        DB::connection('MAXP')
+                            ->table('Work_General_Ledger')
+                            ->insert([
+                                'TNXDTE_58'         =>  $request->encabezado['fecha_factura'],
+                                'FILL01_58'         =>  ' ',
+                                'ACCOUNT_58'        =>  $doc_account->ACCOUNT_58,
+                                'POSTDTE_58'        =>  $request->encabezado['fecha_factura'],
+                                'FILL02_58'         =>  ' ',
+                                'FROM_58'           =>  'AR',
+                                'BATCH_58'          =>  $doc[0]->BATCH_58, /* CONSULTARLO  CON DOC ID*/
+                                'RECNUM_58'         =>  intval($doc->max('RECNUM_58')) + 1,  /* CONSULTAR CONSCUTIVO  DEL DOC ID*/
+                                'TYPE_58'           =>  'D',
+                                'MAXGL_58'          =>  'DDISCACT A',
+                                'TNXCDE_58'         =>  '0',
+                                'ORDER_58'          =>  $request->encabezado['ov'].$detalle->LINNUM_32.$detalle->DELNUM_32, /* NUMERO ORDEN DE VENTA MAS EL ITEM*/
+                                'OPRSEQ_58'         =>  '0000',
+                                'DOCID_58'          =>  $num_factura,
+                                'CUSTVENID_58'      =>  $request->encabezado['codigo_cliente'],
+                                'USRNAM_58'         =>  Auth::user()->username,
+                                'POSTED_58'         =>  '2',
+                                'UPDATED_58'        =>  'Y',
+                                'DEBIT_58'          =>  $request->encabezado['descuento'],
+                                'CREDIT_58'         =>  '0',
+                                'REFDES_58'         =>  ' ',
+                                'INVCE_58'          =>  ' ',
+                                'FOB_58'            =>  ' ',
+                                'SHPVIA_58'         =>  ' ',
+                                'TERMS_58'          =>  ' ',
+                                'DISC_58'           =>  '0',
+                                'DAYS_58'           =>  '000',
+                                'DISCDY_58'         =>  '0',
+                                'DAYOMN_58'         =>  '0',
+                                'MAXBATCH_58'       =>  $doc[0]->MAXBATCH_58, /* CONSULTARLO  CON DOC ID*/
+                                'USER_58'           =>  ' ',
+                                'EXCRTE_58'         =>  '1',
+                                'FIXVAR_58'         =>  ' ',
+                                'CURR_58'           =>  ' ',
+                                'MCOMP_58'          =>  ' ',
+                                'MSITE_58'          =>  ' ',
+                                'UDFKEY_58'         =>  ' ',
+                                'UDFREF_58'         =>  $request->encabezado['bruto'], /* VALOR BRUTO DE LA FACTURA*/
+                                'GOODS_58'          =>  $request->encabezado['bruto'],/* VALOR BRUTO DE LA FACTURA*/
+                                'ORDEBIT_58'        =>  $request->encabezado['descuento'],
+                                'ORCREDIT_58'       =>  '0',
+                                'XDFINT_58'         =>  '0',
+                                'XDFFLT_58'         =>  '0',
+                                'XDFBOL_58'         =>  ' ',
+                                'XDFDTE_58'         =>  null,
+                                'XDFTXT_58'         =>  ' ',
+                                'FILLER_58'         =>  ' ',
+                                'Createdby'         =>  Auth::user()->username,
+                                'CreationDate'      =>  Carbon::now(),
+                                'ModifiedBy'        =>  Auth::user()->username,
+                                'ModificationDate'  =>  Carbon::now(),
+                                'CLASS_58'          =>  ' ',
+                                'TNXID_58'          =>  '0'
+                            ]);
+                    }else{
+                        DB::connection('MAXP')
+                            ->table('Work_General_Ledger')
+                            ->where('DOCID_58', '=', $num_factura)
+                            ->where('ACCOUNT_58','=','24080507')
+                            ->update([
+                                'DEBIT_58'          =>  $request->encabezado['descuento'],
+                                'UDFREF_58'         =>  $request->encabezado['bruto'], /* VALOR BRUTO DE LA FACTURA*/
+                                'GOODS_58'          =>  $request->encabezado['bruto'],/* VALOR BRUTO DE LA FACTURA*/
+                                'ORDEBIT_58'        =>  $request->encabezado['descuento'],
+                                'ModifiedBy'        =>  Auth::user()->username,
+                                'ModificationDate'  =>  Carbon::now(),
+                            ]);
+                    }
+                }elseif ($request->encabezado['descuento'] == 0){
+                    $doc_account = DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->where('ACCOUNT_58', 'like', '41%')
+                        ->first();
+
+                    $registro_descuento = DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->where('ACCOUNT_58','=',$doc_account->ACCOUNT_58)
+                        ->get();
+
+
+                    if (sizeof($registro_descuento) > 0){
+                        DB::connection('MAXP')
+                            ->table('Work_General_Ledger')
+                            ->where('DOCID_58', '=', $num_factura)
+                            ->where('ACCOUNT_58','=',$doc_account->ACCOUNT_58)
+                            ->delete();
+                    }
+                }
+
+                DB::connection('MAXP')->commit();
+                return response()->json('Documento actualizado!', 200);
+            }catch (Exception $e){
+                DB::connection('MAXP')->rollBack();
+                return response()->json($e->getMessage(), 500);
             }
         }
     }
+
+
+
+    /**
+     * Calcula la retencion en la fuente.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function calcular_retencion(Request $request){
+        if ($request->ajax()){
+            try {
+                $date = Carbon::parse($request->fecha)->format("Y");
+                $tipo_cliente = $request->tc;
+                $motivo = $request->motivo;
+                $iva = $request->iva;
+                $subtotal = $request->subtotal;
+
+                if ($motivo == 24){
+                    $parametros_rte = DB::table('parametros_retenciones')
+                        ->where('año','=', $date)
+                        ->where('tipo_retencion', '=','serv')
+                        ->first();
+                }else{
+                    $parametros_rte = DB::table('parametros_retenciones')
+                        ->where('año','=', $date)
+                        ->where('tipo_retencion', '=','prod')
+                        ->first();
+                }
+
+                $resultado= 0;
+                if ($motivo == 24 && $tipo_cliente == "RC" || $tipo_cliente == "CI" && $iva > 0 && $subtotal > $parametros_rte->base){
+
+                    $resultado = $subtotal * 4/100;
+
+                }elseif ($tipo_cliente == "RC" || $tipo_cliente == "CI" && $iva > 0 && $subtotal > $parametros_rte->base){
+                    $resultado = $subtotal * 2.5/100;
+                }else{
+                    $resultado = 0;
+                }
+
+                return response()->json($resultado, 200);
+            }catch (Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
 
 }

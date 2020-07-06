@@ -123,7 +123,7 @@ class GestionController extends Controller
             return datatables::of($values)
                 ->addColumn('opciones', function($row){
                     $btn = '<div class="btn-group"> <button class="btn btn-sm btn-outline-light info_ws" id="'.$row->numero.'"><i class="fas fa-info-circle" style="color: #3085d6"></i></button>';
-                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download_ws" id="'.$row->numero.'"><i class="fas fa-file-pdf" style="color: #FF0000"></i></button>'.'</div>';
+                    $btn = $btn.'<button class="btn btn-sm btn-outline-light download_ws" id="'.$row->numero.'" data-toggle="tooltip" data-placement="top" title="Descargar pdf"><i class="fas fa-file-pdf" style="color: #FF0000"></i></button>'.'</div>';
                     return $btn;})
                 ->rawColumns(['opciones'])
                 ->make(true);
@@ -131,4 +131,6 @@ class GestionController extends Controller
 
         return view('aplicaciones.facturacion_electronica.gestion.index');
     }
+
+
 }
