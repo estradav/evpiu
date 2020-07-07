@@ -243,7 +243,7 @@ $(document).ready(function () {
             $('.reteiva_btn_'+id).prop('disabled', false);
             $('.reteica_btn_'+id).prop('disabled', false);
 
-            $('.total_'+id).val(parseFloat(bruto) - parseFloat(descuento) + parseFloat(retencion) - parseFloat(reteiva) - parseFloat(reteica) - parseFloat(otras_dedu) + parseFloat(otros_ingre));
+            $('.total_'+id).val(parseFloat(bruto) - parseFloat(descuento) - parseFloat(retencion) - parseFloat(reteiva) - parseFloat(reteica) - parseFloat(otras_dedu) + parseFloat(otros_ingre));
 
         }else{
             $('.descuento_'+id).val(0);

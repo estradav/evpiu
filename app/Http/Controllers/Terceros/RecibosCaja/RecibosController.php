@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Luecano\NumeroALetras\NumeroALetras;
+
 
 class RecibosController extends Controller
 {
@@ -692,6 +694,19 @@ class RecibosController extends Controller
                     ]);
 
                 $rc = $numero_rc+1;
+
+                $formatter = new NumeroALetras;
+
+                $valor_letras = $formatter->toMoney($enc->total, 0, 'PESOS', 'CENTAVOS');
+
+                DB::connection('DMS')
+                    ->table('documentos_monto')
+                    ->insert([
+                        'tipo'      =>  'RCCO',
+                        'numero'    =>  $numero_rc+1,
+                        'monto'     =>  $valor_letras
+                    ]);
+
 
                 DB::connection('DMS')->commit();
                 return response()->json('RC ha sido finalizado y subido a DMS con el numero '.$rc, 200);
