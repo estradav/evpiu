@@ -400,7 +400,8 @@
                         iva: $('#total_iva').val(),
                         fecha_factura: $('#fecha_factura').val(),
                         codigo_cliente: $('#codigo_cliente').val(),
-                        ov: $('#remision').val()
+                        ov: $('#remision').val(),
+                        total_factura: $('#total_factura').val()
                     };
 
                     const items = [];

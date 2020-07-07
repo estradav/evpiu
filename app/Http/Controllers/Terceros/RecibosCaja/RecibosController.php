@@ -53,7 +53,7 @@ class RecibosController extends Controller
             $query = $request->get('query');
             $results = array();
 
-            $queries = DB::connection('FE')
+            $queries = DB::connection('DMS')
                 ->table('V_CIEV_Clientes')
                 ->where('nombres', 'LIKE', '%' . $query . '%')
                 ->orWhere('nit', 'LIKE', '%' . $query . '%')
@@ -83,7 +83,7 @@ class RecibosController extends Controller
             $nit = $request->get('nit');
 
             try {
-                $consulta = DB::connection('FE')
+                $consulta = DB::connection('DMS')
                     ->table('V_CIEV_Saldofacturas')
                     ->where('nit', '=', $nit)
                     ->where('saldo', '>', 0)
@@ -212,7 +212,7 @@ class RecibosController extends Controller
             ->orderBy('invoice','asc')
             ->get()->toArray();
 
-        $facturas_pendientes = DB::connection('FE')
+        $facturas_pendientes = DB::connection('DMS')
             ->table('V_CIEV_Saldofacturas')
             ->where('nit','=', $encabezado->nit)
             ->where('saldo', '>', 0)
@@ -434,28 +434,28 @@ class RecibosController extends Controller
                 ->where('id_recibo','=', $request->id)
                 ->sum('otras_deduc');
 
-            $numero_rc =  DB::connection('FE')
+            $numero_rc =  DB::connection('DMS')
                 ->table('documentos')
                 ->where('tipo','=', 'RCCO')
                 ->max('numero');
 
-            $vendedor_asociado = DB::connection('FE')
+            $vendedor_asociado = DB::connection('DMS')
                 ->table('terceros')
                 ->where('nit','=', $enc->nit)
                 ->pluck('vendedor');
 
 
-            $concepto_cliente = DB::connection('FE')
+            $concepto_cliente = DB::connection('DMS')
                 ->table('terceros')
                 ->where('nit','=',$enc->nit)
                 ->pluck('concepto_4')->first();
 
 
 
-            DB::connection('FE')->beginTransaction();
+            DB::connection('DMS')->beginTransaction();
 
             try {
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('documentos')
                     ->insert([
                         'sw'                    =>  '5',
@@ -502,7 +502,7 @@ class RecibosController extends Controller
                 }
 
 
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('movimiento')
                     ->insert([
                         'tipo'                  =>  'RCCO',
@@ -517,7 +517,7 @@ class RecibosController extends Controller
                     ]);
 
 
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('movimiento')
                     ->insert([
                         'tipo'                  =>  'RCCO',
@@ -538,7 +538,7 @@ class RecibosController extends Controller
 
                 if ($sum_descuento > 0){
                     $contador+=1;
-                    DB::connection('FE')
+                    DB::connection('DMS')
                         ->table('movimiento')
                         ->insert([
                             'tipo'                  =>  'RCCO',
@@ -554,7 +554,7 @@ class RecibosController extends Controller
                 }
                 if ($sum_otros_ingr > 0){
                     $contador+=1;
-                    DB::connection('FE')
+                    DB::connection('DMS')
                         ->table('movimiento')
                         ->insert([
                             'tipo'                  =>  'RCCO',
@@ -571,7 +571,7 @@ class RecibosController extends Controller
                 }
                 if ($sum_reteica > 0){
                     $contador+=1;
-                    DB::connection('FE')
+                    DB::connection('DMS')
                         ->table('movimiento')
                         ->insert([
                             'tipo'                  =>  'RCCO',
@@ -588,7 +588,7 @@ class RecibosController extends Controller
                 }
                 if ($sum_otras_deduc > 0 ){
                     $contador+=1;
-                    DB::connection('FE')
+                    DB::connection('DMS')
                         ->table('movimiento')
                         ->insert([
                             'tipo'                  =>  'RCCO',
@@ -605,7 +605,7 @@ class RecibosController extends Controller
                 }
                 if ($sum_reteiva > 0 ){
                     $contador+=1;
-                    DB::connection('FE')
+                    DB::connection('DMS')
                         ->table('movimiento')
                         ->insert([
                             'tipo'                  =>  'RCCO',
@@ -621,13 +621,13 @@ class RecibosController extends Controller
                 }
 
                 foreach ($det as $f){
-                    $documento =  DB::connection('FE')
+                    $documento =  DB::connection('DMS')
                         ->table('documentos')
                         ->where('tipo','=', 'FAC')
                         ->where('numero','=', $f->invoice)
                         ->get(['fecha','valor_aplicado'])->first();
 
-                    DB::connection('FE')
+                    DB::connection('DMS')
                         ->table('documentos_cruce')
                         ->insert([
                             'tipo'          =>  'RCCO',
@@ -645,7 +645,7 @@ class RecibosController extends Controller
                             'fecha_cruce'   =>  Carbon::now(),
                     ]);
 
-                    DB::connection('FE')
+                    DB::connection('DMS')
                         ->table('documentos')
                         ->where('tipo','=', 'FAC')
                         ->where('numero','=', $f->invoice)
@@ -655,13 +655,13 @@ class RecibosController extends Controller
                 }
 
 
-                $banco = DB::connection('FE')
+                $banco = DB::connection('DMS')
                     ->table('bancos')
                     ->where('cuenta','=',$enc->cuenta_pago)
                     ->pluck('banco')->first();
 
 
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('documentos_che')
                     ->insert([
                         'sw'                    =>  '5',
@@ -693,10 +693,10 @@ class RecibosController extends Controller
 
                 $rc = $numero_rc+1;
 
-                DB::connection('FE')->commit();
+                DB::connection('DMS')->commit();
                 return response()->json('RC ha sido finalizado y subido a DMS con el numero '.$rc, 200);
             }catch (\Exception $e){
-                DB::connection('FE')->rollBack();
+                DB::connection('DMS')->rollBack();
                 return response()->json($e->getMessage(), 500);
             }
         }
@@ -713,7 +713,7 @@ class RecibosController extends Controller
     public function consultar_documento (Request $request){
         if ($request->ajax()){
             try {
-                $consulta = DB::connection('FE')
+                $consulta = DB::connection('DMS')
                     ->table('V_CIEV_Saldofacturas')
                     ->where('numero','=', $request->id)
                     ->first();

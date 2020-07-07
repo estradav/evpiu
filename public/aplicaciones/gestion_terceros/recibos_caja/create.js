@@ -153,7 +153,7 @@ $(document).ready(function () {
                                     <td style="text-align: right !important;">`+ formatter.format(data[i].Saldo) +`</td>
                                     <td><input type="number" id="`+ data[i].numero +`" class="form-control bruto_`+ data[i].numero +` bruto" value="`+ data[i].Saldo +`" disabled></td>
                                     <td>
-                                        <div class="input-group">
+                                        <div class="input-group input-group-sm">
                                             <div class="input-group-prepend">
                                                 <button class="btn btn-secondary descuento_btn_`+ data[i].numero +` descuento_btn" type="button" id="`+ data[i].numero +`" disabled><i class="fas fa-percentage"></i></button>
                                             </div>
@@ -161,15 +161,15 @@ $(document).ready(function () {
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-prepend ">
                                                 <button class="btn btn-secondary retencion_btn_`+ data[i].numero +` retencion_btn" type="button" id="`+ data[i].numero +`" disabled><i class="fas fa-calculator"></i></button>
                                             </div>
                                                 <input type="number" id="`+ data[i].numero +`" class="form-control retencion_`+ data[i].numero +` retencion" value="0" disabled>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="input-group">
+                                        <div class="input-group input-group-sm">
                                             <div class="input-group-prepend">
                                                 <button class="btn btn-secondary reteiva_btn_`+ data[i].numero +` reteiva_btn" type="button" id="`+ data[i].numero +`" disabled><i class="fas fa-calculator"></i></button>
                                             </div>
@@ -177,23 +177,23 @@ $(document).ready(function () {
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="input-group">
+                                        <div class="input-group input-group-sm">
                                             <div class="input-group-prepend">
                                                 <button class="btn btn-secondary reteica_btn_`+ data[i].numero +` reteica_btn" type="button" id="`+ data[i].numero +`" disabled><i class="fas fa-calculator"></i></button>
                                             </div>
                                             <input type="number" id="`+ data[i].numero +`" class="form-control reteica_`+ data[i].numero +` reteica" value="0" disabled>
                                         </div>
                                     </td>
-                                    <td><input type="number" id="`+ data[i].numero +`" class="form-control otras_dedu_`+ data[i].numero +` otras_dedu" value="0" disabled></td>
-                                    <td><input type="number" id="`+ data[i].numero +`" class="form-control otros_ingre_`+ data[i].numero +` otros_ingre" value="0" disabled></td>
-                                    <td><input type="number" class="form-control total_`+ data[i].numero +` total" value="0" id="total" name="total" disabled ></td>
+                                    <td><input type="number" id="`+ data[i].numero +`" class="form-control form-control-sm otras_dedu_`+ data[i].numero +` otras_dedu" value="0" disabled></td>
+                                    <td><input type="number" id="`+ data[i].numero +`" class="form-control form-control-sm otros_ingre_`+ data[i].numero +` otros_ingre" value="0" disabled></td>
+                                    <td><input type="number" class="form-control form-control-sm total_`+ data[i].numero +` total" value="0" id="total" name="total" disabled ></td>
                                     <td>
                                          <button class="btn btn-outline-info btn-sm info_documento" id="`+ data[i].numero +`"><i class="fas fa-info-circle"></i> Info</button>
                                     </td>
                                     <td style="display: none !important;">
-                                        <input type="number" class="form-control iva_`+ data[i].numero +` iva" value="`+ data[i].iva +`">
-                                        <input type="number" class="form-control valor_merc_`+ data[i].numero +`" value="`+ data[i].valor_mercancia +`">
-                                        <input type="number" class="form-control desc_merc_`+ data[i].numero +`" value="`+ data[i].descuento_pie +`">
+                                        <input type="number" class="form-control form-control-sm iva_`+ data[i].numero +` iva" value="`+ data[i].iva +`">
+                                        <input type="number" class="form-control form-control-sm valor_merc_`+ data[i].numero +`" value="`+ data[i].valor_mercancia +`">
+                                        <input type="number" class="form-control form-control-sm desc_merc_`+ data[i].numero +`" value="`+ data[i].descuento_pie +`">
                                     </td>
                                 </tr>
                             `);

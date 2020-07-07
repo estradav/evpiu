@@ -1155,15 +1155,6 @@ class FacturasController extends Controller
             DB::connection('MAXP')->beginTransaction();
             try {
                 if ($request->encabezado['iva'] > 0){
-
-                    $test =  DB::connection('MAXP')
-                        ->table('Invoice_master')
-                        ->where('INVCE_31', '=', $num_factura)
-                        ->get();
-
-
-                    dd($test);
-
                     DB::connection('MAXP')
                         ->table('Invoice_master')
                         ->where('INVCE_31', '=', $num_factura)
@@ -1270,6 +1261,16 @@ class FacturasController extends Controller
                         ->first();
 
 
+                    DB::connection('MAXP')
+                        ->table('Work_General_Ledger')
+                        ->where('DOCID_58', '=', $num_factura)
+                        ->where('MAXGL_58','=','DACCTREC A')
+                        ->update([
+                            'DEBIT_58'      =>  $request->encabezado['total_factura'],
+                            'ORDEBIT_58'    =>  $request->encabezado['total_factura'],
+                        ]);
+
+
                     if (sizeof($registro_iva) === 0){
                         DB::connection('MAXP')
                             ->table('Work_General_Ledger')
@@ -1358,6 +1359,7 @@ class FacturasController extends Controller
                     }
                 }
 
+
                 if ($request->encabezado['descuento'] > 0 ){
                     $doc = DB::connection('MAXP')
                         ->table('Work_General_Ledger')
@@ -1374,6 +1376,7 @@ class FacturasController extends Controller
                         ->table('Work_General_Ledger')
                         ->where('DOCID_58', '=', $num_factura)
                         ->where('ACCOUNT_58','=',$doc_account->ACCOUNT_58)
+                        ->where('MAXGL_58','=','DDISCACT A')
                         ->get();
 
 
@@ -1382,7 +1385,7 @@ class FacturasController extends Controller
                         ->where('INVCE_32', '=', $num_factura)
                         ->first();
 
-                    if (sizeof($registro_descuento) === 0){
+                    if (sizeof($registro_descuento) == 0){
                         DB::connection('MAXP')
                             ->table('Work_General_Ledger')
                             ->insert([
@@ -1444,7 +1447,8 @@ class FacturasController extends Controller
                         DB::connection('MAXP')
                             ->table('Work_General_Ledger')
                             ->where('DOCID_58', '=', $num_factura)
-                            ->where('ACCOUNT_58','=','24080507')
+                            ->where('ACCOUNT_58','=',$doc_account->ACCOUNT_58)
+                            ->where('MAXGL_58','=','DDISCACT A')
                             ->update([
                                 'DEBIT_58'          =>  $request->encabezado['descuento'],
                                 'UDFREF_58'         =>  $request->encabezado['bruto'], /* VALOR BRUTO DE LA FACTURA*/
