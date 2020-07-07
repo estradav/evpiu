@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "788f07181d64cb8961d1c05a60a4611a",
+    "content-hash": "de2e8fe0272865d447561190da7cb5bf",
     "packages": [
         {
             "name": "adldap2/adldap2",
@@ -2228,6 +2228,55 @@
                 }
             ],
             "time": "2020-05-18T15:13:39+00:00"
+        },
+        {
+            "name": "luecano/numero-a-letras",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lecano/php-numero-a-letras.git",
+                "reference": "5d9280d34eeb3d3c35752a5b856831cff785c645"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lecano/php-numero-a-letras/zipball/5d9280d34eeb3d3c35752a5b856831cff785c645",
+                "reference": "5d9280d34eeb3d3c35752a5b856831cff785c645",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Luecano\\NumeroALetras\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luis Cano",
+                    "email": "luecano@gmail.com",
+                    "homepage": "https://github.com/luecano/numero-a-letras",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Convierte un número a letras.",
+            "homepage": "https://github.com/luecano/numero-a-letras",
+            "keywords": [
+                "convertir",
+                "facturacion",
+                "letras",
+                "numero",
+                "sunat"
+            ],
+            "time": "2020-04-23T23:11:01+00:00"
         },
         {
             "name": "milon/barcode",
@@ -8358,6 +8407,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.2.5",
+        "ext-gmp": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
         "ext-soap": "*",
