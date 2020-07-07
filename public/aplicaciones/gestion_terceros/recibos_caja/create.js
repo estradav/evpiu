@@ -151,7 +151,7 @@ $(document).ready(function () {
                                     <th><input type="checkbox" name="check_`+ data[i].numero +`" id="`+ data[i].numero +`" class="custom-checkbox check"></th>
                                     <td>`+ data[i].numero +` <input type="number" style="display: none !important;" class="factura" value="`+ data[i].numero +`"></td>
                                     <td style="text-align: right !important;">`+ formatter.format(data[i].Saldo) +`</td>
-                                    <td><input type="number" id="`+ data[i].numero +`" class="form-control bruto_`+ data[i].numero +` bruto" value="`+ data[i].Saldo +`" disabled></td>
+                                    <td><input type="number" id="`+ data[i].numero +`" class="form-control form-control-sm bruto_`+ data[i].numero +` bruto" value="`+ data[i].Saldo +`" disabled></td>
                                     <td>
                                         <div class="input-group input-group-sm">
                                             <div class="input-group-prepend">
