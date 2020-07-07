@@ -151,6 +151,110 @@ $(document).ready(function () {
                 confirmButtonText: 'Aceptar',
             });
         }
+    });
+
+
+    $(document).on('click', '.ver', function () {
+        const id = this.id;
+        console.log(id);
+        $.ajax({
+            url: '/aplicaciones/recibos_caja/consultar_recibo',
+            type: 'get',
+            data: { id: id },
+            success: function (data) {
+                const enc = data.enc;
+                const det = data.det;
+                const formatter = new Intl.NumberFormat('es-CO', {
+                    style: 'currency',
+                    currency: 'COP',
+                    minimumFractionDigits: 0
+                });
+
+                $('#ver_modal_title').html('').html('RC # '+id);
+
+                $('#ver_modal_body').html('').append(`
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                                    <b>CLIENTE:</b>
+                                    `+ enc.customer +`
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+                                    <b>NIT:</b>
+                                    `+ enc.nit +`
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                                    <b>FECHA CREACION:</b>
+                                    `+ enc.created_at +`
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+                                    <b>TOTAL RC:</b>
+                                    `+ formatter.format(enc.total )+`
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <br>
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">NUMERO</th>
+                                        <th scope="col">BRUTO</th>
+                                        <th scope="col">DESCUENTO</th>
+                                        <th scope="col">RETENCION</th>
+                                        <th scope="col">RETEIVA</th>
+                                        <th scope="col">RETEICA</th>
+                                        <th scope="col">OTRAS DEDUCCIONES</th>
+                                        <th scope="col">OTROS INGRESOS</th>
+                                        <th scope="col">TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_itm">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr>
+                    <br>
+                    <div class="row justify-content-center">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 text-center" >
+                            <b> COMENTARIOS:</b> <br>
+                            `+ enc.comments +`
+                        </div>
+                    </div>
+                `);
+
+                for (let i = 0; i < det.length; i++) {
+                    $('#table_itm').append(`
+                        <tr>
+                            <td>`+ det[i].invoice +`</td>
+                            <td>`+ formatter.format(det[i].bruto) +`</td>
+                            <td>`+ formatter.format(det[i].descuento) +`</td>
+                            <td>`+ formatter.format(det[i].retencion) +`</td>
+                            <td>`+ formatter.format(det[i].reteiva) +`</td>
+                            <td>`+ formatter.format(det[i].reteica) +`</td>
+                            <td>`+ formatter.format(det[i].otras_deduc) +`</td>
+                            <td>`+ formatter.format(det[i].otros_ingre) +`</td>
+                            <td>`+ formatter.format(det[i].total) +`</td>
+                        </tr>
+                    `);
+                }
+                $('#ver_modal').modal('show');
+            },
+            error: function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al obtener datos',
+                    text: data,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Aceptar',
+                });
+            }
+        });
 
     });
 });

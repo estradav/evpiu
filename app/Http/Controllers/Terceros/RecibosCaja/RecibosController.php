@@ -455,7 +455,6 @@ class RecibosController extends Controller
 
 
             DB::connection('DMS')->beginTransaction();
-
             try {
                 DB::connection('DMS')
                     ->table('documentos')
@@ -622,10 +621,19 @@ class RecibosController extends Controller
                         ]);
                 }
 
+
+
                 foreach ($det as $f){
+                    $tipo_documento = DB::connection('DMS')
+                        ->table('documentos')
+                        ->where('numero','=', $f->invoice)
+                        ->whereIn('tipo', ['FP1','FP2','FP3','FP4','FP5','FP6','FAC'])
+                        ->where('nit','=',$enc->nit)
+                        ->pluck('tipo')->first();
+
                     $documento =  DB::connection('DMS')
                         ->table('documentos')
-                        ->where('tipo','=', 'FAC')
+                        ->where('tipo','=', $tipo_documento)
                         ->where('numero','=', $f->invoice)
                         ->get(['fecha','valor_aplicado'])->first();
 
@@ -635,7 +643,7 @@ class RecibosController extends Controller
                             'tipo'          =>  'RCCO',
                             'numero'        =>  $numero_rc+1,
                             'sw'            =>  '1',
-                            'tipo_aplica'   =>  'FAC',
+                            'tipo_aplica'   =>  $tipo_documento,
                             'numero_aplica' =>  $f->invoice,
                             'numero_cuota'  =>  '0',
                             'valor'         =>  $f->bruto,
@@ -649,7 +657,7 @@ class RecibosController extends Controller
 
                     DB::connection('DMS')
                         ->table('documentos')
-                        ->where('tipo','=', 'FAC')
+                        ->where('tipo','=', $tipo_documento)
                         ->where('numero','=', $f->invoice)
                         ->update([
                             'valor_aplicado'    =>  $documento->valor_aplicado + $f->bruto
@@ -690,13 +698,12 @@ class RecibosController extends Controller
                 DB::table('recibos_caja')
                     ->where('id','=', $request->id)
                     ->update([
-                        'state' => '3'
+                        'state'     =>  '3',
+                        'rc_dms'    =>  $numero_rc+1
                     ]);
 
                 $rc = $numero_rc+1;
-
                 $formatter = new NumeroALetras;
-
                 $valor_letras = $formatter->toMoney($enc->total, 0, 'PESOS', 'CENTAVOS');
 
                 DB::connection('DMS')

@@ -450,15 +450,14 @@ $(document).ready(function () {
                     encabezado, items
                 },
                 success: function (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Recibo de caja creado correctamente!',
+                        text: data,
+                    });
                     setTimeout(function() {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Recibo de caja creado correctamente!',
-                            text: data,
-                        }, function() {
-                            window.location.href = "{{ route('recibos_caja')}}";
-                        });
-                    }, 1000);
+                        window.location.href = '/aplicaciones/recibos_caja'
+                    }, 5000);
                 },
                 error: function (data) {
                     Swal.fire({
@@ -524,15 +523,15 @@ $(document).ready(function () {
                     encabezado, items
                 },
                 success: function (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Recibo de caja creado correctamente!',
+                        text: data,
+                    });
+
                     setTimeout(function() {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Recibo de caja creado correctamente!',
-                            text: data,
-                        }, function() {
-                            window.location.href = "{{ route('recibos_caja')}}";
-                        });
-                    }, 1000);
+                        window.location.href = '/aplicaciones/recibos_caja'
+                    }, 5000);
 
                 },
                 error: function (data) {
