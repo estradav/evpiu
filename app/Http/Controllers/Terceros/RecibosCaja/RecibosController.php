@@ -528,7 +528,7 @@ class RecibosController extends Controller
                         'centro'                =>  0,
                         'nit'                   =>  0,
                         'fec'                   =>  $enc->fecha_pago,
-                        'valor'                 =>  $sum_bruto - $sum_descuento + $sum_otros_ingr - $sum_otras_deduc - $sum_reteica - $sum_reteiva,
+                        'valor'                 =>  $sum_bruto + $sum_otros_ingr - $sum_descuento - $sum_otras_deduc - $sum_reteica - $sum_reteiva - $sum_rete,
                         'documento'             =>  '1',
                         'explicacion'           =>  $enc->comments,
                         'concilio'              =>  'S',
@@ -621,9 +621,23 @@ class RecibosController extends Controller
                         ]);
                 }
 
-
-
+                $rete_servicios = 0;
+                $rete_venta = 0;
                 foreach ($det as $f){
+                    if ($sum_rete > 0){
+                        $resultado = DB::connection('MAX')
+                            ->table('invoice_master')
+                            ->where('INVCE_31','=', '00'.$f->invoice)
+                            ->pluck('REASON_31')->first();
+
+                        if ($resultado == "24"){
+                            $rete_servicios =  $rete_servicios + $f->retencion;
+                        }else{
+                            $rete_venta = $rete_venta + $f->retencion;
+                        }
+                    }
+
+
                     $tipo_documento = DB::connection('DMS')
                         ->table('documentos')
                         ->where('numero','=', $f->invoice)
@@ -661,6 +675,40 @@ class RecibosController extends Controller
                         ->where('numero','=', $f->invoice)
                         ->update([
                             'valor_aplicado'    =>  $documento->valor_aplicado + $f->bruto
+                        ]);
+                }
+
+                if ($rete_servicios > 0){
+                    $contador+=1;
+                    DB::connection('DMS')
+                        ->table('movimiento')
+                        ->insert([
+                            'tipo'                  =>  'RCCO',
+                            'numero'                =>  $numero_rc+1,
+                            'seq'                   =>  $contador,
+                            'cuenta'                =>  13551520,
+                            'centro'                =>  0,
+                            'nit'                   =>  $enc->nit,
+                            'fec'                   =>  $enc->fecha_pago,
+                            'valor'                 =>  $rete_servicios,
+                            'documento'             =>  '1',
+                        ]);
+                }
+
+                if ($rete_venta > 0){
+                    $contador+=1;
+                    DB::connection('DMS')
+                        ->table('movimiento')
+                        ->insert([
+                            'tipo'                  =>  'RCCO',
+                            'numero'                =>  $numero_rc+1,
+                            'seq'                   =>  $contador,
+                            'cuenta'                =>  13551505,
+                            'centro'                =>  0,
+                            'nit'                   =>  $enc->nit,
+                            'fec'                   =>  $enc->fecha_pago,
+                            'valor'                 =>  $rete_venta,
+                            'documento'             =>  '1',
                         ]);
                 }
 
