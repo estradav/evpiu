@@ -108,6 +108,28 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="info_documento_modal" tabindex="-1" role="dialog" aria-labelledby="info_documento_modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="info_documento_modal_title"></h5>
+                    <button type="button" class="close reset" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody id="info_documento_modal_table_body">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary reset" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('javascript')
     <script type="text/javascript" src="{{ asset('aplicaciones/gestion_terceros/recibos_caja/cartera.js') }}"></script>

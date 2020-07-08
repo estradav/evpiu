@@ -149,7 +149,7 @@ $(document).ready(function () {
                 for (let i = 0; i < det.length; i++) {
                     $('#table_itm').append(`
                         <tr>
-                            <td>`+ det[i].invoice +`</td>
+                            <td><a href="javascript:void(0)" class="info_documento" id="`+ det[i].invoice +`">`+ det[i].invoice +`</a></td>
                             <td>`+ formatter.format(det[i].bruto) +`</td>
                             <td>`+ formatter.format(det[i].descuento) +`</td>
                             <td>`+ formatter.format(det[i].retencion) +`</td>
@@ -206,7 +206,7 @@ $(document).ready(function () {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'Aceptar',
                         });
-                        //window.location.reload(true);
+                        window.location.reload(true);
                     },
                     error: function (data) {
                         console.log(data)
@@ -214,5 +214,94 @@ $(document).ready(function () {
                 });
             }
         });
+    });
+
+
+
+    $(document).on('click', '.info_documento', function () {
+        let id = this.id;
+        $.ajax({
+            url: '/aplicaciones/recibos_caja/consultar_documento',
+            type: 'get',
+            data: {id:id},
+            success: function (data) {
+                const formatter = new Intl.NumberFormat('es-CO', {
+                    style: 'currency',
+                    currency: 'COP',
+                    minimumFractionDigits: 0
+                });
+
+                $('#info_documento_modal_title').html('FAC # '+ id);
+
+                $('#info_documento_modal_table_body').html('').append(`
+                    <tr>
+                        <th scope="row">Fecha Factura:</th>
+                        <td>`+ data.fecha +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Plazo:</th>
+                        <td>`+ data.descripcion +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Vencimiento:</th>
+                        <td>`+ data.fecha +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Bruto:</th>
+                        <td style="text-align: right!important;">`+ formatter.format(data.valor_mercancia) +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Descuento (-):</th>
+                        <td style="text-align: right!important;">`+ formatter.format(data.descuento_pie) +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">IVA (+):</th>
+                        <td style="text-align: right!important;">`+ formatter.format(data.iva) +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Retencion (-):\t</th>
+                        <td style="text-align: right!important;">`+ formatter.format(data.retencion) +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Abono (-):</th>
+                        <td style="text-align: right!important;"> `+ formatter.format(data.valor_aplicado) +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Subtotal:</th>
+                        <td style="text-align: right!important;">`+ formatter.format(data.ValorTotal) +`</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Vendedor:</th>
+                        <td>`+ data.NombreVendedor +`</td>
+                    </tr>
+                `);
+                $('#info_documento_modal').modal('show');
+                $("#info_documento_modal").draggable({
+                    handle: ".modal-header"
+                });
+            },
+            error: function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al cargar documento',
+                    text: data,
+                })
+            }
+        })
+    });
+
+    $("#info_documento_modal").data({
+        'originalLeft': $("#info_documento_modal").css('left'),
+        'origionalTop': $("#info_documento_modal").css('top')
+    });
+
+    $(".reset").click(function() {
+        setTimeout(function() {
+            $("#info_documento_modal").css({
+                'left': $("#info_documento_modal").data('originalLeft'),
+                'top': $("#info_documento_modal").data('origionalTop')
+            });
+        }, 2000);
+
     });
 });
