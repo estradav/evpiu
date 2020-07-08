@@ -565,7 +565,7 @@ $(document).ready(function () {
                     minimumFractionDigits: 0
                 });
 
-                $('#info_documento_modal_title').html('# '+ id);
+                $('#info_documento_modal_title').html('FAC # '+ id);
 
                 $('#info_documento_modal_table_body').html('').append(`
                     <tr>
@@ -610,6 +610,9 @@ $(document).ready(function () {
                     </tr>
                 `);
                 $('#info_documento_modal').modal('show');
+                $("#info_documento_modal").draggable({
+                    handle: ".modal-header"
+                });
             },
             error: function (data) {
                 Swal.fire({
@@ -620,4 +623,20 @@ $(document).ready(function () {
             }
         })
     });
+
+    $("#info_documento_modal").data({
+        'originalLeft': $("#info_documento_modal").css('left'),
+        'origionalTop': $("#info_documento_modal").css('top')
+    });
+
+    $(".reset").click(function() {
+        setTimeout(function() {
+            $("#info_documento_modal").css({
+                'left': $("#info_documento_modal").data('originalLeft'),
+                'top': $("#info_documento_modal").data('origionalTop')
+            });
+        }, 2000);
+
+    });
+
 });
