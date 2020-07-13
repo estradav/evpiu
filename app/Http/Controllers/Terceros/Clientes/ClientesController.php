@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Yajra\DataTables\DataTables;
@@ -69,8 +70,6 @@ class ClientesController extends Controller
         $paises =  DB::connection('DMS')
             ->table('y_paises')
             ->get();
-
-
 
         return view('aplicaciones.gestion_terceros.clientes.create',
             compact('plazos','forma_envio', 'vendedores', 'tipo_cliente', 'paises'));
@@ -158,6 +157,14 @@ class ClientesController extends Controller
      * @return JsonResponse
      */
     public function guardar_cliente(Request $request){
+        $file = $request->file('archivo_rut');
+
+        $nombre = $request->M_Nit_cc;
+        $ext = $file->getClientOriginalExtension();
+
+        \Storage::disk('rut_clientes')->put($nombre.'.'.$ext,  \File::get($file));
+
+
         $termino_dms = '';
 
         if ($request->M_Plazo == '00'){
@@ -228,8 +235,8 @@ class ClientesController extends Controller
         }
 
 
-        DB::beginTransaction();
-
+        DB::connection('MAX')->beginTransaction();
+        DB::connection('DMS')->beginTransaction();
         try {
             DB::connection('MAX')
                 ->table('Customer_Master')
@@ -270,7 +277,7 @@ class ClientesController extends Controller
                     'CURR_23'      =>  $request->M_Moneda,
                     'COMMIS_23'    =>  '0',
                     'UDFKEY_23'    =>  $request->M_Nit_cc.'-'.$request->M_Nit_cc_dg,
-                    'CreatedBy'    =>  $request->username,
+                    'CreatedBy'    =>  Auth::user()->username,
                     'CreationDate' =>  Carbon::now(),
                     'VATSUSP_23'   =>  'N',
                     'COMNT1_23'    =>  ' ',
@@ -312,7 +319,7 @@ class ClientesController extends Controller
                         'CiudadExterior'       =>  ''
                     ]);
 
-                DB::connection('DMS') /*Base de datos de prueba*/
+                DB::connection('DMS')
                     ->table('terceros')
                     ->insert([
                         'nit'                              =>  $request->M_Nit_cc,
@@ -348,7 +355,7 @@ class ClientesController extends Controller
                         'razon_comercial'                  =>  $request->M_Razon_comercial,
                         'y_pais'                           =>  $request->M_Pais,
                         'codigo_alterno'                   =>  $request->M_Nit_cc,
-                        'usuario'                          =>  $request->username,
+                        'usuario'                          =>  Auth::user()->username,
                         'sincronizado'                     =>  'N',
                         'id_definicion_tributaria_tipo'    =>  $dms_id_def_trib_tipo[0],
                         'tieneRUT'                         =>  $request->M_rut_entregado == 'on' ? '1' : '0',
@@ -367,12 +374,12 @@ class ClientesController extends Controller
                         ]);
                 }
 
-            DB::commit();
-
+            DB::connection('MAX')->commit();
+            DB::connection('DMS')->commit();
             return response()->json('Guardado con exito!',200);
-
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::connection('MAX')->rollback();
+            DB::connection('DMS')->rollback();
             return  response()->json($e->getMessage(),500);
         }
 
@@ -448,7 +455,7 @@ class ClientesController extends Controller
                 ->insert([
                     'codigo_cliente'    =>  $request->cliente,
                     'campo_cambiado'    =>  'Direccion 1',
-                    'usuario'           =>  $request->username,
+                    'usuario'           =>  Auth::user()->username,
                     'justificacion'     =>  $request->result['value'][0]['justify'],
                     'created_at'        =>  Carbon::now(),
                     'updated_at'        =>  Carbon::now()
@@ -485,7 +492,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Direccion 2',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -521,7 +528,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Moneda',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -557,7 +564,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Moneda',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -600,7 +607,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Contacto',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -644,7 +651,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Telefono 1',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -688,7 +695,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Telefono 2',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -732,7 +739,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Celular',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -776,7 +783,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Email Contacto',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -814,7 +821,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Email Facturacion',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -901,7 +908,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Condicion de pago',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -938,7 +945,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Descuento',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -981,7 +988,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Vendedor',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1029,7 +1036,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Correos Copia',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  'Correcccion correos copia',
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1072,7 +1079,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Rut',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1115,7 +1122,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Gran contribuyente',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1151,7 +1158,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Responsable IVA',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1186,7 +1193,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Responsable FE',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1222,7 +1229,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Telefono FE',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1257,7 +1264,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Codigo Ciudad Exterior',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1293,7 +1300,7 @@ class ClientesController extends Controller
             DB::table('log_modifications_clients')->insert([
                 'codigo_cliente'    =>  $request->cliente,
                 'campo_cambiado'    =>  'Grupo Economico',
-                'usuario'           =>  $request->username,
+                'usuario'           =>  Auth::user()->username,
                 'justificacion'     =>  $request->result['value'][0]['justify'],
                 'created_at'        =>  Carbon::now(),
                 'updated_at'        =>  Carbon::now()
@@ -1374,12 +1381,18 @@ class ClientesController extends Controller
     }
 
 
-
-    public function listar_tipo_cliente(Request $request)
-    {
+    /**
+     * obtiene una lista con los tipo de clientes disponibles
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function listar_tipo_cliente(Request $request){
         if ($request->ajax()){
             try {
-                $tipo_cliente =  DB::connection('MAX')->table('Customer_Types')
+                $tipo_cliente =  DB::connection('MAX')
+                    ->table('Customer_Types')
                     ->get();
                 return response()->json($tipo_cliente, 200);
 
@@ -1389,6 +1402,26 @@ class ClientesController extends Controller
         }
     }
 
+
+    /**
+     * obtiene una lista con las actividades economicas
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function listar_actividad_economica(Request $request){
+        if ($request->ajax()){
+            try {
+                $actividad_economica = DB::connection('DMS')
+                    ->table('terceros_actidad_economica')
+                    ->get();
+                return response()->json($actividad_economica, 200);
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(),500);
+            }
+        }
+    }
 
 
 }

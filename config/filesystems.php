@@ -73,6 +73,26 @@ return [
             //'passive' => true,
             'timeout' => 30
         ],
+
+
+        'rut_clientes' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/rut_clientes'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
+
+        'ftp_backups' => [
+            'driver' => 'ftp',
+            'host' => '192.168.1.49',
+            'username' => 'admin',
+            'password' => 'CIEV2011ev',
+            'port' => 21,
+            //'passive' => true,
+            'timeout' => 30,
+            'root' => '/Repositorio/Sistemas/Backups',
+        ],
     ],
 
 ];

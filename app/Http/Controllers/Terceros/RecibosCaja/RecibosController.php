@@ -73,11 +73,11 @@ class RecibosController extends Controller
     }
 
 
-
     /**
      * Consulta de facturas pendientes por cliente
      * Cuyo saldo pendiente sea mayor a 0
      *
+     * @param Request $request
      * @return JsonResponse
      */
     public function consultar_recibos_cliente(Request $request){
@@ -89,9 +89,9 @@ class RecibosController extends Controller
                     ->table('V_CIEV_Saldofacturas')
                     ->where('nit', '=', $nit)
                     ->where('saldo', '>', 0)
+                    ->orderBy('numero', 'asc')
                     ->get();
                 return response()->json($consulta, 200);
-
             } catch (\Exception $e) {
                 return response()->json($e->getMessage(), 500);
             }

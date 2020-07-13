@@ -6,7 +6,7 @@
     @can('pedidosBodega.view')
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="card">
+                <div class="main-card mb-3 card">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped  dataTableP" id="table">
@@ -25,6 +25,35 @@
                                         <th>Fecha Creacion</th>
                                         <th style="text-align:center ">Opciones</th>
                                     </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-card mb-3 card">
+                    <div class="card-header">
+                        Pedidos terminados
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-striped" id="table_terminados">
+                                <thead>
+                                <tr>
+                                    <th># Pedido</th>
+                                    <th>Orden de Compra</th>
+                                    <th>Codigo Cliente</th>
+                                    <th>Nombre Cliente</th>
+                                    <th>Vendedor</th>
+                                    <th>Condiciones de pago</th>
+                                    <th>Descuento</th>
+                                    <th>IVA</th>
+                                    <th>Estado</th>
+                                    <th>Fecha Creacion</th>
+                                    <th style="text-align:center ">Opciones</th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -290,6 +319,7 @@
             var CodVenUsuario1 =  @json( Auth::user()->codvendedor );
             var NombreVendedor = @json( Auth::user()->name );
             LoadTable();
+            load_pedidos_terminados()
 
             $.ajaxSetup({
                 headers: {
@@ -381,6 +411,81 @@
                     }
                 })
             }
+
+            function load_pedidos_terminados() {
+                $('#table_terminados').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    searching: true,
+                    paginate: true,
+                    bInfo: true,
+                    responsive: true,
+                    ajax: {
+                        url:'/load_pedidos_terminados',
+                    },
+                    columns: [
+                        {data: 'id', name: 'id', orderable: false, searchable: false},
+                        {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: false},
+                        {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: false},
+                        {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: false},
+                        {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: false},
+                        {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: false},
+                        {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
+                        {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
+                        {data: 'Estado', name: 'Estado', orderable: false, searchable: false},
+                        {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
+                        {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+
+                    ],
+                    language: {
+                        url: '/Spanish.json'
+                    },
+                    rowCallback: function (row, data, index) {
+                        if (data.Estado == 1) {
+                            $(row).find('td:eq(8)').html('<label class="alert-success">Borrador</label>');
+                        }
+                        if (data.Estado == 0) {
+                            $(row).find('td:eq(8)').html('<label class="alert-danger">Anulado Vendedor</label>');
+                            $("#Reopen").prop('disabled',true);
+                        }
+                        if (data.Estado == 2) {
+                            $(row).find('td:eq(8)').html('<label class="alert-primary">Cartera</label>');
+                        }
+                        if (data.Estado == 3) {
+                            $(row).find('td:eq(8)').html('<label class="alert-warning">Rechazado Cartera</label>');
+                        }
+                        if (data.Estado == 4) {
+                            $(row).find('td:eq(8)').html('<label class="alert-primary">Costos</label>');
+                        }
+                        if (data.Estado == 5) {
+                            $(row).find('td:eq(8)').html('<label class="alert-danger">Rechazado Costos</label>');
+                        }
+                        if (data.Estado == 6) {
+                            $(row).find('td:eq(8)').html('<label class="alert-primary">Produccion</label>');
+                        }
+                        if (data.Estado == 7) {
+                            $(row).find('td:eq(8)').html('<label class="alert-warning">Rechazado Produccion</label>');
+                        }
+                        if (data.Estado == 8) {
+                            $(row).find('td:eq(8)').html('<label class="alert-primary">Bodega</label>');
+                        }
+                        if (data.Estado == 9) {
+                            $(row).find('td:eq(8)').html('<label class="alert-warning">Rechazado Bodega</label>');
+                        }
+                        if (data.Estado == 10) {
+                            $(row).find('td:eq(8)').html('<label class="alert-success">Finalizado</label>');
+                        }
+                        if (data.Iva == 'Y') {
+                            $(row).find('td:eq(7)').html('<label>SI</label>');
+                        }
+                        else{
+                            $(row).find('td:eq(7)').html('<label>NO</label>');
+                        }
+                    }
+                })
+            }
+
+
             var id;
             $('body').on('click', '.Option', function () {
                 id = $(this).attr("id");

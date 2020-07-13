@@ -144,38 +144,38 @@
                             <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                         </a>
                         <ul>
-                            <li class="{{ request()->route()->named('ProdCievCodTipoProducto.index') ? 'mm-active' : '' }}">
-                                <a href="{{ route('ProdCievCodTipoProducto.index') }}">
+                            <li class="{{ request()->route()->named('tipo_producto.index') ? 'mm-active' : '' }}">
+                                <a href="{{ route('tipo_producto.index') }}">
                                     <i class="metismenu-icon">
                                     </i>Tipo producto
                                 </a>
                             </li>
-                            <li class="{{ request()->route()->named('ProdCievCod.index') ? 'mm-active' : '' }}">
-                                <a href="{{ route('ProdCievCod.index') }}">
+                            <li class="{{ request()->route()->named('linea.index') ? 'mm-active' : '' }}">
+                                <a href="{{ route('linea.index') }}">
                                     <i class="metismenu-icon">
                                     </i>Lineas
                                 </a>
                             </li>
-                            <li class="{{ request()->route()->named('ProdCievCodSublinea.index') ? 'mm-active' : '' }}">
-                                <a href="{{ route('ProdCievCodSublinea.index') }}">
+                            <li class="{{ request()->route()->named('sublinea.index') ? 'mm-active' : '' }}">
+                                <a href="{{ route('sublinea.index') }}">
                                     <i class="metismenu-icon">
                                     </i>Sublineas
                                 </a>
                             </li>
-                            <li class="{{ request()->route()->named('ProdCievCodCaracteristica.index') ? 'mm-active' : '' }}">
-                                <a href="{{ route('ProdCievCodCaracteristica.index') }}">
+                            <li class="{{ request()->route()->named('caracteristica.index') ? 'mm-active' : '' }}">
+                                <a href="{{ route('caracteristica.index') }}">
                                     <i class="metismenu-icon">
                                     </i>Caracteristicas
                                 </a>
                             </li>
-                            <li class="{{ request()->route()->named('ProdCievCodMaterial.index') ? 'mm-active' : '' }}">
-                                <a href="{{ route('ProdCievCodMaterial.index') }}">
+                            <li class="{{ request()->route()->named('material.index') ? 'mm-active' : '' }}">
+                                <a href="{{ route('material.index') }}">
                                     <i class="metismenu-icon">
                                     </i>Materiales
                                 </a>
                             </li>
-                            <li class="{{ request()->route()->named('ProdCievCodMedida.index') ? 'mm-active' : '' }}">
-                                <a href="{{ route('ProdCievCodMedida.index') }}">
+                            <li class="{{ request()->route()->named('medida.index') ? 'mm-active' : '' }}">
+                                <a href="{{ route('medida.index') }}">
                                     <i class="metismenu-icon">
                                     </i>Medidas
                                 </a>

@@ -8,7 +8,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => env('APP_NAME', 'laravel-backup'),
+        'name' => env('APP_NAME', 'evpiu-backup'),
 
         'source' => [
 
@@ -97,7 +97,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'local',
+                'ftp_backups'
             ],
         ],
 
@@ -163,7 +163,7 @@ return [
     'monitor_backups' => [
         [
             'name' => env('APP_NAME', 'laravel-backup'),
-            'disks' => ['local'],
+            'disks' => ['ftp_backups'],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,

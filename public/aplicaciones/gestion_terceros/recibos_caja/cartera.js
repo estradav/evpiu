@@ -206,7 +206,9 @@ $(document).ready(function () {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'Aceptar',
                         });
-                        window.location.reload(true);
+                        setTimeout(function() {
+                            window.location.reload(true);
+                        }, 5000);
                     },
                     error: function (data) {
                         console.log(data)

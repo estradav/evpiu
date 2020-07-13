@@ -28,7 +28,7 @@
                                     <label for="SelectVendedor" class="control-label" ><b>Vendedor:&nbsp;&nbsp; </b></label>
                                     <select name="SelectVendedor" id="SelectVendedor" class="custom-select">
                                         @foreach($vendedores as $vendedor)
-                                            <option value="{{$vendedor->codvendedor}}">{{$vendedor->name }}</option>
+                                            <option value="{{ $vendedor->codvendedor }}">{{ $vendedor->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

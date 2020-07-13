@@ -94,6 +94,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     Route::get('listar_plazos','Terceros\Clientes\ClientesController@listar_plazos');
                     Route::get('listar_vendedores','Terceros\Clientes\ClientesController@listar_vendedores');
                     Route::get('listar_tipo_cliente','Terceros\Clientes\ClientesController@listar_tipo_cliente');
+                    Route::get('listar_actividad_economica','Terceros\Clientes\ClientesController@listar_actividad_economica');
 
 
                     Route::get('cliente/editar/{cliente}/show','Terceros\Clientes\ClientesController@show');
@@ -150,6 +151,45 @@ Route::group(['middleware' => ['caffeinated']], function () {
                 Route::post('recibos_caja/finalizar_rc','Terceros\RecibosCaja\RecibosController@finalizar_rc');
 
 
+                Route::prefix('productos')->group(function () {
+                    Route::prefix('maestros')->group(function () {
+
+                        /*Tipo producto*/
+                        Route::resource('tipo_producto','Productos\Maestros\TipoProductoController')->only('index','destroy','edit','store');
+                        Route::post('/tipo_producto/validar_codigo', 'Productos\Maestros\TipoProductoController@validar_codigo');
+
+
+                        /*Linea*/
+                        Route::resource('linea','Productos\Maestros\LineaController')->only('index','destroy','edit','store');
+                        Route::post('/linea/validar_codigo', 'Productos\Maestros\LineaController@validar_codigo');
+
+
+                        /*Sublinea*/
+                        Route::resource('sublinea','Productos\Maestros\SublineaController')->only('index','destroy','edit','store');
+                        Route::get('/sublinea/unidades_medida','Productos\Maestros\SublineaController@unidades_medida');
+                        Route::get('/sublinea/caracteristicas_unidades_medida','Productos\Maestros\SublineaController@caracteristicas_unidades_medida');
+                        Route::post('/sublinea/validar_codigo', 'Productos\Maestros\SublineaController@validar_codigo');
+
+
+                        /*Caracteristica*/
+                        Route::resource('caracteristica','Productos\Maestros\CaracteristicaController')->only('index','destroy','edit','store');
+                        Route::get('caracteristica/listar_sublineas', 'Productos\Maestros\CaracteristicaController@listar_sublineas');
+                        Route::post('/caracteristica/validar_codigo', 'Productos\Maestros\CaracteristicaController@validar_codigo');
+
+
+                        /*Material*/
+                        Route::resource('material','Productos\Maestros\MaterialController')->only('index','destroy','edit','store');
+                        Route::post('/material/validar_codigo', 'Productos\Maestros\MaterialController@validar_codigo');
+
+
+                        /*Medida*/
+                        Route::resource('medida','Productos\Maestros\MedidaController')->only('index','destroy','edit','store');
+                        Route::get('/medida/listar_cara_y_unidad_medida','Productos\Maestros\MedidaController@listar_cara_y_unidad_medida');
+                        Route::get('/medida/info_calculo_cod','Productos\Maestros\MedidaController@info_calculo_cod');
+                        Route::post('/medida/validar_denominacion', 'Productos\Maestros\MedidaController@validar_denominacion');
+
+                    });
+                });
 
             });
 
@@ -182,23 +222,13 @@ Route::group(['middleware' => ['caffeinated']], function () {
             // Productos CIEV --> Codificador
             Route::resource('maestros','ProdCievMaestroController');
 
-            Route::resource('ProdCievCodTipoProducto','ProdCodTipoProductoController');
 
-            Route::resource('ProdCievCod','ProdCodLineasController');
 
-            Route::resource('ProdCievCodSublinea','ProdCodSublineasController');
 
-            Route::resource('ProdCievCodCaracteristica','ProdCievCodCaracteristicaController');
-            Route::get('/getsublineas','ProdCievCodCaracteristicaController@getSublineas');
 
-            Route::resource('ProdCievCodMaterial','ProdCievCodMaterialController');
-            Route::get('/getsublineas','ProdCievCodMaterialController@getSublineas');
 
-            Route::resource('ProdCievCodMedida','ProdCievCodMedidaController');
-            Route::get('/getsublineas','ProdCievCodMedidaController@getSublineas');
-            Route::get('/getCaractUnidadMedidas','ProdCievCodMedidaController@getCaractUnidadMedidas');
-            Route::get('/sublineasUltimoId','ProdCievCodMedidaController@ultimoId');
-            Route::get('/UltimoCodId','ProdCievCodMedidaController@UltimoCodId');
+
+
 
             Route::resource('codificador','ProdCievCodCodigoController');
             Route::get('/getlineas','ProdCievCodCodigoController@getlineas');
@@ -220,29 +250,15 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/get-invoice-age-data-value','ChartDataController@getAgeInvoiceData');
             Route::get('/get-invoice-day-data-value','ChartDataController@getDayInvoiceData');
 
-            Route::post('/TiposProductoPost','ProdCodTipoProductoController@store');
-            Route::post('/types_products_update','ProdCodTipoProductoController@TypesProductUpdate');
-            Route::get('/TiposProductoIndex','ProdCodTipoProductoController@index');
 
-            Route::post('/LineasPost','ProdCodLineasController@store');
-            Route::post('/lines_update','ProdCodLineasController@LinesUpdate');
 
-            Route::get('/LineasIndex','ProdCodLineasController@index');
 
-            Route::post('/SublineasPost','ProdCodSublineasController@SaveSublinea');
-            Route::get('/SublineasIndex','ProdCodSublineasController@index');
-            Route::get('/getlineasp','ProdCodSublineasController@getlineasp');
-            Route::get('/getUnidadMedidas','ProdCodSublineasController@getUnidadMedidas');
-            Route::get('/getCarUnidadMedidas','ProdCodSublineasController@getCarUnidadMedidas');
 
-            Route::post('/CaracteristicasPost','ProdCievCodCaracteristicaController@store');
-            Route::get('/CaracteristicasIndex','ProdCievCodCaracteristicaController@index');
 
-            Route::post('/MaterialesPost','ProdCievCodMaterialController@store');
-            Route::get('/MaterialesIndex','ProdCievCodMaterialController@index');
 
-            Route::post('/MedidasPost','ProdCievCodMedidaController@store');
-            Route::get('/MedidasIndex','ProdCievCodMedidaController@index');
+
+
+
 
             Route::post('/CodigosPost','ProdCievCodCodigoController@store');
             Route::get('/CodigosIndex','ProdCievCodCodigoController@index');
@@ -280,18 +296,10 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
             Route::get('/pedidos_nuevo','PedidoController@nuevo_pedido_index');
 
-            Route::post('/GetUniqueCod','ProdCodTipoProductoController@UniqueCod');
-            Route::post('/GetUniqueCodLines','ProdCodLineasController@UniqueCod');
-            Route::post('/GetUniqueCodSubLines','ProdCodSublineasController@UniqueCod');
-            Route::post('/GetUniqueCodCaracteristics','ProdCievCodCaracteristicaController@UniqueCod');
-            Route::post('/GetUniqueCodMaterials','ProdCievCodMaterialController@UniqueCod');
-            Route::post('/GetUniqueCodMed','ProdCievCodMedidaController@UniqueCod');
-            Route::post('/UniqueDenominacion','ProdCievCodMedidaController@UniqueDenominacion');
+
             Route::post('/GetUniqueCode','ProdCievCodCodigoController@UniqueCod');
             Route::post('/GetUniqueDescription','ProdCievCodCodigoController@UniqueDescription');
 
-            Route::get('/getALLUnidadMedidas','ProdCodSublineasController@getALLUnidadMedidas');
-            Route::get('/getALLCaracteristicasUnidadMedidas','ProdCodSublineasController@getALLCaracteristicasUnidadMedidas');
 
             Route::post('/PedidoPromoverCartera','PedidoController@PedidoPromoverCartera');
             Route::get('/Estadopedido','PedidoController@Estadopedido');
@@ -328,7 +336,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('/GetDescription','RequerimientosController@GetDescription');
             Route::post('RequerimientoSaveFile','RequerimientosController@RequerimientoSaveFile');
             Route::post('/NewRequerimiento','RequerimientosController@NewRequerimiento');
-            Route::get('/getUnidadMedidasMed','ProdCievCodMedidaController@getUnidadMedidasMed');
 
 
 
@@ -434,7 +441,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
             Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
-            Route::get('get_materiales','ProdCievCodMaterialController@Materials');
 
             Route::resource('medida_prevencion','MedidaPrevencionController');
             Route::post('/validate_exist_employee','MedidaPrevencionController@validate_exist_employee');
