@@ -350,7 +350,7 @@ $(document).ready(function () {
         const fila = this.id;
         const bruto = $('.valor_merc_' + fila).val();
         const descuento = $('.desc_merc_' + fila).val();
-        const resultado = (bruto - descuento) * 2.5 / 100;
+        const resultado = (bruto - descuento) * 2 / 1000;
 
         $('.reteica_'+fila).val(resultado);
         calcular_total_fila(fila, true);

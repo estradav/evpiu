@@ -239,7 +239,16 @@
                                         <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Codigo de la actividad principal del client, esta informacion se puede consultar en el RUT">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
-                                        <input id="M_actividad_principal" name="M_actividad_principal" type="number" class="form-control required">
+
+                                        <div class="input-group">
+                                            <select class="form-control" id="M_actividad_principal">
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" id="agregar_actividad_economica">Agregar</button>
+                                            </div>
+                                        </div>
+
+                                        {{--<input id="M_actividad_principal" name="M_actividad_principal" type="number" class="form-control required">--}}
                                     </div>
                                 </div>
                                 <br>
@@ -357,6 +366,17 @@
                                         </a>
                                         <br>
                                         <select name="M_correos_copia" id="M_correos_copia" multiple="multiple" class="form-control" style="width: 100%"></select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="document_rut" aria-describedby="document_rut">
+                                                <label class="custom-file-label" for="document_rut">Seleccionar archivo...</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </fieldset>
@@ -532,11 +552,27 @@
 @endsection
 @push('styles')
     <link rel="stylesheet" href="{{ asset('jquery-steps/style.css') }}">
+    <style>
+        input{
+           text-transform:uppercase !important;
+        }
+    </style>
 @endpush
 @push('javascript')
     <script> let Username =  @json( Auth::user()->username );   const form = $("#create-form"); </script>
     <script type="text/javascript" src="{{ asset('aplicaciones/gestion_terceros/clientes/create.js') }}"></script>
     <script type="text/javascript" src="{{ asset('jquery-steps/jquery.steps.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.querySelector('.custom-file-input').addEventListener('change',function(e){
+                var fileName = document.getElementById("document_rut").files[0].name;
+                var nextSibling = e.target.nextElementSibling
+                nextSibling.innerText = fileName
+            })
+        });
+
+
+    </script>
 @endpush
 
 

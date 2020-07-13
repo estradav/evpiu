@@ -36,6 +36,7 @@ class Kernel extends ConsoleKernel
          $schedule->command('exit:employees')->dailyAt('23:50');
          $schedule->command('permission:folder')->dailyAt('03:00');
          $schedule->command('sensors:day')->hourly();
+         $schedule->command('backup:run')->twiceDaily(12, 17);
     }
 
     /**

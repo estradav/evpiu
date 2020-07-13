@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use http\Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Artisan;
@@ -34,7 +33,7 @@ class BackupController extends Controller
 
         $disk = Storage::disk(config('backup.backup.destination.disks')[0]);
 
-        $files = $disk->files(config('backup.backup.name'));
+        $files = $disk->files('EVPIU');
 
         $backups = [];
         // make an array of backup files, with their filesize and creation date
@@ -43,7 +42,7 @@ class BackupController extends Controller
             if (substr($f, -4) == '.zip' && $disk->exists($f)) {
                 $backups[] = [
                     'file_path' => $f,
-                    'file_name' => str_replace(config('backup.backup.name') . '/', '', $f),
+                    'file_name' => str_replace('EVPIU'. '/', '', $f),
                     'file_size' => $disk->size($f),
                     'last_modified' => $disk->lastModified($f),
                 ];
@@ -80,7 +79,7 @@ class BackupController extends Controller
             $output = ['success' => 1,
                 'msg' => __('Backup creado con exito!')
             ];
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $output = ['success' => 0,
                 'msg' => $e->getMessage()
             ];

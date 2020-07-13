@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CodMedida extends Model
 {
-    protected $fillable = ['cod','denominacion','largo','espesor','diametro','undmedida',
+    protected $fillable = ['cod','denominacion','pestana','espesor','diametro','undmedida',
         'base','altura','perforacion','coments','mm2','med_lineas_id','med_sublineas_id'
     ];
 

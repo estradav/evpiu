@@ -81,7 +81,7 @@
                                         $facturas = Array();
                                     @endphp
                                     @foreach( $final_array as $recibos)
-                                        @php $total_cartera = $total_cartera + $recibos->Saldo  @endphp
+                                        @php $total_cartera = $total_cartera + floatval($recibos->Saldo)  @endphp
                                         @if( isset($recibos->invoice))
                                             <tr>
                                                 <th>

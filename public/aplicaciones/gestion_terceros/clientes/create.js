@@ -45,59 +45,38 @@ $(document).ready(function () {
             if (newIndex === 3 && Number($("#age-2").val()) < 18)
             {   return false;   }
 
-            if (currentIndex < newIndex)
-            {
+            if (currentIndex < newIndex) {
                 form.find(".body:eq(" + newIndex + ") label.error").remove();
                 form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
             }
             form.validate().settings.ignore = ":disabled,:hidden";
             return form.valid();
         },
-        onStepChanged: function (event, currentIndex, priorIndex)
-        {
+        onStepChanged: function (event, currentIndex, priorIndex) {
             if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
             {   form.steps("next"); }
             if (currentIndex === 2 && priorIndex === 3)
             {   form.steps("previous"); }
         },
-        onFinishing: function (event, currentIndex)
-        {
+        onFinishing: function (event, currentIndex) {
             form.validate().settings.ignore = ":disabled";
             return form.valid();
         },
-        onFinished: function (event, currentIndex)
-        {
-            var data_form = $('#create-form').serializeArray();
-            var correos_copia = {
-                name: "Correos_copia", value:  $('#M_correos_copia').val()
-            };
+        onFinished: function (event, currentIndex) {
+            var data = new FormData($("#create-form")[0]);
 
-            var pais = {
-                name: 'pais', value: $('select[name="M_Pais"] option:selected').text()
-            };
-
-            var departamento = {
-                name: 'departamento', value: $('select[name="M_Departamento"] option:selected').text()
-            };
-
-            var ciudad = {
-                name: 'ciudad', value: $('select[name="M_Ciudad"] option:selected').text()
-            };
-
-            var username = {
-                name: 'username', value: Username
-            };
-
-            data_form.push(correos_copia);
-            data_form.push(pais);
-            data_form.push(departamento);
-            data_form.push(ciudad);
-            data_form.push(username);
+            data.append("archivo_rut", document.getElementById("document_rut").files[0]);
+            data.append("Correos_copia", $('#M_correos_copia').val());
+            data.append("pais", $('select[name="M_Pais"] option:selected').text());
+            data.append("departamento", $('select[name="M_Departamento"] option:selected').text());
+            data.append("ciudad", $('select[name="M_Ciudad"] option:selected').text());
 
             $.ajax({
                 url: '/aplicaciones/terceros/cliente/guardar_cliente',
                 type: 'post',
-                data: data_form,
+                data: data,
+                processData: false,
+                contentType: false,
                 success: function () {
                     Swal.fire({
                         icon: 'success',
@@ -106,18 +85,20 @@ $(document).ready(function () {
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'Aceptar',
                     });
-                    $('#create-form').trigger("reset");
+                    //$('#create-form').trigger("reset");
                 },
-                error: function (data) {
+                error: function(jqXHR, textStatus, err){
+                    console.log('text status '+textStatus+', err '+err);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: data,
+                        text: err,
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'Aceptar',
                     })
                 }
-            })
+            });
+
         }
     }).validate({
         errorPlacement: function errorPlacement(error, element)
@@ -362,7 +343,7 @@ $(document).ready(function () {
     $('#search_client_max_dms').keyup(function () {
         const datos = this.value;
         $.ajax({
-            url:'/aplicaciones/terceros/buscar_cliente',
+            url:'/aplicaciones/terceros/cliente/buscar_cliente',
             type:'get',
             data: {
                 query: datos
@@ -381,7 +362,6 @@ $(document).ready(function () {
             },
             error: function (data) {
                 console.log(data)
-
             }
         })
     });
@@ -426,6 +406,26 @@ $(document).ready(function () {
         $('#direccion_final').val('');
     });
 
+
+    $('#M_actividad_principal').select2({
+        placeholder: "Seleccione...",
+        ajax: {
+            url: '/aplicaciones/terceros/listar_actividad_economica',
+            dataType: 'json',
+            data: function (params) {
+                return {
+                    q: $.trim(params.term)
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+        required: true
+    });
 
 
     function generar_direccion(tipo_via, numero_1, letra_1, complemento_1, numero_2, letra_2, complemento_2, numero_3, complemnto_3, numero_4) {
