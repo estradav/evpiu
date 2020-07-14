@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Mockery\Exception;
@@ -95,13 +96,15 @@ class SublineaController extends Controller
                 try {
                     $sb = DB::table('cod_sublineas')
                         ->insertGetId([
-                            'cod' => $request->encabezado['codigo'],
-                            'name' => $request->encabezado['name'],
-                            'hijo' => $request->encabezado['hijo'],
-                            'lineas_id' => $request->encabezado['linea'],
-                            'abreviatura' => $request->encabezado['abre'],
-                            'coments' => $request->encabezado['coments'],
-                    ]);
+                            'cod'           => $request->encabezado['codigo'],
+                            'name'          => $request->encabezado['name'],
+                            'hijo'          => $request->encabezado['hijo'],
+                            'lineas_id'     => $request->encabezado['linea'],
+                            'abreviatura'   => $request->encabezado['abre'],
+                            'coments'       => $request->encabezado['coments'],
+                            'usuario'       => Auth::user()->username,
+
+                        ]);
 
                     $umedidas = $request->umedidas;
                     foreach ($umedidas as $d) {
@@ -116,8 +119,8 @@ class SublineaController extends Controller
                     foreach ($carmedidas as $d) {
                         DB::table('caracteristicasmedidas_to_sublineas')
                             ->insert([
-                                'sub_id' => $sb,
-                                'car_med_id' => $d,
+                                'sub_id'        => $sb,
+                                'car_med_id'    => $d,
                         ]);
                     }
                     DB::commit();
@@ -139,6 +142,7 @@ class SublineaController extends Controller
                             'lineas_id'         => $request->encabezado['linea'],
                             'abreviatura'       => $request->encabezado['abre'],
                             'coments'           => $request->encabezado['coments'],
+
                         ]);
 
                     DB::table('medidas_to_sublineas')
@@ -160,8 +164,8 @@ class SublineaController extends Controller
                     $carmedidas = $request->carmedidas;
                     foreach ($carmedidas as $d) {
                         DB::table('caracteristicasmedidas_to_sublineas')->insert([
-                            'sub_id' => $request->encabezado['id'],
-                            'car_med_id' => $d,
+                            'sub_id'        => $request->encabezado['id'],
+                            'car_med_id'    => $d,
                         ]);
                     }
                     DB::commit();

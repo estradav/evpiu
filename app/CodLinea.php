@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CodLinea extends Model
 {
     protected $fillable = [
-        'name', 'cod','coments','abreviatura','tipoproducto_id'
+        'name', 'cod','coments','abreviatura','tipoproducto_id','usuario'
     ];
 
 

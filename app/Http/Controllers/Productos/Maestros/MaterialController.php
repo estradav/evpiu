@@ -6,6 +6,7 @@ use App\CodLinea;
 use App\CodMaterial;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -54,6 +55,8 @@ class MaterialController extends Controller
                     'mat_sublineas_id'  => $request->sublinea,
                     'abreviatura'       => $request->abrev,
                     'coments'           => $request->coments,
+                    'usuario'           => Auth::user()->username,
+
                 ]);
             return response()->json('registro guardado', 200);
         }catch (\Exception $e){
