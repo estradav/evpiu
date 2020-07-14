@@ -75,7 +75,8 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
                     /*gestion*/
-                    Route::resource('gestions','FacturacionElectronica\GestionController');
+                    Route::resource('gestions','FacturacionElectronica\GestionController')->only('index');
+                    Route::get('/gestions/comprobar_factura', 'FacturacionElectronica\GestionController@comprobar_factura');
                 });
 
 

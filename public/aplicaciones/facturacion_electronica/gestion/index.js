@@ -164,7 +164,35 @@ $(document).ready(function () {
         });
     }
 
+    var t = $('#facturas_pendientes_table').DataTable({
+        language: {
+            url: '/Spanish.json'
+        },
+        columns: [
+            { "orderable": false, "searchable": false },
+            { "orderable": true, "searchable": true },
+            { "orderable": false, "searchable": false },
+        ],
+        order: [
+            [ 1, "asc" ]
+        ]
+    });
+
+    $(document).on("click", "#select_all", function() {
+        $(".check").prop("checked", this.checked);
+    });
+
+    $(document).on("click", ".check", function() {
+        if ($(".test").length === $(".check:checked").length) {
+            $("#select_all").prop("checked", true);
+        } else {
+            $("#select_all").prop("checked", false);
+        }
+    });
+
+
     $(document).on('click', '#Auditar', function () {
+        t.clear().draw();
         if(missing.length === 0){
             Swal.fire({
                 icon: 'success',
@@ -176,7 +204,18 @@ $(document).ready(function () {
                 cancelButtonColor: '#d33',
             });
         }else{
-            Swal.fire({
+            for (let i = 0; i < missing.length; i++) {
+                t.row.add( [
+                    `<input type="checkbox" class="checkboxes check" id="`+ missing[i] +`">`,
+                    missing[i],
+                    `<button class="btn btn-light info_factura_modal" id="`+ missing[i] +`"> <i class="fas fa-info-circle"></i> Info</button>`,
+                ] ).draw( false );
+            }
+
+            $('#facturas_pendientes_modal').modal('show');
+
+
+          /*  Swal.fire({
                 icon: 'info',
                 title: 'Hay facturas pendientes por cargar',
                 html: '<h3 >Facturas pendientes por cargar en el rango seleccionado:</h3> <h3>'+ missing +'</h3>',
@@ -184,9 +223,203 @@ $(document).ready(function () {
                 cancelButtonText: 'Cancelar',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-            });
+            });*/
         }
     });
+
+
+    $(document).on('click', "#crear_xml_modal", function () {
+        var selected = [];
+        $(".checkboxes").each(function () {
+            if (this.checked) {
+                const numero = this.id;
+                const factura = {
+                    "numero": numero,
+                };
+                selected.push(factura);
+            }
+        });
+        if (selected.length) {
+            Swal.fire({
+                icon: false,
+                title: 'Generando XML un momento por favor...',
+                html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
+                showConfirmButton: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            });
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                cache: false,
+                type: 'post',
+                dataType: 'json', // importante para que
+                data: {selected: JSON.stringify(selected)}, // jQuery convierta el array a JSON
+                url: '/aplicaciones/facturacion_electronica/factura/generar_xml',
+                success: function () {
+                    sweetAlert.close();
+                    Swal.fire({
+                        title: 'Terminado!',
+                        html: 'XML generado con exito!.',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                    });
+                    let req = new XMLHttpRequest();
+                    req.open("GET", "/factura_electronica.xml", true);
+                    req.responseType = "blob";
+                    req.onload = function (event) {
+                        var blob = req.response;
+                        var link=document.createElement('a');
+                        link.href=window.URL.createObjectURL(blob);
+                        let current_datetime = new Date();
+                        let formatted_date = current_datetime.getDate() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getFullYear();
+                        link.download="factura" + formatted_date + "_.xml";
+                        link.click();
+                    };
+                    req.send();
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Hubo un error al generar el XML..!',
+                    });
+                }
+            });
+        } else
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Debes seleccionar al menos una factura...!',
+            });
+        return false;
+    });
+
+
+
+    $(document).on('click', '.info_factura_modal', function () {
+        let id = this.id;
+        $('#erros_sweet').html('');
+        $.ajax({
+            url: '/aplicaciones/facturacion_electronica/gestions/comprobar_factura',
+            type: 'get',
+            data: {id:id},
+            success:function (data) {
+                if (data.length == 0){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Factura OK!',
+                    });
+                }else{
+                    for (let i = 0; i <data.length; i++) {
+                        $('#erros_sweet').append(data[i]+ '<br>')
+                    }
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops',
+                        html: $('#erros_sweet').html()
+                    });
+                }
+            },
+            error:function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops',
+                    text: data.responseText
+                });
+            }
+        });
+    });
+
+
+    $(document).on('click', '#subir_ws_modal', function () {
+        var selected = [];
+        $(".checkboxes").each(function () {
+            if (this.checked) {
+                var numero = this.id;
+                var factura ={
+                    "numero":numero,
+                };
+                selected.push(factura);
+            }
+        });
+        if (selected.length) {
+            Swal.fire({
+                icon: false,
+                title: 'Enviando Facturas seleccionadas a traves de WebService, un momento por favor...',
+                html: '<br><div class="container" style="align-items: center !important; margin-left: 150px; margin-right: 150px"><div class="preloader"></div></div>',
+                showConfirmButton: false,
+                showCancelButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            });
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                dataType: 'json', // importante para que
+                data: {
+                    selected: JSON.stringify(selected),
+                    Username: Username
+                }, // jQuery convierta el array a JSON
+                url: '/aplicaciones/facturacion_electronica/web_service/envio_facturas',
+                success: function (data) {
+                    console.log(data);
+                    $('#Errors').html('');
+                    var i = 0;
+                    $(data).each(function () {
+                        var estado;
+
+                        if (data[i].success == true){
+                            estado = '<label class="text-success">Cargado con exito!</label>'
+                        }else{
+                            estado = '<label class="text-danger"> Con errores </label>'
+                        }
+
+                        $('#Errors').append('<b><label>Estado de carga: </label></b>  <label>'+ estado +'</label> <br>' +
+                            '<b><label>Mensaje: </label></b>  <label>'+ data[i].msg +'</label>');
+                        i++;
+                    });
+                    sweetAlert.close();
+
+                    Swal.fire({
+                        backdrop: true,
+                        title: 'Terminado!',
+                        html: $('#Errors').html(),
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                    })
+                },
+                error: function (data) {
+                    console.log(data);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Hubo un error al enviar los datos por WebService..!',
+                    });
+                }
+            });
+        } else
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Debes seleccionar al menos una factura...!',
+            });
+        return false;
+    });
+
+
 
     $(document).on('click','.info_ws',function () {
         let id = this.id;
