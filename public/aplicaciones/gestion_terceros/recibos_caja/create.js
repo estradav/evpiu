@@ -145,8 +145,7 @@ $(document).ready(function () {
 
                         total_cartera = 0;
                         for (let i = 0; i < data.length; i++) {
-                            total_cartera = total_cartera + data[i].Saldo;
-
+                            total_cartera = total_cartera + parseFloat(data[i].Saldo);
                             $('#facturas').append(`
                                 <tr class="table-secondary">
                                     <th><input type="checkbox" name="check_`+ data[i].numero +`" id="`+ data[i].numero +`" class="custom-checkbox check"></th>
