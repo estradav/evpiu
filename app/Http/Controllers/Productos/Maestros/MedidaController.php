@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -167,7 +168,9 @@ class MedidaController extends Controller
                         'coments'           => $request->coments,
                         'med_lineas_id'     => $request->linea,
                         'med_sublineas_id'  => $request->sublinea,
-                        'mm2'               => $request->mm2
+                        'mm2'               => $request->mm2,
+                        'usuario'       => Auth::user()->username,
+
                     ]);
                 return response()->json('Registro guardado',200);
             }catch (\Exception $e){

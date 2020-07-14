@@ -8,7 +8,7 @@ class CodCaracteristica extends Model
 {
 
     protected $fillable = [
-        'name','cod','coments','abreviatura','car_lineas_id','car_sublineas_id'
+        'name','cod','coments','abreviatura','car_lineas_id','car_sublineas_id','usuario'
     ];
 
     public function Codlineas ()

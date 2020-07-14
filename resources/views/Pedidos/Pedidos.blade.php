@@ -731,7 +731,7 @@
 
                             for (let i = 0; i <= data[1].length -1; i++) {
                                 function format_destino (){
-                                    if (data[1][i].Destino === 1){
+                                    if (data[1][i].Destino == 1){
                                         return 'Produccion'
                                     } else{
                                         return 'Bodega'

@@ -8,7 +8,7 @@ use App\CodLinea;
 class CodTipoProducto extends Model
 {
     protected $fillable = [
-        'name', 'cod','coments',
+        'name', 'cod','coments','usuario'
     ];
 
     public function Codlineas()

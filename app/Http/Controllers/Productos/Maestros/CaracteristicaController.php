@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -128,6 +129,8 @@ class CaracteristicaController extends Controller
                         'car_sublineas_id'  => $request->sublinea,
                         'abreviatura'       => $request->abrev,
                         'coments'           => $request->coments,
+                        'usuario'       => Auth::user()->username,
+
                     ]);
                 return response()->json('registro guardado', 200);
             }catch (\Exception $e){

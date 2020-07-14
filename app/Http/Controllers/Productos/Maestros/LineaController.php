@@ -80,6 +80,7 @@ class LineaController extends Controller
                         'name'              => $request->name,
                         'abreviatura'       => $request->abrev,
                         'coments'           => $request->comments,
+                        'usuario'           => Auth::user()->username,
                 ]);
                 return response()->json('registro guardado', 200);
             }catch (\Exception $e){
