@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Yajra\DataTables\DataTables;
 
 class ClientesController extends Controller
@@ -1421,6 +1422,53 @@ class ClientesController extends Controller
                 return response()->json($e->getMessage(),500);
             }
         }
+    }
+
+
+    /**
+     * permite subir el rut / el nombre del archivo es el nit del cliente
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function subir_rut(Request $request){
+        if ($request->hasFile('fileToUpload')) {
+            try {
+                $file = $request->file('fileToUpload')[0];
+
+                $nombre = $request->numero;
+                $ext = $file->getClientOriginalExtension();
+
+                \Storage::disk('rut_clientes')->put($nombre.'.'.$ext,  \File::get($file));
+
+                return response()->json('Archivo subido',200);
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(),500);
+            }
+        }
+    }
+
+    /**
+     * permite subir el rut / el nombre del archivo es el nit del cliente
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function descargar_rut($file){
+        $file_name = explode('-',$file);
+        if (file_exists(storage_path('app/public/rut_clientes/'.$file_name[0].'.pdf'))){
+            return response()->download(storage_path('app/public/rut_clientes/'.$file_name[0].'.pdf'));
+        }else{
+            return redirect()
+                ->back()
+                ->with([
+                    'message'    => 'El archivo solicitado no existe.',
+                    'alert-type' => 'error'
+                ]);
+        }
+
     }
 
 

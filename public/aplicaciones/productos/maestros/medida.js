@@ -161,8 +161,15 @@ $(document).ready(function () {
 
 
     $(document).on('keyup', '#Diametro', function () {
-        document.getElementById('Base').value = 0;
-        document.getElementById('Altura').value = 0;
+        var base = document.getElementById('Base');
+        var altura = document.getElementById('Altura');
+
+        if(base){
+            base.value = 0;
+        }
+        if (altura){
+            altura.value = 0;
+        }
 
         let unidad_medida = document.getElementById('UndMedida').value;
         var diametro = this.value;
@@ -177,7 +184,10 @@ $(document).ready(function () {
 
 
     $(document).on('keyup', '#Base', function () {
-        document.getElementById('Diametro').value = 0;
+        var diametro = document.getElementById('Diametro');
+        if (diametro){
+            diametro.value = 0
+        }
 
         let unidad_medida = document.getElementById('UndMedida').value;
         var base = this.value;
@@ -193,7 +203,10 @@ $(document).ready(function () {
 
 
     $(document).on('keyup', '#Altura', function () {
-        document.getElementById('Diametro').value = 0;
+        var diametro = document.getElementById('Diametro');
+        if (diametro){
+            diametro.value = 0
+        }
 
         let unidad_medida = document.getElementById('UndMedida').value;
         var base = document.getElementById('Base').value;

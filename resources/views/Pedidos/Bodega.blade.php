@@ -41,19 +41,19 @@
                         <div class="table-responsive">
                             <table class="table table-responsive table-striped" id="table_terminados">
                                 <thead>
-                                <tr>
-                                    <th># Pedido</th>
-                                    <th>Orden de Compra</th>
-                                    <th>Codigo Cliente</th>
-                                    <th>Nombre Cliente</th>
-                                    <th>Vendedor</th>
-                                    <th>Condiciones de pago</th>
-                                    <th>Descuento</th>
-                                    <th>IVA</th>
-                                    <th>Estado</th>
-                                    <th>Fecha Creacion</th>
-                                    <th style="text-align:center ">Opciones</th>
-                                </tr>
+                                    <tr>
+                                        <th># Pedido</th>
+                                        <th>Orden de Compra</th>
+                                        <th>Codigo Cliente</th>
+                                        <th>Nombre Cliente</th>
+                                        <th>Vendedor</th>
+                                        <th>Condiciones de pago</th>
+                                        <th>Descuento</th>
+                                        <th>IVA</th>
+                                        <th>Estado</th>
+                                        <th>Fecha Creacion</th>
+                                        <th style="text-align:center ">Opciones</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -486,8 +486,10 @@
             }
 
 
+
+
             var id;
-            $('body').on('click', '.Option', function () {
+            $(document).on('click', '.Option', function () {
                 id = $(this).attr("id");
                 $('#Options').modal({
                     backdrop: 'static',
@@ -580,6 +582,18 @@
                 }
             });
 
+            const formatter = new Intl.NumberFormat('es-CO',{
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 2,
+            });
+
+            const formatter2 = new Intl.NumberFormat('es-CO',{
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+            });
+
             $(document).on('click', '.Viewpdf', function () {
                 let id = this.id;
                 $.ajax({
@@ -602,11 +616,11 @@
                             $('#PdfVendedor').html(data[0][0]['NombreVendedor']);
                             $('#PdfCondicionPago').html(data[0][0]['CondicionPago']);
                             $('#PdfGeneralNotes').html(data[0][0]['Notas']);
-                            $('#PdfBrutoInvoice').html(data[0][0]['Bruto']);
-                            $('#PdfDescuentoInvoice').html(data[0][0]['TotalDescuento']);
-                            $('#PdfSubtotalInvoice').html(data[0][0]['TotalSubtotal']);
-                            $('#PdfIvaInvoice').html(data[0][0]['TotalIVA']);
-                            $('#PdfTotalInvoice').html(data[0][0]['TotalPedido']);
+                            $('#PdfBrutoInvoice').html(formatter2.format(Math.round(data[0][0]['Bruto'])));
+                            $('#PdfDescuentoInvoice').html(formatter2.format(Math.round(data[0][0]['TotalDescuento'])));
+                            $('#PdfSubtotalInvoice').html(formatter2.format(Math.round(data[0][0]['TotalSubtotal'])));
+                            $('#PdfIvaInvoice').html(formatter2.format(Math.round(data[0][0]['TotalIVA'])));
+                            $('#PdfTotalInvoice').html(formatter2.format(Math.round(data[0][0]['TotalPedido'])));
 
                             if(data[0][0]['Estado'] == 1){
                                 document.getElementById("ProgressPed").style.width="10%";
@@ -733,6 +747,7 @@
                             }
 
 
+
                             for (let i = 0; i <= data[1].length -1; i++) {
                                 function format_destino (){
                                     if (data[1][i].Destino === 1){
@@ -751,8 +766,8 @@
                                     '<td style="text-align: center">'+ data[1][i].Notas +'</td>' +
                                     '<td style="text-align: center">'+ data[1][i].Unidad +'</td>' +
                                     '<td style="text-align: right">'+ data[1][i].Cantidad +'</td>' +
-                                    '<td style="text-align: right">'+ data[1][i].Precio +'</td>' +
-                                    '<td style="text-align: right">'+ data[1][i].Total +'</td>' +
+                                    '<td style="text-align: right">'+ formatter.format(data[1][i].Precio) +'</td>' +
+                                    '<td style="text-align: right">'+ formatter2.format(data[1][i].Total) +'</td>' +
                                     '</tr>'
                                 );
                             }
@@ -794,7 +809,7 @@
                 imprimirElemento(div);
             });
 
-            $('body').on('click', '.Cerrar', function () {
+            $(document).on('click', '.Cerrar', function () {
                 $('#PdfTitle').html('');
                 $('#PdfCliente').html('');
                 $('#Pdffecha').html('');
@@ -823,7 +838,7 @@
 
             });
 
-            $('body').on('click', '.StepCartera', function (){
+            $(document).on('click', '.StepCartera', function (){
                 var id = $('#PdfNumeroPedio').html();
                 $.ajax({
                     url: "/getStep",
@@ -926,7 +941,7 @@
                 });
             });
 
-            $('body').on('click', '.StepCostos', function(){
+            $(document).on('click', '.StepCostos', function(){
                 var id = $('#PdfNumeroPedio').html();
                 $.ajax({
                     url: "/getStep",
@@ -999,7 +1014,7 @@
                 })
             });
 
-            $('body').on('click', '.StepProduccion', function() {
+            $(document).on('click', '.StepProduccion', function() {
                 var id = $('#PdfNumeroPedio').html();
                 $.ajax({
                     url: "/getStep",

@@ -127,6 +127,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
                     Route::post('cliente/actualizar/actualizar_grupo_economico','Terceros\Clientes\ClientesController@actualizar_grupo_economico');
 
                     Route::get('cliente/obtener_log_cambios','Terceros\Clientes\ClientesController@obtener_log_cambios');
+
+                    Route::post('cliente/subir_rut','Terceros\Clientes\ClientesController@subir_rut');
+                    Route::get('cliente/descargar_rut/{file}','Terceros\Clientes\ClientesController@descargar_rut')->name('descargar_rut');
                 });
 
 
