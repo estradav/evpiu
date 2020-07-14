@@ -35,6 +35,7 @@ $(document).ready(function () {
         minlength: 2
     });
 
+    var total_cartera = 0;
     $('#consultar').on('click', function () {
         if (nit_cliente == null){
             Swal.fire({
@@ -141,8 +142,8 @@ $(document).ready(function () {
                             minimumFractionDigits: 0
                         });
 
-                        var total_cartera = 0;
 
+                        total_cartera = 0;
                         for (let i = 0; i < data.length; i++) {
                             total_cartera = total_cartera + data[i].Saldo;
 
@@ -198,6 +199,7 @@ $(document).ready(function () {
                                 </tr>
                             `);
                         }
+
                         $('#totales').append(`
                             <tr>
                                 <td colspan="2"><b>TOTAL CARTERA: </b></td>
@@ -209,6 +211,7 @@ $(document).ready(function () {
                         `);
                     }
                     $('#consultar').attr('disabled', 'disabled');
+                    console.log(total_cartera);
                 },
                 error: function (data) {
                     console.log(data);
@@ -217,6 +220,7 @@ $(document).ready(function () {
         }
 
     });
+
 
     function calcular_total_fila(fila, check) {
         const id = fila;
