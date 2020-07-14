@@ -118,6 +118,8 @@ class BackupController extends Controller
 
     /**
      * Deletes a backup file.
+     * @param $file_name
+     * @return RedirectResponse
      */
     public function delete($file_name)
     {

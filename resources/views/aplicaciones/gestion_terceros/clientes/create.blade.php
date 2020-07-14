@@ -566,12 +566,10 @@
         $(document).ready(function () {
             document.querySelector('.custom-file-input').addEventListener('change',function(e){
                 var fileName = document.getElementById("document_rut").files[0].name;
-                var nextSibling = e.target.nextElementSibling
+                var nextSibling = e.target.nextElementSibling;
                 nextSibling.innerText = fileName
             })
         });
-
-
     </script>
 @endpush
 

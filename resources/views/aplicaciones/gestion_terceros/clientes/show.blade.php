@@ -52,7 +52,12 @@
 
 
                             <strong><i class="fas fa-file-pdf mr-1"></i> RUT:</strong>
-                            <p class="text-muted"><a href="javascript:void(0)" class="btn btn-link" id="descargar_rut">Descargar</a></p>
+                            <p class="text-muted">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button class="btn btn-success btn-sm" id="subir_rut">Subir Rut</button>
+                                    <a href="{!! route('descargar_rut', $cliente->NIT) !!}" class="btn btn-primary btn-sm" id="descargar_rut">Descargar</a>
+                                </div>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -2469,6 +2474,69 @@
                             });
                         } else {
                             result.dismiss === Swal.DismissReason.cancel
+                        }
+                    })
+                });
+
+                $(document).on('click', '#subir_rut', function () {
+                    var nit = @json( $cliente->NIT );
+                    nit = nit.split('-');
+
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Rut',
+                        text: 'Seleccione rut',
+                        confirmButtonText: 'Subir',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        buttonsStyling: true,
+                        showCancelButton: true,
+                        input: 'file',
+                        inputAttributes: {
+                            multiple: 'multiple',
+                            accept: 'application/pdf'
+                        },
+                        onBeforeOpen: () => {
+                            $(".swal2-file").change(function () {
+                                var reader = new FileReader();
+                            });
+                        },
+                        inputValidator: (value) => {
+                            return !value && 'Debes seleccionar al menos un archivo'
+                        }
+                    }).then((file) => {
+                        if (file.value) {
+                            var formData = new FormData();
+                            var ins = $('.swal2-file')[0].files.length;
+                            var file = $('.swal2-file')[0].files;
+
+                            /*este for es necesario para la subida de archivos multiples*/
+                            for (var x = 0; x < ins; x++) {
+                                formData.append("fileToUpload[]", file[x]);
+                            }
+                            formData.append("numero", nit[0]);
+
+                            $.ajax({
+                                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                method: 'post',
+                                url: '/aplicaciones/terceros/cliente/subir_rut',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function (resp) {
+                                    $('#ArchivosDeSoporte').html('');
+                                    Swal.fire('Subido', 'Archivo subido con exito!', 'success');
+                                },
+                                error: function (data) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops',
+                                        text: data.responseText
+                                    })
+                                }
+                            })
                         }
                     })
                 });
