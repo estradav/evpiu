@@ -84,8 +84,6 @@
             background-color: red !important;
         }
 
-
-
         .preloader {
             width: 140px;
             height: 140px;

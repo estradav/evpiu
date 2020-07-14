@@ -72,6 +72,9 @@
                 </div>
             </div>
         </div>
+        <div class="Errors" id="Errors" style="display: none !important;"></div>
+
+        <div id="erros_sweet" style="display: none !important;"></div>
     @else
         <div class="main-card mb-3 card">
             <div class="card-body text-center">
@@ -85,6 +88,49 @@
         <script src="{{ asset('aplicaciones/facturacion_electronica/gestion/index.js') }}"></script>
     @endpush
 @endsection
+
+@push('styles')
+    <style>
+        .red {
+            background-color: red !important;
+        }
+
+        .preloader {
+            width: 140px;
+            height: 140px;
+            border: 20px solid #eee;
+            border-top: 20px solid #008000;
+            border-radius: 50%;
+            animation-name: girar;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes girar {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .preloader_datatable {
+            width: 35px;
+            height: 35px;
+            border: 7px solid #eee;
+            border-top: 7px solid #008000;
+            border-radius: 50%;
+            animation-name: girar;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
+        th.hide_me, td.hide_me {
+            display: none;
+        }
+    </style>
+@endpush
 
 @section('modal')
     <div class="modal fade bd-example-modal-xl" id="InfoWsInvoice" tabindex="-1" role="dialog" aria-labelledby="InfoWsInvoice" aria-hidden="true">
@@ -214,6 +260,46 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="facturas_pendientes_modal" tabindex="-1" role="dialog" aria-labelledby="facturas_pendientes_modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Facturas pedientes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="facturas_pendientes_body">
+                    <div class="row justify-content-center">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-primary" id="subir_ws_modal">Subir WebService</button>
+                            <button class="btn btn-primary" id="crear_xml_modal">Descargar XML</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="table-resposive">
+                        <table class="table table-bordered table-sm text-center" id="facturas_pendientes_table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"><input type="checkbox" id="select_all"></th>
+                                    <th scope="col">Factura</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="facturas_pendientes_table_body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

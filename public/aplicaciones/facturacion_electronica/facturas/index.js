@@ -339,10 +339,6 @@ $(document).ready(function () {
             count = 1;
         }
 
-        if (d.motivo == null) {
-            resultado.push('<label class="alert-danger">la factura debe llevar motivo </label><br>');
-            count = 1;
-        }
 
         if (d.nombres == ''){
             resultado.push('<label class="alert-danger">Falta nombres en DMS </label><br>');
