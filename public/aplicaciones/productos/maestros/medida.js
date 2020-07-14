@@ -161,22 +161,30 @@ $(document).ready(function () {
 
 
     $(document).on('keyup', '#Diametro', function () {
-        var base = document.getElementById('Base');
-        var altura = document.getElementById('Altura');
-
-        if(base){
-            base.value = 0;
-        }
-        if (altura){
-            altura.value = 0;
-        }
-
         let unidad_medida = document.getElementById('UndMedida').value;
-        var diametro = this.value;
-        var perforacion = document.getElementById('Perforacion').value;
-        var pestana = document.getElementById('Pestaña').value;
-        var espesor = document.getElementById('Espesor').value;
+        var diametro = "";
+        var perforacion = "";
+        var pestana = "";
+        var espesor = "";
 
+        if(document.getElementById('Base')){
+            document.getElementById('Base').value = 0;
+        }
+        if (document.getElementById('Altura')){
+            document.getElementById('Altura').value = 0;
+        }
+        if (document.getElementById('Diametro')){
+            diametro = document.getElementById('Diametro').value;
+        }
+        if (document.getElementById('Perforacion')){
+            perforacion = document.getElementById('Perforacion').value;
+        }
+        if (document.getElementById('Pestaña')){
+            pestana = document.getElementById('Pestaña').value;
+        }
+        if (document.getElementById('Espesor')){
+            espesor = document.getElementById('Espesor').value;
+        }
 
         document.getElementById('mm2').value = calcular_mm2(unidad_medida, null, null, diametro, null, null, null);
         document.getElementById('denominacion').value = generar_denominacion(unidad_medida, "", "", diametro, perforacion, pestana, espesor);
@@ -184,17 +192,31 @@ $(document).ready(function () {
 
 
     $(document).on('keyup', '#Base', function () {
-        var diametro = document.getElementById('Diametro');
-        if (diametro){
-            diametro.value = 0
-        }
-
         let unidad_medida = document.getElementById('UndMedida').value;
-        var base = this.value;
-        var altura = document.getElementById('Altura').value;
-        var perforacion = document.getElementById('Perforacion').value;
-        var pestana = document.getElementById('Pestaña').value;
-        var espesor = document.getElementById('Espesor').value;
+        var base = "";
+        var altura = "";
+        var perforacion = "";
+        var pestana = "";
+        var espesor = "";
+
+        if (document.getElementById('Diametro')){
+            document.getElementById('Diametro').value = 0
+        }
+        if (document.getElementById('Base')){
+            base = document.getElementById('Base').value;
+        }
+        if (document.getElementById('Altura')){
+            altura = document.getElementById('Altura').value;
+        }
+        if (document.getElementById('Perforacion')){
+            perforacion = document.getElementById('Perforacion').value;
+        }
+        if (document.getElementById('Pestaña')){
+            pestana = document.getElementById('Pestaña').value;
+        }
+        if (document.getElementById('Espesor')){
+            espesor = document.getElementById('Espesor').value;
+        }
 
 
         document.getElementById('mm2').value = calcular_mm2(unidad_medida, base, altura, null);
@@ -203,17 +225,32 @@ $(document).ready(function () {
 
 
     $(document).on('keyup', '#Altura', function () {
-        var diametro = document.getElementById('Diametro');
-        if (diametro){
-            diametro.value = 0
+        let unidad_medida = document.getElementById('UndMedida').value;
+        var base = "";
+        var altura = "";
+        var perforacion = "";
+        var pestana = "";
+        var espesor = "";
+
+        if (document.getElementById('Diametro')){
+            document.getElementById('Diametro').value = 0
+        }
+        if (document.getElementById('Base')){
+            base = document.getElementById('Base').value;
+        }
+        if (document.getElementById('Altura')){
+            altura = document.getElementById('Altura').value;
+        }
+        if (document.getElementById('Perforacion')){
+            perforacion = document.getElementById('Perforacion').value;
+        }
+        if (document.getElementById('Pestaña')){
+            pestana = document.getElementById('Pestaña').value;
+        }
+        if (document.getElementById('Espesor')){
+            espesor = document.getElementById('Espesor').value;
         }
 
-        let unidad_medida = document.getElementById('UndMedida').value;
-        var base = document.getElementById('Base').value;
-        var altura = this.value;
-        var perforacion = document.getElementById('Perforacion').value;
-        var pestana = document.getElementById('Pestaña').value;
-        var espesor = document.getElementById('Espesor').value;
 
         document.getElementById('mm2').value = calcular_mm2(unidad_medida, base, altura, null);
         document.getElementById('denominacion').value = generar_denominacion(unidad_medida, base, altura, "", perforacion, pestana, espesor);
@@ -222,16 +259,31 @@ $(document).ready(function () {
 
     $(document).on('keyup', '#Perforacion', function () {
         let unidad_medida = document.getElementById('UndMedida').value;
-        var diametro = document.getElementById('Diametro').value;
+        var diametro = 0;
+        var base = "";
+        var altura = "";
+        var perforacion = "";
+        var pestana = "";
+        var espesor = "";
 
-        var base = document.getElementById('Base').value;
-        var altura = document.getElementById('Altura').value;
-
-
-        var perforacion = this.value;
-        var pestana = document.getElementById('Pestaña').value;
-        var espesor = document.getElementById('Espesor').value;
-
+        if (document.getElementById('Diametro')){
+            diametro = document.getElementById('Diametro').value;
+        }
+        if (document.getElementById('Base')){
+            base = document.getElementById('Base').value;
+        }
+        if (document.getElementById('Altura')){
+            altura = document.getElementById('Altura').value;
+        }
+        if (document.getElementById('Perforacion')){
+            perforacion = document.getElementById('Perforacion').value;
+        }
+        if (document.getElementById('Pestaña')){
+            pestana = document.getElementById('Pestaña').value;
+        }
+        if (document.getElementById('Espesor')){
+            espesor = document.getElementById('Espesor').value;
+        }
         if (diametro != 0){
             document.getElementById('denominacion').value = generar_denominacion(unidad_medida, "", "", diametro, perforacion, pestana, espesor);
         }else{
@@ -243,41 +295,73 @@ $(document).ready(function () {
 
     $(document).on('keyup', '#Pestaña', function () {
         let unidad_medida = document.getElementById('UndMedida').value;
-        var diametro = document.getElementById('Diametro').value;
+        var diametro = 0;
+        var base = "";
+        var altura = "";
+        var perforacion = "";
+        var pestana = "";
+        var espesor = "";
 
-        var base = document.getElementById('Base').value;
-        var altura = document.getElementById('Altura').value;
-
-
-        var perforacion = document.getElementById('Perforacion').value;
-        var pestana = this.value;
-        var espesor = document.getElementById('Espesor').value;
-
+        if (document.getElementById('Diametro')){
+            diametro = document.getElementById('Diametro').value;
+        }
+        if (document.getElementById('Base')){
+            base = document.getElementById('Base').value;
+        }
+        if (document.getElementById('Altura')){
+            altura = document.getElementById('Altura').value;
+        }
+        if (document.getElementById('Perforacion')){
+            perforacion = document.getElementById('Perforacion').value;
+        }
+        if (document.getElementById('Pestaña')){
+            pestana = document.getElementById('Pestaña').value;
+        }
+        if (document.getElementById('Espesor')){
+            espesor = document.getElementById('Espesor').value;
+        }
         if (diametro != 0){
             document.getElementById('denominacion').value = generar_denominacion(unidad_medida, "", "", diametro, perforacion, pestana, espesor);
         }else{
             document.getElementById('denominacion').value = generar_denominacion(unidad_medida, base, altura, "", perforacion, pestana, espesor);
         }
+
     });
 
 
     $(document).on('keyup', '#Espesor', function () {
         let unidad_medida = document.getElementById('UndMedida').value;
-        var diametro = document.getElementById('Diametro').value;
+        var diametro = 0;
+        var base = "";
+        var altura = "";
+        var perforacion = "";
+        var pestana = "";
+        var espesor = "";
 
-        var base = document.getElementById('Base').value;
-        var altura = document.getElementById('Altura').value;
-
-
-        var perforacion = document.getElementById('Perforacion').value;
-        var pestana = document.getElementById('Pestaña').value;
-        var espesor = this.value;
-
+        if (document.getElementById('Diametro')){
+            diametro = document.getElementById('Diametro').value;
+        }
+        if (document.getElementById('Base')){
+            base = document.getElementById('Base').value;
+        }
+        if (document.getElementById('Altura')){
+            altura = document.getElementById('Altura').value;
+        }
+        if (document.getElementById('Perforacion')){
+            perforacion = document.getElementById('Perforacion').value;
+        }
+        if (document.getElementById('Pestaña')){
+            pestana = document.getElementById('Pestaña').value;
+        }
+        if (document.getElementById('Espesor')){
+            espesor = document.getElementById('Espesor').value;
+        }
         if (diametro != 0){
             document.getElementById('denominacion').value = generar_denominacion(unidad_medida, "", "", diametro, perforacion, pestana, espesor);
         }else{
             document.getElementById('denominacion').value = generar_denominacion(unidad_medida, base, altura, "", perforacion, pestana, espesor);
         }
+
     });
 
 
@@ -288,12 +372,13 @@ $(document).ready(function () {
         document.getElementById("denominacion").readOnly = true;
         $('#form').trigger('reset');
         $('#campos').html('');
+        $('#sublinea').empty();
+        $('#UndMedida').empty();
 
         $.ajax({
             url: "/aplicaciones/productos/maestros/medida/" + id + "/edit",
             type: 'get',
             success: function (data) {
-                console.log(data);
                 document.getElementById('id').value = data.values.id;
                 document.getElementById('cod').value = data.values.cod;
                 document.getElementById('mm2').value = data.values.mm2;
@@ -336,7 +421,6 @@ $(document).ready(function () {
                 document.getElementById("UndMedida").value = data.values.undmedida;
 
                 if (data.values.diametro !== null){
-                    console.log(document.getElementById("Diametro"));
                     document.getElementById("Diametro").value = parseInt(data.values.diametro);
                 }
                 if (data.values.base !== null){
@@ -458,7 +542,6 @@ $(document).ready(function () {
                 string_result = string_result + " PE:" + pestana;
             }
         }
-        console.log(string_result + unidad_medida);
         return string_result + unidad_medida;
     }
 
