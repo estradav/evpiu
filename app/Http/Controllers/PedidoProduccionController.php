@@ -25,7 +25,6 @@ class PedidoProduccionController extends Controller
                         'encabezado_pedidos.created_at as created_at',
                         'pedidos_detalles_area.Produccion as SubEstado')
                     ->where('Estado', '=', '6')
-                    ->orWhere('Estado', '=', '7')
                     ->get();
             }else{
                 $data = DB::table('encabezado_pedidos')
@@ -42,7 +41,6 @@ class PedidoProduccionController extends Controller
                         'encabezado_pedidos.created_at as created_at',
                         'pedidos_detalles_area.Produccion as SubEstado')
                     ->where('Estado', '=', '6')
-                    ->orWhere('Estado', '=', '7')
                     ->get();
             }
 

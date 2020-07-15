@@ -24,7 +24,7 @@ class PedidoCarteraController extends Controller
                         'encabezado_pedidos.Estado as Estado',
                         'encabezado_pedidos.created_at as created_at',
                         'pedidos_detalles_area.Cartera as SubEstado')
-                    ->where('Estado', '=', '2')->orWhere('Estado', '=', '3')
+                    ->where('Estado', '=', '2')
                     ->get();
             } else {
                 $data = DB::table('encabezado_pedidos')
@@ -40,7 +40,7 @@ class PedidoCarteraController extends Controller
                         'encabezado_pedidos.Estado as Estado',
                         'encabezado_pedidos.created_at as created_at',
                         'pedidos_detalles_area.Cartera as SubEstado')
-                    ->where('Estado', '=', '2')->orWhere('Estado', '=', '3')
+                    ->where('Estado', '=', '2')
                     ->get();
             }
 
