@@ -38,7 +38,6 @@ $(document).ready(function () {
                 document.getElementById("code").value = data.cod;
                 document.getElementById("name").value = data.name;
                 document.getElementById("abrev").value = data.abreviatura;
-                document.getElementById("tipo_producto").value = data.tipoproducto_id;
                 document.getElementById("comments").value = data.coments;
                 document.getElementById("heading").innerHTML = "EDITAR "+ data.name;
                 $('#modal').modal('show');

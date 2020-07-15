@@ -69,7 +69,7 @@ class TipoProductoController extends Controller
                 CodTipoProducto::updateOrCreate(
                     ['id' => $request->id], [
                         'usuario'       => Auth::user()->username,
-                        'cod'           => $request->code,
+                        'cod'           => $request->cod ?? $request->code,
                         'name'          => $request->name,
                         'coments'       => $request->comments,
                     ]);

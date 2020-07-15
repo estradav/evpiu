@@ -131,8 +131,8 @@
                             Clonador
                         </a>
                     </li>
-                    <li class="{{ request()->route()->named('codificador.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('codificador.index') }}">
+                    <li class="{{ request()->route()->named('codificado.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('codificado.index') }}">
                             <i class="metismenu-icon"></i>
                             Codificador
                         </a>
