@@ -167,7 +167,7 @@ class ClientesController extends Controller
 
             \Storage::disk('rut_clientes')->put($nombre.'.'.$ext,  \File::get($file));
         }
-        
+
         $termino_dms = '';
 
         if ($request->M_Plazo == '00'){

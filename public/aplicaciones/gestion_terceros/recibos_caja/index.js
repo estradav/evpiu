@@ -8,7 +8,22 @@ $(document).ready(function () {
     $('#table').dataTable({
         language:{
             url: '/Spanish.json'
-        }
+        },
+        columns: [
+            { "orderable": false, "searchable": true },
+            { "orderable": true, "searchable": true },
+            { "orderable": true, "searchable": true },
+            { "orderable": true, "searchable": true },
+            { "orderable": true, "searchable": false },
+            { "orderable": true, "searchable": false },
+            { "orderable": false, "searchable": false },
+            { "orderable": false, "searchable": false },
+            { "orderable": false, "searchable": false },
+            { "orderable": false, "searchable": false },
+        ],
+        order: [
+            [ 0, "desc" ]
+        ]
     });
 
 
