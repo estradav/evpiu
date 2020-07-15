@@ -27,6 +27,7 @@ class RecibosController extends Controller
 
         $data = DB::table('recibos_caja')
             ->where('created_by', '=', $user)
+            ->orderBy('id','desc')
             ->get();
         return view('aplicaciones.gestion_terceros.recibos_caja.index', compact('data'));
     }
