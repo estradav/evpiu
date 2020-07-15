@@ -24,7 +24,7 @@ class PedidoCostosController extends Controller
                         'encabezado_pedidos.Estado as Estado',
                         'encabezado_pedidos.created_at as created_at',
                         'pedidos_detalles_area.Costos as SubEstado')
-                    ->where('Estado', '=', '4')->orWhere('Estado', '=', '5')
+                    ->where('Estado', '=', '4')
                     ->get();
             } else {
                 $data = DB::table('encabezado_pedidos')
@@ -40,7 +40,7 @@ class PedidoCostosController extends Controller
                         'encabezado_pedidos.Estado as Estado',
                         'encabezado_pedidos.created_at as created_at',
                         'pedidos_detalles_area.Costos as SubEstado')
-                    ->where('Estado', '=', '4')->orWhere('Estado', '=', '5')
+                    ->where('Estado', '=', '4')
                     ->get();
             }
 
