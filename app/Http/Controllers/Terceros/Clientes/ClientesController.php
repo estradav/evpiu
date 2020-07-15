@@ -158,14 +158,16 @@ class ClientesController extends Controller
      * @return JsonResponse
      */
     public function guardar_cliente(Request $request){
-        $file = $request->file('archivo_rut');
 
-        $nombre = $request->M_Nit_cc;
-        $ext = $file->getClientOriginalExtension();
+        if ($request->file('archivo_rut')){
+            $file = $request->file('archivo_rut');
 
-        \Storage::disk('rut_clientes')->put($nombre.'.'.$ext,  \File::get($file));
+            $nombre = $request->M_Nit_cc;
+            $ext = $file->getClientOriginalExtension();
 
-
+            \Storage::disk('rut_clientes')->put($nombre.'.'.$ext,  \File::get($file));
+        }
+        
         $termino_dms = '';
 
         if ($request->M_Plazo == '00'){
