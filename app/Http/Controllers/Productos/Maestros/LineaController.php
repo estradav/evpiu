@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Productos\Maestros;
 
 use App\CodLinea;
-use App\CodTipoProducto;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
@@ -20,15 +19,9 @@ class LineaController extends Controller
      * @return Factory|View
      */
     public function index(){
-        $data = DB::table('cod_lineas')
-            ->leftJoin('cod_tipo_productos','cod_lineas.tipoproducto_id','=','cod_tipo_productos.id')
-            ->select('cod_lineas.cod as cod','cod_lineas.name as name','cod_lineas.abreviatura as abrev','cod_lineas.coments as coment',
-                'cod_tipo_productos.name as tp','cod_lineas.id as id','cod_lineas.usuario as user','cod_lineas.created_at as created','cod_lineas.updated_at as update')
-            ->get();
+        $data = CodLinea::all();
 
-        $tipo_productos = CodTipoProducto::orderBy('name', 'asc')->get();
-
-        return view('aplicaciones.productos.maestros.linea.index', compact('data','tipo_productos'));
+        return view('aplicaciones.productos.maestros.linea.index', compact('data'));
     }
 
 
@@ -76,7 +69,6 @@ class LineaController extends Controller
                 CodLinea::updateOrCreate(
                     ['id' => $request->id], [
                         'cod'               => $request->cod ?? $request->code,
-                        'tipoproducto_id'   => $request->tipo_producto,
                         'name'              => $request->name,
                         'abreviatura'       => $request->abrev,
                         'coments'           => $request->comments,

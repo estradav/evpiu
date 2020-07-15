@@ -35,10 +35,8 @@ Route::group(['middleware' => ['caffeinated']], function () {
         Route::middleware(['auth.lock'])->group(function() {
 
             Route::prefix('home')->group(function () {
-
                 /* accesos remotos */
                 route::get('/accesos_remotos','HomeController@accesosremotos')->name('accesos_remotos.index');
-
             });
 
 
@@ -135,8 +133,8 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-                Route::get('/ProductosEnTendenciaPorMes','GestionClientesController@ProductosEnTendenciaPorMes');
-                Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');
+               /* Route::get('/ProductosEnTendenciaPorMes','GestionClientesController@ProductosEnTendenciaPorMes');
+                Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');*/
                 //edit items from clients
 
 
@@ -191,15 +189,38 @@ Route::group(['middleware' => ['caffeinated']], function () {
                         Route::get('/medida/listar_cara_y_unidad_medida','Productos\Maestros\MedidaController@listar_cara_y_unidad_medida');
                         Route::get('/medida/info_calculo_cod','Productos\Maestros\MedidaController@info_calculo_cod');
                         Route::post('/medida/validar_denominacion', 'Productos\Maestros\MedidaController@validar_denominacion');
-
                     });
+
+
+                    /*Codificador*/
+                    Route::resource('codificado', 'Productos\Codificador\CodificadorController')->only('index', 'destroy', 'store');
+                    Route::get('/codificado/listar_sublineas', 'Productos\Codificador\CodificadorController@listar_sublineas');
+                    Route::get('/codificado/listar_caracteristicas_materiales_medidas', 'Productos\Codificador\CodificadorController@listar_caracteristicas_materiales_medidas');
+                    Route::get('/codificado/obtener_datos_generacion_cod_desc','Productos\Codificador\CodificadorController@obtener_datos_generacion_cod_desc');
+                    Route::post('/codificado/validar_codigo', 'Productos\Codificador\CodificadorController@validar_codigo');
+
+
+                    /*Clonador*/
+                    Route::resource('clonador','Productos\Clonador\ClonadorController');
+
+
+
+
                 });
 
             });
 
-            Route::get('/home', 'HomeController@index')
-                ->name('home')
-                ->middleware('role:user');
+            //Backup
+            Route::get('backup/download/{file_name}', 'BackupController@download');
+            Route::get('backup/delete/{file_name}', 'BackupController@delete');
+            Route::resource('backup', 'BackupController', ['only' => [
+                'index', 'create', 'store'
+            ]]);
+
+
+
+
+            Route::get('/home', 'HomeController@index')->name('home');
 
             Route::resource('roles', 'RoleController');
             Route::resource('permissions', 'PermissionController');
@@ -223,8 +244,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
 
 
-            // Productos CIEV --> Codificador
-            Route::resource('maestros','ProdCievMaestroController');
 
 
 
@@ -234,19 +253,8 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-            Route::resource('codificador','ProdCievCodCodigoController');
-            Route::get('/getlineas','ProdCievCodCodigoController@getlineas');
-            Route::get('/getsublineas','ProdCievCodCodigoController@getsublineas');
-            Route::get('/getcaracteristica','ProdCievCodCodigoController@getcaracteristica');
-            Route::get('/getmaterial','ProdCievCodCodigoController@getmaterial');
-            Route::get('/getmedida','ProdCievCodCodigoController@getmedida');
 
-            Route::get('/ctp','ProdCievCodCodigoController@ctp');
-            Route::get('/lns','ProdCievCodCodigoController@lns');
-            Route::get('/sln','ProdCievCodCodigoController@sln');
-            Route::get('/mat','ProdCievCodCodigoController@mat');
-            Route::get('/car','ProdCievCodCodigoController@car');
-            Route::get('/med','ProdCievCodCodigoController@med');
+
 
             Route::get('/get-user-chart-data','ChartDataController@getMonthlyUserData');
             Route::get('/get-invoice-chart-data','ChartDataController@getMonthlyInvoiceData');
@@ -264,10 +272,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-            Route::post('/CodigosPost','ProdCievCodCodigoController@store');
-            Route::get('/CodigosIndex','ProdCievCodCodigoController@index');
 
-            Route::resource('clonador','CreateProductController');
+
+            Route::resource('clonador1','CreateProductController');
             Route::get('/ProductosIndex','CreateProductController@index');
             Route::get('/SearchProducts', 'CreateProductController@SearchProducts');
             Route::get('/SearchCodes', 'CreateProductController@SearchCodes');
@@ -276,7 +283,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-            Route::get('/test', 'ProdCievCodCodigoController@GetCodigos');
 
             Route::resource('pronosticos','PronosticoController');
             Route::get('/PronosticosIndex','PronosticoController@index');
@@ -300,9 +306,6 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
             Route::get('/pedidos_nuevo','PedidoController@nuevo_pedido_index');
 
-
-            Route::post('/GetUniqueCode','ProdCievCodCodigoController@UniqueCod');
-            Route::post('/GetUniqueDescription','ProdCievCodCodigoController@UniqueDescription');
 
 
             Route::post('/PedidoPromoverCartera','PedidoController@PedidoPromoverCartera');
@@ -412,12 +415,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
 
-            //Backup
-            Route::get('backup/download/{file_name}', 'BackupController@download');
-            Route::get('backup/delete/{file_name}', 'BackupController@delete');
-            Route::resource('backup', 'BackupController', ['only' => [
-                'index', 'create', 'store'
-            ]]);
+
 
 
             //Bitacora de operacion y mantenimiento de fuentes fijas

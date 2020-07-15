@@ -31,7 +31,6 @@
                             <table class="table table-striped table-sm" id="table">
                                 <thead>
                                     <tr>
-                                        <th>TIPO DE PRODUCTO</th>
                                         <th>CODIGO</th>
                                         <th>NOMBRE</th>
                                         <th>ABREVIATURA</th>
@@ -43,11 +42,10 @@
                                 <tbody>
                                     @foreach( $data as $row)
                                         <tr>
-                                            <td>{{ $row->tp }}</td>
                                             <td>{{ $row->cod }}</td>
                                             <td>{{ $row->name }}</td>
-                                            <td>{{ $row->abrev }}</td>
-                                            <td>{{ $row->coment }}</td>
+                                            <td>{{ $row->abreviatura }}</td>
+                                            <td>{{ $row->coments }}</td>
                                             <td>{{ \Carbon\Carbon::parse($row->update)->diffForHumans() }}</td>
                                             <td>
                                                 <div class="btn-group ml-auto">
@@ -92,19 +90,6 @@
                     <div class="modal-body">
                         <input type="hidden" id="id" name="id">
                         <input type="hidden" id="code" name="code">
-                        <div class="form-group">
-                            <label for="tipo_producto" class="col-sm-6 control-label">Tipo de producto:</label>
-                            <div class="col-sm-12">
-                                <select class="form-control" name="tipo_producto" id="tipo_producto" >
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    @foreach( $tipo_productos as $tipo_producto)
-                                        <option value="{{ $tipo_producto->id }}" {{ old('tipo_producto') == $tipo_producto->id ? 'selected' : ''}}>
-                                            {{ $tipo_producto->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label for="cod" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">
