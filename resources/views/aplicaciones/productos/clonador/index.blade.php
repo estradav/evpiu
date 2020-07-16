@@ -447,6 +447,7 @@
                     return true;
                 },
                 select: function(event, ui){
+                    $('#clonador_form').trigger('reset');
 
                     /*Campos maestro*/
                     document.getElementById('maestro_tipo_pieza').value = ui.item.maestro_tipo_pieza;
