@@ -4,9 +4,23 @@
 
 @section('content')
     @can('aplicaciones.productos.codificador.index')
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="pe-7s-plugin icon-gradient bg-mean-fruit"></i>
+                    </div>
+                    <div>Codificador
+                        <div class="page-title-subheading">
+                            Codificador de productos
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="card">
+                <div class="main-card mb-3 card">
                     @can('aplicaciones.productos.codificador.nuevo')
                         <div class="card-header">
                             <button class="btn btn-primary" id="nuevo"><i class="fas fa-plus-circle"></i> Nuevo</button>

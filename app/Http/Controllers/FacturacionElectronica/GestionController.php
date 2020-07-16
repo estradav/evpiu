@@ -120,12 +120,9 @@ class GestionController extends Controller
                     'idDocumento' => '',
                     'idVerficacionFuncional' => ''
                 );
-
                 $return = $client->ListarDocumentosElectronicos($params);
                 $return = json_decode($return->return);
                 $values = $return->data;
-
-
             }
 
             return datatables::of($values)
@@ -170,58 +167,60 @@ class GestionController extends Controller
                     ->orderBy('CIEV_V_FE_FacturasTotalizadas.numero', 'asc')
                     ->get()->first();
 
+                if ($data == null){
+                    return response()->json('Factura no encontrada en la vista CIEV_V_FE_FacturasTotalizadas', 500);
+                }else{
 
-
-                if ($data->fecha == null ){
-                    array_push($errors, "Factura sin fecha");
+                    if ($data->fecha == null ){
+                        array_push($errors, "Factura sin fecha");
+                    }
+                    if ($data->plazo == null){
+                        array_push($errors, "Factura sin Plazo");
+                    }
+                    if ($data->razon_social == null){
+                        array_push($errors, "Factura sin razon social");
+                    }
+                    if ($data->tipo_cliente == null){
+                        array_push($errors, "Falta tipo cliente");
+                    }
+                    if ($data->vendedor == null){
+                        array_push($errors, "Falta vendedor");
+                    }
+                    if ($data->cod_alter == null){
+                        array_push($errors, "Falta codigo alterno");
+                    }
+                    if (($data->desc / $data->bruto) * 100 >= 20){
+                        array_push($errors, "Descuento demasiado alto");
+                    }
+                    if ($data->email == null || $data->email == ''){ //
+                        array_push($errors, "Falta email para envio de facturas");
+                    }
+                    if ($data->motivo != 27 && ($data->valor_iva / $data->subtotal) * 100 <= 18.95 || ($data->valor_iva / $data->subtotal) * 100 >= 19.05 ){
+                        array_push($errors, "Porcentaje de iva diferente a 19%");
+                    }
+                    if ($data->motivo == null){
+                        array_push($errors, "Falta motivo");
+                    }
+                    if ($data->bruto == null){
+                        array_push($errors, "Falta valor bruto");
+                    }
+                    if ($data->bruto >= 20000000){
+                        array_push($errors, "Valor bruto demasiado alto");
+                    }
+                    if ($data->bruto <= 3000){
+                        array_push($errors, "Valor bruto demasiado bajo");
+                    }
+                    if ($data->nombres == ''){
+                        array_push($errors, "Faltan nombres (DMS)");
+                    }
+                    if ($data->emailcontacto == '' || $data->emailcontacto == null){
+                        array_push($errors, "Falta email de contacto");
+                    }
+                    if ($data->tipo_cliente != 'ZF' && $data->tipo_cliente != 'EX' && $data->valor_iva == 0){
+                        array_push($errors, "Falta el IVA");
+                    }
+                    return response()->json($errors, 200);
                 }
-                if ($data->plazo == null){
-                    array_push($errors, "Factura sin Plazo");
-                }
-                if ($data->razon_social == null){
-                    array_push($errors, "Factura sin razon social");
-                }
-                if ($data->tipo_cliente == null){
-                    array_push($errors, "Falta tipo cliente");
-                }
-                if ($data->vendedor == null){
-                    array_push($errors, "Falta vendedor");
-                }
-                if ($data->cod_alter == null){
-                    array_push($errors, "Falta codigo alterno");
-                }
-                if (($data->desc / $data->bruto) * 100 >= 20){
-                    array_push($errors, "Descuento demasiado alto");
-                }
-                if ($data->email == null || $data->email == ''){ //
-                    array_push($errors, "Falta email para envio de facturas");
-                }
-                if ($data->motivo != 27 && ($data->valor_iva / $data->subtotal) * 100 <= 18.95 || ($data->valor_iva / $data->subtotal) * 100 >= 19.05 ){
-                    array_push($errors, "Porcentaje de iva diferente a 19%");
-                }
-                if ($data->motivo == null){
-                    array_push($errors, "Falta motivo");
-                }
-                if ($data->bruto == null){
-                    array_push($errors, "Falta valor bruto");
-                }
-                if ($data->bruto >= 20000000){
-                    array_push($errors, "Valor bruto demasiado alto");
-                }
-                if ($data->bruto <= 3000){
-                    array_push($errors, "Valor bruto demasiado bajo");
-                }
-                if ($data->nombres == ''){
-                    array_push($errors, "Faltan nombres (DMS)");
-                }
-                if ($data->emailcontacto == '' || $data->emailcontacto == null){
-                    array_push($errors, "Falta email de contacto");
-                }
-                if ($data->tipo_cliente != 'ZF' && $data->tipo_cliente != 'EX' && $data->valor_iva == 0){
-                    array_push($errors, "Falta el IVA");
-                }
-
-                return response()->json($errors, 200);
 
             }catch (\Exception $e){
                 return response($e->getMessage(), 500);

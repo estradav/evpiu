@@ -58,8 +58,7 @@ class CreateProductController extends Controller
             ->take(20)
             ->get();
 
-        foreach ($queries as $q)
-        {
+        foreach ($queries as $q) {
             $results[] = [
                 'id'            => trim($q->PRTNUM_01),
                 'value'         => trim($q->PRTNUM_01).' - '.trim($q->PMDES1_01),

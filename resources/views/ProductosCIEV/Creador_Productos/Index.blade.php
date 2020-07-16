@@ -81,4 +81,4 @@
     @endpush
 @endsection
  @extends('ProductosCIEV.Creador_Productos.Modal')
- @extends('ProductosCIEV.Codificador.modal')
+ {{--@extends('ProductosCIEV.Codificador.modal')--}}

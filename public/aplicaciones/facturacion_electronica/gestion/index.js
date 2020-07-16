@@ -85,7 +85,7 @@ $(document).ready(function () {
     });
 
 
-    $(document).on('click','.download_ws', function () {
+    $(document).on('click', '.download_ws', function () {
         var id = this.id;
         $.ajaxSetup({
             headers: {
@@ -141,14 +141,8 @@ $(document).ready(function () {
                 for (let i = 0; i < data.length ; i++) {
                     array.push(data[i].numero);
                 }
-                console.log(array);
-
-
                 array = array.sort();
-
-                console.log(array.length);
                 for(let i = 1; i < array.length; i++) {
-
                     if(array[i] - array[i-1] !== 1) {
                         console.log(array[i]);
                         var x = array[i] - array[i-1];
@@ -158,7 +152,6 @@ $(document).ready(function () {
                             k++;
                         }
                     }
-                    console.log(missing)
                 }
             }
         });
@@ -211,19 +204,7 @@ $(document).ready(function () {
                     `<button class="btn btn-light info_factura_modal" id="`+ missing[i] +`"> <i class="fas fa-info-circle"></i> Info</button>`,
                 ] ).draw( false );
             }
-
             $('#facturas_pendientes_modal').modal('show');
-
-
-          /*  Swal.fire({
-                icon: 'info',
-                title: 'Hay facturas pendientes por cargar',
-                html: '<h3 >Facturas pendientes por cargar en el rango seleccionado:</h3> <h3>'+ missing +'</h3>',
-                confirmButtonText: 'Aceptar',
-                cancelButtonText: 'Cancelar',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-            });*/
         }
     });
 
@@ -371,7 +352,6 @@ $(document).ready(function () {
                 dataType: 'json', // importante para que
                 data: {
                     selected: JSON.stringify(selected),
-                    Username: Username
                 }, // jQuery convierta el array a JSON
                 url: '/aplicaciones/facturacion_electronica/web_service/envio_facturas',
                 success: function (data) {

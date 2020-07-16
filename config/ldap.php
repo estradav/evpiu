@@ -23,7 +23,5 @@ return [
                 'use_tls' => env('LDAP_USE_TLS', false),
             ],
         ],
-
     ],
-
 ];

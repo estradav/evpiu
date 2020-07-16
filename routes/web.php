@@ -27,7 +27,6 @@ Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
-Route::group(['middleware' => ['caffeinated']], function () {
     Route::get('login/locked', 'Auth\LoginController@locked')->middleware('auth')->name('login.locked');
     Route::post('login/locked', 'Auth\LoginController@unlock')->name('login.unlock');
 
@@ -201,13 +200,9 @@ Route::group(['middleware' => ['caffeinated']], function () {
 
 
                     /*Clonador*/
-                    Route::resource('clonador','Productos\Clonador\ClonadorController');
-
-
-
-
+                    Route::resource('clonado','Productos\Clonador\ClonadorController')->only('index');
+                    Route::get('/clonado/obtener_info_producto_clonar', 'Productos\Clonador\ClonadorController@obtener_info_producto_clonar');
                 });
-
             });
 
             //Backup
@@ -474,12 +469,7 @@ Route::group(['middleware' => ['caffeinated']], function () {
             Route::get('sensores_gas','SensorChimeneaController@data_gas');
         });
 
-
-
-
-
     });
-});
 
 
 

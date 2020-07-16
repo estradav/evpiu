@@ -30,7 +30,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-responsive table-striped dataTableP" id="table">
+                            <table class="table table-responsive table-striped table-sm dataTableP" id="table">
                                 <thead>
                                     <tr>
                                         <th># Pedido</th>

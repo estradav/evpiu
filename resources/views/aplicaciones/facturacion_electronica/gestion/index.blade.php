@@ -48,7 +48,7 @@
                 <div class="main-card mb-3 card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover" id="table">
+                            <table class="table table-striped table-sm" id="table">
                                 <thead>
                                     <tr>
                                         <th>ID FACTIBLE</th>
