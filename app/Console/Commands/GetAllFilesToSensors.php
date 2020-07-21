@@ -46,7 +46,8 @@ class GetAllFilesToSensors extends Command
         $this->info('*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*');
         $this->info(' ');
 
-        $list_to_files = Storage::disk('ftp')->files('Repositorio/GestionAmbiental/Chimenea');
+        $list_to_files = Storage::disk('ftp')->files('Repositorio/Gestion Ambiental/Chimenea');
+
 
         foreach ($list_to_files as $file){
             $filecontent =  Storage::disk('ftp')->get($file);
@@ -84,7 +85,7 @@ class GetAllFilesToSensors extends Command
         }
 
 
-        $list_to_files_gas =  Storage::disk('ftp')->files('Repositorio\GestionAmbiental\MedidorGas');
+        $list_to_files_gas =  Storage::disk('ftp')->files('Repositorio\Gestion Ambiental\MedidorGas');
         foreach ($list_to_files_gas as $file){
             $filecontent =  Storage::disk('ftp')->get($file);
             $filecontent = explode("\n", $filecontent);
