@@ -23,13 +23,18 @@ class RecibosController extends Controller
      * @return Factory|View
      */
     public function index(){
-        $user = Auth::user()->username;
-
         $data = DB::table('recibos_caja')
-            ->where('created_by', '=', $user)
+            ->where('created_by', '=', Auth::user()->username)
             ->orderBy('id','desc')
             ->get();
-        return view('aplicaciones.gestion_terceros.recibos_caja.index', compact('data'));
+
+        $sum_rc = DB::table('recibos_caja')
+            ->where('created_by', '=', Auth::user()->username)
+            ->where('state', '=', '3')
+            ->orderBy('id','desc')
+            ->sum('total');
+
+        return view('aplicaciones.gestion_terceros.recibos_caja.index', compact('data','sum_rc'));
     }
 
 
@@ -792,6 +797,31 @@ class RecibosController extends Controller
                 return response()->json($consulta, 200);
             }catch (\Exception $e){
                 return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+
+    public function datos_rc_informe(Request $request){
+        if ($request->ajax()){
+            try {
+                $data = DB::table('recibos_caja')
+                    ->where('created_by','=', Auth::user()->username)
+                    ->where('state', '=', '3')
+                    ->whereBetween('created_at', [$request->star_date, $request->end_date])
+                    ->get();
+
+                $sum_rc = DB::table('recibos_caja')
+                    ->where('created_by', '=', Auth::user()->username)
+                    ->where('state', '=', '3')
+                    ->whereBetween('created_at', [$request->star_date, $request->end_date])
+                    ->sum('total');
+
+                return response()->json(['rc' => $data, 'total' => $sum_rc], 200);
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(), 500);
+
             }
         }
     }

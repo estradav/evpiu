@@ -84,6 +84,29 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="rc_valores_filter">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" id="filtrar_rc">Filtrar datos</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="data_datos_rc_informe">
+                                <div class="alert alert-primary text-center" role="alert">
+                                    Por favor, elija un rango de fechas para ver el acumulado de RC
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     @else
         <div class="main-card mb-3 card">

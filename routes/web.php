@@ -150,6 +150,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                 Route::post('recibos_caja/guardar_recibo_caja_edit','Terceros\RecibosCaja\RecibosController@guardar_recibo_caja_edit');
                 Route::post('recibos_caja/cambiar_estado','Terceros\RecibosCaja\RecibosController@cambiar_estado');
                 Route::post('recibos_caja/finalizar_rc','Terceros\RecibosCaja\RecibosController@finalizar_rc');
+                Route::get('recibos_caja/datos_rc_informe', 'Terceros\RecibosCaja\RecibosController@datos_rc_informe');
 
 
                 Route::prefix('productos')->group(function () {
