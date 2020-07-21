@@ -125,8 +125,8 @@
                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                 </a>
                 <ul>
-                    <li class="{{ request()->route()->named('clonador.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('clonador.index') }}">
+                    <li class="{{ request()->route()->named('clonado.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('clonado.index') }}">
                             <i class="metismenu-icon"></i>
                             Clonador
                         </a>

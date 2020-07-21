@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-responsive table-striped dataTableP" id="table">
+                            <table class="table table-responsive table-striped table-sm dataTableP" id="table">
                                 <thead>
                                     <tr>
                                         <th># Pedido</th>
@@ -311,17 +311,17 @@
                         data:{CodVenUsuario: CodVenUsuario, Estado:Estado}
                     },
                     columns: [
-                        {data: 'id', name: 'id', orderable: false, searchable: false},
-                        {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: false},
-                        {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: false},
-                        {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: false},
-                        {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: false},
+                        {data: 'id', name: 'id', orderable: false, searchable: true},
+                        {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
+                        {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
+                        {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
+                        {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: true},
                         {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: false},
                         {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
                         {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
-                        {data: 'Estado', name: 'Estado', orderable: false, searchable: false},
-                        {data: 'SubEstado', name: 'SubEstado', orderable: false, searchable: false},
-                        {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
+                        {data: 'Estado', name: 'Estado', orderable: false, searchable: true},
+                        {data: 'SubEstado', name: 'SubEstado', orderable: false, searchable: true},
+                        {data: 'created_at', name: 'created_at', orderable: false, searchable: true},
                         {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
 
                     ],

@@ -208,8 +208,6 @@
             @yield('modal')
         </div>
 
-
-
         <script src="{{ asset('architectui/assets/scripts/main.js') }}"></script>
 
         {{--Jquery--}}
@@ -279,8 +277,6 @@
         {{--DateRange Picker--}}
         <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
-
 
 
         <script type="text/javascript">
