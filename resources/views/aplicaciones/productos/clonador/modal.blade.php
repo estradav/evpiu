@@ -59,7 +59,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">ID Pieza</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_id_pieza" aria-label="maestro_id_pieza" readonly/>
+                                            <input type="text" class="form-control" id="maestro_id_pieza" name="maestro_id_pieza" aria-label="maestro_id_pieza" readonly/>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -67,7 +67,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Descripcion</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_descripcion" aria-label="maestro_id_pieza" readonly/>
+                                            <input type="text" class="form-control" id="maestro_descripcion" name="maestro_descripcion" aria-label="maestro_descripcion" readonly/>
                                         </div>
                                     </div>
                                 </div>
@@ -174,7 +174,7 @@
                                             <select class="form-control" id="maestro_codigo_clase" name="maestro_codigo_clase">
                                                 <option value="" selected>Seleccione...</option>
                                                  @foreach( $codigo_clase as $cc)
-                                                     <option value="{{ $cc->id }}">{{ $cc->id.'-'.$cc->name }}</option>
+                                                     <option value="{{ trim($cc->id) }}">{{ trim($cc->id).'-'.trim($cc->name) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -187,7 +187,7 @@
                                             <select class="form-control" id="maestro_codigo_comodidad" name="maestro_codigo_comodidad">
                                                 <option value="" selected>Seleccione...</option>
                                                 @foreach( $codigo_comodidad as $cc)
-                                                    <option value="{{ $cc->id }}">{{ $cc->id }}</option>
+                                                    <option value="{{ trim($cc->id) }}">{{ trim($cc->id) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -200,7 +200,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Inventario</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_inventario" aria-label="maestro_inventario" readonly/>
+                                            <input type="text" class="form-control" id="maestro_inventario" name="maestro_inventario" aria-label="maestro_inventario" readonly/>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -208,7 +208,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Costo unit</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_costo_unit" aria-label="maestro_costo_unit"/>
+                                            <input type="text" class="form-control" id="maestro_costo_unit" name="maestro_costo_unit" aria-label="maestro_costo_unit"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -216,7 +216,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Zona</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_zona" aria-label="maestro_zona"/>
+                                            <input type="text" class="form-control" id="maestro_zona" name="maestro_zona" aria-label="maestro_zona"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -224,7 +224,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Nivel rev</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_nivel_rev" aria-label="maestro_nivel_rev"/>
+                                            <input type="text" class="form-control" id="maestro_nivel_rev" name="maestro_nivel_rev" aria-label="maestro_nivel_rev"/>
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +235,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">TC Compras</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_tc_compras" aria-label="maestro_tc_compras"/>
+                                            <input type="text" class="form-control" id="maestro_tc_compras" name="maestro_tc_compras" aria-label="maestro_tc_compras"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -243,7 +243,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">TC Manufactura</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_tc_manufactura" aria-label="maestro_tc_manufactura"/>
+                                            <input type="text" class="form-control" id="maestro_tc_manufactura" name="maestro_tc_manufactura" aria-label="maestro_tc_manufactura"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -251,7 +251,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Civ de CDU</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_civ_cdu" aria-label="maestro_civ_cdu" disabled=""/>
+                                            <input type="text" class="form-control" id="maestro_civ_cdu" name="maestro_civ_cdu" aria-label="maestro_civ_cdu" disabled=""/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -259,7 +259,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Ref CDU</span>
                                             </div>
-                                            <input type="text" class="form-control" id="maestro_ref_cdu" aria-label="maestro_ref_cdu" disabled/>
+                                            <input type="text" class="form-control" id="maestro_ref_cdu" name="maestro_ref_cdu" aria-label="maestro_ref_cdu" disabled/>
                                         </div>
                                     </div>
                                 </div>
@@ -273,7 +273,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Numero de plano</span>
                                             </div>
-                                            <input type="text" class="form-control" id="ingenieria_numero_plano" aria-label="ingenieria_numero_plano"/>
+                                            <input type="text" class="form-control" id="ingenieria_numero_plano" name="ingenieria_numero_plano" aria-label="ingenieria_numero_plano"/>
                                         </div>
                                     </div>
 
@@ -282,7 +282,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-percentage"></i>&nbsp; Rendimiento</span>
                                             </div>
-                                            <input type="number" class="form-control" id="ingenieria_rendimiento" aria-label="ingenieria_rendimiento"/>
+                                            <input type="number" class="form-control" id="ingenieria_rendimiento" name="ingenieria_rendimiento" aria-label="ingenieria_rendimiento"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -290,7 +290,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-percentage"></i>&nbsp; Desecho</span>
                                             </div>
-                                            <input type="number" class="form-control" id="ingenieria_desecho" aria-label="ingenieria_desecho"/>
+                                            <input type="number" class="form-control" id="ingenieria_desecho" name="ingenieria_desecho" aria-label="ingenieria_desecho"/>
                                         </div>
                                     </div>
                                 </div>
@@ -316,7 +316,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">CBN</span>
                                             </div>
-                                            <input type="number" class="form-control" id="ingenieria_cbn" aria-label="ingenieria_cbn"/>
+                                            <input type="number" class="form-control" id="ingenieria_cbn" name="ingenieria_cbn" aria-label="ingenieria_cbn"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -324,7 +324,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Archivo dibujo</span>
                                             </div>
-                                            <input type="text" class="form-control" id="ingenieria_archivo_dibujo" aria-label="ingenieria_archivo_dibujo" disabled/>
+                                            <input type="text" class="form-control" id="ingenieria_archivo_dibujo" name="ingenieria_archivo_dibujo" aria-label="ingenieria_archivo_dibujo" disabled/>
                                         </div>
                                     </div>
                                 </div>
@@ -386,7 +386,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">TC critico</span>
                                             </div>
-                                            <input type="number" class="form-control" id="planificador_tc_critico" aria-label="planificador_tc_critico"/>
+                                            <input type="number" class="form-control" id="planificador_tc_critico" name="planificador_tc_critico" aria-label="planificador_tc_critico"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -394,7 +394,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">PDR</span>
                                             </div>
-                                            <input type="number" class="form-control" id="planificador_pdr" aria-label="planificador_pdr"/>
+                                            <input type="number" class="form-control" id="planificador_pdr" name="planificador_pdr" aria-label="planificador_pdr"/>
                                         </div>
                                     </div>
                                 </div>
@@ -405,7 +405,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">CDR</span>
                                             </div>
-                                            <input type="number" class="form-control" id="planificador_cdr" aria-label="planificador_cdr"/>
+                                            <input type="number" class="form-control" id="planificador_cdr" name="planificador_cdr" aria-label="planificador_cdr"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -413,7 +413,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Inventario seguridad</span>
                                             </div>
-                                            <input type="number" class="form-control" id="planificador_inventario_seguridad" aria-label="planificador_cdr"/>
+                                            <input type="number" class="form-control" id="planificador_inventario_seguridad" name="planificador_inventario_seguridad" aria-label="planificador_inventario_seguridad"/>
                                         </div>
                                     </div>
                                 </div>
@@ -423,7 +423,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="planificador_plan_firme" aria-label="planificador_plan_firme">
+                                                    <input type="checkbox" id="planificador_plan_firme" name="planificador_plan_firme" aria-label="planificador_plan_firme">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="Plan firme" disabled>
@@ -433,7 +433,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="planificador_ncnd" aria-label="planificador_ncnd">
+                                                    <input type="checkbox" id="planificador_ncnd" name="planificador_ncnd" aria-label="planificador_ncnd">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="NCND" disabled>
@@ -443,7 +443,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="planificador_rump" aria-label="planificador_rump">
+                                                    <input type="checkbox" id="planificador_rump" name="planificador_rump" aria-label="planificador_rump">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="RUMP" disabled>
@@ -453,7 +453,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="planificador_pieza_critica" aria-label="planificador_pieza_critica">
+                                                    <input type="checkbox" id="planificador_pieza_critica" name="planificador_pieza_critica" aria-label="planificador_pieza_critica">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="Pieza critica" disabled>
@@ -470,7 +470,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Tiempo ciclo</span>
                                             </div>
-                                            <input type="number" class="form-control" id="fabricacion_tiempo_ciclo" aria-label="fabricacion_tiempo_ciclo"/>
+                                            <input type="number" class="form-control" id="fabricacion_tiempo_ciclo" name="fabricacion_tiempo_ciclo" aria-label="fabricacion_tiempo_ciclo"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -478,7 +478,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Planear</span>
                                             </div>
-                                            <input type="number" class="form-control" id="fabricacion_planear" aria-label="fabricacion_planear"/>
+                                            <input type="number" class="form-control" id="fabricacion_planear" name="fabricacion_planear" aria-label="fabricacion_planear"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -486,7 +486,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Fabricar</span>
                                             </div>
-                                            <input type="number" class="form-control" id="fabricacion_fabricar" aria-label="fabricacion_fabricar"/>
+                                            <input type="number" class="form-control" id="fabricacion_fabricar" name="fabricacion_fabricar" aria-label="fabricacion_fabricar"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -494,7 +494,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Almacenar</span>
                                             </div>
-                                            <input type="number" class="form-control" id="fabricacion_almacenar" aria-label="fabricacion_almacenar"/>
+                                            <input type="number" class="form-control" id="fabricacion_almacenar" name="fabricacion_almacenar" aria-label="fabricacion_almacenar"/>
                                         </div>
                                     </div>
                                 </div>
@@ -508,7 +508,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Tiempo Ciclo</span>
                                             </div>
-                                            <input type="number" class="form-control" id="compras_tiempo_ciclo" aria-label="compras_tiempo_ciclo"/>
+                                            <input type="number" class="form-control" id="compras_tiempo_ciclo" name="compras_tiempo_ciclo" aria-label="compras_tiempo_ciclo"/>
                                         </div>
 
                                     </div>
@@ -517,7 +517,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Planear</span>
                                             </div>
-                                            <input type="number" class="form-control" id="compras_planear" aria-label="compras_planear"/>
+                                            <input type="number" class="form-control" id="compras_planear" name="compras_planear" aria-label="compras_planear"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -525,7 +525,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Comprar</span>
                                             </div>
-                                            <input type="number" class="form-control" id="compras_comprar" aria-label="compras_comprar"/>
+                                            <input type="number" class="form-control" id="compras_comprar" name="compras_comprar" aria-label="compras_comprar"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -533,7 +533,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Almacenar</span>
                                             </div>
-                                            <input type="number" class="form-control" id="compras_almacenar" aria-label="compras_almacenar"/>
+                                            <input type="number" class="form-control" id="compras_almacenar" name="compras_almacenar" aria-label="compras_almacenar"/>
                                         </div>
                                     </div>
                                 </div>
@@ -547,7 +547,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Promedio</span>
                                             </div>
-                                            <input type="number" class="form-control" id="cantidad_orden_promedio" aria-label="cantidad_orden_promedio"/>
+                                            <input type="number" class="form-control" id="cantidad_orden_promedio" name="cantidad_orden_promedio" aria-label="cantidad_orden_promedio"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -555,7 +555,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Minima</span>
                                             </div>
-                                            <input type="number" class="form-control" id="cantidad_orden_minima" aria-label="cantidad_orden_minima"/>
+                                            <input type="number" class="form-control" id="cantidad_orden_minima" name="cantidad_orden_minima" aria-label="cantidad_orden_minima"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -563,7 +563,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Maxima</span>
                                             </div>
-                                            <input type="number" class="form-control" id="cantidad_orden_maxima" aria-label="cantidad_orden_maxima"/>
+                                            <input type="number" class="form-control" id="cantidad_orden_maxima" name="cantidad_orden_maxima" aria-label="cantidad_orden_maxima"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -571,7 +571,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Multiple</span>
                                             </div>
-                                            <input type="number" class="form-control" id="cantidad_orden_multiple" aria-label="cantidad_orden_multiple"/>
+                                            <input type="number" class="form-control" id="cantidad_orden_multiple" name="cantidad_orden_multiple" aria-label="cantidad_orden_multiple"/>
                                         </div>
                                     </div>
                                 </div>
@@ -583,7 +583,7 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
-                                                <input type="checkbox" id="inventario_requiere_inspeccion" aria-label="inventario_requiere_inspeccion">
+                                                <input type="checkbox" id="inventario_requiere_inspeccion" name="inventario_requiere_inspeccion" aria-label="inventario_requiere_inspeccion">
                                             </div>
                                         </div>
                                         <input type="text" class="form-control" value="Requiere inspecciòn" disabled>
@@ -595,7 +595,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Exceso entradas</span>
                                         </div>
-                                        <input type="number" class="form-control" id="inventario_exceso_entrada" aria-label="inventario_exceso_entrada"/>
+                                        <input type="number" class="form-control" id="inventario_exceso_entrada" name="inventario_exceso_entrada" aria-label="inventario_exceso_entrada"/>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -603,7 +603,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Peso promedio</span>
                                         </div>
-                                        <input type="number" class="form-control" id="inventario_peso_promedio" aria-label="inventario_peso_promedio"/>
+                                        <input type="number" class="form-control" id="inventario_peso_promedio" name="inventario_peso_promedio" aria-label="inventario_peso_promedio"/>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -628,14 +628,14 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Dias vence</span>
                                             </div>
-                                            <input type="number" class="form-control" id="seguimiento_lote_dias_vence" aria-label="seguimiento_lote_dias_vence"/>
+                                            <input type="number" class="form-control" id="seguimiento_lote_dias_vence" name="seguimiento_lote_dias_vence" aria-label="seguimiento_lote_dias_vence"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="seguimiento_lote_control_lote" aria-label="seguimiento_lote_control_lote">
+                                                    <input type="checkbox" id="seguimiento_lote_control_lote" name="seguimiento_lote_control_lote" aria-label="seguimiento_lote_control_lote">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="Control lote" disabled>
@@ -645,7 +645,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="seguimiento_lote_control_ns" aria-label="seguimiento_lote_control_ns">
+                                                    <input type="checkbox" id="seguimiento_lote_control_ns" name="seguimiento_lote_control_ns" aria-label="seguimiento_lote_control_ns">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="Control N/S" disabled>
@@ -655,7 +655,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="seguimiento_lote_multi_entradas" aria-label="seguimiento_lote_multi_entradas">
+                                                    <input type="checkbox" id="seguimiento_lote_multi_entradas" name="seguimiento_lote_multi_entradas" aria-label="seguimiento_lote_multi_entradas">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="Multi entradas" disabled>
@@ -668,7 +668,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="seguimiento_lote_lote_cdp" aria-label="seguimiento_lote_lote_cdp">
+                                                    <input type="checkbox" id="seguimiento_lote_lote_cdp" name="seguimiento_lote_lote_cdp" aria-label="seguimiento_lote_lote_cdp">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="Lote CDP" disabled>
@@ -678,7 +678,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <input type="checkbox" id="seguimiento_lote_ns_cdp" aria-label="seguimiento_lote_ns_cdp">
+                                                    <input type="checkbox" id="seguimiento_lote_ns_cdp" name="seguimiento_lote_ns_cdp" aria-label="seguimiento_lote_ns_cdp">
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control" value="N/S CDP" disabled>
@@ -695,7 +695,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Codigo</span>
                                             </div>
-                                            <select name="Inventario_Re_Cod" id="recuento_ciclico_codigo" class="form-control">
+                                            <select name="recuento_ciclico_codigo" id="recuento_ciclico_codigo" class="form-control">
                                                 <option value="" selected>Seleccione...</option>
                                                 <option value="N">N - Ninguno</option>
                                                 <option value="D">D - Diario</option>
@@ -712,7 +712,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Tolerancia (<i class="fas fa-dollar-sign"></i>)</span>
                                             </div>
-                                            <input type="number" class="form-control" id="recuento_ciclico_tolerancia" aria-label="recuento_ciclico_tolerancia"/>
+                                            <input type="number" class="form-control" id="recuento_ciclico_tolerancia" name="recuento_ciclico_tolerancia" aria-label="recuento_ciclico_tolerancia"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -720,13 +720,29 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Tolerancia (<i class="fas fa-percentage"></i>)</span>
                                             </div>
-                                            <input type="number" class="form-control" id="recuento_ciclico_tolerancia_porcentaje" aria-label="recuento_ciclico_tolerancia_porcentaje"/>
+                                            <input type="number" class="form-control" id="recuento_ciclico_tolerancia_porcentaje" name="recuento_ciclico_tolerancia_porcentaje" aria-label="recuento_ciclico_tolerancia_porcentaje"/>
                                         </div>
                                     </div>
                                 </div>
                             </fieldset>
                         </div><!-- end tab-pane -->
                     </div>
+                    <input type="hidden" name="CSTTYP_01" id="CSTTYP_01">
+                    <input type="hidden" name="LABOR_01" id="LABOR_01">
+                    <input type="hidden" name="VOH_01" id="VOH_01">
+                    <input type="hidden" name="FOH_01" id="FOH_01">
+                    <input type="hidden" name="QUMMAT_01" id="QUMMAT_01">
+                    <input type="hidden" name="QUMLAB_01" id="QUMLAB_01">
+                    <input type="hidden" name="QUMVOH_01" id="QUMVOH_01">
+                    <input type="hidden" name="HRS_01" id="HRS_01">
+                    <input type="hidden" name="QUMHRS_01" id="QUMHRS_01">
+                    <input type="hidden" name="PURUOM_01" id="PURUOM_01">
+                    <input type="hidden" name="PERDAY_01" id="PERDAY_01">
+                    <input type="hidden" name="PURCNV_01" id="PURCNV_01">
+                    <input type="hidden" name="TNXDTE_01" id="TNXDTE_01">
+                    <input type="hidden" name="CYCDTE_01" id="CYCDTE_01">
+                    <input type="hidden" name="PURUOM_01" id="PURUOM_01">
+                    <input type="hidden" id="cod_product_original" name="cod_product_original">
                 </div><!-- end modal-body -->
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Guardar</button>

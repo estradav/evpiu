@@ -200,8 +200,9 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
                     /*Clonador*/
-                    Route::resource('clonado','Productos\Clonador\ClonadorController')->only('index');
+                    Route::resource('clonado','Productos\Clonador\ClonadorController')->only('index', 'store');
                     Route::get('/clonado/obtener_info_producto_clonar', 'Productos\Clonador\ClonadorController@obtener_info_producto_clonar');
+                    Route::get('/clonado/obtener_producto_codificador', 'Productos\Clonador\ClonadorController@obtener_producto_codificador');
                 });
             });
 
@@ -211,8 +212,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::resource('backup', 'BackupController', ['only' => [
                 'index', 'create', 'store'
             ]]);
-
-
 
 
             Route::get('/home', 'HomeController@index')->name('home');
@@ -235,19 +234,11 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
 
+
+
+
             Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
             Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -256,26 +247,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::get('/get-invoice-chart-data-value','ChartDataController@getMonthlyInvoiceDataValue');
             Route::get('/get-invoice-age-data-value','ChartDataController@getAgeInvoiceData');
             Route::get('/get-invoice-day-data-value','ChartDataController@getDayInvoiceData');
-
-
-
-
-
-
-
-
-
-
-
-
-
-            Route::resource('clonador1','CreateProductController');
-            Route::get('/ProductosIndex','CreateProductController@index');
-            Route::get('/SearchProducts', 'CreateProductController@SearchProducts');
-            Route::get('/SearchCodes', 'CreateProductController@SearchCodes');
-            Route::post('/SaveProducts','CreateProductController@SaveProducts');
-
-
 
 
 
@@ -398,21 +369,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             //Bitacora de operacion y mantenimiento de fuentes fijas
             Route::resource('bitacoraomff','BitacoraOmffController');
             Route::get('get_bitacoraomff','BitacoraOmffController@index');
@@ -426,15 +382,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::get('Details_Hl1_bitacoraomff','BitacoraOmffController@Details_Hl1');
 
 
-            Route::resource('informecontrolentrega', 'InformeControlEntregaController');
-            Route::get('informecontrolentrega_get','InformeControlEntregaController@index');
-
-
-            Route::resource('informeordenproduccion','InformeOrdenProduccionController');
-            Route::get('informeordenproduccion_getdata','InformeOrdenProduccionController@index');
-
-
-            Route::get('/informeordenproduccion_barcode','InformeOrdenProduccionController@Barcode');
 
             Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
@@ -461,9 +408,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::get('/consultar_empleado_invitado_cc','MedidaPrevencionController@consultar_empleado_invitado_cc');
 
 
-            Route::resource('sensores','SensorChimeneaController',['only' => [
-                'index'
-            ]]);
+            Route::resource('sensores','SensorChimeneaController')->only('index');
 
             Route::get('sensores_chimenea','SensorChimeneaController@data_chimenea');
             Route::get('sensores_gas','SensorChimeneaController@data_gas');
