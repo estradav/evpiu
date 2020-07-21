@@ -5,6 +5,10 @@ $(document).ready(function () {
         }
     });
 
+    let star_date = moment().format('YYYY-MM-DD 00:00:00'), end_date = moment().format('YYYY-MM-DD 23:59:59');
+    moment.locale('es');
+
+
     $('#table').dataTable({
         language:{
             url: '/Spanish.json'
@@ -270,6 +274,87 @@ $(document).ready(function () {
                 });
             }
         });
+    });
 
+    $('input[id="rc_valores_filter"]').daterangepicker({
+        drops: 'down',
+        open: 'center',
+        ranges: {
+            'Hoy': [moment(), moment()],
+            'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+            'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
+            'Este mes': [moment().startOf('month'), moment().endOf('month')],
+            'Mes anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+    }, function(start, end, label) {
+        star_date = start.format('YYYY-MM-DD 00:00:00');
+        end_date = end.format('YYYY-MM-DD 23:59:59');
+    });
+
+
+    const formatter = new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0
+    });
+
+
+    $(document).on('click', '#filtrar_rc', function () {
+        $.ajax({
+            url: '/aplicaciones/recibos_caja/datos_rc_informe',
+            type: 'get',
+            data: {
+                star_date: star_date,
+                end_date: end_date
+            },
+            success: function (data) {
+                if (data.rc.length === 0){
+                    $('#data_datos_rc_informe').empty().append(`
+                        <div class="alert alert-danger text-center" role="alert">
+                           <i class="fas fa-times"></i>  No se encontro informacion con el rango de fechas seleccionado.
+                        </div>
+                    `);
+                }else{
+                    $('#data_datos_rc_informe').empty().append(`
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">RC</th>
+                                    <th scope="col">RC DMS</th>
+                                    <th scope="col">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data_datos_rc_informe_table">
+                            </tbody>
+                        </table>
+                    `);
+
+                    for (let i = 0; i < data.rc.length; i++) {
+                        $('#data_datos_rc_informe_table').append(`
+                            <tr>
+                                <td>`+ data.rc[i].id +`</td>
+                                <td>`+ data.rc[i].rc_dms +`</td>
+                                <td>`+ formatter.format(data.rc[i].total) +`</td>
+                            </tr>
+                        `);
+                    }
+
+                    $('#data_datos_rc_informe_table').append(`
+                        <tr>
+                            <th colspan="2">TOTAL</th>
+                            <th>`+ formatter.format(data.total) +`</th>
+                        </tr>
+                    `);
+                }
+            },
+            error: function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops',
+                    text: data.responseText
+                });
+            }
+        });
     });
 });

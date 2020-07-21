@@ -166,10 +166,8 @@ $(document).ready(function () {
             error: function (data) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al obtener datos',
-                    text: data,
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Aceptar',
+                    title: 'Oops',
+                    text: data.responseText
                 });
             }
         });
@@ -211,7 +209,11 @@ $(document).ready(function () {
                         }, 5000);
                     },
                     error: function (data) {
-                        console.log(data)
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops',
+                            text: data.responseText
+                        });
                     }
                 });
             }
@@ -285,9 +287,9 @@ $(document).ready(function () {
             error: function (data) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al cargar documento',
-                    text: data,
-                })
+                    title: 'Oops',
+                    text: data.responseText
+                });
             }
         })
     });
