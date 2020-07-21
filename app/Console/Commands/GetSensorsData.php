@@ -57,7 +57,7 @@ class GetSensorsData extends Command
             ->count();
 
 
-        $filecontent =  Storage::disk('ftp')->get('Repositorio/GestionAmbiental/Chimenea/'.$fecha_actual);
+        $filecontent =  Storage::disk('ftp')->get('Repositorio/Gestion Ambiental/Chimenea/'.$fecha_actual);
         $filecontent = explode("\n", $filecontent);
 
 
@@ -97,7 +97,7 @@ class GetSensorsData extends Command
             ->count();
 
 
-        $filecontent_gas =  Storage::disk('ftp')->get('Repositorio/GestionAmbiental/MedidorGas/'.$fecha_actual);
+        $filecontent_gas =  Storage::disk('ftp')->get('Repositorio/Gestion Ambiental/MedidorGas/'.$fecha_actual);
         $filecontent_gas =  explode("\n", $filecontent_gas);
 
 
