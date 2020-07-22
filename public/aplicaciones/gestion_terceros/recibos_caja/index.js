@@ -296,7 +296,7 @@ $(document).ready(function () {
     const formatter = new Intl.NumberFormat('es-CO', {
         style: 'currency',
         currency: 'COP',
-        minimumFractionDigits: 0
+        minimumFractionDigits: 2
     });
 
 
@@ -320,7 +320,8 @@ $(document).ready(function () {
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">RC</th>
+                                    <th scope="col">CLIENTE</th>
+                                    <th scope="col">RC EVPIU</th>
                                     <th scope="col">RC DMS</th>
                                     <th scope="col">TOTAL</th>
                                 </tr>
@@ -330,20 +331,29 @@ $(document).ready(function () {
                         </table>
                     `);
 
+                    function rc_formater(rc){
+                        if (!rc){
+                            return '';
+                        }else{
+                            return rc;
+                        }
+                    }
+
                     for (let i = 0; i < data.rc.length; i++) {
                         $('#data_datos_rc_informe_table').append(`
                             <tr>
+                                <td>`+ data.rc[i].customer +`</td>
                                 <td>`+ data.rc[i].id +`</td>
-                                <td>`+ data.rc[i].rc_dms +`</td>
+                                <td>`+ rc_formater(data.rc[i].rc_dms) +`</td>
                                 <td>`+ formatter.format(data.rc[i].total) +`</td>
                             </tr>
                         `);
                     }
 
                     $('#data_datos_rc_informe_table').append(`
-                        <tr>
-                            <th colspan="2">TOTAL</th>
-                            <th>`+ formatter.format(data.total) +`</th>
+                        <tr class="table-success">
+                            <th colspan="2">ACUMULADO TOTAL</th>
+                            <th colspan="2">`+ formatter.format(data.total) +`</th>
                         </tr>
                     `);
                 }
