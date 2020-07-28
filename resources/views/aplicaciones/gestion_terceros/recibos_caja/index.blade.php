@@ -92,7 +92,7 @@
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" id="rc_valores_filter">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" id="filtrar_rc">Filtrar datos</button>
+                                        <button class="btn btn-primary" type="button" id="filtrar_rc">FILTRAR DATOS</button>
                                     </div>
                                 </div>
                             </div>

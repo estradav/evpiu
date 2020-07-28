@@ -32,8 +32,7 @@ return [
     |
     */
 
-    'lifetime' => env('BLOCK_SESSION_LIFETIME', 32),
-
+    'lifetime' => env('BLOCK_SESSION_LIFETIME', 60),
 
     'expire_on_close' => true,
 

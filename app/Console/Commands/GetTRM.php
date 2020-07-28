@@ -45,23 +45,27 @@ class GetTRM extends Command
      */
     public function handle()
     {
-        $date = date("Y-m-d");
+        $date = Carbon::now()->format("Y-m-d");
+
 
         try {
             $soap = new soapclient("https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL", array(
                 'soap_version'   => SOAP_1_1,
                 'trace' => 1,
-                "location" => "http://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService",
+                "location" => "https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService",
             ));
+
             $response = $soap->queryTCRM(array('tcrmQueryAssociatedDate' => $date));
             $response = $response->return;
+
 
             if($response->success){
                 $tasa = 1 / $response->value;
                 DB::connection('MAX')
                     ->table('code_master')
                     ->where('CDEKEY_36','=','CURR')
-                    ->where('CODE_36','=','US')->update([
+                    ->where('CODE_36','=','US')
+                    ->update([
                         'EXCRTE_36'         => $tasa,
                         'UDFKEY_36'         => $response->value,
                         'UDFREF_36'         => date("d-m-Y"),
@@ -69,10 +73,12 @@ class GetTRM extends Command
                         'ModificationDate'  => Carbon::now()
                     ]);
 
-                DB::connection('DMS')->table('monedas_factores')->insert([
-                   'moneda' => 'US',
-                   'fecha'  => Carbon::now()->format('Y-m-d 00:00:00'),
-                   'factor' => $response->value
+                DB::connection('DMS')
+                    ->table('monedas_factores')
+                    ->insert([
+                       'moneda' => 'US',
+                       'fecha'  => Carbon::now()->format('Y-m-d 00:00:00'),
+                       'factor' => $response->value
                 ]);
 
                 Log::info('[TAREAS AUTOMATICAS]: TRM Obtenido correctamente');
@@ -84,9 +90,8 @@ class GetTRM extends Command
                     $msj->to(['auxsistemas@estradavelasquez.com','sistemas@estradavelasquez.com']);
                     $msj->cc("dcorrea@estradavelasquez.com");
                 });
-
             }
-        } catch(Exception $e){
+        } catch(\Exception $e){
             Log::emergency('[TAREAS AUTOMATICAS]: '. $e->getMessage());
             $subject = "ERROR AL SUBIR TRM";
             Mail::send('mails.automatic_task.fail_trm',[], function($msj) use($subject){

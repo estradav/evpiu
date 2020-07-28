@@ -431,6 +431,7 @@
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: 'Aceptar',
                                 });
+                                window.location.reload();
                             },
                             error: function () {
                                 Swal.fire({
