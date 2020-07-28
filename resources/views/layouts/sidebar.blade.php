@@ -191,32 +191,32 @@
                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                 </a>
                 <ul>
-                    <li class="{{ request()->route()->named('pedidos.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('pedidos.index') }}">
+                    <li class="{{ request()->route()->named('venta.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('venta.index') }}">
                             <i class="metismenu-icon">
                             </i>Ventas
                         </a>
                     </li>
-                    <li class="{{ request()->route()->named('PedidoCartera.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('PedidoCartera.index') }}">
+                    <li class="{{ request()->route()->named('cartera.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('cartera.index') }}">
                             <i class="metismenu-icon">
                             </i>Cartera
                         </a>
                     </li>
-                    <li class="{{ request()->route()->named('PedidoCostos.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('PedidoCostos.index') }}">
+                    <li class="{{ request()->route()->named('costos.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('costos.index') }}">
                             <i class="metismenu-icon">
                             </i>Costos
                         </a>
                     </li>
-                    <li class="{{ request()->route()->named('PedidoProduccion.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('PedidoProduccion.index') }}">
+                    <li class="{{ request()->route()->named('produccion.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('produccion.index') }}">
                             <i class="metismenu-icon">
                             </i>Produccion
                         </a>
                     </li>
-                    <li class="{{ request()->route()->named('PedidoBodega.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('PedidoBodega.index') }}">
+                    <li class="{{ request()->route()->named('bodega.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('bodega.index') }}">
                             <i class="metismenu-icon">
                             </i>Bodega
                         </a>

@@ -12,7 +12,6 @@
 */
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
 
 Route::get('/', 'BlogController@index')->name('blog');
@@ -205,9 +204,46 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::get('/clonado/obtener_info_producto_clonar', 'Productos\Clonador\ClonadorController@obtener_info_producto_clonar');
                     Route::get('/clonado/obtener_producto_codificador', 'Productos\Clonador\ClonadorController@obtener_producto_codificador');
                 });
+
+
+                /*Pedidos*/
+                Route::prefix('pedidos')->group(function () {
+
+                    /*ventas*/
+                    Route::resource('venta','Pedidos\VentasController')->only('index', 'edit', 'create', 'store');
+                    Route::post('/venta/enviar_cartera', 'Pedidos\VentasController@enviar_cartera');
+                    Route::post('/venta/anular_pedido', 'Pedidos\VentasController@anular_pedido');
+                    Route::post('/venta/re_abrir_pedido', 'Pedidos\VentasController@re_abrir_pedido');
+                    Route::get('/venta/listar_productos_max', 'Pedidos\VentasController@listar_productos_max');
+                    Route::get('/venta/listar_artes', 'Pedidos\VentasController@listar_artes');
+                    Route::put('/venta/actualizar_pedido','Pedidos\VentasController@update');
+                    Route::get('/venta/ver_pedido_pdf','Pedidos\VentasController@ver_pedido_pdf');
+                    Route::get('/venta/info_area', 'Pedidos\VentasController@info_area');
+                    Route::get('/venta/info_cliente', 'Pedidos\VentasController@info_cliente');
+
+
+                    /*Cartera*/
+                    Route::resource('cartera', 'Pedidos\CarteraController')->only('index');
+                    Route::post('/cartera/actualizar_estado', 'Pedidos\CarteraController@actualizar_estado');
+
+                    /*Costos*/
+                    Route::resource('costos', 'Pedidos\CostosController')->only('index');
+                    Route::post('/costos/actualizar_estado', 'Pedidos\CostosController@actualizar_estado');
+
+                    /*Produccion*/
+                    Route::resource('produccion', 'Pedidos\ProduccionController')->only('index');
+                    Route::post('/produccion/actualizar_estado', 'Pedidos\ProduccionController@actualizar_estado');
+                    Route::get('/produccion/listar_terminados', 'Pedidos\ProduccionController@listar_terminados');
+
+
+                    /*Bodega*/
+                    Route::resource('bodega', 'Pedidos\BodegaController')->only('index');
+                    Route::post('/bodega/actualizar_estado', 'Pedidos\BodegaController@actualizar_pedido');
+                });
+
             });
 
-            //Backup
+            /*Backups*/
             Route::get('backup/download/{file_name}', 'BackupController@download');
             Route::get('backup/delete/{file_name}', 'BackupController@delete');
             Route::resource('backup', 'BackupController', ['only' => [
@@ -215,8 +251,10 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             ]]);
 
 
+            /*Home*/
             Route::get('/home', 'HomeController@index')->name('home');
 
+            /*roles y permisos*/
             Route::resource('roles', 'RoleController');
             Route::resource('permissions', 'PermissionController');
             Route::resource('permission_groups', 'PermissionGroupController');
@@ -225,13 +263,20 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::resource('tags', 'TagController');
             Route::resource('posts', 'PostController');
 
-            // Menus
+
+            /*Menus*/
             Route::resource('menus', 'MenuController');
             Route::post('/menus/{menu}/order', 'MenuController@sort_item')->name('menus.order');
             Route::get('/menus/{menu}/builder', 'MenuItemController@builder')->name('menus.builder');
             Route::post('/menus/{menu}/item/', 'MenuItemController@store')->name('menus.item.add');
             Route::put('/menus/{menu}/item/', 'MenuItemController@update')->name('menus.item.update');
             Route::delete('/menus/{menu}/item/{id}', 'MenuItemController@destroy')->name('menus.item.destroy');
+
+
+
+
+
+
 
 
 
@@ -261,47 +306,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::post('/cerrar_pronosticos','PronosticoController@cerrar_pronosticos');
 
 
-            Route::resource('pedidos','PedidoController');
-            Route::get('/PedidosIndex','PedidoController@index');
-            Route::get('/PedidosGetUsers','PedidoController@GetUsers');
-            Route::get('/SearchClients','PedidoController@SearchClients');
-            Route::get('/PedidosGetCondicion','PedidoController@GetCondicion');
-            Route::get('/PedidosSearchProductsMax','PedidoController@SearchProductsMax');
-            Route::get('/SearchArts','PedidoController@SearchArts');
-            Route::post('/SavePedido','PedidoController@SavePedido');
-            Route::post('/update_pedido','PedidoController@update');
-
-            Route::get('/pedidos_nuevo','PedidoController@nuevo_pedido_index');
-
-
-
-            Route::post('/PedidoPromoverCartera','PedidoController@PedidoPromoverCartera');
-            Route::get('/Estadopedido','PedidoController@Estadopedido');
-            Route::post('/PedidoReabrir','PedidoController@PedidoReabrir');
-            Route::post('/PedidoAnular','PedidoController@PedidoAnular');
-            Route::get('/ImprimirPedidoPdf','PedidoController@imprimir');
-            Route::get('/getStep','PedidoController@getStep');
-
-
-            Route::resource('PedidoCartera','PedidoCarteraController');
-            Route::get('/PedidosCarteraIndex','PedidoCarteraController@index');
-            Route::post('/PedidosCarteraUpdate','PedidoCarteraController@PedidosCarteraUpdate');
-
-            Route::resource('PedidoCostos','PedidoCostosController');
-            Route::get('/PedidoCostosIndex','PedidoCostosController@index');
-            Route::post('/PedidoCostosUpdate','PedidoCostosController@PedidoCostosUpdate');
-
-            Route::resource('PedidoProduccion','PedidoProduccionController');
-            Route::get('/PedidoProduccionIndex','PedidoProduccionController@index');
-            Route::post('/PedidoProduccionUpdate','PedidoProduccionController@PedidoProduccionUpdate');
-
-            Route::get('/load_pedidos_terminados','PedidoProduccionController@load_pedidos_terminados');
-
-
-            Route::resource('PedidoBodega','PedidoBodegaController');
-            Route::get('/PedidoBodegaIndex','PedidoBodegaController@index');
-            Route::post('/PedidoBodegaUpdate','PedidoBodegaController@PedidoBodegaUpdate');
-
             Route::resource('Requerimientoss','RequerimientosController');
             Route::get('/RequerimientosIndex','RequerimientosController@index');
             Route::get('/SearchMarcas','RequerimientosController@SearchMarcas');
@@ -310,7 +314,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::get('/GetDescription','RequerimientosController@GetDescription');
             Route::post('RequerimientoSaveFile','RequerimientosController@RequerimientoSaveFile');
             Route::post('/NewRequerimiento','RequerimientosController@NewRequerimiento');
-
 
 
             Route::get('/misrequerimientos','RequerimientosController@MisRequerimientos');
@@ -335,9 +338,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::post('/UploadPlanoReq','RequerimientosController@UploadPlanoReq');
             Route::post('/UploadfilesSupport','RequerimientosController@UploadfilesSupport');
             Route::get('/ImagesRequerimiento','RequerimientosController@ImagesRequerimiento');
-
-
-
 
 
             Route::post('/RechazarPropuesta','RequerimientosController@RechazarPropuesta');

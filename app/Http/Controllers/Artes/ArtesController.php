@@ -19,8 +19,7 @@ class ArtesController extends Controller
      * @return Factory|View
      * @throws \Exception
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         try {
             if ($request->ajax()) {
                 $data = DB::connection('EVPIUM')
@@ -31,9 +30,8 @@ class ArtesController extends Controller
                 return Datatables::of($data)->make(true);
             }
         }catch(\Exception $e){
-            Log::error('[artes]: '. $e->getMessage());
+            Log::error('[artes]: '.$e->getMessage());
         }
-
         return view('aplicaciones.artes.index');
     }
 }

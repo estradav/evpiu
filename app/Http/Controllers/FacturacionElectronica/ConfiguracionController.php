@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FacturacionElectronica;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -15,11 +16,23 @@ class ConfiguracionController extends Controller
      * Vista de cofiguracion de facturacion electronica.
      *
      * @param Request $request
-     * @return Factory|View
+     * @return RedirectResponse
      */
     public function index(Request $request){
-        $data = DB::table('fe_configs')->first();
-        return view('aplicaciones.facturacion_electronica.configuracion.index', compact('data'));
+        try {
+            $data = DB::table('fe_configs')
+                ->first();
+
+            return view('aplicaciones.facturacion_electronica.configuracion.index', compact('data'));
+
+        }catch (\Exception $e){
+            return redirect()
+                ->back()
+                ->with([
+                    'message'    => $e->getMessage(),
+                    'alert-type' => 'error'
+                ]);
+        }
     }
 
 
