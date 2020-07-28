@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="main-card mb-3 card">
-                    @can('aplicaciones.pedidos.ventas.nuevo')
+                    @can('aplicaciones.pedidos.ventas.create')
                         <div class="card-header">
                             <a class="btn btn-primary" href="{{ route('venta.create') }}"><i class="fas fa-plus-circle"></i> Nuevo</a>
                         </div>
