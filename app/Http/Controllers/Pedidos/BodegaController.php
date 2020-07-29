@@ -58,7 +58,7 @@ class BodegaController extends Controller
      * seleccionada en el modal 'opciones'
      *
      * @param Request $request
-     * @return Factory|View
+     * @return \Illuminate\Http\JsonResponse
      * @throws Exception
      */
     public function actualizar_pedido(Request $request){
@@ -78,6 +78,7 @@ class BodegaController extends Controller
                         'DetalleBodega' => $request->descripcion,
                 ]);
                 DB::commit();
+                return response()->json('Pedido actualizado', 200);
             }catch (\Exception $e){
                 DB::rollBack();
                 return response()->json($e->getMessage(), 500);
