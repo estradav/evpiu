@@ -27,37 +27,31 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label">ID Numeracion:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">ID Numeracion:</span>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" name="fac_idnumeracion" id="fac_idnumeracion" value="{{$data->fac_idnumeracion}}">
-                                    </div>
+                                    <input type="number" class="form-control" name="fac_idnumeracion" id="fac_idnumeracion" value="{{ $data->fac_idnumeracion }}">
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label">Tipo de Ambiente:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="fac_idambiente">Ambiente</span>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <select name="fac_idambiente" id="fac_idambiente" class="form-control">
-                                            <option value="">Seleccione...</option>
-                                            <option value="1" {{ $data->fac_idambiente == 1 ? 'selected' : '' }}>Producciòn</option>
-                                            <option value="2" {{ $data->fac_idambiente == 2 ? 'selected' : '' }} >Pruebas</option>
-                                        </select>
-                                    </div>
+                                    <select name="fac_idambiente" id="fac_idambiente" class="form-control">
+                                        <option value="">Seleccione...</option>
+                                        <option value="1" {{ $data->fac_idambiente == 1 ? 'selected' : '' }}>Producciòn</option>
+                                        <option value="2" {{ $data->fac_idambiente == 2 ? 'selected' : '' }} >Pruebas</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label">ID Reporte:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">ID Reporte</span>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" name="fac_idreporte" id="fac_idreporte" value="{{$data->fac_idreporte}}">
-                                    </div>
+                                    <input type="number" class="form-control" name="fac_idreporte" id="fac_idreporte" value="{{$data->fac_idreporte}}">
                                 </div>
                             </div>
                         </div>
@@ -69,48 +63,124 @@
 
                 <div class="main-card mb-3 card">
                     <div class="card-header">
+                        Facturas exportacion
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="id_numeracion">ID Numeracion:</span>
+                                    </div>
+                                    <input type="number" class="form-control" name="fac_ext_idnumeracion" id="fac_ext_idnumeracion" value="{{ $data->fac_exp_id_numeracion }}">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Ambiente</span>
+                                    </div>
+                                    <select name="fac_ext_idambiente" id="fac_ext_idambiente" class="form-control">
+                                        <option value="">Seleccione...</option>
+                                        <option value="1" {{ $data->fac_exp_id_ambiente == 1 ? 'selected' : '' }}>Producciòn</option>
+                                        <option value="2" {{ $data->fac_exp_id_ambiente == 2 ? 'selected' : '' }} >Pruebas</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">ID Reporte</span>
+                                    </div>
+                                    <input type="number" class="form-control" name="fac_ext_idreporte" id="fac_ext_idreporte" value="{{ $data->fac_exp_id_reporte }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-primary btn-lg" id="guardar_fac_exp">Guardar Cambios</button>
+                    </div>
+                </div>
+
+                <div class="main-card mb-3 card">
+                    <div class="card-header">
                         Notas credito
                     </div>
                     <div class="card-body">
                         <div class="row" >
                             <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label">ID Numeracion:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="id_numeracion">ID Numeracion:</span>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" name="nc_idnumeracion" id="nc_idnumeracion" value="{{$data->nc_idnumeracion}}">
-                                    </div>
+                                    <input type="number" class="form-control" name="nc_idnumeracion" id="nc_idnumeracion" value="{{ $data->nc_idnumeracion}}">
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="nc_idambiente" class="control-label">Tipo de Ambiente:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="nc_idambiente">Ambiente</span>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <select name="nc_idambiente" id="nc_idambiente" class="form-control">
-                                            <option value="">Seleccione...</option>
-                                            <option value="1" {{ $data->nc_idambiente == 1 ? 'selected' : '' }}>Producciòn</option>
-                                            <option value="2" {{ $data->nc_idambiente == 2 ? 'selected' : '' }}>Pruebas</option>
-                                        </select>
-                                    </div>
+                                    <select name="nc_idambiente" id="nc_idambiente" class="form-control">
+                                        <option value="">Seleccione...</option>
+                                        <option value="1" {{ $data->nc_idambiente == 1 ? 'selected' : '' }}>Producciòn</option>
+                                        <option value="2" {{ $data->nc_idambiente == 2 ? 'selected' : '' }}>Pruebas</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="name" class="control-label">ID Reporte:</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">ID Reporte</span>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" name="nc_idreporte" id="nc_idreporte" value="{{$data->nc_idreporte}}">
-                                    </div>
+                                    <input type="number" class="form-control" name="nc_idreporte" id="nc_idreporte" value="{{ $data->nc_idreporte }}">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer text-right">
                         <button class="btn btn-primary btn-lg" id="SaveNC">Guardar Cambios</button>
+                    </div>
+                </div>
+
+                <div class="main-card mb-3 card">
+                    <div class="card-header">
+                        Notas credito exportacion
+                    </div>
+                    <div class="card-body">
+                        <div class="row" >
+                            <div class="col-sm-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">ID Numeracion:</span>
+                                    </div>
+                                    <input type="number" class="form-control" name="nc_ext_idnumeracion" id="nc_ext_idnumeracion" value="{{ $data->nc_exp_id_numeracion}}">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="nc_ext_idambiente">Ambiente</span>
+                                    </div>
+                                    <select name="nc_ext_idambiente" id="nc_ext_idambiente" class="form-control">
+                                        <option value="">Seleccione...</option>
+                                        <option value="1" {{ $data->nc_exp_id_ambiente == 1 ? 'selected' : '' }}>Producciòn</option>
+                                        <option value="2" {{ $data->nc_exp_id_ambiente == 2 ? 'selected' : '' }}>Pruebas</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">ID Reporte</span>
+                                    </div>
+                                    <input type="number" class="form-control" name="nc_ext_idreporte" id="nc_ext_idreporte" value="{{ $data->nc_exp_id_reporte }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-primary btn-lg" id="guardar_nc_exp">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -124,7 +194,7 @@
             </div>
         </div>
     @endcan
-    @push('javascript')
-        <script type="text/javascript" src="{{asset('aplicaciones/facturacion_electronica/configuracion/index.js')}}"></script>
-    @endpush
 @endsection
+@push('javascript')
+    <script type="text/javascript" src="{{ asset('aplicaciones/facturacion_electronica/configuracion/index.js') }}"></script>
+@endpush

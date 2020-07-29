@@ -59,6 +59,8 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::resource('configuracions','FacturacionElectronica\ConfiguracionController');
                     Route::post('configuracions/facturas','FacturacionElectronica\ConfiguracionController@guardar_config_facturas');
                     Route::post('configuracions/notas_credito','FacturacionElectronica\ConfiguracionController@guardar_config_notas_credito');
+                    Route::post('configuracions/facturas_exportacion', 'FacturacionElectronica\ConfiguracionController@guardar_config_facturas_exportacion');
+                    Route::post('configuracions/notas_credito_exportacion', 'FacturacionElectronica\ConfiguracionController@guardar_config_notas_exportacion');
 
 
                     /*web service*/
@@ -68,6 +70,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::get('/web_service/listado_documentos','FacturacionElectronica\WebServiceController@listado_documentos');
                     Route::get('/web_service/info_documento','FacturacionElectronica\WebServiceController@info_documento');
                     Route::get('/web_service/estado_dian','FacturacionElectronica\WebServiceController@estado_dian');
+                    Route::post('/web_service/enviar_documento_electronico', 'FacturacionElectronica\WebServiceController@enviar_documento_electronico');
 
 
                     /*gestion*/

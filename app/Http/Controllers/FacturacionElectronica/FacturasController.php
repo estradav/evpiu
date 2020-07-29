@@ -194,7 +194,6 @@ class FacturasController extends Controller
                 $tipo_operacion          = '10';
                 $metodo_pago             = null;
                 $medio_pago              = null;
-                $tipo_documento_ide      = null;
                 $correo_entrega          = $enc->emailentrega;
                 $id_total_impuesto_iva   = null;
                 $factor_total            = null;
@@ -241,14 +240,7 @@ class FacturasController extends Controller
                     $medio_pago = 10;
                 }
 
-                if ($enc->idtipodocumento == 31 ) {
-                    $tipo_documento_ide = 31;
-                }
-                else if ($enc->idtipodocumento == 22){
-                    $tipo_documento_ide = 42;
-                }else{
-                    $tipo_documento_ide = 13;
-                }
+
 
                 if ($enc->iva != null) {
                     $id_total_impuesto_iva = '01';
@@ -403,11 +395,11 @@ class FacturasController extends Controller
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("idtipodocumentoidentidad");
-                $objetoXML->text($tipo_documento_ide);
+                $objetoXML->text($enc->idtipodocumento);
                 $objetoXML->endElement();
 
                 $objetoXML->startElement("digitoverificacion");
-                if($enc->tipo_cliente == 'EX' || $enc->idtipodocumento == '13' ){
+                if($enc->tipo_cliente == 'EX' || $enc->idtipodocumento == '13' || $enc->idtipodocumento == '42' ){
                     $objetoXML->text('');
                 }else{
                     $objetoXML->text($enc->digito_verificador);
