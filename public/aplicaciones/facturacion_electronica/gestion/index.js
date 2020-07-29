@@ -32,10 +32,6 @@ $(document).ready(function () {
 
     function load_table(from_date = '', to_date = '' ,fe_start = '', fe_end = '', type_doc = ''){
         table =  $('#table').DataTable({
-            processing: true,
-            serverSide: true,
-            responsive: true,
-            autoWidth: false,
             ajax: {
                 url:'/aplicaciones/facturacion_electronica/gestions',
                 data:{
@@ -150,7 +146,6 @@ $(document).ready(function () {
                 array = array.sort();
                 for(let i = 1; i < array.length; i++) {
                     if(array[i] - array[i-1] !== 1) {
-                        console.log(array[i]);
                         var x = array[i] - array[i-1];
                         let k = 1;
                         while (k<x) {
@@ -361,7 +356,6 @@ $(document).ready(function () {
                 }, // jQuery convierta el array a JSON
                 url: '/aplicaciones/facturacion_electronica/web_service/envio_facturas',
                 success: function (data) {
-                    console.log(data);
                     $('#Errors').html('');
                     var i = 0;
                     $(data).each(function () {
@@ -416,7 +410,6 @@ $(document).ready(function () {
                 id : id,
             },
             success: function (data) {
-                console.log(data);
                 $('#nombreAdquiriente').html(data.nombreAdquiriente);
                 $('#identificacionAdquiriente').html(data.identificacionAdquiriente);
                 $('#correoenvio').html(data.correoenvio);
@@ -456,81 +449,81 @@ $(document).ready(function () {
                 alert('error');
             }
         });
+    });
 
 
-        $(document).on('click','.infoObsWs',function () {
-            $('#InfoWsObserv').modal('show');
-        });
+
+    $(document).on('click','.infoObsWs',function () {
+        $('#InfoWsObserv').modal('show');
+    });
 
 
-        $(document).on('click', '.send_mail', function () {
-            let id = this.id;
+    $(document).on('click', '.send_email', function () {
+        let id = this.id
 
-            swal.mixin({
-                title: 'Reenviar factura',
-                text: 'Escriba los email a los cuales desea enviar esta factura',
-                icon: 'info',
-                showCancelButton: true,
-                input: 'text',
-                onOpen: () => {
-                    $('.correos').select2({
-                        createTag: function(term, data) {
-                            var value = term.term;
-                            if(validateEmail(value)) {
-                                return {
-                                    id: value,
-                                    text: value
-                                };
-                            }
-                            return null;
-                        },
-                        placeholder: "Escribe uno o varios email..",
-                        tags: true,
-                        tokenSeparators: [',', ' ',';'],
-                        width: '100%',
-                    });
-                }
-            }).queue([
-                {
-                    html: '<select class="form-control correos" name="correos" id="correos" multiple="multiple" style="width: 100%"></select>',
-                    inputValidator: () => {
-                        if (document.getElementById('correos').value == '') {
-                            return 'Debes escribir al menos una direccion de correo...';
+        swal.mixin({
+            title: 'Reenviar factura',
+            text: 'Escriba los email a los cuales desea enviar esta factura',
+            icon: 'info',
+            showCancelButton: true,
+            input: 'text',
+            onOpen: () => {
+                $('.correos').select2({
+                    createTag: function(term, data) {
+                        var value = term.term;
+                        if(validateEmail(value)) {
+                            return {
+                                id: value,
+                                text: value
+                            };
                         }
+                        return null;
                     },
-
-                    preConfirm: function () {
-                        return $("#correos").val();
-                    },
-                    onBeforeOpen: function (dom) {
-                        swal.getInput().style.display = 'none';
+                    placeholder: "Escribe uno o varios email..",
+                    tags: true,
+                    tokenSeparators: [',', ' ',';'],
+                    width: '100%',
+                });
+            }
+        }).queue([
+            {
+                html: '<select class="form-control correos" name="correos" id="correos" multiple="multiple" style="width: 100%"></select>',
+                inputValidator: () => {
+                    if (document.getElementById('correos').value == '') {
+                        return 'Debes escribir al menos una direccion de correo...';
                     }
                 },
-            ]).then((result) => {
-                console.log(result)
-                $.ajax({
-                    url: '/aplicaciones/facturacion_electronica/web_service/enviar_documento_electronico',
-                    type: 'post',
-                    data: {
-                        id : id,
-                        correos: result.value[0]
-                    },
-                    success:function (data) {
-                        alert('correo enviado')
-                    },
-                    error: function (data) {
-                        alert('hubo un error')
-                    }
-                })
-            });
 
-
-
+                preConfirm: function () {
+                    return $("#correos").val();
+                },
+                onBeforeOpen: function (dom) {
+                    swal.getInput().style.display = 'none';
+                }
+            },
+        ]).then((result) => {
+            $.ajax({
+                url: '/aplicaciones/facturacion_electronica/web_service/enviar_documento_electronico',
+                type: 'post',
+                data: {
+                    id : id,
+                    correos: result.value[0]
+                },
+                success:function (data) {
+                    alert('correo enviado')
+                },
+                error: function (data) {
+                    alert('hubo un error')
+                }
+            })
         });
 
-        function validateEmail(email) {
-            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-        }
+
+
     });
+
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
 });
