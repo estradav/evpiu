@@ -127,12 +127,11 @@ class GestionController extends Controller
 
             return datatables::of($values)
                 ->addColumn('opciones', function($row){
-                    return
-                        '<div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-light info_ws" id="'.$row->numero.'"><i class="fas fa-info-circle"></i></button>
-                            <button type="button" class="btn btn-light download_ws" id="'.$row->numero.'"><i class="fas fa-file-pdf"></i></button>
-                            <button type="button" class="btn btn-light send_mail" id="'.$row->numero.'"><i class="fas fa-paper-plane"></i></button>
-                        </div>';
+                    return '<div class="btn-group btn-sm" role="group">
+                        <button class="btn btn-light info_ws" id="'.$row->numero.'" data-toggle="tooltip" data-placement="top" title="Enviar a cartera"><i class="fas fa-info-circle"></i></button>
+                        <button class="btn btn-light download_ws" id="'.$row->numero.'" data-toggle="tooltip" data-placement="top" title="Enviar a cartera"><i class="fas fa-file-pdf"></i></button>
+                        <button class="btn btn-light send_email" id="'.$row->numero.'" data-toggle="tooltip" data-placement="top" title="Enviar a cartera"><i class="fas fa-paper-plane"></i></button>
+                    </div>';
                 })
                 ->rawColumns(['opciones'])
                 ->make(true);
