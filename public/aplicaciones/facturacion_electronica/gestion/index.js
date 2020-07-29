@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     load_table();
     Listado_de_facturas();
 
@@ -452,10 +458,79 @@ $(document).ready(function () {
         });
 
 
-
-
-        $('body').on('click','.infoObsWs',function () {
+        $(document).on('click','.infoObsWs',function () {
             $('#InfoWsObserv').modal('show');
         });
+
+
+        $(document).on('click', '.send_mail', function () {
+            let id = this.id;
+
+            swal.mixin({
+                title: 'Reenviar factura',
+                text: 'Escriba los email a los cuales desea enviar esta factura',
+                icon: 'info',
+                showCancelButton: true,
+                input: 'text',
+                onOpen: () => {
+                    $('.correos').select2({
+                        createTag: function(term, data) {
+                            var value = term.term;
+                            if(validateEmail(value)) {
+                                return {
+                                    id: value,
+                                    text: value
+                                };
+                            }
+                            return null;
+                        },
+                        placeholder: "Escribe uno o varios email..",
+                        tags: true,
+                        tokenSeparators: [',', ' ',';'],
+                        width: '100%',
+                    });
+                }
+            }).queue([
+                {
+                    html: '<select class="form-control correos" name="correos" id="correos" multiple="multiple" style="width: 100%"></select>',
+                    inputValidator: () => {
+                        if (document.getElementById('correos').value == '') {
+                            return 'Debes escribir al menos una direccion de correo...';
+                        }
+                    },
+
+                    preConfirm: function () {
+                        return $("#correos").val();
+                    },
+                    onBeforeOpen: function (dom) {
+                        swal.getInput().style.display = 'none';
+                    }
+                },
+            ]).then((result) => {
+                console.log(result)
+                $.ajax({
+                    url: '/aplicaciones/facturacion_electronica/web_service/enviar_documento_electronico',
+                    type: 'post',
+                    data: {
+                        id : id,
+                        correos: result.value[0]
+                    },
+                    success:function (data) {
+                        alert('correo enviado')
+                    },
+                    error: function (data) {
+                        alert('hubo un error')
+                    }
+                })
+            });
+
+
+
+        });
+
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
     });
 });
