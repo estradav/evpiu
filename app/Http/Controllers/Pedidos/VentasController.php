@@ -199,7 +199,7 @@ class VentasController extends Controller
                 ->where('idPedido','=',$id)
                 ->get();
 
-            if ($encabezado->Estado == 0 || $encabezado->Estado == 1){
+            if ($encabezado->Estado == 0 || $encabezado->Estado == 1 || $encabezado->Estado == 3 || $encabezado->Estado == 5 || $encabezado->Estado == 7 || $encabezado->Estado == 9){
                 return view('aplicaciones.pedidos.ventas.edit',
                     compact('encabezado', 'detalle'));
             }else{

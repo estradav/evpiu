@@ -123,7 +123,7 @@ class ProduccionController extends Controller
                     DB::table('encabezado_pedidos')
                         ->where('id', '=', $request->id)
                         ->update([
-                            'Estado' => $request->EstadoPedido
+                            'Estado' => $request->estado
                     ]);
 
                     DB::table('pedidos_detalles_area')
@@ -139,15 +139,18 @@ class ProduccionController extends Controller
                     DB::table('encabezado_pedidos')
                         ->where('id', '=', $request->id)
                         ->update([
-                            'Estado' => $request->EstadoPedido
+                            'Estado' => $request->estado
                         ]);
 
                     DB::table('pedidos_detalles_area')
                         ->where('idPedido', '=', $request->id)
                         ->update([
-                            'Bodega'        => $request->estado,
-                            'DetalleBodega' => $request->descripcion,
-                            'AproboBodega'  => Auth::user()->username,
+                            'Produccion'        => 8,
+                            'DetalleProduccion' => $request->descripcion,
+                            'AproboProduccion'  => Auth::user()->username,
+                            'Bodega'            => $request->estado,
+                            'DetalleBodega'     => $request->descripcion,
+                            'AproboBodega'      => Auth::user()->username,
                         ]);
                 }
                 DB::commit();
