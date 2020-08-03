@@ -46,8 +46,8 @@ $(document).ready(function () {
     });
 
 
-    let codigo_producto_max;
-    let descripcion_producto_max;
+    let codigo_producto_max = '';
+    let descripcion_producto_max = '';
 
     $("#producto").autocomplete({
         source: function (request, response) {
@@ -72,7 +72,7 @@ $(document).ready(function () {
         },
         focus: function (event, ui) {
             codigo_producto_max = ui.item.codigo;
-            descripcion_producto_max = ui.item.Descripcion;
+            descripcion_producto_max = ui.item.descripcion;
             document.getElementById('precio_item').value = 0;
             document.getElementById('stock_item').innerHTML = ui.item.stock;
 
