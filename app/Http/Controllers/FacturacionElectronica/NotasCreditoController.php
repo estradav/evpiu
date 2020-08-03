@@ -168,7 +168,6 @@ class NotasCreditoController extends Controller
                 ->get();
 
 
-            dd($detalle);
 
             $configuracion = DB::table('fe_configs')->first();
 
@@ -506,27 +505,9 @@ class NotasCreditoController extends Controller
                 }
 
 
-                $objetoXML->startElement("impuestos");
-                if($enc->iva == 0 || $enc->tipo_cliente == 'EX')
-                {
-                    $objetoXML->startElement("impuesto");
-                    $objetoXML->startElement("idimpuesto");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
-                    $objetoXML->startElement("base");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
-                    $objetoXML->startElement("factor");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
-                    $objetoXML->startElement("estarifaunitaria");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
-                    $objetoXML->startElement("valor");
-                    $objetoXML->text('');
-                    $objetoXML->endElement();
-                    $objetoXML->endElement();
-                }else{
+
+                if($enc->iva > 0 || $enc->tipo_cliente != 'EX') {
+                    $objetoXML->startElement("impuestos");
                     $objetoXML->startElement("impuesto");
                     $objetoXML->startElement("idimpuesto");
                     $objetoXML->text($id_total_impuesto_iva);
@@ -544,8 +525,9 @@ class NotasCreditoController extends Controller
                     $objetoXML->text(number_format(abs($total_valor_iva),2,'.',''));
                     $objetoXML->endElement();
                     $objetoXML->endElement();
+                    $objetoXML->endElement();
                 }
-                $objetoXML->endElement();
+
 
 
                 $objetoXML->startElement("totales");
@@ -771,7 +753,7 @@ class NotasCreditoController extends Controller
                     }
 
 
-                    if($enc->tipo_cliente != 'EX' && $item->iva_item != 0){
+                    if($enc->tipo_cliente != 'EX' && $item->iva_item > 0){
                         $objetoXML->startElement("impuestos");
                         $objetoXML->startElement("impuesto");
 
