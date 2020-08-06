@@ -104,7 +104,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Descuento</span>
                                         </div>
-                                        <input type="text" class="form-control" name="descuento" id="descuento">
+                                        <input type="number" class="form-control" name="descuento" id="descuento">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">

@@ -195,8 +195,7 @@ class RequerimientosController extends Controller
         ]);
     }
 
-    public function MisRequerimientosAnular(Request $request)
-    {
+    public function MisRequerimientosAnular(Request $request){
         DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
             'estado'        => '0'
         ]);
@@ -211,8 +210,7 @@ class RequerimientosController extends Controller
         ]);
     }
 
-    public function RequerimientosComentariosDetalles(Request $request)
-    {
+    public function RequerimientosComentariosDetalles(Request $request){
         $encabezado = DB::table('encabezado_requerimientos')
             ->leftJoin('users','encabezado_requerimientos.diseñador_id','=','users.id')
             ->leftJoin('users as vendor','encabezado_requerimientos.vendedor_id','=','users.id')
@@ -342,7 +340,9 @@ class RequerimientosController extends Controller
         $Estado = DB::table('encabezado_requerimientos')->where('id','=',$request->id)->select('estado')->get();
 
         if ($Estado[0]->estado == 3) {
-            DB::table('encabezado_requerimientos')->where('id', '=', $request->id)->update([
+            DB::table('encabezado_requerimientos')
+                ->where('id', '=', $request->id)
+                ->update([
                 'estado' => '4'
             ]);
         }
@@ -691,8 +691,10 @@ class RequerimientosController extends Controller
 
     public function EnviarRender(Request $request)
     {
-        DB::table('encabezado_requerimientos')->where('id','=',$request->id)->update([
-            'estado'    =>  '1'
+        DB::table('encabezado_requerimientos')
+            ->where('id','=',$request->id)
+            ->update([
+                'estado'    =>  '1'
         ]);
     }
 

@@ -211,7 +211,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
                 /*Pedidos*/
                 Route::prefix('pedidos')->group(function () {
-
                     /*ventas*/
                     Route::resource('venta','Pedidos\VentasController')->only('index', 'edit', 'create', 'store');
                     Route::post('/venta/enviar_cartera', 'Pedidos\VentasController@enviar_cartera');
@@ -243,6 +242,39 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::resource('bodega', 'Pedidos\BodegaController')->only('index');
                     Route::post('/bodega/actualizar_estado', 'Pedidos\BodegaController@actualizar_pedido');
                 });
+
+
+                Route::prefix('requerimientos')->group(function () {
+                    Route::resource('ventas', 'Requerimientos\RequerimientoController')->only('index','store', 'show');
+                    Route::get('ventas/listar_clientes', 'Requerimientos\RequerimientoController@listar_clientes');
+                    Route::get('ventas/listar_marcas', 'Requerimientos\RequerimientoController@listar_marcas');
+                    Route::get('ventas/listar_productos', 'Requerimientos\RequerimientoController@listar_productos');
+                    Route::post('ventas/validar_marca','Requerimientos\RequerimientoController@validar_marca');
+                    Route::post('ventas/guardar_marca','Requerimientos\RequerimientoController@guardar_marca');
+
+
+
+                    Route::post('transaccion/eliminar_archivo', 'Requerimientos\TransactionController@eliminar_archivo');
+                    Route::post('transaccion/subir_archivos_soporte', 'Requerimientos\TransactionController@subir_archivos_soporte');
+                    Route::post('transaccion/enviar_render','Requerimientos\TransactionController@enviar_render');
+                    Route::post('transaccion/cambiar_estado','Requerimientos\TransactionController@cambiar_estado');
+                    Route::post('transaccion/anular','Requerimientos\TransactionController@anular');
+                    Route::post('transaccion/finalizar','Requerimientos\TransactionController@finalizar');
+                    Route::get('transaccion/listar_disenadores','Requerimientos\TransactionController@listar_disenadores');
+                    Route::post('transaccion/cambiar_disenador','Requerimientos\TransactionController@cambiar_disenador');
+                    Route::post('transaccion/enviar_diseno','Requerimientos\TransactionController@enviar_diseno');
+                    Route::post('transaccion/agregar_comentario','Requerimientos\TransactionController@agregar_comentario');
+                    Route::get('transaccion/listar_productos', 'Requerimientos\TransactionController@listar_productos');
+                    Route::post('transaccion/agregar_propuesta','Requerimientos\TransactionController@agregar_propuesta');
+                    Route::get('transaccion/descargar_soporte/{id}/{file}','Requerimientos\TransactionController@descargar_archivo_soporte')->name('transaccion.descargar.soporte');
+                    Route::get('transaccion/obtener_datos_propuesta','Requerimientos\TransactionController@obtener_datos_propuesta');
+                    Route::post('transaccion/subir_archivo_2d','Requerimientos\TransactionController@subir_archivo_2d');
+                    Route::post('transaccion/subir_archivo_3d','Requerimientos\TransactionController@subir_archivo_3d');
+                    Route::post('transaccion/subir_archivo_plano','Requerimientos\TransactionController@subir_archivo_plano');
+
+                });
+
+
 
             });
 
@@ -417,6 +449,9 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::get('sensores_chimenea','SensorChimeneaController@data_chimenea');
             Route::get('sensores_gas','SensorChimeneaController@data_gas');
         });
+
+
+        Route::get('test_max_update', 'Pedidos\VentasController@max_update');
 
     });
 

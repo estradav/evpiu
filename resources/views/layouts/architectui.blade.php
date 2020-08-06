@@ -49,6 +49,9 @@
         {{--Pe7 Stroke icons--}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
 
+
+        {!! htmlScriptTagJsApi([ 'action' => 'homepage' ]) !!}
+
         <style>
             .scrollbar-sidebar{
                 overflow: hidden;
@@ -70,8 +73,19 @@
                 margin-right: -100px !important;
                 padding-right: 100px !important;
             }
+            .grecaptcha-badge {
+                bottom:65px !important;
+                display:block;
+                width:70px;
+                height:70px;
+                position: fixed;
+                right:20px;
+                border-radius:50%;
+                line-height:80px;
+                text-align:center;
+                z-index:999;
+            }
         </style>
-
         @stack('styles')
     </head>
     <body>
@@ -327,7 +341,7 @@
                 helpers.displayAlerts(alerts, toastr);
             @endif
 
-            @if(Session::has('message'))
+            @if( Session::has('message') )
                 // TODO: change Controllers to use AlertsMessages trait... then remove this
                 var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
                 var alertMessage = {!! json_encode(Session::get('message')) !!};

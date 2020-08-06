@@ -230,8 +230,8 @@
                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                 </a>
                 <ul>
-                    <li class="{{ request()->is('misrequerimientos') ? 'mm-active' : '' }}">
-                        <a href="{{ url('misrequerimientos') }}">
+                    <li class="{{ request()->route()->named('ventas.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('ventas.index') }}">
                             <i class="metismenu-icon">
                             </i>Mis requerimientos
                         </a>
