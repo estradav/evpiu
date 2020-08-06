@@ -75,14 +75,6 @@
             }
             .grecaptcha-badge {
                 bottom:65px !important;
-                display:block;
-                width:70px;
-                height:70px;
-                position: fixed;
-                right:20px;
-                border-radius:50%;
-                line-height:80px;
-                text-align:center;
                 z-index:999;
             }
         </style>
