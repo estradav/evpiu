@@ -2,6 +2,10 @@
 
 @section('page_title', 'Maestros (Sublinea)')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'maestros_sublinea' ]) !!}
+@endsection
+
 @section('content')
     @can('aplicaciones.maestros.sublinea.index')
         <div class="app-page-title">

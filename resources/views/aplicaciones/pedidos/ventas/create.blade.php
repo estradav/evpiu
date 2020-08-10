@@ -2,6 +2,10 @@
 
 @section('page_title', 'Nuevo pedido')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'pedidos_venta_crear' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.pedidos.ventas.create')
         <div class="app-page-title">

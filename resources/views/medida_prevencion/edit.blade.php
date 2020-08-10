@@ -2,6 +2,10 @@
 
 @section('page_title','editar empleado')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'medida_prevencion_editar_empleado' ]) !!}
+@endsection
+
 @section('content')
     @can('admin_medida_prevencion')
         <div class="container-fluid">

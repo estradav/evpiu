@@ -2,13 +2,9 @@
 
 @section('page_title', 'Mostrar grupo de permisos')
 
-@section('module_title', 'Permisos')
-
-@section('subtitle', 'Este módulo gestiona todos los permisos de los roles de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('permission_groups_show', $permissionGroup) }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'permisos_grupo_permisos_ver' ]) !!}
+@endsection
 
 @section('content')
 <div class="row">

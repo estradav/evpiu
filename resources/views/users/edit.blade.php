@@ -2,13 +2,9 @@
 
 @section('page_title', 'Modificar usuario')
 
-@section('module_title', 'Usuarios')
-
-@section('subtitle', 'Este módulo gestiona todos los usuarios de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('user_edit', $user) }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'usuarios_editar' ]) !!}
+@endsection
 
 @section('content')
     @can('users.edit')

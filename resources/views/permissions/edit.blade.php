@@ -2,10 +2,9 @@
 
 @section('page_title', 'Modificar permiso')
 
-@section('module_title', 'Permisos')
-
-@section('subtitle', 'Este módulo gestiona todos los permisos de los roles de la aplicación.')
-
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'permisos_editar' ]) !!}
+@endsection
 
 @section('content')
     @can('permissions.edit')

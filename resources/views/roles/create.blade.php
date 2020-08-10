@@ -2,13 +2,9 @@
 
 @section('page_title', 'Crear rol')
 
-@section('module_title', 'Roles')
-
-@section('subtitle', 'Este módulo gestiona todos los roles de los usuarios de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('role_create') }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'roles_nuevo' ]) !!}
+@endsection
 
 @section('content')
 @can('roles.create')

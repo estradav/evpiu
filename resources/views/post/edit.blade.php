@@ -2,13 +2,9 @@
 
 @section('page_title', 'Modificar publicación')
 
-@section('module_title', 'Publicaciones')
-
-@section('subtitle', 'Este módulo gestiona todas las publicaciones del blog de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('post_edit', $post) }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'post_editar' ]) !!}
+@endsection
 
 @section('content')
 @can('posts.edit')

@@ -2,6 +2,10 @@
 
 @section('page_title', 'Home')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'home' ]) !!}
+@endsection
+
 @section('content')
     @inject('Usuarios','App\Services\Usuarios')
     @can('dashboard.view')

@@ -2,13 +2,9 @@
 
 @section('page_title', 'Crear grupo de permisos')
 
-@section('module_title', 'Permisos')
-
-@section('subtitle', 'Este módulo gestiona todos los permisos de los roles de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('permission_groups_create') }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'permisos_grupo_permisos_nuevo' ]) !!}
+@endsection
 
 @section('content')
 @can('permission_groups.create')

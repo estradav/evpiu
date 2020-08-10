@@ -1,5 +1,9 @@
 @extends('layouts.blog')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'blog_post' ]) !!}
+@endsection
+
 @section('bg-img', Storage::disk('local')->url($post->image))
 
 @section('header')

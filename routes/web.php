@@ -271,8 +271,9 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::post('transaccion/subir_archivo_2d','Requerimientos\TransactionController@subir_archivo_2d');
                     Route::post('transaccion/subir_archivo_3d','Requerimientos\TransactionController@subir_archivo_3d');
                     Route::post('transaccion/subir_archivo_plano','Requerimientos\TransactionController@subir_archivo_plano');
-
                 });
+
+                Route::resource('tickets', 'Tickets\TicketController');
 
 
 
@@ -299,13 +300,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::resource('posts', 'PostController');
 
 
-            /*Menus*/
-            Route::resource('menus', 'MenuController');
-            Route::post('/menus/{menu}/order', 'MenuController@sort_item')->name('menus.order');
-            Route::get('/menus/{menu}/builder', 'MenuItemController@builder')->name('menus.builder');
-            Route::post('/menus/{menu}/item/', 'MenuItemController@store')->name('menus.item.add');
-            Route::put('/menus/{menu}/item/', 'MenuItemController@update')->name('menus.item.update');
-            Route::delete('/menus/{menu}/item/{id}', 'MenuItemController@destroy')->name('menus.item.destroy');
+
 
 
 

@@ -2,13 +2,9 @@
 
 @section('page_title', 'Mostrar rol')
 
-@section('module_title', 'Roles')
-
-@section('subtitle', 'Este módulo gestiona todos los roles de los usuarios de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('role_show', $role) }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'roles_ver' ]) !!}
+@endsection
 
 @section('content')
 <div class="row">

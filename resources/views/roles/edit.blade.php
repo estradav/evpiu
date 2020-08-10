@@ -2,6 +2,10 @@
 
 @section('page_title', 'Modificar rol')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'roles_editar' ]) !!}
+@endsection
+
 @section('content')
 @can('roles.edit')
 <div class="row">

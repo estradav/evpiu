@@ -2,6 +2,10 @@
 
 @section('page_title', 'Pedidos (Cartera)')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'pedidos_cartera' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.pedidos.cartera.index')
         <div class="app-page-title">

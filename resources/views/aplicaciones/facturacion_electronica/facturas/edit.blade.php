@@ -2,6 +2,10 @@
 
 @section('page_title', 'Factura #'. $numero_factura )
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'facturacion_electronica_edicion' ]) !!}
+@stop
+
 @section('content')
     @can('facturacion.edit')
         <div class="col-12"><h3> Factura #: {{ $numero_factura }} </h3></div>

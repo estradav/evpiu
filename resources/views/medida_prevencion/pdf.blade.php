@@ -34,10 +34,10 @@
             table td,th{
                 border:1px solid black;
             }
-
-
-
         </style>
+
+        {!! htmlScriptTagJsApi([ 'action' => 'medida_prevencion_pdf ]) !!}
+
     </head>
     <body>
         <div class="center">

@@ -2,6 +2,10 @@
 
 @section('page_title', 'Maestros (Caracteristica)')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'maestros_caracteristica' ]) !!}
+@endsection
+
 @section('content')
     @can('aplicaciones.maestros.caracteristica.index')
         <div class="app-page-title">

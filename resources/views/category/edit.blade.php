@@ -2,6 +2,10 @@
 
 @section('page_title', 'Modificar categoría')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'blog_categoria_editar' ]) !!}
+@endsection
+
 @section('content')
     @can('categories.edit')
         <div class="row">

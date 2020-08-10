@@ -2,6 +2,10 @@
 
 @section('page_title', 'Artes')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'artes' ]) !!}
+@endsection
+
 @section('content')
     @can('aplicaciones.artes.index')
         <div class="app-page-title">

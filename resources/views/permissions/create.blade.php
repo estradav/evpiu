@@ -2,13 +2,9 @@
 
 @section('page_title', 'Crear permiso')
 
-@section('module_title', 'Permisos')
-
-@section('subtitle', 'Este módulo gestiona todos los permisos de los roles de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('permission_create') }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'permisos_nuevo' ]) !!}
+@endsection
 
 @section('content')
 @can('permissions.create')

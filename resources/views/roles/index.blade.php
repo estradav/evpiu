@@ -2,9 +2,9 @@
 
 @section('page_title', 'Roles')
 
-@section('module_title', 'Roles')
-
-@section('subtitle', 'Este módulo gestiona todos los roles de los usuarios de la aplicación.')
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'roles' ]) !!}
+@endsection
 
 @section('content')
     <div class="row">
