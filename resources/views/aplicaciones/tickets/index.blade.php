@@ -1,25 +1,23 @@
 @extends('layouts.architectui')
 
-@section('page_title', 'formulario 1')
+@section('page_title', 'Requerimientos admistracion')
 
-@section('content')
-
-    <div>
-        <object data="http://glpi.ciev.local/marketplace/formcreator/front/formdisplay.php?id=2" width="400" height="300" type="text/html">
-            Alternative Content
-        </object>
-
-    </div>
-
-
-
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'mesa_ayuda_requerimientos_admon' ]) !!}
 @endsection
 
-@push('javascript')
-    <script>
-        $(document).ready(function () {
-            $("#mydiv")
-                .html('<object data=""/>');
-        })
-    </script>
+@section('content')
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+            <embed src="http://glpi.ciev.local/marketplace/formcreator/front/formdisplay.php?id=1" width="100%" height="1100" quality="high" type="text/html" id="object">
+        </div>
+    </div>
+
+@endsection
+@push('styles')
+    <style>
+        #document. #header {
+            display: none;
+        }
+    </style>
 @endpush

@@ -273,7 +273,10 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::post('transaccion/subir_archivo_plano','Requerimientos\TransactionController@subir_archivo_plano');
                 });
 
-                Route::resource('tickets', 'Tickets\TicketController');
+
+                Route::prefix('mesa_ayuda')->group(function () {
+                    Route::get('requerimientos_admon', 'MesaAyuda\MesaAyudaController@requerimientos_admon')->name('mesa_ayuda.requerimientos_admon');
+                });
 
 
 
