@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Tickets;
+namespace App\Http\Controllers\MesaAyuda;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TicketController extends Controller
+class MesaAyudaController extends Controller
 {
-    public function index(){
+    public function requerimientos_admon(){
         return view('aplicaciones.tickets.index');
     }
 }

@@ -20,6 +20,23 @@
                     </i>Accesos remotos
                 </a>
             </li>
+
+            <li class="{{ request()->route()->named('tickets.index') ? 'mm-active' : '' }}">
+                <a href="#">
+                    <i class="metismenu-icon pe-7s-call"></i>
+                    Mesa de ayuda
+                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                </a>
+                <ul>
+                    <li class="{{ request()->route()->named('mesa_ayuda.requerimientos_admon') ? 'mm-active' : '' }}">
+                        <a href="{{ route('mesa_ayuda.requerimientos_admon') }}">
+                            <i class="metismenu-icon"></i>
+                            Requerimientos admon
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="{{ request()->is('medida_prevencion') ? 'mm-active' : '' }}">
                 <a href="{{ url('medida_prevencion') }}">
                     <i class="metismenu-icon pe-7s-like">
