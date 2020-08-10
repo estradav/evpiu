@@ -2,6 +2,10 @@
 
 @section('page_title', 'Nuevo cliente')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'gestion_terceros_nuevo_cliente' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.gestion_terceros.clientes.create')
         <div class="app-page-title">

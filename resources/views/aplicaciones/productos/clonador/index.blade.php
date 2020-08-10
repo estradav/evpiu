@@ -2,6 +2,10 @@
 
 @section('page_title', 'Clonador / Creador')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'productos_clonador' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.productos.clonador.index')
         <div class="app-page-title">

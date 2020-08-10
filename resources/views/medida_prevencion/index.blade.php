@@ -2,6 +2,10 @@
 
 @section('page_title', 'Ingreso de personal')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'medida_prevencion' ]) !!}
+@endsection
+
 @section('content')
     @can('medida_prevencion')
         <div class="app-page-title">

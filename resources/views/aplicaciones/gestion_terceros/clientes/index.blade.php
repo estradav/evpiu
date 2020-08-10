@@ -2,6 +2,10 @@
 
 @section('page_title', 'Clientes ')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'gestion_terceros_clientes' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.gestion_terceros.clientes.index')
         <div class="app-page-title">

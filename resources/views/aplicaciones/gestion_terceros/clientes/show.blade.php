@@ -1,6 +1,11 @@
 @extends('layouts.architectui')
 
 @section('page_title',  $cliente->RAZON_SOCIAL )
+
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'gestion_terceros_ver_cliente' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.gestion_terceros.clientes.show')
         <div class="app-page-title">

@@ -2,13 +2,9 @@
 
 @section('page_title', 'Publicaciones')
 
-@section('module_title', 'Publicaciones')
-
-@section('subtitle', 'Este módulo gestiona todas las publicaciones del blog de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('posts') }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'post' ]) !!}
+@endsection
 
 @section('content')
     <div class="row">

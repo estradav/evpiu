@@ -8,6 +8,8 @@
     <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/favicon_192x192.png') }}">
     <title>{{ config('app.name') }}</title>
     <link href="{{ asset('/clean-blog/styles/app.css') }}" rel="stylesheet" type='text/css'>
+
+    @yield('action_recaptcha')
 </head>
 <body>
     <!-- Navigation -->

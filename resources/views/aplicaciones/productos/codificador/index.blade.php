@@ -2,6 +2,10 @@
 
 @section('page_title', 'Codificador')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'productos_codificador' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.productos.codificador.index')
         <div class="app-page-title">

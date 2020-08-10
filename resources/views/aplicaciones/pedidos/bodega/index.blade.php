@@ -2,6 +2,10 @@
 
 @section('page_title', 'Pedidos (Bodega)')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'pedidos_bodega' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.pedidos.bodega.index')
         <div class="app-page-title">

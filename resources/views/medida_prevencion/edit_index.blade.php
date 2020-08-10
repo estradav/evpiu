@@ -2,6 +2,10 @@
 
 @section('page_title', 'Administracion medida de prevencion')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'medida_prevencion_editar' ]) !!}
+@endsection
+
 @section('content')
     @can('admin_medida_prevencion')
         <div class="main-card mb-3 card">

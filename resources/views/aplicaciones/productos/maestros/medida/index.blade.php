@@ -2,6 +2,10 @@
 
 @section('page_title', 'Maestros (Medida)')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'maestros_medida' ]) !!}
+@endsection
+
 @section('content')
     @can('aplicaciones.maestros.medida.index')
         <div class="app-page-title">

@@ -2,13 +2,9 @@
 
 @section('page_title', 'Etiquetas')
 
-@section('module_title', 'Etiquetas')
-
-@section('subtitle', 'Este módulo gestiona todas las etiquetas de las publicaciones del blog de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('tags') }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'tags' ]) !!}
+@endsection
 
 @section('content')
     <div class="row">

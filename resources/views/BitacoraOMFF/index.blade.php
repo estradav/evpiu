@@ -2,6 +2,10 @@
 
 @section('page_title', 'Bitacora OMFF')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'bitacora_omff' ]) !!}
+@endsection
+
 @section('content')
     @can('bitacoraomff')
         <div class="row">

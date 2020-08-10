@@ -1,5 +1,9 @@
 @extends('layouts.blog')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'blog' ]) !!}
+@endsection
+
 @section('bg-img')
     {{ asset('img/home_bg.JPG') }}
 @stop

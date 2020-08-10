@@ -2,13 +2,9 @@
 
 @section('page_title', 'Usuarios')
 
-@section('module_title', 'Usuarios')
-
-@section('subtitle', 'Este módulo gestiona todos los usuarios de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('users') }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'usuarios' ]) !!}
+@endsection
 
 @section('content')
     <div class="row">

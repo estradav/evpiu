@@ -2,6 +2,10 @@
 
 @section('page_title', 'Accesos remotos')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'accesos_remotos' ]) !!}
+@endsection
+
 @section('content')
     @can('home.accesos_remotos.index')
         <div class="app-page-title">

@@ -2,6 +2,10 @@
 
 @section('page_title','Recibos de caja')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'recibos_caja_cartera' ]) !!}
+@stop
+
 @section('content')
     @can('recibos_caja.cartera')
         <div class="app-page-title">

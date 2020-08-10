@@ -2,6 +2,10 @@
 
 @section('page_title', 'Editar pedido')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'pedidos_venta_editar' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.pedidos.editar')
         <div class="app-page-title">

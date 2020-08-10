@@ -2,6 +2,10 @@
 
 @section('page_title','Gestion')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'facturacion_electronica_gestion' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.facturacion_electronica.gestion.index')
         <div class="app-page-title">

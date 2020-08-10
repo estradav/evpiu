@@ -2,13 +2,9 @@
 
 @section('page_title', 'Mostrar permiso')
 
-@section('module_title', 'Permisos')
-
-@section('subtitle', 'Este módulo gestiona todos los permisos de los roles de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('permission_show', $permission) }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'permisos_ver' ]) !!}
+@endsection
 
 @section('content')
 <div class="row">

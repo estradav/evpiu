@@ -2,13 +2,9 @@
 
 @section('page_title', 'Crear etiqueta')
 
-@section('module_title', 'Etiquetas')
-
-@section('subtitle', 'Este módulo gestiona todas las etiquetas de las publicaciones del blog de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('tag_create') }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'tags_nuevo' ]) !!}
+@endsection
 
 @section('content')
 @can('tags.create')

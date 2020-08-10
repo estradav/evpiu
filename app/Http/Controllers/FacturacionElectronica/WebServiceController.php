@@ -778,7 +778,7 @@ class WebServiceController extends Controller
                         $objetoXML->endElement();
                     }
 
-                    if (trim($item->posicionarancelaria) != ''){
+                    if (trim($item->posicionarancelaria) != '' && $enc->tipo_cliente == 'EX'){
                         $objetoXML->startElement("datosextra");
 
                         $objetoXML->startElement("datoextra");
@@ -963,7 +963,7 @@ class WebServiceController extends Controller
         $resultados = [];
         foreach ($Notas_credito as $nc) {
             $objetoXML = new    XMLWriter();
-            $objetoXML->openURI("/notas_credito.xml");
+            $objetoXML->openURI(public_path()."/notas_credito.xml");
             $objetoXML->openMemory();
             $objetoXML->setIndent(true);
             $objetoXML->setIndentString("\t");
@@ -973,7 +973,8 @@ class WebServiceController extends Controller
 
             $num = $nc->numero;
 
-            $EncabezadoNc = DB::connection('MAX')->table('CIEV_V_FE')
+            $EncabezadoNc = DB::connection('MAX')
+                ->table('CIEV_V_FE')
                 ->leftJoin('CIEV_V_FE_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FE_FacturasTotalizadas.numero')
                 ->select('CIEV_V_FE.numero', 'CIEV_V_FE.notas', 'CIEV_V_FE.identificacion as nit_cliente', 'CIEV_V_FE.apellidos',
                     'CIEV_V_FE.emailcontacto', 'CIEV_V_FE.direccion', 'CIEV_V_FE.emailentrega', 'CIEV_V_FE.digito_verificador',
@@ -987,7 +988,8 @@ class WebServiceController extends Controller
                     'CIEV_V_FE_FacturasTotalizadas.moneda', 'CIEV_V_FE_FacturasTotalizadas.ov', 'CIEV_V_FE_FacturasTotalizadas.dias',
                     'CIEV_V_FE_FacturasTotalizadas.motivo', 'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo', 'CIEV_V_FE_FacturasTotalizadas.descmotivo',
                     'CIEV_V_FE_FacturasTotalizadas.correoscopia', 'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente')
-                ->where('CIEV_V_FE.numero', '=', $num)->take(1)->get();
+                ->where('CIEV_V_FE.numero', '=', $num)
+                ->take(1)->get();
 
             // esta consulta muestra el detalle de los items de cada factura
             $detalle = DB::connection('MAX')
@@ -1640,7 +1642,7 @@ class WebServiceController extends Controller
                         $objetoXML->endElement();
                     }
 
-                    if (trim($item->posicionarancelaria) != ''){
+                    if (trim($item->posicionarancelaria) != '' && $enc->tipo_cliente == 'EX'){
                         $objetoXML->startElement("datosextra");
 
                         $objetoXML->startElement("datoextra");

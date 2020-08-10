@@ -2,13 +2,9 @@
 
 @section('page_title', 'Modificar etiqueta')
 
-@section('module_title', 'Etiquetas')
-
-@section('subtitle', 'Este módulo gestiona todas las etiquetas de las publicaciones del blog de la aplicación.')
-
-@section('breadcrumbs')
-{{ Breadcrumbs::render('tag_edit', $tag) }}
-@stop
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'tags_editar' ]) !!}
+@endsection
 
 @section('content')
     @can('tags.edit')

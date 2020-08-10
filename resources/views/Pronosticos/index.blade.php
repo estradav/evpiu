@@ -2,12 +2,16 @@
 
 @section('page_title', 'Pronosticos')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'pronosticos' ]) !!}
+@endsection
+
 @section('content')
     @can('pronosticos.view')
-                <input type="hidden" value="3" id="Open">
-                <input type="hidden" value="4" id="HideClose">
-                <input type="hidden" value="5" id="Close">
-                <input type="hidden" value="6" id="Anuld">
+        <input type="hidden" value="3" id="Open">
+        <input type="hidden" value="4" id="HideClose">
+        <input type="hidden" value="5" id="Close">
+        <input type="hidden" value="6" id="Anuld">
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">

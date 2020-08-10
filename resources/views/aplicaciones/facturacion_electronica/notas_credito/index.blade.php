@@ -2,6 +2,10 @@
 
 @section('page_title','Notas credito')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'facturacion_electronica_notas_credito' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.facturacion_electronica.notas_credito.index')
         <div class="app-page-title">

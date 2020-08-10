@@ -2,9 +2,9 @@
 
 @section('page_title', 'Logs')
 
-@section('module_title', 'Logs de evpiu')
-
-@section('subtitle', 'Este modulo permite ver toda la informacion contenida en los logs de la aplicacion.')
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'logs' ]) !!}
+@endsection
 
 @section('content')
     @can('gestion_clientes.view')

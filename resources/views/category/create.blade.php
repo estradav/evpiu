@@ -2,6 +2,10 @@
 
 @section('page_title', 'Crear categoría')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'blog_categoria_nuevo' ]) !!}
+@endsection
+
 @section('content')
     @can('categories.create')
         <div class="row">

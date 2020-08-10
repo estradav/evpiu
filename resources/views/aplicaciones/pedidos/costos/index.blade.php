@@ -2,6 +2,10 @@
 
 @section('page_title', 'Pedidos (Costos)')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'pedidos_costos' ]) !!}
+@stop
+
 @section('content')
     @can('aplicaciones.pedidos.costos.index')
         <div class="app-page-title">

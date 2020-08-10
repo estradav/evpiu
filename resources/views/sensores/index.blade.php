@@ -2,6 +2,11 @@
 
 @section('page_title', 'Sensor de chimenea y gas')
 
+
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'sensores_chimenea_gas' ]) !!}
+@endsection
+
 @section('content')
     @can('gestion_ambiental.sensores')
         <div class="main-card mb-3 card">

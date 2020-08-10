@@ -2,6 +2,10 @@
 
 @section('page_title', 'Backup')
 
+@section('action_recaptcha')
+    {!! htmlScriptTagJsApi([ 'action' => 'backup' ]) !!}
+@endsection
+
 @section('content')
     @can('backup')
         <div class="row">
