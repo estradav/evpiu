@@ -666,7 +666,7 @@ class RecibosController extends Controller
                             'tipo_aplica'   =>  $tipo_documento,
                             'numero_aplica' =>  $f->invoice,
                             'numero_cuota'  =>  '0',
-                            'valor'         =>  $f->bruto,
+                            'valor'         =>  $f->bruto - ($f->descuento + $f->retencion +  $f->reteiva + $f->reteica),
                             'descuento'     =>  $f->descuento,
                             'retencion'     =>  $f->retencion,
                             'retencion_iva' =>  $f->reteiva,
