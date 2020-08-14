@@ -253,16 +253,37 @@
                             </i>Mis requerimientos
                         </a>
                     </li>
-                    <li class="{{ request()->route()->named('Requerimientoss.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('Requerimientoss.index') }}">
-                            <i class="metismenu-icon">
-                            </i> Gestion
+                    <li>
+                        <a href="#">
+                            <i class="metismenu-icon"></i>
+                            Gestion
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                         </a>
+                        <ul>
+                            <li class="{{ request()->route()->named('requerimientos.diseno_grafico') ? 'mm-active' : '' }}">
+                                <a href="{{ route('requerimientos.diseno_grafico') }}">
+                                    <i class="metismenu-icon">
+                                    </i>Diseño
+                                </a>
+                            </li>
+                            <li class="{{ request()->route()->named('requerimientos.render') ? 'mm-active' : '' }}">
+                                <a href="{{ route('requerimientos.render') }}">
+                                    <i class="metismenu-icon">
+                                    </i>Render
+                                </a>
+                            </li>
+                            <li class="{{ request()->route()->named('requerimientos.plano') ? 'mm-active' : '' }}">
+                                <a href="{{ route('requerimientos.plano') }}">
+                                    <i class="metismenu-icon">
+                                    </i>Planos
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="{{ request()->route()->named('requerimientos_dashboard.index') ? 'mm-active' : '' }}">
                         <a href="{{ route('requerimientos_dashboard.index') }}">
-                            <i class="metismenu-icon">
-                            </i>Indicadores
+                            <i class="metismenu-icon"></i>
+                            Indicadores
                         </a>
                     </li>
                 </ul>

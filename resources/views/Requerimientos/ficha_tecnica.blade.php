@@ -2624,11 +2624,8 @@
                     var t1                      = 0;
                     var numerof                 = 0;
                     var OriginalProductCodes    = All_Artes;
-                    var OriginalProductCodes2   = Ultimo;
-
-
                     for (var f = 0; f < OriginalProductCodes.length; f++) {
-                        if (OriginalProductCodes2  == OriginalProductCodes[f] && OriginalProductCodes[f]){
+                        if (Ultimo  === OriginalProductCodes[f] && OriginalProductCodes[f]){
                             var cadena = OriginalProductCodes[f];
                             var text2  = cadena.split('').reverse().join('');
                             text2      = text2.split('');

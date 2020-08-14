@@ -1,6 +1,6 @@
 @extends('layouts.architectui')
 
-@section('page_title', 'Requerimiento '. $data->id)
+@section('page_title', 'Requerimiento ')
 
 @section('content')
     @can('aplicaciones.requerimientos.ventas.show')
@@ -18,9 +18,9 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" id="id_req" name="id_req" value="{{$data->id}}">
+        <input type="hidden" id="id_req" name="id_req" value="{{ $data->id }}">
         <div class="row">
-            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="ain-card mb-3 card igualar_div">
                     <div class="card-header">
                         INFORMACION GENERAL
@@ -33,22 +33,20 @@
                             </div>
                             <div class="col-6">
                                 <b>ESTADO:</b>
-                                @if( $data->estado == 0 )
-                                    <span class="badge badge-danger">ANULADO VENDEDOR</span>
+                                @if ( $data->estado == 0 )
+                                    <span class="badge badge-danger">Anulado</span>
                                 @elseif( $data->estado == 1 )
-                                    <span class="badge badge-success">RENDER</span>
+                                    <span class="badge badge-primary">Pendiente revision</span>
                                 @elseif( $data->estado == 2 )
-                                    <span class="badge badge-warning">PENDIENTE POR REVISAR</span>
+                                    <span class="badge badge-info">Asignado</span>
                                 @elseif( $data->estado == 3 )
-                                    <span class="badge badge-success">ASIGNADO</span>
+                                    <span class="badge badge-success">Iniciado</span>
                                 @elseif( $data->estado == 4 )
-                                    <span class="badge badge-success">INICIADO</span>
+                                    <span class="badge badge-success">Finalizado</span>
                                 @elseif( $data->estado == 5 )
-                                    <span class="badge badge-success">CERRADO</span>
+                                    <span class="badge badge-danger">Anulado diseño</span>
                                 @elseif( $data->estado == 6 )
-                                    <span class="badge badge-danger">ANULADO DISEÑO</span>
-                                @elseif( $data->estado == 7 )
-                                    <span class="badge badge-warning">SIN APROBAR</span>
+                                    <span class="badge badge-warning">Rechazado</span>
                                 @endif
                             </div>
                             <div class="col-6">
@@ -87,43 +85,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                <div class="main-card mb-3 card igualar_div">
-                    <div class="card-header">
-                        ARCHIVOS DE SOPORTE
-                    </div>
-                    <div class="card-body">
-                        @if( sizeof($archivos) == 0 )
-                            <div class="alert alert-danger text-center" role="alert">
-                                <i class="pe-7s-attention pe-4x"></i><br>
-                                Aun no se agrega ningun archivo.
-                            </div>
-                        @else
-                            <div class="table-responsive-md" style="overflow-y: scroll">
-                                <table class="table table-bordered text-center">
-                                    <tbody>
-                                        @foreach ( $archivos as $arch )
-                                            <tr>
-                                                <td>{{ $arch->archivo }}</td>
-                                                <td>
-                                                    <div class="btn-group btn-block" role="group">
-                                                        <button type="button" class="btn btn-light ver_archivo" id="{{ $arch->archivo }}"><i class="fas fa-eye"></i></button>
-                                                        <button type="button" class="btn btn-light eliminar_archivo" id="{{ $arch->archivo }}"><i class="fas fa-trash"></i></button>
-                                                        <a href="{{ route('transaccion.descargar.soporte', ['id' => $data->id , 'file' => $arch->archivo]) }}" class="btn btn-light descargar_archivo" id="{{ $arch->archivo }}"><i class="fas fa-download"></i></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 ">
                 <div class="main-card mb-3 card igualar_div">
                     <div class="card-body" style="overflow-y: scroll; height: 300px !important;">
                         <div class="container py-2">
@@ -186,102 +150,90 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                 <div class="main-card mb-3 card igualar_div">
+                    <div class="card-header">
+                        ARCHIVOS DE SOPORTE
+                    </div>
                     <div class="card-body">
-                        <br>
+                        @if( sizeof($archivos) == 0 )
+                            <div class="alert alert-danger text-center uk-height" role="alert">
+                                <div class="mt-3 mb-3">
+                                    <i class="pe-7s-attention pe-5x"></i><br>
+                                    <label>NO SE HA AGREGADO NINGUN ARCHIVO.</label>
+                                </div>
+                            </div>
+                        @else
+                            <div class="table-responsive-md" style="overflow-y: scroll">
+                                <table class="table table-bordered text-center">
+                                    <tbody>
+                                    @foreach ( $archivos as $arch )
+                                        <tr>
+                                            <td>{{ $arch->archivo }}</td>
+                                            <td>
+                                                <div class="btn-group btn-block" role="group">
+                                                    <button type="button" class="btn btn-light ver_archivo" id="{{ $arch->archivo }}"><i class="fas fa-eye"></i></button>
+                                                    @can('aplicaciones.requerimientos.vendedor')
+                                                        <button type="button" class="btn btn-light eliminar_archivo" id="{{ $arch->archivo }}"><i class="fas fa-trash"></i></button>
+                                                    @endcan
+                                                    <a href="{{ route('transaccion.descargar.soporte', ['id' => $data->id , 'file' => $arch->archivo]) }}" class="btn btn-light descargar_archivo" id="{{ $arch->archivo }}"><i class="fas fa-download"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
                         <div class="btn-group special" role="group" aria-label="Basic example">
-                            @if (auth()->user()->id == $data->vendedor_id || auth()->user()->can('requerimientos.supervisor_diseno') || auth()->user()->hasRole('super-admin'))
+                            @canany(['requerimientos.supervisor_diseno','aplicaciones.requerimientos.vendedor'])
                                 <button class="btn btn-outline-light subir_archivos_soporte" id="{{ $data->id }}">
                                     <i class="pe-7s-cloud-upload pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Subir archivos</label>
+                                    <b class="icon-gradient bg-plum-plate">Subir archivos</b>
                                 </button>
-                            @else
-                                <button class="btn btn-outline-light subir_archivos_soporte" id="{{ $data->id }}" disabled>
-                                    <i class="pe-7s-cloud-upload pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Subir archivos</label>
-                                </button>
-                            @endif
+                            @endcan
 
-                            @if (auth()->user()->can('requerimientos.supervisor_diseno') || auth()->user()->id == $data->diseñador_id  || auth()->user()->hasRole('super-admin'))
-                                <button class="btn btn-outline-light enviar_render" id="{{ $data->id }}">
-                                    <i class="pe-7s-box2 pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Enviar render</label>
-                                </button>
-                            @else
-                                <button class="btn btn-outline-light enviar_render" id="{{ $data->id }}" disabled>
-                                    <i class="pe-7s-box2 pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Enviar render</label>
-                                </button>
-                            @endif
-
-                            @if (auth()->user()->can('requerimientos.supervisor_diseno') ||  auth()->user()->hasRole('super-admin'))
+                            @can('requerimientos.supervisor_diseno')
                                 <button class="btn btn-outline-light cambiar_estado" id="{{ $data->id }}">
                                     <i class="pe-7s-way pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Cambiar estado</label>
+                                    <b class="icon-gradient bg-plum-plate">Cambiar estado</b>
                                 </button>
-                            @else
-                                <button class="btn btn-outline-light cambiar_estado" id="{{ $data->id }}" disabled>
-                                    <i class="pe-7s-way pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Cambiar estado</label>
-                                </button>
-                            @endif
+                            @endcan
 
-                            @if (auth()->user()->id == $data->vendedor_id || auth()->user()->can('requerimientos.supervisor_diseno') || auth()->user()->hasRole('super-admin'))
+                            @canany(['requerimientos.supervisor_diseno','aplicaciones.requerimientos.vendedor'])
                                 <button class="btn btn-outline-light anular" id="{{ $data->id }}">
                                     <i class="pe-7s-close-circle pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Anular</label>
+                                    <b class="icon-gradient bg-plum-plate">Anular</b>
                                 </button>
-                            @else
-                                <button class="btn btn-outline-light anular" id="{{ $data->id }}" disabled>
-                                    <i class="pe-7s-close-circle pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Anular</label>
-                                </button>
-                            @endif
-                        </div>
+                            @endcan
 
-                        <div class="btn-group special" role="group" aria-label="Basic example" style="border-radius: 0 !important;">
-                            @if (auth()->user()->can('requerimientos.supervisor_diseno') || auth()->user()->id == $data->diseñador_id  || auth()->user()->hasRole('super-admin'))
+                            @canany(['requerimientos.supervisor_diseno','aplicaciones.requerimientos.disenador'])
                                 <button class="btn btn-outline-light finalizar" id="{{ $data->id }}">
                                     <i class="pe-7s-check pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Finalizar</label>
+                                    <b class="icon-gradient bg-plum-plate">Finalizar</b>
                                 </button>
-                            @else
-                                <button class="btn btn-outline-light finalizar" id="{{ $data->id }}" disabled>
-                                    <i class="pe-7s-check pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Finalizar</label>
-                                </button>
-                            @endif
+                            @endcan
 
 
-                            @if (auth()->user()->can('requerimientos.supervisor_diseno') ||  auth()->user()->hasRole('super-admin'))
+                            @can('requerimientos.supervisor_diseno')
                                 <button class="btn btn-outline-light cambiar_disenador" id="{{ $data->id }}">
                                     <i class="pe-7s-shuffle pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Cambiar diseñador</label>
+                                    <b class="icon-gradient bg-plum-plate">Cambiar/asignar diseñador</b>
                                 </button>
-                            @else
-                                <button class="btn btn-outline-light cambiar_disenador" id="{{ $data->id }}" disabled>
-                                    <i class="pe-7s-shuffle pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Cambiar diseñador</label>
-                                </button>
-                            @endif
-
-                            @if (auth()->user()->can('requerimientos.supervisor_diseno') || auth()->user()->can('requerimientos.rendeR') ||  auth()->user()->hasRole('super-admin'))
-                                <button class="btn btn-outline-light enviar_diseno" id="{{ $data->id }}">
-                                    <i class="pe-7s-paper-plane pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Enviar a diseño</label>
-                                </button>
-                            @else
-                                <button class="btn btn-outline-light enviar_diseno" id="{{ $data->id }}" disabled>
-                                    <i class="pe-7s-paper-plane pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                    <label class="icon-gradient bg-plum-plate">Enviar a diseño</label>
-                                </button>
-                            @endif
+                            @endcan
 
 
                             <button class="btn btn-outline-light enviar_comentario" id="{{ $data->id }}">
                                 <i class="pe-7s-comment pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                <label class="icon-gradient bg-plum-plate">Enviar comentario</label>
+                                <b class="icon-gradient bg-plum-plate">Enviar comentario</b>
                             </button>
                         </div>
                     </div>
@@ -305,8 +257,10 @@
                                             <th scope="col">RELIEVE</th>
                                             <th scope="col">ESTADO</th>
                                             <th scope="col">FECHA CREACION</th>
-                                            <th scope="col" class="text-center">
-                                                <button class="btn btn-success btn-block btn-sm agregar_propuesta" id="{{ $data->id }}">AGREGAR</button>
+                                            <th scope="col" class="justify-content-center">
+                                                @can('aplicaciones.requerimientos.disenador')
+                                                    <button class="btn btn-success btn-block btn-sm agregar_propuesta" id="{{ $data->id }}">AGREGAR</button>
+                                                @endcan
                                             </th>
                                         </tr>
                                     </thead>
@@ -320,13 +274,21 @@
                                                     @if( $p->estado == 1 )
                                                         <span class="badge badge-primary">Propuesta creada</span>
                                                     @elseif( $p->estado == 2 )
-                                                        <span class="badge badge-warning">Pendiente aprobacion</span>
+                                                        <span class="badge badge-success">Iniciada</span>
                                                     @elseif( $p->estado == 3 )
-                                                        <span class="badge badge-danger">Rechazada</span>
+                                                        <span class="badge badge-info">Solicitud de plano</span>
                                                     @elseif( $p->estado == 4 )
-                                                        <span class="badge badge-success">Aprobada</span>
+                                                        <span class="badge badge-info">Solicitud de render</span>
                                                     @elseif( $p->estado == 5 )
-                                                        <span class="badge badge-danger">Solicitando planos</span>
+                                                        <span class="badge badge-warning">Pendiente aprobacion</span>
+                                                    @elseif( $p->estado == 6 )
+                                                        <span class="badge badge-success">Aprobada</span>
+                                                    @elseif( $p->estado == 7 )
+                                                        <span class="badge badge-danger">Rechazada</span>
+                                                    @elseif( $p->estado == 8 )
+                                                        <span class="badge badge-danger">Anulado</span>
+                                                    @elseif( $p->estado == 9 )
+                                                        <span class="badge badge-success">Finalizada</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::createFromTimeString($p->created_at)->format('Y-m-d g:i A').' ('. \Carbon\Carbon::createFromTimeString($p->created_at)->diffForHumans() .')' }}</td>
@@ -377,7 +339,7 @@
     </div>
 
 
-    <div class="modal fade" id="propuesta_modal" tabindex="-1" role="dialog" aria-labelledby="propuesta_modal" aria-hidden="true" style="overflow-y: scroll;">
+    <div class="modal fade" id="propuesta_modal" role="dialog" aria-labelledby="propuesta_modal" aria-hidden="true" style="overflow-y: scroll;">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -386,29 +348,29 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="propuesta_modal_texto_imprimible" >
-                    <div class="wrapper">
-                        <section class="invoice" style="text-transform: uppercase">
+                <div class="modal-body">
+                    <div class="wrapper" id="propuesta_modal_texto_imprimible">
+                        <div style="text-transform: uppercase">
                             <div class="row text-center">
                                 <div class="col-12">
-                                    <img src="/img/Logo_v2.png" alt="" style="width: 200px !important;" class="headers">
+                                    <img src="/img/Logo_v2.png" alt="" style="width: 200px !important;">
                                 </div>
                                 <div class="col-12">
-                                    <label style="margin: -1px">CI Estrada Velasquez y Cia SAS</label> <br>
-                                    <label style="margin: -1px">CR 55 29 C 14 ZONA IND. DE BELEN, MEDELLIN, TEL 265-66-65</label><br>
-                                    <label style="margin: -1px;">Requerimiento: </label> <label id="propuesta_modal_id_req">{{ $data->id }}</label> - <label style="margin: -1px">Propuesta No.: </label>
-                                    <label id="propuesta_modal_id"></label>
+                                    <span>CI Estrada Velasquez y Cia SAS</span> <br>
+                                    <span>CR 55 29 C 14 ZONA IND. DE BELEN, MEDELLIN, TEL 265-66-65</span><br>
+                                    <span>Requerimiento: </span> <span id="propuesta_modal_id_req">{{ $data->id }}</span> - <span>Propuesta No.: </span>
+                                    <span id="propuesta_modal_id"></span>
                                 </div>
                             </div>
                             <br>
                             <div class="row text-center">
                                 <div class="col-12">
-                                    <label>ESPECIFICACIONES DE DISEÑO</label>
+                                    <span>ESPECIFICACIONES DE DISEÑO</span>
                                 </div>
                             </div>
                             <br>
-                            <div class="row invoice-info text-center" style="margin-left: 15%; margin-right: 15%">
-                                <div class="col-sm-6 invoice-col text-left">
+                            <div class="row justify-content-center">
+                                <div class="col-sm-4 text-left">
                                     <address>
                                         <b>ARTICULO:</b> <span id="propuesta_modal_producto"></span> <br>
                                         <b>RELIEVE:</b> <span id="propuesta_modal_relieve"></span> <br>
@@ -416,94 +378,139 @@
                                         <b>MEDIDA:</b> <a href="javascript:void(0)" id="propuesta_modal_medida"></a>
                                     </address>
                                 </div>
-                                <div class="col-sm-6 invoice-col text-left">
+                                <div class="col-sm-4 text-left">
                                     <address>
                                         <b>VENDEDOR:</b> <span id="propuesta_modal_vendedor">{{ \App\User::find($data->vendedor_id)->name }}</span> <br>
                                         <b>DISEÑADOR:</b> <span id="propuesta_modal_disenador"> {!! \App\User::find($data->diseñador_id)->name ?? '<span class="badge badge-danger">SIN ASIGNAR</span>' !!}</span> <br>
-                                        <b>FECHA:</b> <span id="propuesta_modal_fecha"></span>
+                                        <b>FECHA:</b> <span id="propuesta_modal_fecha"></span><br>
+                                        <b>PESO:</b> <span id="propuesta_modal_peso"></span> @can('aplicaciones.requerimientos.render') <a href="javascript:void(0)" id="propuesta_modal_peso_edit"><i class="fas fa-edit"></i></a> @endcan
                                     </address>
                                 </div>
 
-                                <div class="col-sm-12 text-center">
-                                    <table style="width: 740px;" heig cellspacing="3" cellpadding="3" border="1">
-                                        <tr>
-                                            <td>
-                                                <b>DIBUJO 2D</b>
-                                            </td>
-                                            <td>
-                                                <b>DIBUJO 3D</b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="height: 330px; width: 370px" >
-                                                <div class="image-container imagen_2d" id="{{ $data->id }}" style="cursor: pointer">
-                                                    <i class="pe-7s-cloud-upload pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
-                                                    <label class="icon-gradient bg-plum-plate noprint">Click para subir imagen</label>
-                                                </div>
-                                            </td>
-                                            <td style="height: 330px; width: 370px">
-                                                <div class="image-container imagen_3d" id="{{ $data->id }}" style="cursor: pointer">
-                                                    <i class="pe-7s-cloud-upload pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
-                                                    <label class="icon-gradient bg-plum-plate noprint">Click para subir imagen</label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <table style="width: 740px;" heig cellspacing="1" cellpadding="2" border="1">
-                                        <tr>
-                                            <td>
-                                                <b>PLANO</b>
-                                            </td>
-                                            <td>
-                                                <b>CARACTERISTICAS</b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="height: 330px; width: 370px" >
-                                                <div class="image-container plano" id="{{ $data->id }}" style="cursor: pointer">
-                                                    <i class="pe-7s-cloud-upload pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
-                                                    <label class="icon-gradient bg-plum-plate noprint">Click para subir imagen</label>
-                                                </div>
-                                            </td>
-                                            <td style="height: 330px; width: 370px" >
-                                                <div class="image-container comentario" id="{{ $data->id }}" style="cursor: pointer">
-                                                    <i class="pe-7s-comment pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
-                                                    <label class="icon-gradient bg-plum-plate noprint">Click para agregar detalles</label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                <div class="col-sm-10 text-center">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">DIBUJO 2D</th>
+                                                    <th scope="col">DIBUJO 3D</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        @can('aplicaciones.requerimientos.disenador')
+                                                            <div class="image-container imagen_2d" id="{{ $data->id }}"  style="cursor: pointer">
+                                                                <i class="pe-7s-cloud-upload pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
+                                                                <label class="icon-gradient bg-plum-plate noprint">Click para subir imagen</label>
+                                                            </div>
+                                                        @else
+                                                            <div class="image-container imagen_2d">
+                                                                <i class="pe-7s-close-circle pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
+                                                                <label class="icon-gradient bg-plum-plate noprint">Aun no se agrega ninguna imagen</label>
+                                                            </div>
+                                                        @endcan
+                                                    </td>
+                                                    <td>
+                                                        @can('aplicaciones.requerimientos.render')
+                                                            <div class="image-container imagen_3d" id="{{ $data->id }}" style="cursor: pointer">
+                                                                <i class="pe-7s-cloud-upload pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
+                                                                <label class="icon-gradient bg-plum-plate noprint">Click para subir imagen</label>
+                                                            </div>
+                                                        @else
+                                                            <div class="image-container imagen_3d">
+                                                                <i class="pe-7s-close-circle pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
+                                                                <label class="icon-gradient bg-plum-plate noprint">Aun no se agrega ninguna imagen</label>
+                                                            </div>
+                                                        @endcan
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="col">PLANO</th>
+                                                    <th scope="col">CARACTERISTICAS</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @can('aplicaciones.requerimientos.plano')
+                                                            <div class="image-container plano" id="{{ $data->id }}" style="cursor: pointer">
+                                                                <i class="pe-7s-cloud-upload pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
+                                                                <label class="icon-gradient bg-plum-plate noprint">Click para subir imagen</label>
+                                                            </div>
+                                                        @else
+                                                            <div class="image-container">
+                                                                <i class="pe-7s-close-circle pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
+                                                                <label class="icon-gradient bg-plum-plate noprint">Aun no se agrega ninguna imagen</label>
+                                                            </div>
+                                                        @endcan
+                                                    </td>
+                                                    <td>
+                                                        <div class="image-container comentario" id="{{ $data->id }}" style="cursor: pointer">
+                                                            <i class="pe-7s-comment pe-5x icon-gradient bg-plum-plate noprint"></i> <br>
+                                                            <label class="icon-gradient bg-plum-plate noprint">Click para agregar detalles</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </section>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="dropdown mr-1">
-                        <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-primary dropdown-toggle">Opciones <span class="caret"></span></button>
-                        <div class="dropdown-menu" aria-labelledby="Opciones_reque">
-                            <a class="dropdown-item AprobarProp" href="javascript:void(0);">Aprobar</a>
-                            <a class="dropdown-item RechazarProp" href="javascript:void(0);">Rechazar</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item FinalizarProp" href="javascript:void(0);">Finalizar</a>
-                            <a class="dropdown-item CrearMedida" href="javascript:void(0);">Crear Medida</a>
-                            <a class="dropdown-item EnviarParaAprobacion" href="javascript:void(0);">Enviar para aprobacion</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item ImprimirPdf" href="javascript:void(0);">Imprimir</a>
-                        </div>
-                    </div>
+                    <div class="btn-group btn-block" role="group" aria-label="...">
+                        @can('aplicaciones.requerimientos.vendedor')
+                            <button class="btn btn-outline-light aprobar_propuesta">
+                                <i class="pe-7s-check pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                <b class="icon-gradient bg-plum-plate">Aprobar</b>
+                            </button>
 
-                    <button type="button" class="btn btn-light Cerrar" data-dismiss="modal" id="Cerrar">Cerrar</button>
-                    <div class="btn-group" style="display: none !important;">
-                        <button type="button" data-toggle="dropdown" id="Opciones_reque" class="btn btn-default dropdown-toggle">Action <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a  href="javascript:void(0)" class="AprobarProp">Aprobar</a></li>
-                            <button type="button" class="btn btn-light AprobarProp">Aprobar</button>
-                            <button type="button" class="btn btn-light RechazarProp">Rechazar</button>
-                            <button type="button" class="btn btn-light FinalizarProp">Finalizar</button>
-                            <button type="button" class="btn btn-light CrearMedida">Crear Medida</button>
-                            <button type="button" class="btn btn-light ImprimirPdf" id="ImprimirPdf">Imprimir</button>
-                        </ul>
+
+                            <button class="btn btn-outline-light rechazar_propuesta">
+                                <i class="pe-7s-close-circle pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                <b class="icon-gradient bg-plum-plate">Rechazar</b>
+                            </button>
+                        @endcan
+
+                        @canany(['requerimientos.supervisor_diseno','aplicaciones.requerimientos.disenador'])
+                            <button class="btn btn-outline-light finalizar_propuesta">
+                                <i class="pe-7s-gleam pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                <b class="icon-gradient bg-plum-plate">Finalizar</b>
+                            </button>
+
+                            <button class="btn btn-outline-light enviar_aprobar">
+                                <i class="pe-7s-note2 pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                <b class="icon-gradient bg-plum-plate">Enviar a aprobar</b>
+                            </button>
+
+                            <button class="btn btn-outline-light solicitar_render">
+                                <i class="pe-7s-box2 pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                <b class="icon-gradient bg-plum-plate">Solicitar render</b>
+                            </button>
+
+                            <button class="btn btn-outline-light solicitar_plano">
+                                <i class="pe-7s-vector pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                <b class="icon-gradient bg-plum-plate">Solicitar plano</b>
+                            </button>
+
+                            <button class="btn btn-outline-light crear_medida">
+                                <i class="pe-7s-tools pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                <b class="icon-gradient bg-plum-plate">Crear medida</b>
+                            </button>
+                        @endcan
+
+                        @canany(['requerimientos.supervisor_diseno', 'aplicaciones.requerimientos.render', 'aplicaciones.requerimientos.plano'])
+                            <button class="btn btn-outline-light enviar_diseno">
+                                <i class="pe-7s-paper-plane pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                <b class="icon-gradient bg-plum-plate">Enviar a diseño</b>
+                            </button>
+                        @endcan
+
+                        <button class="btn btn-outline-light imprimir_propuesta">
+                            <i class="pe-7s-print pe-4x icon-gradient bg-plum-plate"></i> <br>
+                            <b class="icon-gradient bg-plum-plate">Imprimir</b>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -563,10 +570,10 @@
                 const req_id = document.getElementById('id_req').value;
 
                 Swal.fire({
+                    icon: 'question',
                     title: '¿Eliminar archivo?',
                     html: '<b>Debes añadir una justificacion para poder eliminar este archivo</b> ',
                     input: 'textarea',
-                    icon: 'question',
                     inputAttributes: {
                         autocapitalize: 'off'
                     },
@@ -665,6 +672,10 @@
                                     text: data,
                                     confirmButtonText: 'Aceptar',
                                 });
+
+                                setTimeout(function() {
+                                    window.location.reload(true)
+                                }, 2000);
                             },
                             error: function (data) {
                                 Swal.fire({
@@ -679,12 +690,13 @@
             });
 
 
-            $(document).on('click', '.enviar_render', function () {
-                const req_id = document.getElementById('id_req').value;
+            $(document).on('click', '.solicitar_render', function () {
+                let prop_id = document.getElementById('propuesta_modal_id').innerText;
+                let req_id = document.getElementById('id_req').value;
 
                 Swal.fire({
                     title: '¿Enviar a renderizar?',
-                    text: "¡Este requerimiento sera enviado al area de renderizado..!",
+                    text: "¡Esta propuesta sera enviada al area de render y no estara disponible durante esta gestion",
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -696,7 +708,48 @@
                         $.ajax({
                             url: "/aplicaciones/requerimientos/transaccion/enviar_render",
                             type: "post",
-                            data: {req_id: req_id},
+                            data: {prop_id: prop_id, req_id: req_id},
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Enviado!',
+                                    text: data,
+                                    icon: 'success',
+                                });
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops',
+                                    html: data.responseText
+                                });
+                            }
+                        });
+                    }else {
+                        result.dismiss === Swal.DismissReason.cancel
+                    }
+                })
+            });
+
+
+            $(document).on('click', '.solicitar_plano', function () {
+                let prop_id = document.getElementById('propuesta_modal_id').innerText;
+                let req_id = document.getElementById('id_req').value;
+
+                Swal.fire({
+                    title: '¿Solicitar plano?',
+                    text: "¡Esta propuesta sera enviada al area de planos y no estara disponible durante esta gestion",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, enviar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: "/aplicaciones/requerimientos/transaccion/solicitar_plano",
+                            type: "post",
+                            data: {prop_id: prop_id, req_id: req_id},
                             success: function (data) {
                                 Swal.fire({
                                     title: 'Enviado!',
@@ -820,16 +873,21 @@
                             },
                             success: function (data) {
                                 Swal.fire({
-                                    title: 'Anulado!',
-                                    text: 'El requerimiento '+ req_id +' ha sido anulado.',
                                     icon: 'success',
+                                    title: 'Anulado!',
+                                    text: 'El requerimiento ha sido anulado.',
                                 });
+
+                                setTimeout(function() {
+                                    window.location.reload(true)
+                                }, 2000);
+
                             },
                             error: function (data) {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Oops',
-                                    html: data.responseText
+                                    text: data.responseText
                                 });
                             }
                         });
@@ -945,11 +1003,12 @@
 
 
             $(document).on('click', '.enviar_diseno', function () {
-                const req_id = document.getElementById('id_req').value;
+                let prop_id = document.getElementById('propuesta_modal_id').innerText;
+                let req_id = document.getElementById('id_req').value;
 
                 Swal.fire({
                     title: '¿Enviar a diseño?',
-                    text: "¡Recuerda enviar a diseño solo cuando hayas terminado el render de todas las propuestas..!",
+                    text: "¡La propuesta sera enviada al areda de diseño..!",
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -962,12 +1021,12 @@
                             type: "post",
                             url: "/aplicaciones/requerimientos/transaccion/enviar_diseno",
                             data: {
-                                req_id,
+                                req_id, prop_id
                             },
                             success: function (data) {
                                 Swal.fire({
                                     title: 'Finalizado!',
-                                    text: 'El requerimiento fue finalizado!.',
+                                    text: 'la propuesta fue enviada a diseño!.',
                                     icon: 'success',
                                 });
                             },
@@ -990,10 +1049,10 @@
                 const req_id = document.getElementById('id_req').value;
 
                 Swal.fire({
+                    icon: 'info',
                     title: 'Enviar Comentarios',
                     html: '<label>Añade comentarios o informacion que pueda ser importante para este requerimiento</label>',
                     input: 'textarea',
-                    icon: 'info',
                     inputAttributes: {
                         autocapitalize: 'on'
                     },
@@ -1003,7 +1062,6 @@
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     showLoaderOnConfirm: true,
-                    allowOutsideClick: () => !Swal.isLoading(),
                     inputValidator: (value) => {
                         return !value && 'No puedes enviar un comentario vacio...'
                     }
@@ -1023,6 +1081,10 @@
                                     text: 'Tu comentario fue enviado con exito!',
                                     confirmButtonText: 'Aceptar',
                                 });
+
+                                setTimeout(function() {
+                                    window.location.reload(true)
+                                }, 2000);
                             },
                             error: function (data) {
                                 Swal.fire({
@@ -1399,9 +1461,391 @@
                         });
                     }
                 });
-
             });
 
+
+
+
+            $(document).on('click', '.comentario', function () {
+                let prop_id = document.getElementById('propuesta_modal_id').innerText;
+                let req_id = document.getElementById('id_req').value;
+
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Caracteristicas',
+                    html: '<label>Escribe informacion importante para esta propuesta, si habia datos guardados seran reemplazados por la informacion que ingreses a continuacion</label>',
+                    input: 'textarea',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Guardar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    showLoaderOnConfirm: true,
+                    inputValidator: (value) => {
+                        return !value && 'Por favor, escribe algo antes de guardar...'
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: '/aplicaciones/requerimientos/transaccion/agregar_comentario_propuesta',
+                            data: {
+                                req_id: req_id,
+                                prop_id: prop_id,
+                                coments: result.value
+                            },
+                            success: function (data) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Guardado!',
+                                    text: 'las caracteristicas fueron guardadas con exito!',
+                                    confirmButtonText: 'Aceptar',
+                                });
+                                $('.comentario').html('').append('<br> <label>'+ data +'</label>');
+                            },
+                            error: function(data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops',
+                                    html: data.responseText
+                                });
+                            }
+                        });
+                    } else {
+                        result.dismiss === Swal.DismissReason.cancel
+                    }
+                })
+            });
+
+
+            $(document).on('click', '.aprobar_propuesta', function () {
+                let prop_id = document.getElementById('propuesta_modal_id').innerText;
+                let req_id = document.getElementById('id_req').value;
+
+                Swal.fire({
+                    title: '¿Aprobar esta propuesta?',
+                    text: "¡Revise toda la informacion antes de continuar..!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, aprobar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: "/aplicaciones/requerimientos/transaccion/aprobar_propuesta",
+                            data: {
+                                prop_id, req_id
+                            },
+                            success: function (data) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Aprobado!',
+                                    text: data,
+                                });
+
+                                setTimeout(function() {
+                                    window.location.reload(true)
+                                }, 2000);
+
+                            },
+                            error: function(data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops',
+                                    html: data.responseText
+                                });
+                            }
+                        });
+                    }else {
+                        result.dismiss === Swal.DismissReason.cancel
+                    }
+                })
+            });
+
+
+            $(document).on ('click', '.rechazar_propuesta', function () {
+                let prop_id = document.getElementById('propuesta_modal_id').innerText;
+                let req_id = document.getElementById('id_req').value;
+                Swal.fire({
+                    icon: 'question',
+                    title: '¿Rechazar propuesta?',
+                    html: '<b>Por favor, escribe el motivo del rechazo</b> ',
+                    input: 'textarea',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Si, rechazar!',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    inputValidator: (value) => {
+                        return !value && 'No dejes ningun campo en blanco'
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: "post",
+                            url: '/aplicaciones/requerimientos/transaccion/rechazar_propuesta',
+                            data: {
+                                req_id: req_id,
+                                prop_id: prop_id,
+                                coments: result.value
+                            },
+                            success: function (data) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Rechazado!',
+                                    text: data,
+                                });
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops',
+                                    text: data.responseText
+                                });
+                            }
+                        });
+                    } else {
+                        result.dismiss === Swal.DismissReason.cancel
+                    }
+                });
+            });
+
+
+            $(document).on('click', '.enviar_aprobar', function () {
+                let prop_id = document.getElementById('propuesta_modal_id').innerText;
+                let req_id = document.getElementById('id_req').value;
+                Swal.fire({
+                    title: '¿Enviar a aprobar?',
+                    text: "¡Esta propuesta sera enviada al vendedor para su revision y aprobacion!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, enviar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: 'post',
+                            url: '/aplicaciones/requerimientos/transaccion/enviar_aprobar_propuesta',
+                            data:{ req_id, prop_id},
+                            success: function (data) {
+                                Swal.fire({
+                                    title: 'Completado!',
+                                    text: 'Propuesta enviada con exito.',
+                                    icon: 'success',
+                                });
+                                setTimeout(function() {
+                                    window.location.reload(true)
+                                }, 2000);
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops',
+                                    text: data.responseText
+                                });
+                            }
+                        });
+                    }else {
+                        result.dismiss === Swal.DismissReason.cancel
+                    }
+                });
+            });
+
+
+            $(document).on('click', '.finalizar_propuesta', function () {
+                let req_id = document.getElementById('id_req').value;
+                let prop_id = document.getElementById('propuesta_modal_id').innerText;
+                $.ajax({
+                    type: 'get',
+                    url: '/aplicaciones/requerimientos/transaccion/comprobar_estado_propuesta',
+                    data: {prop_id: prop_id, req_id: req_id},
+                    success: function (data) {
+                        if(data.estado === 6){
+                            const codigo_arte = generar_codigo_arte(data.lista_artes, data.ultimo_arte, data.letra_marca);
+                            Swal.fire({
+                                title: '¿Finalizar propuesta?',
+                                html: "Se creará un nuevo producto y su respectivo arte, esta acción es irreversible. <br> ¿Esta segur@ de continuar?",
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Estoy segur@!',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                if (result.value) {
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/aplicaciones/requerimientos/transaccion/finalizar_propuesta",
+                                        data: {
+                                            req_id, prop_id, codigo_arte
+                                        },
+                                        success: function () {
+                                            $('#propuesta_modal').modal('hide');
+                                            Swal.fire({
+                                                title: 'Terminado!',
+                                                text: 'La propuesta fue finalizada con exito!.',
+                                                icon: 'success',
+                                            });
+
+                                            setTimeout(function() {
+                                                window.location.reload(true)
+                                            }, 2000);
+                                        },
+                                        error: function (data) {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Oops',
+                                                text: data.responseText
+                                            });
+                                        }
+                                    });
+                                }else {
+                                    result.dismiss === Swal.DismissReason.cancel
+                                }
+                            })
+                        }else{
+                            Swal.fire(
+                                'Oops!',
+                                'Solo puedes finalizar propuestas aprobadas por el vendedor.',
+                                'error'
+                            )
+                        }
+                    },
+                    error: function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops',
+                            text: data.responseText
+                        });
+                    }
+                })
+            });
+
+
+
+            function generar_codigo_arte(lista_artes, ultimo_arte, letra_arte){
+                let i;
+                let incremental = 0;
+                const charStringRange = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                const vectorc = [];
+                let t1 = 0;
+                let numerof = 0;
+                const OriginalProductCodes = lista_artes;
+
+                for (let f = 0; f < OriginalProductCodes.length; f++) {
+                    if (ultimo_arte  === OriginalProductCodes[f] && OriginalProductCodes[f]){
+                        const cadena = OriginalProductCodes[f];
+                        let text2 = cadena.split('').reverse().join('');
+                        text2      = text2.split('');
+
+                        for (let v2 = 0; v2 < 5; v2++) {
+                            for (i = 0; i < 36; i++) {
+                                if (text2[v2] === charStringRange[i]) {
+                                    break;
+                                }
+                            }
+                            numerof += i*Math.pow(36,v2);
+                        }
+                        vectorc[t1] = numerof;
+                        t1++;
+                        numerof = 0;
+                    }
+                }
+                const maxvector = Math.max.apply(Math, vectorc);
+
+                if (maxvector >= 0) {
+                    incremental = maxvector + 1;
+                }
+                let text = '';
+                let incretemp = incremental;
+
+                for (let i = 0; i < 5; i++) {
+                    incretemp = Math.floor(incretemp) / 36;
+                    text += charStringRange.charAt(Math.round((incretemp - Math.floor(incretemp)) * 36));
+                }
+
+                text = text.split('').reverse().join('');
+                return letra_arte + text;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            $(document).on('click', '.imprimir_propuesta', function () {
+                const div = document.querySelector("#propuesta_modal_texto_imprimible");
+                const ventana = window.open('Print', '', 'width=900');
+                ventana.document.write(`
+                    <html lang="es">
+                        <head>
+                            <title>`+ document.title +`</title>
+                            <link rel="stylesheet" href="/bootstrap.min.css">
+                            <style> .noprint, .noprint *
+                                {
+                                    display: none !important;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="container ml-1 mr-1">
+                                 `+ div.innerHTML +`
+                            </div>
+                        </body>
+                    </html>
+                `);
+                ventana.document.close();
+                ventana.focus();
+                ventana.onload = function() {
+                    ventana.print();
+                    ventana.close();
+                };
+                return true;
+            });
+
+            $('#table').dataTable({
+                paging: false,
+                searching: false,
+                language: {
+                    url: '/Spanish.json'
+                },
+                columns: [
+                    { "orderable": false, "searchable": false },
+                    { "orderable": false, "searchable": false },
+                    { "orderable": false, "searchable": false },
+                    { "orderable": false, "searchable": false },
+                    { "orderable": false, "searchable": false },
+                    { "orderable": false, "searchable": false },
+                ]
+            });
+
+            $('.dropdown-toggle').dropdown()
         });
     </script>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Requerimientos;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,9 +14,9 @@ class RequerimientoController extends Controller
     public function index(){
         try {
             if (Auth::user()->hasRole('super-admin')){
-                $data =  DB::table('encabezado_requerimientos')
+                $data = DB::table('encabezado_requerimientos')
                     ->leftJoin('cod_codigos','encabezado_requerimientos.producto_id','=','cod_codigos.id')
-                    ->select('encabezado_requerimientos.id',
+                    ->select('encabezado_requerimientos.id as id',
                         'cod_codigos.descripcion as producto',
                         'encabezado_requerimientos.informacion',
                         'encabezado_requerimientos.marca_id',
@@ -27,10 +28,10 @@ class RequerimientoController extends Controller
                     ->orderBy('estado', 'desc')
                     ->get();
             }else{
-                $data =  DB::table('encabezado_requerimientos')
+                $data = DB::table('encabezado_requerimientos')
                     ->leftJoin('cod_codigos','encabezado_requerimientos.producto_id','=','cod_codigos.id')
-                    ->where('usuario_id','=',Auth::user()->id)
-                    ->select('encabezado_requerimientos.id',
+                    ->where('vendedor_id','=', Auth::user()->id)
+                    ->select('encabezado_requerimientos.id as id',
                         'cod_codigos.descripcion as producto',
                         'encabezado_requerimientos.informacion',
                         'encabezado_requerimientos.marca_id',
@@ -58,7 +59,6 @@ class RequerimientoController extends Controller
                     'alert-type' => 'error'
                 ]);
         }
-
     }
 
 
@@ -206,7 +206,7 @@ class RequerimientoController extends Controller
                         'vendedor_id'   => $request->vendedor_id,
                         'render'        => $request->render ? '1' : '0',
                         'usuario_id'    => Auth::user()->id,
-                        'estado'        => '2',
+                        'estado'        => '1',
                         'created_at'    => Carbon::now(),
                         'Updated_at'    => Carbon::now(),
                 ]);
@@ -232,7 +232,6 @@ class RequerimientoController extends Controller
                 ]);
 
                 DB::commit();
-
                 return response()->json('Requerimiento guardado con exito', 200);
 
             }catch (\Exception $e){
@@ -243,35 +242,76 @@ class RequerimientoController extends Controller
     }
 
 
-    public function show($id){
-        try {
-            $data =  DB::table('encabezado_requerimientos')
-                ->where('id', '=', $id)
-                ->first();
+    public function edit($id){
+        $enc =  DB::table('encabezado_requerimientos')
+            ->where('id', '=', $id)
+            ->first();
+
+        if ($enc->vendedor_id == Auth::user()->id || Auth::user()->hasRole('super-admin') || $enc->diseñador_id == Auth::user()->id || Auth::user()->hasPermissionTo('aplicaciones.requerimientos.plano')){
+            try {
+                $data =  DB::table('encabezado_requerimientos')
+                    ->where('id', '=', $id)
+                    ->first();
+
+                $transacciones =  DB::table('transacciones_requerimientos')
+                    ->where('idReq','=', $id)
+                    ->get();
+
+                $archivos = DB::table('adjuntos_requerimientos')
+                    ->where('idRequerimiento','=', $id)
+                    ->get();
 
 
-            $transacciones =  DB::table('transacciones_requerimientos')
-                ->where('idReq','=', $id)
-                ->get();
+                if (Auth::user()->hasPermissionTo('aplicaciones.requerimientos.vendedor')){
+                    $propuestas = DB::table('propuestas_requerimientos')
+                        ->where('idRequerimiento','=', $id)
+                        ->where('estado', '=', 5)
+                        ->get();
+                }
+                else if (Auth::user()->hasPermissionTo('aplicaciones.requerimientos.disenador')){
+                    $propuestas = DB::table('propuestas_requerimientos')
+                        ->where('idRequerimiento','=', $id)
+                        ->where('estado', '!=', 5)
+                        ->get();
+                }
+                else if(Auth::user()->hasPermissionTo('aplicaciones.requerimientos.render')){
+                    $propuestas = DB::table('propuestas_requerimientos')
+                        ->where('idRequerimiento','=', $id)
+                        ->where('estado', '=', 4)
+                        ->get();
+                }
+                else if(Auth::user()->hasPermissionTo('aplicaciones.requerimientos.plano')){
+                    $propuestas = DB::table('propuestas_requerimientos')
+                        ->where('idRequerimiento','=', $id)
+                        ->where('estado', '=', 3)
+                        ->get();
+                }
+                else if (Auth::user()->hasRole('super-admin')){
+                    $propuestas = DB::table('propuestas_requerimientos')
+                        ->where('idRequerimiento','=', $id)
+                        ->get();
+                }
 
-            $archivos = DB::table('adjuntos_requerimientos')
-                ->where('idRequerimiento','=', $id)
-                ->get();
+                return view('aplicaciones.requerimientos.dashboard.show',
+                    compact('data', 'transacciones', 'archivos', 'propuestas'));
 
-            $propuestas = DB::table('propuestas_requerimientos')
-                ->where('idRequerimiento','=', $id)
-                ->get();
-
-            return view('aplicaciones.requerimientos.dashboard.show',
-                compact('data', 'transacciones', 'archivos', 'propuestas'));
-        }catch (\Exception $e){
+            }catch (\Exception $e){
+                return redirect()
+                    ->back()
+                    ->with([
+                        'message'    => $e->getMessage(),
+                        'alert-type' => 'error'
+                    ]);
+            }
+        }else{
             return redirect()
                 ->back()
                 ->with([
-                    'message'    => $e->getMessage(),
+                    'message'    => 'Solo puedes ver la informacion de tus requerimientos!',
                     'alert-type' => 'error'
                 ]);
         }
+
     }
 }
 

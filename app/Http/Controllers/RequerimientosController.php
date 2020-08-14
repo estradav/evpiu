@@ -836,14 +836,17 @@ class RequerimientosController extends Controller
             }
         }
 
-
-
         $descripcion_new_producto = DB::table('cod_codigos')
             ->where('id','=',$Prop[0]->articulo)
             ->pluck('descripcion');
+
+
         $descripcion_new_producto = explode(" ",$descripcion_new_producto);
+
         $i = array_key_last($descripcion_new_producto);
+
         $descripcion_new_producto[$i] = $Prop[0]->medida;
+
         $Descripcion_Producto_String = implode(" ",$descripcion_new_producto);
 
 
