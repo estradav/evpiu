@@ -3,7 +3,7 @@
 @section('page_title', 'Mis requerimientos')
 
 @section('content')
-    @can('aplicaciones.requerimientos.ventas.index')
+    @can('aplicaciones.requerimientos.vendedor')
         <div class="app-page-title">
             <div class="page-title-wrapper">
                 <div class="page-title-heading">
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
-                    @can('aplicaciones.requerimientos.ventas.nuevo')
+                    @can('aplicaciones.requerimientos.vendedor')
                     <div class="card-header">
                         <div class="col-md-0 float-right">
                             <button class="btn btn-primary" id="nuevo"> <i class="fas fa-plus-circle"></i> Nuevo</button>
@@ -51,29 +51,29 @@
                                             <td>{{ $row->producto }}</td>
                                             <td>{{ $row->informacion }}</td>
                                             <td>{{ \App\User::find($row->vendedor_id)->name }}</td>
-                                            <td>{!! \App\User::find($row->diseñador_id)->name ?? '<span class="badge badge-danger">Sin asignar</span>' !!} </td>
-                                            <th>
+                                            <td>{!! \App\User::find($row->diseñador_id)->name ?? '<span class="badge badge-danger">Sin asignar</span>' !!}</td>
+                                            <td>
                                                 @if ( $row->estado == 0 )
-                                                    <span class="badge badge-danger">ANULADO</span>
+                                                    <span class="badge badge-danger">Anulado</span>
                                                 @elseif( $row->estado == 1 )
-                                                    <span class="badge badge-warning">EN RENDER</span>
+                                                    <span class="badge badge-primary">Pendiente revision</span>
                                                 @elseif( $row->estado == 2 )
-                                                    <span class="badge badge-warning">POR REVISAR</span>
+                                                    <span class="badge badge-info">Asignado</span>
                                                 @elseif( $row->estado == 3 )
-                                                    <span class="badge badge-warning">ASIGNADO</span>
+                                                    <span class="badge badge-success">Iniciado</span>
                                                 @elseif( $row->estado == 4 )
-                                                    <span class="badge badge-success">INICIADO</span>
+                                                    <span class="badge badge-success">Finalizado</span>
                                                 @elseif( $row->estado == 5 )
-                                                    <span class="badge badge-success">FINALIZADO</span>
+                                                    <span class="badge badge-danger">Anulado diseño</span>
                                                 @elseif( $row->estado == 6 )
-                                                    <span class="badge badge-danger">ANULADO POR DISEÑO</span>
-                                                @elseif( $row->estado == 7 )
-                                                    <span class="badge badge-danger">SIN APROBAR</span>
+                                                    <span class="badge badge-warning">Rechazado</span>
                                                 @endif
-                                            </th>
+                                            </td>
                                             <td>{{ $row->created_at }}</td>
                                             <td>{{ \Carbon\Carbon::parse($row->updated_at )->diffForHumans() }}</td>
-                                            <td><a href="{{ route('ventas.show', $row->id) }}" class="btn btn-light btn-sm"><i class="fas fa-eye"></i> VER </a></td>
+                                            <td>
+                                                <a href="{{ route('ventas.edit', $row->id) }}" class="btn btn-light btn-sm"><i class="fas fa-eye"></i> VER </a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -154,7 +154,7 @@
                                     <select class="form-control" name="vendedor" id="vendedor" aria-label="vendedor">
                                         <option value="" selected>Seleccione...</option>
                                         @foreach( $vendedores as $v)
-                                            <option value="{{ $v->codvendedor}}">{{ $v->name }}</option>
+                                            <option value="{{ $v->id }}">{{ $v->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -390,8 +390,6 @@
             });
 
 
-
-
             $("#form").validate({
                 rules: {
                     cliente:{
@@ -441,9 +439,9 @@
                                 cancelButtonColor: '#d33',
                             });
 
-                            /*setTimeout(function() {
+                            setTimeout(function() {
                                 window.location.reload(true)
-                            }, 2000);*/
+                            }, 2000);
                         },
                         error: function (data) {
                             toastr.error(data.responseText);
@@ -458,14 +456,6 @@
                     $(element).closest('.form-control').removeClass('is-invalid');
                 },
             });
-
-
-
-
-
-
-
-
 
 
             jQuery.extend(jQuery.validator.messages, {
@@ -489,9 +479,11 @@
                 selectcheck: "Por favor seleccione una opcion!"
             });
 
+
             jQuery.validator.addMethod("select_check", function(value){
                 return (value != '');
             }, "Por favor, seleciona una opcion.");
+
 
             $.validator.addMethod("regx", function(value, element, regexpr) {
                 return regexpr.test(value);

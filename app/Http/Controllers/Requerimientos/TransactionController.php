@@ -44,8 +44,7 @@ class TransactionController extends Controller
 
     public function subir_archivos_soporte(Request $request){
         if ($request->hasFile('fileToUpload')) {
-            if (Auth::user()->hasRole('super-admin') || Auth::user()->can('requerimientos.supervisor_diseno')){
-
+            if (Auth::user()->can('requerimientos.supervisor_diseno') || Auth::user()->can('aplicaciones.requerimientos.vendedor')){
                 DB::beginTransaction();
                 try {
                     $files = $request->file('fileToUpload');
@@ -94,20 +93,20 @@ class TransactionController extends Controller
     public  function enviar_render(Request $request){
         if ($request->ajax()){
             try {
-                $estado = DB::table('encabezado_requerimientos')
-                    ->where('id','=',$request->req_id)
+                $estado = DB::table('propuestas_requerimientos')
+                    ->where('id','=',$request->prop_id)
                     ->pluck('estado')->first();
 
-                if ($estado == 1){
+                if ($estado == 4){
                     return response()
-                        ->json('Este requerimiento ya se encuentra en renderizado!',
+                        ->json('Esta propuesta ya se encuentra en renderizado!',
                             500);
                 }
-                elseif ($estado == 4){
-                    DB::table('encabezado_requerimientos')
-                        ->where('id','=', $request->req_id)
+                elseif ($estado == 2){
+                    DB::table('propuestas_requerimientos')
+                        ->where('id','=',$request->prop_id)
                         ->update([
-                            'estado'    =>  '1'
+                            'estado'    =>  4
                         ]);
 
 
@@ -115,19 +114,62 @@ class TransactionController extends Controller
                         ->insert([
                             'idReq'         =>  $request->req_id,
                             'tipo'          =>  'Transaccion',
-                            'descripcion'   =>  'Requerimiento enviado a render',
+                            'descripcion'   =>  'Se envia la propuesta '.$request->prop_id.' a renderizar',
                             'usuario_id'    =>  Auth::user()->id,
                             'created_at'    =>  Carbon::now(),
                             'updated_at'    =>  Carbon::now()
                         ]);
 
-                    return response()->json('Requerimiento enviado a render');
+                    return response()->json('Propuesta enviada a render', 200);
                 }
                 else{
                     return response()
-                        ->json('El requerimiento debe tener al menos una propuesta para poder enviarlo a renderizar',
+                        ->json('Solo se pueden enviar a render propuestas iniciadas',
                             500);
                 }
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    public function solicitar_plano(Request $request){
+        if($request->ajax()){
+            try{
+                $estado = DB::table('propuestas_requerimientos')
+                    ->where('id','=',$request->prop_id)
+                    ->pluck('estado')->first();
+
+                if ($estado == 3){
+                    return response()
+                        ->json('Esta propuesta ya se encuentra en solicitud de planos!',
+                            500);
+                }
+                elseif ($estado == 2) {
+                    DB::table('propuestas_requerimientos')
+                        ->where('id', '=', $request->prop_id)
+                        ->update([
+                            'estado' => 3
+                        ]);
+
+
+                    DB::table('transacciones_requerimientos')
+                        ->insert([
+                            'idReq' => $request->req_id,
+                            'tipo' => 'Transaccion',
+                            'descripcion' => 'Se envia la propuesta ' . $request->prop_id . ' a planos',
+                            'usuario_id' => Auth::user()->id,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now()
+                        ]);
+                    return response()->json('Propuesta enviada a planos', 200);
+                }else{
+                    return response()
+                        ->json('No puedes solicitar plano en este momento, intenta de nuevo mas tarde!',
+                            500);
+                }
+
             }catch (\Exception $e){
                 return response()->json($e->getMessage(), 500);
             }
@@ -168,23 +210,37 @@ class TransactionController extends Controller
         if ($request->ajax()){
             DB::beginTransaction();
             try {
-                DB::table('encabezado_requerimientos')
+                $req = DB::table('encabezado_requerimientos')
                     ->where('id','=', $request->req_id)
-                    ->update([
-                        'estado'        => '0'
-                ]);
+                    ->pluck('estado')->first();
 
-                DB::table('transacciones_requerimientos')
-                    ->insert([
-                        'idReq'         => $request->req_id,
-                        'tipo'          => 'Anular',
-                        'descripcion'   => 'Anulo el requerimiento.',
-                        'usuario_id'    => Auth::user()->id,
-                        'created_at'    => Carbon::now(),
-                        'updated_at'    => Carbon::now()
-                ]);
-                DB::commit();
-                return response()->json('Requerimiento anulado', 200);
+                if ($req == 3){
+                    return response()
+                        ->json('No se puede anular un requerimiento si ya fue iniciado, por favor comuniquese con el area de diseño', 500);
+
+                }else if ($req == 0){
+                    return response()
+                        ->json('Este requerimiento ya fue anulado', 500);
+
+                }else{
+                    DB::table('encabezado_requerimientos')
+                        ->where('id','=', $request->req_id)
+                        ->update([
+                            'estado' => 0
+                        ]);
+
+                    DB::table('transacciones_requerimientos')
+                        ->insert([
+                            'idReq'         => $request->req_id,
+                            'tipo'          => 'Anular',
+                            'descripcion'   => 'Anulo el requerimiento.',
+                            'usuario_id'    => Auth::user()->id,
+                            'created_at'    => Carbon::now(),
+                            'updated_at'    => Carbon::now()
+                        ]);
+                    DB::commit();
+                    return response()->json('Requerimiento anulado', 200);
+                }
             }catch (\Exception $e){
                 DB::rollBack();
                 return response()->json($e->getMessage(), 500);
@@ -228,12 +284,12 @@ class TransactionController extends Controller
                     ->pluck('estado')
                     ->first();
 
-                if ($estado == 2) {
+                if ($estado == 1) {
                     DB::table('encabezado_requerimientos')
                         ->where('id', '=', $request->req_id)
                         ->update([
                             'diseñador_id' => $request->result['value'],
-                            'estado' => '3'
+                            'estado' => '2'
                     ]);
                 }else{
                     DB::table('encabezado_requerimientos')
@@ -247,7 +303,7 @@ class TransactionController extends Controller
                     ->insert([
                         'idReq'         => $request->req_id,
                         'tipo'          => 'Cambio de diseñador',
-                        'descripcion'   => 'Cambio el diseñador asignado',
+                        'descripcion'   => 'Cambio/Asigno el diseñador',
                         'usuario_id'    => Auth::user()->id,
                         'created_at'    => Carbon::now(),
                         'updated_at'    => Carbon::now()
@@ -267,24 +323,25 @@ class TransactionController extends Controller
         if ($request->ajax()){
             DB::beginTransaction();
             try {
-                DB::table('encabezado_requerimientos')
-                    ->where('id', '=', $request->req_id)
+                DB::table('propuestas_requerimientos')
+                    ->where('id', '=', $request->prop_id)
                     ->update([
-                        'estado' => '3'
-                ]);
+                        'estado' => 2
+                    ]);
+
 
                 DB::table('transacciones_requerimientos')
                     ->insert([
-                        'idReq'         =>  $request->req_id,
-                        'tipo'          =>  'Propuesta',
-                        'descripcion'   =>  'Envio el requerimiento al area de diseño',
-                        'usuario'       =>  Auth::user()->id,
-                        'created_at'    =>  Carbon::now(),
-                        'updated_at'    =>  Carbon::now()
-                ]);
+                        'idReq' => $request->req_id,
+                        'tipo' => 'Transaccion',
+                        'descripcion' => 'Se envia la propuesta ' . $request->prop_id . ' a diseño',
+                        'usuario_id' => Auth::user()->id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
 
                 DB::commit();
-                return response()->json('Requerimiento enviado a diseño', 200);
+                return response()->json('Propuesta enviada a diseño', 200);
             }catch (\Exception $e){
                 DB::rollBack();
                 return response()->json($e->getMessage(), 500);
@@ -363,17 +420,17 @@ class TransactionController extends Controller
                         'medida'            =>  $request->medida,
                         'usuario_id'        =>  Auth::user()->id,
                         'diseñador_id'      =>  Auth::user()->id,
-                        'estado'            =>  '1',
+                        'estado'            =>  1,
                         'created_at'        =>  Carbon::now(),
                         'updated_at'        =>  Carbon::now()
                 ]);
 
 
-                if ($encabezado->estado == 3) {
+                if ($encabezado->estado == 2) {
                     DB::table('encabezado_requerimientos')
                         ->where('id', '=', $request->req_id)
                         ->update([
-                            'estado' => '4'
+                            'estado' => 3
                         ]);
                 }
 
@@ -446,11 +503,9 @@ class TransactionController extends Controller
                 ], 200);
             }catch (\Exception $e){
                 return response()->json($e->getMessage(), 500);
-
             }
         }
     }
-
 
 
     public function subir_archivo_2d(Request $request){
@@ -480,10 +535,16 @@ class TransactionController extends Controller
                         ->Insert([
                             'idReq'         =>  $request->req_id,
                             'tipo'          =>  'Adjuntos',
-                            'descripcion'   =>  'Adjunto un archivo 2D a la propuesta '.$request->prop_id.' del requerimiento '.$request->req_id,
+                            'descripcion'   =>  'Adjunto un archivo 2D a la propuesta '.$request->prop_id,
                             'usuario_id'    =>  Auth::user()->id,
                             'created_at'    =>  Carbon::now(),
                             'updated_at'    =>  Carbon::now()
+                        ]);
+
+                    DB::table('propuestas_requerimientos')
+                        ->where('id', '=', $request->prop_id)
+                        ->update([
+                           'estado' => 2
                         ]);
 
                     DB::commit();
@@ -500,7 +561,6 @@ class TransactionController extends Controller
             }
         }
     }
-
 
 
     public function subir_archivo_3d(Request $request){
@@ -530,7 +590,7 @@ class TransactionController extends Controller
                         ->Insert([
                             'idReq'         =>  $request->req_id,
                             'tipo'          =>  'Adjuntos',
-                            'descripcion'   =>  'Adjunto un archivo 3D a la propuesta '.$request->prop_id.' del requerimiento '.$request->req_id,
+                            'descripcion'   =>  'Adjunto un archivo 3D a la propuesta '.$request->prop_id,
                             'usuario_id'    =>  Auth::user()->id,
                             'created_at'    =>  Carbon::now(),
                             'updated_at'    =>  Carbon::now()
@@ -599,5 +659,280 @@ class TransactionController extends Controller
             }
         }
     }
+
+
+    public function agregar_comentario_propuesta(Request $request){
+        if ($request->ajax()){
+            try {
+                DB::table('propuestas_requerimientos')
+                    ->where('id','=',$request->prop_id)
+                    ->update([
+                        'caracteristicas'   =>  $request->coments
+                ]);
+                return response()->json($request->coments, 200);
+
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    public function aprobar_propuesta(Request $request){
+        if ($request->ajax()){
+            DB::beginTransaction();
+            try {
+                DB::table('propuestas_requerimientos')
+                    ->where('idRequerimiento','=', $request->req_id)
+                    ->where('id','=',$request->prop_id)
+                    ->update([
+                        'estado' => 6
+                    ]);
+
+                DB::table('transacciones_requerimientos')
+                    ->insert([
+                        'idReq'         =>  $request->req_id,
+                        'tipo'          =>  'Propuesta',
+                        'descripcion'   =>  'Aprobo la propuesta '.$request->prop_id,
+                        'usuario_id'    =>  Auth::user()->id,
+                        'created_at'    =>  Carbon::now(),
+                        'updated_at'    =>  Carbon::now()
+                ]);
+
+                DB::commit();
+                return response()->json('Propuesta aprobada con exito!', 200);
+
+            }catch (\Exception $e){
+                DB::rollBack();
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    public function rechazar_propuesta(Request $request){
+        if ($request->ajax()){
+            DB::beginTransaction();
+            try {
+                DB::table('propuestas_requerimientos')
+                    ->where('idRequerimiento','=', $request->req_id)
+                    ->where('id','=',$request->prop_id)
+                    ->update([
+                        'estado' => 7
+                    ]);
+
+                DB::table('transacciones_requerimientos')
+                    ->insert([
+                        'idReq'         =>  $request->req_id,
+                        'tipo'          =>  'Propuesta',
+                        'descripcion'   =>  'Rechazo la propuesta '.$request->prop_id.' MOTIVO: '. $request->coments,
+                        'usuario_id'    =>  Auth::user()->id,
+                        'created_at'    =>  Carbon::now(),
+                        'updated_at'    =>  Carbon::now()
+                ]);
+
+                DB::commit();
+                return response()->json('propuesta rechazada', 200);
+
+            }catch (\Exception $e){
+                DB::rollBack();
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    public function enviar_aprobar_propuesta(Request $request){
+        if ($request->ajax()){
+            try {
+                $estado = DB::table('propuestas_requerimientos')
+                    ->where('id','=',$request->prop_id)
+                    ->pluck('estado')->first();
+
+                if ($estado != 2){
+                    return response()->json('Esta propuesta no puede ser enviada al vendedor', 500);
+                }else{
+                    DB::table('propuestas_requerimientos')
+                        ->where('id', '=', $request->prop_id)
+                        ->update([
+                            'estado' => 5
+                        ]);
+
+                    return response()->json('Propuesta enviada con exito!', 200);
+                }
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    public function comprobar_estado_propuesta(Request $request){
+        if ($request->ajax()){
+            try {
+                $result =  DB::table('propuestas_requerimientos')
+                    ->where('id','=', $request->prop_id)
+                    ->pluck('estado')->first();
+
+
+                $requerimiento = DB::table('encabezado_requerimientos')
+                    ->where('id','=',$request->req_id)
+                    ->first();
+
+
+                $lista_artes = DB::table('artes')
+                    ->where('marca_id','=',$requerimiento->marca_id)
+                    ->pluck('codigo');
+
+
+                $letra_marca = DB::table('marcas')
+                    ->where('id', '=', $requerimiento->marca_id)
+                    ->pluck('name')
+                    ->first();
+
+                $letra_marca = substr($letra_marca, 0,1);
+
+
+                return response()
+                    ->json([
+                        'estado'        => $result,
+                        'lista_artes'   => $lista_artes,
+                        'ultimo_arte'   => $lista_artes[(sizeof($lista_artes)-1)] ?? '',
+                        'letra_marca'   => $letra_marca
+                        ], 200);
+
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    public function finalizar_propuesta(Request $request){
+        if ($request->ajax()){
+            DB::beginTransaction();
+            try {
+                $requerimiento = DB::table('encabezado_requerimientos')
+                    ->where('id','=',$request->req_id)
+                    ->first();
+
+                $propuesta = DB::table('propuestas_requerimientos')
+                    ->where('id','=', $request->prop_id)
+                    ->first();
+
+                $archivo_2d = DB::table('adjuntos_propuestas_requerimientos')
+                    ->where('idPropuesta','=',$request->prop_id)
+                    ->where('tipo', '=', '2D')
+                    ->get(['url','archivo'])
+                    ->first();
+
+                $archivo_3d = DB::table('adjuntos_propuestas_requerimientos')
+                    ->where('idPropuesta','=',$request->prop_id)
+                    ->where('tipo', '=', '3D')
+                    ->get(['url','archivo'])
+                    ->first();
+
+                $archivo_plano = DB::table('adjuntos_propuestas_requerimientos')
+                    ->where('idPropuesta','=',$request->prop_id)
+                    ->where('tipo', '=', 'plano')
+                    ->get(['url','archivo'])
+                    ->first();
+
+
+                $id_arte = DB::table('artes')
+                    ->insertGetId([
+                        'codigo'                => $request->codigo_arte,
+                        'marca_id'              => $requerimiento->marca_id,
+                        'producto_id'           => $propuesta->articulo,
+                        'caracteristicas'       => $propuesta->caracteristicas,
+                        '2d'                    => ($archivo_2d->url ?? '').($archivo_2d->archivo ?? ''),
+                        '3d'                    => ($archivo_3d->url ?? '').($archivo_3d->archivo ?? ''),
+                        'plano'                 => ($archivo_plano->url ?? '').($archivo_plano->archivo ?? ''),
+                        'diseñador_id'          => $requerimiento->diseñador_id,
+                        'vendedor_id'           => $requerimiento->vendedor_id,
+                        'propuesta_id'          => $request->prop_id,
+                        'created_at'            => Carbon::now(),
+                        'updated_at'            => Carbon::now(),
+                ]);
+
+
+                /*Guardar producto*/
+
+                $descripcion_producto = DB::table('cod_codigos')
+                    ->where('id','=',$propuesta->articulo)
+                    ->pluck('descripcion')
+                    ->first();
+
+
+                $descripcion_producto = explode(' ',$descripcion_producto);
+                $idx = array_key_last($descripcion_producto);
+                $descripcion_producto[$idx] = $propuesta->medida;
+                $descripcion_producto_string = implode(" ",$descripcion_producto);
+
+
+                $medida_id = DB::table('cod_medidas')
+                    ->where('denominacion','=',$propuesta->medida)
+                    ->pluck('id')
+                    ->first();
+
+                $producto_base = DB::table('cod_codigos')
+                    ->where('id','=',$propuesta->articulo)
+                    ->first();
+
+                $codigos = DB::table('cod_codigos')
+                    ->where('codigo','like', substr($producto_base->codigo,0,6).'%')
+                    ->pluck('codigo');
+
+
+                $array = [];
+                foreach ($codigos as $codigo){
+                    $array [] = substr($codigo,6,5);
+                }
+                $result = max($array);
+                $result = $result+1;
+                $result = str_pad($result,4,"0",STR_PAD_LEFT);
+                $result = substr($producto_base->codigo,0,6).$result;
+
+
+                DB::table('cod_codigos')->insert([
+                    'codigo'                    =>  $result,
+                    'coments'                   =>  '',
+                    'descripcion'               =>  $descripcion_producto_string.' '.$request->codigo_arte,
+                    'usuario'                   =>  Auth::user()->id,
+                    'usuario_aprobo'            =>  $requerimiento->vendedor_id,
+                    'arte'                      =>  $id_arte,
+                    'estado'                    =>  '1',
+                    'area'                      =>  '',
+                    'costo_base'                =>  '',
+                    'generico'                  =>  '1',
+                    'created_at'                =>  Carbon::now(),
+                    'updated_at'                =>  Carbon::now(),
+                    'cod_tipo_producto_id'      =>  $producto_base->cod_tipo_producto_id,
+                    'cod_lineas_id'             =>  $producto_base->cod_lineas_id,
+                    'cod_sublineas_id'          =>  $producto_base->cod_sublineas_id,
+                    'cod_medidas_id'            =>  $medida_id,
+                    'cod_caracteristicas_id'    =>  $producto_base->cod_caracteristicas_id,
+                    'cod_materials_id'          =>  $producto_base->cod_materials_id
+                ]);
+
+
+
+                DB::table('propuestas_requerimientos')
+                    ->where('id', '=', $request->prop_id)
+                    ->update([
+                        'estado' => 9
+                    ]);
+
+
+                DB::commit();
+                return  response()->json('Propuesta finalizada con exito!', 200);
+
+            }catch (\Exception $e){
+                DB::rollBack();
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
 
 }

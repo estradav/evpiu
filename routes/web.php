@@ -245,7 +245,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
                 Route::prefix('requerimientos')->group(function () {
-                    Route::resource('ventas', 'Requerimientos\RequerimientoController')->only('index','store', 'show');
+                    Route::resource('ventas', 'Requerimientos\RequerimientoController')->only('index','store', 'edit');
                     Route::get('ventas/listar_clientes', 'Requerimientos\RequerimientoController@listar_clientes');
                     Route::get('ventas/listar_marcas', 'Requerimientos\RequerimientoController@listar_marcas');
                     Route::get('ventas/listar_productos', 'Requerimientos\RequerimientoController@listar_productos');
@@ -257,6 +257,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::post('transaccion/eliminar_archivo', 'Requerimientos\TransactionController@eliminar_archivo');
                     Route::post('transaccion/subir_archivos_soporte', 'Requerimientos\TransactionController@subir_archivos_soporte');
                     Route::post('transaccion/enviar_render','Requerimientos\TransactionController@enviar_render');
+                    Route::post('transaccion/solicitar_plano','Requerimientos\TransactionController@solicitar_plano');
                     Route::post('transaccion/cambiar_estado','Requerimientos\TransactionController@cambiar_estado');
                     Route::post('transaccion/anular','Requerimientos\TransactionController@anular');
                     Route::post('transaccion/finalizar','Requerimientos\TransactionController@finalizar');
@@ -271,7 +272,26 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::post('transaccion/subir_archivo_2d','Requerimientos\TransactionController@subir_archivo_2d');
                     Route::post('transaccion/subir_archivo_3d','Requerimientos\TransactionController@subir_archivo_3d');
                     Route::post('transaccion/subir_archivo_plano','Requerimientos\TransactionController@subir_archivo_plano');
+                    Route::post('transaccion/agregar_comentario_propuesta', 'Requerimientos\TransactionController@agregar_comentario_propuesta');
+
+                    Route::post('transaccion/aprobar_propuesta', 'Requerimientos\TransactionController@aprobar_propuesta');
+                    Route::post('transaccion/rechazar_propuesta', 'Requerimientos\TransactionController@rechazar_propuesta');
+                    Route::post('transaccion/enviar_aprobar_propuesta', 'Requerimientos\TransactionController@enviar_aprobar_propuesta');
+
+                    Route::get('transaccion/comprobar_estado_propuesta', 'Requerimientos\TransactionController@comprobar_estado_propuesta');
+                    Route::post('transaccion/finalizar_propuesta', 'Requerimientos\TransactionController@finalizar_propuesta');
+
+
+                    Route::get('diseno_grafico', 'Requerimientos\DisenoController@index')->name('requerimientos.diseno_grafico');
+                    Route::get('render', 'Requerimientos\RenderController@index')->name('requerimientos.render');
+                    Route::get('plano', 'Requerimientos\PlanoController@index')->name('requerimientos.plano');
+
+
                 });
+
+
+
+
 
 
                 Route::prefix('mesa_ayuda')->group(function () {
@@ -281,6 +301,8 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
             });
+
+
 
             /*Backups*/
             Route::get('backup/download/{file_name}', 'BackupController@download');
@@ -316,10 +338,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
 
-            Route::get('/DatosPropuestaPDF','RequerimientosController@DatosPropuestaPDF');
-            Route::post('/DeleteFileFromPropuesta','RequerimientosController@DeleteFileFromPropuesta');
-
-
 
             Route::get('/get-user-chart-data','ChartDataController@getMonthlyUserData');
             Route::get('/get-invoice-chart-data','ChartDataController@getMonthlyInvoiceData');
@@ -339,66 +357,19 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
             Route::post('/cerrar_pronosticos','PronosticoController@cerrar_pronosticos');
 
 
+
+
+
             Route::resource('Requerimientoss','RequerimientosController');
-            Route::get('/RequerimientosIndex','RequerimientosController@index');
-            Route::get('/SearchMarcas','RequerimientosController@SearchMarcas');
-            Route::get('/RequerimientosSearchProductsMax','RequerimientosController@SearchProductsMax');
-            Route::get('/Requerimientosgetlineas','RequerimientosController@getlineas');
-            Route::get('/GetDescription','RequerimientosController@GetDescription');
-            Route::post('RequerimientoSaveFile','RequerimientosController@RequerimientoSaveFile');
-            Route::post('/NewRequerimiento','RequerimientosController@NewRequerimiento');
-
-
             Route::get('/misrequerimientos','RequerimientosController@MisRequerimientos');
-            Route::post('/MisRequerimientosAddComent','RequerimientosController@MisRequerimientosAddComent');
-
-
-            Route::get('/GetDisenador','RequerimientosController@GetDisenador');
-            Route::post('/AsignarDisenador','RequerimientosController@AsignarDisenador');
-            Route::get('/RequerimientosComentariosDetalles','RequerimientosController@RequerimientosComentariosDetalles');
-
-
-            Route::get('Requerimientoss/{Requerimientoss}/edit','RequerimientosController@VerRequerimiento');
-            Route::post('/CambiarEstadoRequeEd','RequerimientosController@CambiarEstadoRequeEd');
-            Route::get('/ObtenerDiseñadores','RequerimientosController@ObtenerDiseñadores');
-            Route::post('/CambiarDiseñadorRequeEd','RequerimientosController@CambiarDiseñadorRequeEd');
-            Route::post('/GuardarPropuestaReq','RequerimientosController@GuardarPropuestaReq');
-            Route::get('/ListaPropuestaReq','RequerimientosController@ListaPropuestaReq');
-            Route::post('/MisRequerimientosAnular','RequerimientosController@MisRequerimientosAnular');
-
-            Route::post('/Upload2DReq','RequerimientosController@Upload2DReq');
-            Route::post('/Upload3DReq','RequerimientosController@Upload3DReq');
-            Route::post('/UploadPlanoReq','RequerimientosController@UploadPlanoReq');
-            Route::post('/UploadfilesSupport','RequerimientosController@UploadfilesSupport');
-            Route::get('/ImagesRequerimiento','RequerimientosController@ImagesRequerimiento');
-
-
-            Route::post('/RechazarPropuesta','RequerimientosController@RechazarPropuesta');
-            Route::post('/AprobarPropuesta','RequerimientosController@AprobarPropuesta');
-            Route::get('/ValidarEstadoPropuestasFR','RequerimientosController@ValidarEstadoPropuestasFR');
-
-
             Route::resource('requerimientos_dashboard','RequerimientosChartsController');
             Route::get('/req_dash_requerimientosxdiseñador','RequerimientosChartsController@RequerimientosxDiseñador');
             Route::get('/req_dash_Prop_x_Estado','RequerimientosChartsController@Est_Propuestas');
             Route::get('/req_dash_All_Req','RequerimientosChartsController@All_req_est');
 
 
-            Route::post('/SaveMarca','RequerimientosController@SaveMarca');
-            Route::post('/UniqueMarca','RequerimientosController@UniqueMarca');
-            Route::get('/ComprobarRender','RequerimientosController@ComprobarRender');
-            Route::post('/EnviarRender','RequerimientosController@EnviarRender');
 
 
-            Route::get('/ComprobarEstadoPropuesta','RequerimientosController@ComprobarEstadoPropuesta');
-            Route::post('/FinalizaPropuesta','RequerimientosController@FinalizaPropuesta');
-            Route::get('/ObtenerMediasPorCodigoBase','RequerimientosController@ObtenerMediasPorCodigoBase');
-            Route::post('/CambiarMedidaPropuesta','RequerimientosController@CambiarMedidaPropuesta');
-            Route::post('/EnviarAprobarPropuesta','RequerimientosController@EnviarAprobarPropuesta');
-            Route::get('/ObtenerUltimoArte','RequerimientosController@ObtenerUltimoArte');
-            Route::get('/ObtenerArtes','RequerimientosController@ObtenerArtes');
-            Route::post('/AgregarCaracteristicaPropuesta','RequerimientosController@AgregarCaracteristicaPropuesta');
-            Route::post('/EnviaraDiseño','RequerimientosController@EnviaraDiseño');
 
 
 
@@ -449,7 +420,6 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
         });
 
 
-        Route::get('test_max_update', 'Pedidos\VentasController@max_update');
 
     });
 
