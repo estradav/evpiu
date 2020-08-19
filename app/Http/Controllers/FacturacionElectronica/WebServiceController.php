@@ -960,7 +960,7 @@ class WebServiceController extends Controller
 
 
             /* se comienza con el web service */
-            $login1 = $request->Username;
+            $login1 = 'dcorreah';
             $password = "FE2020ev*";
             $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
             $client = new \SoapClient($wsdl_url);
