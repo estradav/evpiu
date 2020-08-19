@@ -30,6 +30,20 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="btn-group special" role="group">
+                                    <a href="http://192.168.1.53:81/intraciev/cartera/index.php" class="btn btn-outline-light subir_archivos_soporte">
+                                        <i class="pe-7s-cloud-upload pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                        <b class="icon-gradient bg-plum-plate">Gestionar clientes MAX</b>
+                                    </a>
+                                    <a href="http://192.168.1.5/ev-tickets/" class="btn btn-outline-light btn-dashed subir_archivos_soporte">
+                                        <i class="pe-7s-cloud-upload pe-4x icon-gradient bg-plum-plate"></i> <br>
+                                        <b class="icon-gradient bg-plum-plate">Tickets</b>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <br>
                             <div class="col-12 text-center">
                                 @can('aplicativos_externos.gestionar_clientes_max')
                                     <a href="http://192.168.1.53:81/intraciev/cartera/index.php" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-user-tie fa-3x"></i><br> Gestionar clientes MAX </a>
@@ -187,12 +201,24 @@
         </div>
     @endcan
 
-    <style>
-        .btn-primary {
-            margin-bottom: 10px;
-            margin-left: 8px;
-        }
-    </style>
+    @push('styles')
+        <style>
+            .btn-primary {
+                margin-bottom: 10px;
+                margin-left: 8px;
+            }
+
+            .btn-group.special {
+                display: flex;
+            }
+
+            .special .btn {
+                flex: 1;
+                border-radius: 0;
+            }
+
+        </style>
+    @endpush
 
 @endsection
 

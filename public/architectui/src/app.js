@@ -72,9 +72,7 @@ $(document).ready(() => {
         var win = $(this);
         if (win.width() < 1250) {
             $('.app-container').addClass('closed-sidebar-mobile closed-sidebar');
-        }
-        else
-        {
+        } else {
             $('.app-container').removeClass('closed-sidebar-mobile closed-sidebar');
         }
     });

@@ -1862,6 +1862,5 @@
             border-radius: 0;
         }
 
-
     </style>
 @endpush

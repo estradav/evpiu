@@ -147,27 +147,15 @@ class FacturasController extends Controller
 
             $detalle = DB::connection('MAX')
                 ->table('CIEV_V_FE_FacturasDetalladas')
-                ->select('CIEV_V_FE_FacturasDetalladas.factura',
-                    'CIEV_V_FE_FacturasDetalladas.codigoproducto',
-                    'CIEV_V_FE_FacturasDetalladas.descripcionproducto',
-                    'CIEV_V_FE_FacturasDetalladas.OC',
-                    'CIEV_V_FE_FacturasDetalladas.item',
-                    'CIEV_V_FE_FacturasDetalladas.cantidad',
-                    'CIEV_V_FE_FacturasDetalladas.precio',
-                    'CIEV_V_FE_FacturasDetalladas.precioUSD',
-                    'CIEV_V_FE_FacturasDetalladas.totalitem',
-                    'CIEV_V_FE_FacturasDetalladas.totalitemUSD',
-                    'CIEV_V_FE_FacturasDetalladas.iva as iva_item',
-                    'CIEV_V_FE_FacturasDetalladas.valormercancia',
-                    'CIEV_V_FE_FacturasDetalladas.Desc_Item',
-                    'CIEV_V_FE_FacturasDetalladas.UM',
-                    'CIEV_V_FE_FacturasDetalladas.base',
-                    'CIEV_V_FE_FacturasDetalladas.bruto_usd',
-                    'CIEV_V_FE_FacturasDetalladas.posicionarancelaria',
-                    'CIEV_V_FE_FacturasDetalladas.fletes_usd',
-                    'CIEV_V_FE_FacturasDetalladas.seguros_usd')
-                ->where('CIEV_V_FE_FacturasDetalladas.factura', '=', $factura->numero)
+                ->select('factura',
+                    'codigoproducto', 'descripcionproducto', 'OC', 'item','Marca',
+                    'cantidad', 'precio', 'precioUSD', 'totalitem', 'totalitemUSD',
+                    'iva as iva_item', 'valormercancia', 'Desc_Item', 'UM', 'base',
+                    'bruto_usd', 'posicionarancelaria', 'fletes_usd', 'seguros_usd', 'ARTE')
+                ->where('factura', '=', $factura->numero)
                 ->get();
+
+
 
             $configuracion = DB::table('fe_configs')->first();
 
@@ -748,9 +736,6 @@ class FacturasController extends Controller
                     $objetoXML->text(trim($item->descripcionproducto));
                     $objetoXML->endElement();
 
-                    $objetoXML->startElement("notas");
-                    $objetoXML->text(' ');
-                    $objetoXML->endElement();
 
                     $objetoXML->startElement("cantidad");
                     $objetoXML->text(number_format($item->cantidad, 2, '.', ''));
@@ -866,9 +851,8 @@ class FacturasController extends Controller
                         $objetoXML->endElement();
                     }
 
+                    $objetoXML->startElement("datosextra");
                     if (trim($item->posicionarancelaria) != ''){
-                        $objetoXML->startElement("datosextra");
-
                         $objetoXML->startElement("datoextra");
 
                         $objetoXML->startElement("tipo");
@@ -884,9 +868,79 @@ class FacturasController extends Controller
                         $objetoXML->endElement();
 
                         $objetoXML->endElement();
+                    }
+
+                    if (trim($item->ARTE) != ''){
+                        $objetoXML->startElement("datoextra");
+
+                        $objetoXML->startElement("tipo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("clave");
+                        $objetoXML->text('Arte');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text(trim($item->ARTE));
+                        $objetoXML->endElement();
 
                         $objetoXML->endElement();
                     }
+                    if (trim($item->Marca) != ''){
+                        $objetoXML->startElement("datoextra");
+
+                        $objetoXML->startElement("tipo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("clave");
+                        $objetoXML->text('Marca');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text(trim($item->Marca));
+                        $objetoXML->endElement();
+
+                        $objetoXML->endElement();
+                    }
+                    $notas_item = DB::connection('MAX')
+                        ->table('CIEV_V_NotasFacturas')
+                        ->where('Factura','=', $factura->numero)
+                        ->where('item', '=', $item->item)
+                        ->pluck('Nota')->toArray();
+
+
+                    if (sizeof($notas_item) > 0){
+                        $notas_array = array();
+                        $i = 1;
+                        foreach($notas_item as $item){
+                            if(trim($item) != ''){
+                                array_push($notas_array, 'nota_'.$i.':'.trim($item));
+                                $i++;
+                            }
+                        }
+                        $notas = implode(",", $notas_array);
+
+                        $objetoXML->startElement("datoextra");
+
+                        $objetoXML->startElement("tipo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("clave");
+                        $objetoXML->text('Notas');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text($notas);
+                        $objetoXML->endElement();
+
+                        $objetoXML->endElement();
+
+                    }
+
+                    $objetoXML->endElement();
                     $objetoXML->endElement();
                 }
                 $objetoXML->endElement(); // cierra item

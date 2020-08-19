@@ -334,7 +334,7 @@ $(document).ready(function () {
             nombre_cliente: "required",
             cod_cliente: "required",
             direccion: "required",
-            cuidad: "required",
+            ciudad: "required",
             telefono: "required",
             condicion_pago: {
                 select_check: true
@@ -365,7 +365,15 @@ $(document).ready(function () {
             let items = [];
             const encabezado = {
                 id: document.getElementById('id').value,
+                id_maestro: document.getElementById('id_maestro').value,
+                vendedor: document.getElementById('vendedor').value,
+                nombre_cliente: document.getElementById('nombre_cliente').value,
+                cod_cliente: document.getElementById('cod_cliente').value,
                 oc: document.getElementById('orden_compra').value,
+                direccion: document.getElementById('direccion').value,
+                ciudad: document.getElementById('ciudad').value,
+                telefono: document.getElementById('telefono').value,
+                condicion_pago: document.getElementById('condicion_pago').value,
                 notas_generales: document.getElementById('notas_generales').value,
                 descuento: document.getElementById('descuento').value,
                 tiene_iva: document.getElementById('iva').value,

@@ -300,100 +300,705 @@ class VentasController extends Controller
      */
     public function update(Request $request){
         if ($request->ajax()){
+            DB::beginTransaction();
             try {
-                DB::beginTransaction();
                 $encabezado = $request->encabezado;
                 $detalle = $request->items;
+                $destino_produccion = array();
+                $destino_bodega = array();
+                $destino_troqueles = array();
+
+                foreach ($detalle as $det){
+                    if ($det['destino'] == 'Produccion'){
+                        array_push($destino_produccion, $det);
+                    }
+                    else if($det['destino'] == 'Bodega'){
+                        array_push($destino_bodega, $det);
+                    }
+                    else if($det['destino'] == 'Troqueles'){
+                        array_push($destino_troqueles, $det);
+                    }
+                }
+
 
                 if (sizeof($detalle) == 0){
                     return response()
                         ->json('Debe agregar al menos un producto antes de guardar el pedido', 500);
                 }else{
-                    DB::table('encabezado_pedidos')
-                        ->where('id','=', $encabezado['id'])
-                        ->update([
-                            'OrdenCompra'       =>  $encabezado['oc'],
-                            'Descuento'         =>  $encabezado['descuento'],
-                            'Iva'               =>  $encabezado['tiene_iva'],
-                            'Notas'             =>  $encabezado['notas_generales'],
-                            'Bruto'             =>  $encabezado['total_bruto'],
-                            'TotalDescuento'    =>  $encabezado['total_descuento'],
-                            'TotalSubtotal'     =>  $encabezado['subtotal'],
-                            'TotalIVA'          =>  $encabezado['total_iva'],
-                            'TotalPedido'       =>  $encabezado['total_pedido'],
-                            'Estado'            =>  1
-                        ]);
+                    if(sizeof($destino_produccion) == sizeof($detalle)){
+                        DB::table('encabezado_pedidos')
+                            ->where('id','=', $encabezado['id'])
+                            ->update([
+                                'OrdenCompra'       =>  $encabezado['oc'],
+                                'Descuento'         =>  $encabezado['descuento'],
+                                'Iva'               =>  $encabezado['tiene_iva'],
+                                'Notas'             =>  $encabezado['notas_generales'],
+                                'Bruto'             =>  $encabezado['total_bruto'],
+                                'TotalDescuento'    =>  $encabezado['total_descuento'],
+                                'TotalSubtotal'     =>  $encabezado['subtotal'],
+                                'TotalIVA'          =>  $encabezado['total_iva'],
+                                'TotalPedido'       =>  $encabezado['total_pedido'],
+                                'Estado'            =>  1,
+                                'Destino'           =>  1
+                            ]);
 
-
-                    $id_no_borrar = array();
-
-                    $registros = DB::table('detalle_pedidos')
-                        ->where('idPedido','=',$encabezado['id'])
-                        ->pluck('id')
-                        ->toArray();
-
-
-                    foreach ($detalle as $det){
-                        $existe = DB::table('detalle_pedidos')
-                            ->where('id','=', $det['id'])
-                            ->count();
-
-                        $destino_n = null;
-                        if ($det['destino'] == 'Produccion'){
-                            $destino_n = 1;
-                        }else if ($det['destino'] == 'Bodega'){
-                            $destino_n = 2;
-                        }else{
-                            $destino_n = 3;
-                        }
-
-                        if ($existe === 1){
-                            DB::table('detalle_pedidos')
-                                ->where('id','=',$det['id'])
+                        if (!empty($encabezado['id_maestro'])){
+                            DB::table('maestro_pedidos')
+                                ->where('id', '=', $encabezado['id_maestro'])
                                 ->update([
-                                    'idPedido'          =>  $encabezado['id'],
-                                    'CodigoProducto'    =>  $det['cod'] ,
-                                    'Descripcion'       =>  $det['producto'],
-                                    'Arte'              =>  $det['arte'],
-                                    'Notas'             =>  $det['notas'],
-                                    'Unidad'            =>  $det['unidad'],
-                                    'Precio'            =>  $det['precio'],
-                                    'Cantidad'          =>  $det['cantidad'],
-                                    'Total'             =>  $det['total'],
+                                    'id_bodega'     => null,
+                                    'id_produccion' => $encabezado['id'],
+                                    'id_troqueles'  => null,
+                                    'updated_at'    => Carbon::now()
                                 ]);
+                        }
 
-                            array_push($id_no_borrar, intval($det['id']));
 
-                        }elseif ($det['id'] === null){
-                            $id = DB::table('detalle_pedidos')
-                                ->insertGetId([
-                                    'idPedido'          =>  $encabezado['id'],
-                                    'CodigoProducto'    =>  $det['cod'] ,
-                                    'Descripcion'       =>  $det['producto'],
-                                    'Arte'              =>  $det['arte'],
-                                    'Notas'             =>  $det['notas'],
-                                    'Unidad'            =>  $det['unidad'],
-                                    'Precio'            =>  $det['precio'],
-                                    'Cantidad'          =>  $det['cantidad'],
-                                    'Total'             =>  $det['total'],
-                                    'Destino'           =>  $destino_n,
-                                    'R_N'               =>  $det['n_r'],
+                        $id_no_borrar = array();
+                        $registros = DB::table('detalle_pedidos')
+                            ->where('idPedido','=', $encabezado['id'])
+                            ->pluck('id')
+                            ->toArray();
 
-                                ]);
-                            array_push($id_no_borrar, intval($id));
+                        foreach ($destino_produccion as $det) {
+
+                            $existe = DB::table('detalle_pedidos')
+                                ->where('id', '=', $det['id'])
+                                ->count();
+
+
+                            if ($existe == 1){
+                                DB::table('detalle_pedidos')
+                                    ->where('id','=',$det['id'])
+                                    ->update([
+                                        'idPedido'          =>  $encabezado['id'],
+                                        'CodigoProducto'    =>  $det['cod'] ,
+                                        'Descripcion'       =>  $det['producto'],
+                                        'Arte'              =>  $det['arte'],
+                                        'Notas'             =>  $det['notas'],
+                                        'Unidad'            =>  $det['unidad'],
+                                        'Precio'            =>  $det['precio'],
+                                        'Cantidad'          =>  $det['cantidad'],
+                                        'Total'             =>  $det['total'],
+                                        'Destino'           =>  1,
+                                    ]);
+
+                                array_push($id_no_borrar, intval($det['id']));
+
+                            }elseif ($det['id'] == null){
+                                $id = DB::table('detalle_pedidos')
+                                    ->insertGetId([
+                                        'idPedido'          =>  $encabezado['id'],
+                                        'CodigoProducto'    =>  $det['cod'] ,
+                                        'Descripcion'       =>  $det['producto'],
+                                        'Arte'              =>  $det['arte'],
+                                        'Notas'             =>  $det['notas'],
+                                        'Unidad'            =>  $det['unidad'],
+                                        'Precio'            =>  $det['precio'],
+                                        'Cantidad'          =>  $det['cantidad'],
+                                        'Total'             =>  $det['total'],
+                                        'Destino'           =>  1,
+                                        'R_N'               =>  $det['n_r'],
+
+                                    ]);
+                                array_push($id_no_borrar, intval($id));
+                            }
+                        }
+                        $eliminar = array_diff($registros, $id_no_borrar);
+
+                        foreach ($eliminar as $e){
+                            DB::table('detalle_pedidos')
+                                ->where('idPedido','=', $encabezado['id'])
+                                ->delete($e);
                         }
                     }
-                    $eliminar = array_diff($registros, $id_no_borrar);
+                    else if(sizeof($destino_bodega) == sizeof($detalle)){
+                        DB::table('encabezado_pedidos')
+                            ->where('id','=', $encabezado['id'])
+                            ->update([
+                                'OrdenCompra'       =>  $encabezado['oc'],
+                                'Descuento'         =>  $encabezado['descuento'],
+                                'Iva'               =>  $encabezado['tiene_iva'],
+                                'Notas'             =>  $encabezado['notas_generales'],
+                                'Bruto'             =>  $encabezado['total_bruto'],
+                                'TotalDescuento'    =>  $encabezado['total_descuento'],
+                                'TotalSubtotal'     =>  $encabezado['subtotal'],
+                                'TotalIVA'          =>  $encabezado['total_iva'],
+                                'TotalPedido'       =>  $encabezado['total_pedido'],
+                                'Estado'            =>  1,
+                                'Destino'           =>  2
+                            ]);
 
-                    foreach ($eliminar as $e){
-                        DB::table('detalle_pedidos')
+
+                        if (!empty($encabezado['id_maestro'])){
+                            DB::table('maestro_pedidos')
+                                ->where('id', '=', $encabezado['id_maestro'])
+                                ->update([
+                                    'id_bodega'     => $encabezado['id'],
+                                    'updated_at'    => Carbon::now()
+                                ]);
+                        }
+
+                        $id_no_borrar = array();
+                        $registros = DB::table('detalle_pedidos')
                             ->where('idPedido','=', $encabezado['id'])
-                            ->delete($e);
-                    }
+                            ->pluck('id')
+                            ->toArray();
 
-                    DB::commit();
-                    return response()->json('Pedido actualizado',200);
+
+                        foreach ($destino_bodega as $det) {
+
+                            $existe = DB::table('detalle_pedidos')
+                                ->where('id', '=', $det['id'])
+                                ->count();
+
+
+                            if ($existe == 1){
+                                DB::table('detalle_pedidos')
+                                    ->where('id','=',$det['id'])
+                                    ->update([
+                                        'idPedido'          =>  $encabezado['id'],
+                                        'CodigoProducto'    =>  $det['cod'] ,
+                                        'Descripcion'       =>  $det['producto'],
+                                        'Arte'              =>  $det['arte'],
+                                        'Notas'             =>  $det['notas'],
+                                        'Unidad'            =>  $det['unidad'],
+                                        'Precio'            =>  $det['precio'],
+                                        'Cantidad'          =>  $det['cantidad'],
+                                        'Total'             =>  $det['total'],
+                                        'Destino'           =>  2,
+                                    ]);
+
+                                array_push($id_no_borrar, intval($det['id']));
+
+                            }elseif ($det['id'] == null){
+                                $id = DB::table('detalle_pedidos')
+                                    ->insertGetId([
+                                        'idPedido'          =>  $encabezado['id'],
+                                        'CodigoProducto'    =>  $det['cod'] ,
+                                        'Descripcion'       =>  $det['producto'],
+                                        'Arte'              =>  $det['arte'],
+                                        'Notas'             =>  $det['notas'],
+                                        'Unidad'            =>  $det['unidad'],
+                                        'Precio'            =>  $det['precio'],
+                                        'Cantidad'          =>  $det['cantidad'],
+                                        'Total'             =>  $det['total'],
+                                        'Destino'           =>  2,
+                                        'R_N'               =>  $det['n_r'],
+
+                                    ]);
+                                array_push($id_no_borrar, intval($id));
+                            }
+                        }
+                        $eliminar = array_diff($registros, $id_no_borrar);
+
+
+                        foreach ($eliminar as $e){
+                            DB::table('detalle_pedidos')
+                                ->where('idPedido','=', $encabezado['id'])
+                                ->delete($e);
+                        }
+                    }
+                    else if(sizeof($destino_troqueles) == sizeof($detalle)){
+                        DB::table('encabezado_pedidos')
+                            ->where('id','=', $encabezado['id'])
+                            ->update([
+                                'OrdenCompra'       =>  $encabezado['oc'],
+                                'Descuento'         =>  $encabezado['descuento'],
+                                'Iva'               =>  $encabezado['tiene_iva'],
+                                'Notas'             =>  $encabezado['notas_generales'],
+                                'Bruto'             =>  $encabezado['total_bruto'],
+                                'TotalDescuento'    =>  $encabezado['total_descuento'],
+                                'TotalSubtotal'     =>  $encabezado['subtotal'],
+                                'TotalIVA'          =>  $encabezado['total_iva'],
+                                'TotalPedido'       =>  $encabezado['total_pedido'],
+                                'Estado'            =>  1,
+                                'Destino'           =>  3
+                            ]);
+
+
+                        if (!empty($encabezado['id_maestro'])){
+                            DB::table('maestro_pedidos')
+                                ->where('id', '=', $encabezado['id_maestro'])
+                                ->update([
+                                    'id_bodega'     => null,
+                                    'id_produccion' => null,
+                                    'id_troqueles'  => $encabezado['id'],
+                                    'updated_at'    => Carbon::now()
+                                ]);
+                        }
+
+                        $id_no_borrar = array();
+                        $registros = DB::table('detalle_pedidos')
+                            ->where('idPedido','=', $encabezado['id'])
+                            ->pluck('id')
+                            ->toArray();
+
+                        foreach ($destino_produccion as $det) {
+                            $existe = DB::table('detalle_pedidos')
+                                ->where('id', '=', $det['id'])
+                                ->count();
+
+                            if ($existe === 1){
+                                DB::table('detalle_pedidos')
+                                    ->where('id','=',$det['id'])
+                                    ->update([
+                                        'idPedido'          =>  $encabezado['id'],
+                                        'CodigoProducto'    =>  $det['cod'] ,
+                                        'Descripcion'       =>  $det['producto'],
+                                        'Arte'              =>  $det['arte'],
+                                        'Notas'             =>  $det['notas'],
+                                        'Unidad'            =>  $det['unidad'],
+                                        'Precio'            =>  $det['precio'],
+                                        'Cantidad'          =>  $det['cantidad'],
+                                        'Total'             =>  $det['total'],
+                                        'Destino'           =>  3,
+                                    ]);
+
+                                array_push($id_no_borrar, intval($det['id']));
+
+                            }elseif ($det['id'] === null){
+                                $id = DB::table('detalle_pedidos')
+                                    ->insertGetId([
+                                        'idPedido'          =>  $encabezado['id'],
+                                        'CodigoProducto'    =>  $det['cod'] ,
+                                        'Descripcion'       =>  $det['producto'],
+                                        'Arte'              =>  $det['arte'],
+                                        'Notas'             =>  $det['notas'],
+                                        'Unidad'            =>  $det['unidad'],
+                                        'Precio'            =>  $det['precio'],
+                                        'Cantidad'          =>  $det['cantidad'],
+                                        'Total'             =>  $det['total'],
+                                        'Destino'           =>  3,
+                                        'R_N'               =>  $det['n_r'],
+
+                                    ]);
+                                array_push($id_no_borrar, intval($id));
+                            }
+                        }
+                        $eliminar = array_diff($registros, $id_no_borrar);
+
+                        foreach ($eliminar as $e){
+                            DB::table('detalle_pedidos')
+                                ->where('idPedido','=', $encabezado['id'])
+                                ->delete($e);
+                        }
+                    }
+                    else{
+                        $maestro = DB::table('maestro_pedidos')
+                            ->where('id', '=', $encabezado['id_maestro'])
+                            ->first();
+
+                        if(sizeof($destino_produccion) > 0){
+                            $estado_destino = DB::table('encabezado_pedidos')
+                                ->where('id', '=', $maestro->id_produccion)
+                                ->pluck('Estado')
+                                ->first();
+
+
+                            if ($maestro->id_produccion != null && $estado_destino < 10){
+                                foreach ($destino_produccion as $det) {
+                                    $existe = DB::table('detalle_pedidos')
+                                        ->where('id', '=', $det['id'])
+                                        ->count();
+
+                                    if ($existe === 1){
+                                        DB::table('detalle_pedidos')
+                                            ->where('id','=',$det['id'])
+                                            ->update([
+                                                'idPedido'          =>  $maestro->id_produccion,
+                                                'CodigoProducto'    =>  $det['cod'] ,
+                                                'Descripcion'       =>  $det['producto'],
+                                                'Arte'              =>  $det['arte'],
+                                                'Notas'             =>  $det['notas'],
+                                                'Unidad'            =>  $det['unidad'],
+                                                'Precio'            =>  $det['precio'],
+                                                'Cantidad'          =>  $det['cantidad'],
+                                                'Total'             =>  $det['total'],
+                                                'Destino'           =>  1,
+                                            ]);
+                                    }elseif ($det['id'] === null){
+                                        DB::table('detalle_pedidos')
+                                            ->insertGetId([
+                                                'idPedido'          =>  $maestro->id_produccion,
+                                                'CodigoProducto'    =>  $det['cod'] ,
+                                                'Descripcion'       =>  $det['producto'],
+                                                'Arte'              =>  $det['arte'],
+                                                'Notas'             =>  $det['notas'],
+                                                'Unidad'            =>  $det['unidad'],
+                                                'Precio'            =>  $det['precio'],
+                                                'Cantidad'          =>  $det['cantidad'],
+                                                'Total'             =>  $det['total'],
+                                                'Destino'           =>  1,
+                                                'R_N'               =>  $det['n_r'],
+                                            ]);
+                                    }
+                                }
+                            }
+                            else{
+                                $id_pedido = DB::table('encabezado_pedidos')
+                                    ->insertGetId([
+                                        'OrdenCompra'       => $request->encabezado['oc'],
+                                        'CodCliente'        => $request->encabezado['cod_cliente'],
+                                        'NombreCliente'     => $request->encabezado['nombre_cliente'],
+                                        'DireccionCliente'  => $request->encabezado['direccion'],
+                                        'Ciudad'            => $request->encabezado['ciudad'],
+                                        'Telefono'          => $request->encabezado['telefono'],
+                                        'CodVendedor'       => $request->encabezado['vendedor'],
+                                        'NombreVendedor'    => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
+                                        'CondicionPago'     => $request->encabezado['condicion_pago'],
+                                        'Descuento'         => $request->encabezado['descuento'],
+                                        'Iva'               => $request->encabezado['tiene_iva'],
+                                        'Estado'            => 1,
+                                        'Bruto'             => $request->encabezado['total_bruto'],
+                                        'TotalDescuento'    => $request->encabezado['total_descuento'],
+                                        'TotalSubtotal'     => $request->encabezado['subtotal'],
+                                        'TotalIVA'          => $request->encabezado['total_iva'],
+                                        'TotalPedido'       => $request->encabezado['total_pedido'],
+                                        'Notas'             => $request->encabezado['notas_generales'],
+                                        'Destino'           => 1,
+                                        'created_at'        => Carbon::now(),
+                                    ]);
+
+
+                                foreach ($destino_produccion as $item){
+                                    DB::table('detalle_pedidos')
+                                        ->insert([
+                                            'idPedido'         => $id_pedido,
+                                            'CodigoProducto'   => $item['cod'],
+                                            'Descripcion'      => $item['producto'],
+                                            'Arte'             => $item['arte'],
+                                            'Notas'            => $item['notas'],
+                                            'Unidad'           => $item['unidad'],
+                                            'Cantidad'         => $item['cantidad'],
+                                            'Precio'           => $item['precio'],
+                                            'Total'            => $item['total'],
+                                            'Destino'          => 1,
+                                            'R_N'              => $item['n_r'],
+                                            'created_at'       => Carbon::now(),
+                                    ]);
+                                }
+
+                                /* DB::table('pedidos_log')
+                                     ->insert([
+                                         'id_pedido'     =>  $id_pedido,
+                                         'area'          =>  'VENTAS',
+                                         'detalle'       =>  'creo un pedido para produccion',
+                                         'usuario'       =>  Auth::user()->username,
+                                         'created_at'    =>  Carbon::now(),
+                                         'updated_at'    =>  Carbon::now()
+                                     ]);*/
+
+                                DB::table('pedidos_detalles_area')
+                                    ->insert([
+                                        'idPedido'     =>  $id_pedido,
+                                        'created_at'   =>  Carbon::now(),
+                                        'updated_at'   =>  Carbon::now(),
+                                    ]);
+
+
+                                if ($maestro->id_produccion !== null){
+                                    $maestro_nuevo = DB::table('maestro_pedidos')
+                                        ->insertGetId([
+                                            'created_at'    =>  Carbon::now(),
+                                            'updated_at'    =>  Carbon::now()
+                                        ]);
+
+                                    DB::table('encabezado_pedidos')
+                                        ->where('id', '=', $id_pedido)
+                                        ->update([
+                                            'id_maestro'    => $maestro_nuevo
+                                        ]);
+                                }else{
+                                    DB::table('maestro_pedidos')
+                                        ->where('id', '=', $encabezado['id_maestro'])
+                                        ->update([
+                                            'id_produccion'  =>  $id_pedido
+                                        ]);
+
+                                    DB::table('encabezado_pedidos')
+                                        ->where('id', '=', $id_pedido)
+                                        ->update([
+                                            'id_maestro'    => $encabezado['id_maestro']
+                                        ]);
+
+                                }
+                            }
+                        }
+                        if(sizeof($destino_bodega) > 0){
+                            $estado_destino = DB::table('encabezado_pedidos')
+                                ->where('id', '=', $maestro->id_bodega)
+                                ->pluck('Estado')
+                                ->first();
+
+                            if ($maestro->id_bodega !== null && $estado_destino < 10){
+                                foreach ($destino_bodega as $det) {
+                                    $existe = DB::table('detalle_pedidos')
+                                        ->where('id', '=', $det['id'])
+                                        ->count();
+
+                                    if ($existe === 1){
+                                        DB::table('detalle_pedidos')
+                                            ->where('id','=',$det['id'])
+                                            ->update([
+                                                'idPedido'          =>  $maestro->id_bodega,
+                                                'CodigoProducto'    =>  $det['cod'] ,
+                                                'Descripcion'       =>  $det['producto'],
+                                                'Arte'              =>  $det['arte'],
+                                                'Notas'             =>  $det['notas'],
+                                                'Unidad'            =>  $det['unidad'],
+                                                'Precio'            =>  $det['precio'],
+                                                'Cantidad'          =>  $det['cantidad'],
+                                                'Total'             =>  $det['total'],
+                                                'Destino'           =>  2,
+                                            ]);
+                                    }elseif ($det['id'] === null){
+                                        DB::table('detalle_pedidos')
+                                            ->insertGetId([
+                                                'idPedido'          =>  $maestro->id_bodega,
+                                                'CodigoProducto'    =>  $det['cod'] ,
+                                                'Descripcion'       =>  $det['producto'],
+                                                'Arte'              =>  $det['arte'],
+                                                'Notas'             =>  $det['notas'],
+                                                'Unidad'            =>  $det['unidad'],
+                                                'Precio'            =>  $det['precio'],
+                                                'Cantidad'          =>  $det['cantidad'],
+                                                'Total'             =>  $det['total'],
+                                                'Destino'           =>  2,
+                                                'R_N'               =>  $det['n_r'],
+                                            ]);
+                                    }
+                                }
+                            }else{
+                                $id_pedido = DB::table('encabezado_pedidos')
+                                    ->insertGetId([
+                                        'OrdenCompra'       => $request->encabezado['oc'],
+                                        'CodCliente'        => $request->encabezado['cod_cliente'],
+                                        'NombreCliente'     => $request->encabezado['nombre_cliente'],
+                                        'DireccionCliente'  => $request->encabezado['direccion'],
+                                        'Ciudad'            => $request->encabezado['ciudad'],
+                                        'Telefono'          => $request->encabezado['telefono'],
+                                        'CodVendedor'       => $request->encabezado['vendedor'],
+                                        'NombreVendedor'    => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
+                                        'CondicionPago'     => $request->encabezado['condicion_pago'],
+                                        'Descuento'         => $request->encabezado['descuento'],
+                                        'Iva'               => $request->encabezado['tiene_iva'],
+                                        'Estado'            => 1,
+                                        'Bruto'             => $request->encabezado['total_bruto'],
+                                        'TotalDescuento'    => $request->encabezado['total_descuento'],
+                                        'TotalSubtotal'     => $request->encabezado['subtotal'],
+                                        'TotalIVA'          => $request->encabezado['total_iva'],
+                                        'TotalPedido'       => $request->encabezado['total_pedido'],
+                                        'Notas'             => $request->encabezado['notas_generales'],
+                                        'Destino'           => 2,
+                                        'created_at'        => Carbon::now(),
+                                    ]);
+
+
+                                foreach ($destino_bodega as $item){
+                                    DB::table('detalle_pedidos')
+                                        ->insert([
+                                            'idPedido'         => $id_pedido,
+                                            'CodigoProducto'   => $item['cod'],
+                                            'Descripcion'      => $item['producto'],
+                                            'Arte'             => $item['arte'],
+                                            'Notas'            => $item['notas'],
+                                            'Unidad'           => $item['unidad'],
+                                            'Cantidad'         => $item['cantidad'],
+                                            'Precio'           => $item['precio'],
+                                            'Total'            => $item['total'],
+                                            'Destino'          => 2,
+                                            'R_N'              => $item['n_r'],
+                                            'created_at'       => Carbon::now(),
+                                        ]);
+                                }
+
+                                /* DB::table('pedidos_log')
+                                     ->insert([
+                                         'id_pedido'     =>  $id_pedido,
+                                         'area'          =>  'VENTAS',
+                                         'detalle'       =>  'creo un pedido para produccion',
+                                         'usuario'       =>  Auth::user()->username,
+                                         'created_at'    =>  Carbon::now(),
+                                         'updated_at'    =>  Carbon::now()
+                                     ]);*/
+
+                                DB::table('pedidos_detalles_area')
+                                    ->insert([
+                                        'idPedido'     =>  $id_pedido,
+                                        'created_at'   =>  Carbon::now(),
+                                        'updated_at'   =>  Carbon::now(),
+                                    ]);
+
+
+                                if ($maestro->id_bodega !== null){
+                                    $maestro_nuevo = DB::table('maestro_pedidos')
+                                        ->insertGetId([
+                                            'created_at'    =>  Carbon::now(),
+                                            'updated_at'    =>  Carbon::now()
+                                        ]);
+
+                                    DB::table('encabezado_pedidos')
+                                        ->where('id', '=', $id_pedido)
+                                        ->update([
+                                            'id_maestro'    => $maestro_nuevo
+                                        ]);
+                                }else{
+                                    DB::table('maestro_pedidos')
+                                        ->where('id', '=', $encabezado['id_maestro'])
+                                        ->update([
+                                            'id_bodega'  =>  $id_pedido
+                                        ]);
+
+                                    DB::table('encabezado_pedidos')
+                                        ->where('id', '=', $id_pedido)
+                                        ->update([
+                                            'id_maestro'    => $encabezado['id_maestro']
+                                        ]);
+
+                                }
+                            }
+                        }
+                        if(sizeof($destino_troqueles) > 0){
+                            $estado_destino = DB::table('encabezado_pedidos')
+                                ->where('id', '=', $maestro->id_troqueles)
+                                ->pluck('Estado')
+                                ->first();
+
+                            if ($maestro->id_troqueles !== null && $estado_destino < 10){
+                                foreach ($destino_bodega as $det) {
+                                    $existe = DB::table('detalle_pedidos')
+                                        ->where('id', '=', $det['id'])
+                                        ->count();
+
+                                    if ($existe == 1){
+                                        DB::table('detalle_pedidos')
+                                            ->where('id','=',$det['id'])
+                                            ->update([
+                                                'idPedido'          =>  $maestro->id_troqueles,
+                                                'CodigoProducto'    =>  $det['cod'] ,
+                                                'Descripcion'       =>  $det['producto'],
+                                                'Arte'              =>  $det['arte'],
+                                                'Notas'             =>  $det['notas'],
+                                                'Unidad'            =>  $det['unidad'],
+                                                'Precio'            =>  $det['precio'],
+                                                'Cantidad'          =>  $det['cantidad'],
+                                                'Total'             =>  $det['total'],
+                                                'Destino'           =>  3,
+                                            ]);
+                                    }elseif ($det['id'] === null){
+                                        DB::table('detalle_pedidos')
+                                            ->insertGetId([
+                                                'idPedido'          =>  $maestro->id_troqueles,
+                                                'CodigoProducto'    =>  $det['cod'] ,
+                                                'Descripcion'       =>  $det['producto'],
+                                                'Arte'              =>  $det['arte'],
+                                                'Notas'             =>  $det['notas'],
+                                                'Unidad'            =>  $det['unidad'],
+                                                'Precio'            =>  $det['precio'],
+                                                'Cantidad'          =>  $det['cantidad'],
+                                                'Total'             =>  $det['total'],
+                                                'Destino'           =>  3,
+                                                'R_N'               =>  $det['n_r'],
+                                            ]);
+                                    }
+                                }
+                            }else{
+                                $id_pedido = DB::table('encabezado_pedidos')
+                                    ->insertGetId([
+                                        'OrdenCompra'       => $request->encabezado['oc'],
+                                        'CodCliente'        => $request->encabezado['cod_cliente'],
+                                        'NombreCliente'     => $request->encabezado['nombre_cliente'],
+                                        'DireccionCliente'  => $request->encabezado['direccion'],
+                                        'Ciudad'            => $request->encabezado['ciudad'],
+                                        'Telefono'          => $request->encabezado['telefono'],
+                                        'CodVendedor'       => $request->encabezado['vendedor'],
+                                        'NombreVendedor'    => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
+                                        'CondicionPago'     => $request->encabezado['condicion_pago'],
+                                        'Descuento'         => $request->encabezado['descuento'],
+                                        'Iva'               => $request->encabezado['tiene_iva'],
+                                        'Estado'            => 1,
+                                        'Bruto'             => $request->encabezado['total_bruto'],
+                                        'TotalDescuento'    => $request->encabezado['total_descuento'],
+                                        'TotalSubtotal'     => $request->encabezado['subtotal'],
+                                        'TotalIVA'          => $request->encabezado['total_iva'],
+                                        'TotalPedido'       => $request->encabezado['total_pedido'],
+                                        'Notas'             => $request->encabezado['notas_generales'],
+                                        'Destino'           => 3,
+                                        'created_at'        => Carbon::now(),
+                                    ]);
+
+
+                                foreach ($destino_troqueles as $item){
+                                    DB::table('detalle_pedidos')
+                                        ->insert([
+                                            'idPedido'         => $id_pedido,
+                                            'CodigoProducto'   => $item['cod'],
+                                            'Descripcion'      => $item['producto'],
+                                            'Arte'             => $item['arte'],
+                                            'Notas'            => $item['notas'],
+                                            'Unidad'           => $item['unidad'],
+                                            'Cantidad'         => $item['cantidad'],
+                                            'Precio'           => $item['precio'],
+                                            'Total'            => $item['total'],
+                                            'Destino'          => 3,
+                                            'R_N'              => $item['n_r'],
+                                            'created_at'       => Carbon::now(),
+                                        ]);
+                                }
+
+                                /* DB::table('pedidos_log')
+                                     ->insert([
+                                         'id_pedido'     =>  $id_pedido,
+                                         'area'          =>  'VENTAS',
+                                         'detalle'       =>  'creo un pedido para produccion',
+                                         'usuario'       =>  Auth::user()->username,
+                                         'created_at'    =>  Carbon::now(),
+                                         'updated_at'    =>  Carbon::now()
+                                     ]);*/
+
+                                DB::table('pedidos_detalles_area')
+                                    ->insert([
+                                        'idPedido'     =>  $id_pedido,
+                                        'created_at'   =>  Carbon::now(),
+                                        'updated_at'   =>  Carbon::now(),
+                                    ]);
+
+
+                                if ($maestro->id_bodega !== null){
+                                    $maestro_nuevo = DB::table('maestro_pedidos')
+                                        ->insertGetId([
+                                            'created_at'    =>  Carbon::now(),
+                                            'updated_at'    =>  Carbon::now()
+                                        ]);
+
+                                    DB::table('encabezado_pedidos')
+                                        ->where('id', '=', $id_pedido)
+                                        ->update([
+                                            'id_maestro'    => $maestro_nuevo
+                                        ]);
+                                }else{
+                                    DB::table('maestro_pedidos')
+                                        ->where('id', '=', $encabezado['id_maestro'])
+                                        ->update([
+                                            'id_troqueles'  =>  $id_pedido
+                                        ]);
+
+                                    DB::table('encabezado_pedidos')
+                                        ->where('id', '=', $id_pedido)
+                                        ->update([
+                                            'id_maestro'    => $encabezado['id_maestro']
+                                        ]);
+
+                                }
+                            }
+                        }
+                    }
                 }
+                DB::commit();
+                return response()->json('Pedido actualizado',200);
+
+
             }catch (Exception $e){
                 DB::rollBack();
                 return response()->json($e->getMessage(), 500);
@@ -724,6 +1329,14 @@ class VentasController extends Controller
                         }
                     }
                     DB::beginTransaction();
+
+                    $maestro = DB::table('maestro_pedidos')
+                        ->insertGetId([
+                            'created_at'    =>  Carbon::now(),
+                            'updated_at'    =>  Carbon::now()
+                        ]);
+
+
                     if ($produccion){
                         $id_pedido = DB::table('encabezado_pedidos')
                             ->insertGetId([
@@ -747,6 +1360,13 @@ class VentasController extends Controller
                                 'Notas'             => $request->encabezado['notas_generales'],
                                 'Destino'           => 1,
                                 'created_at'        => Carbon::now(),
+                                'id_maestro'        => $maestro
+                            ]);
+
+                        DB::table('maestro_pedidos')
+                            ->where('id', '=', $maestro)
+                            ->update([
+                                'id_produccion' => $id_pedido
                             ]);
 
                         foreach ($produccion as $item){
@@ -807,6 +1427,13 @@ class VentasController extends Controller
                                 'Notas'             => $request->encabezado['notas_generales'],
                                 'Destino'           => 2,
                                 'created_at'        => Carbon::now(),
+                                'id_maestro'        => $maestro
+                            ]);
+
+                        DB::table('maestro_pedidos')
+                            ->where('id', '=', $maestro)
+                            ->update([
+                                'id_bodega' => $id_pedido
                             ]);
 
                         foreach ($bodega as $item){
@@ -868,6 +1495,13 @@ class VentasController extends Controller
                                 'Notas'             => $request->encabezado['notas_generales'],
                                 'Destino'           => 3,
                                 'created_at'        => Carbon::now(),
+                                'id_maestro'        => $maestro
+                            ]);
+
+                        DB::table('maestro_pedidos')
+                            ->where('id', '=', $maestro)
+                            ->update([
+                                'id_troqueles' => $id_pedido
                             ]);
 
                         foreach ($troqueles as $item){

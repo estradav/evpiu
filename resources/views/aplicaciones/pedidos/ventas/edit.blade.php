@@ -27,7 +27,8 @@
                 <div class="main-card mb-3 card">
                     <div class="card-body">
                         <form id="form" name="form">
-                            <input type="text" value="{{ $encabezado->id }}" style="display: none !important;" id="id" name="id">
+                            <input type="hidden" value="{{ $encabezado->id }}" id="id" name="id">
+                            <input type="hidden" value="{{ $encabezado->id_maestro }}" id="id_maestro" name="id_maestro">
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="input-group mb-3">
@@ -77,7 +78,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Ciudad</span>
                                         </div>
-                                        <input type="text" class="form-control" id="cuidad" name="cuidad" value="{{ $encabezado->Ciudad }}" disabled>
+                                        <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $encabezado->Ciudad }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -219,14 +220,16 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tabla_items_body">
-                                @php
-                                    $idx = 0;
-                                @endphp
+                                    @php
+                                        $idx = 0
+                                    @endphp
+
+
                                     @foreach($detalle as $d)
                                         <tr>
                                             <td class="item_cod_producto">{{ $d->CodigoProducto }}</td>
                                             <td class="item_descripcion">{{ $d->Descripcion }}</td>
-                                            <td class="item_destino" id="item_destino_{{ $idx }}">{{ $d->Destino == 1 ? "Produccion": ($d->Destino === 2 ? "Bodega" : "Troqueles")  }} </td>
+                                            <td class="item_destino" id="item_destino_{{ $idx }}">{{ $d->Destino == 1 ? "Produccion": ($d->Destino == 2 ? "Bodega" : "Troqueles")  }} </td>
                                             <td class="item_n_r" id="item_nr_{{ $idx }}"> {{ $d->R_N }}</td>
                                             <td class="item_arte" id="item_arte_{{ $idx }}"><a href="javascript:void(0);" id="{{ $d->Arte }}" class="ver_arte" name="ver_arte_{{ $idx }}">{{ $d->Arte }}</a></td>
                                             <td class="item_notas" id="item_notas_{{ $idx }}">{{ $d->Notas }}</td>
@@ -249,7 +252,9 @@
                                             </td>
                                             <td class="id" style="display: none !important;">{{ $d->id }}</td>
                                         </tr>
-                                           {{ $idx++}}
+                                        @php
+                                            $idx++;
+                                        @endphp
                                     @endforeach
                                 </tbody>
                             </table>
