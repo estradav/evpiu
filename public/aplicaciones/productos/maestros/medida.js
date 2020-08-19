@@ -17,7 +17,7 @@ $(document).ready(function () {
         document.getElementById("cod").readOnly = true;
         document.getElementById("mm2").readOnly = true;
         document.getElementById("denominacion").readOnly = true;
-        document.getElementById("heading").innerHTML = "Nuevo";
+        document.getElementById("heading").innerHTML = "NUEVA MEDIDA";
         $('input').closest('.form-control').removeClass('is-invalid');
         $('.error').remove();
         $('#sublinea').empty().append('<option value="">Seleccione... </option>');

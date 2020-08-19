@@ -23,8 +23,13 @@ class SublineaController extends Controller
     public function index(){
         $data = DB::table('cod_sublineas')
             ->leftJoin('cod_lineas','cod_sublineas.lineas_id','=','cod_lineas.id')
-            ->select('cod_sublineas.cod as cod','cod_sublineas.name as name','cod_sublineas.abreviatura as abrev',
-                'cod_sublineas.coments as coment', 'cod_lineas.name as linea','cod_sublineas.id as id')
+            ->select('cod_sublineas.cod as cod',
+                'cod_sublineas.name as name',
+                'cod_sublineas.abreviatura as abrev',
+                'cod_sublineas.coments as coment',
+                'cod_lineas.name as linea',
+                'cod_lineas.cod as cod_linea',
+                'cod_sublineas.id as id')
             ->get();
 
         $lineas = CodLinea::orderBy('name','asc')->get();

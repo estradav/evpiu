@@ -140,7 +140,7 @@ $(document).ready(function () {
         $('input').closest('.form-control').removeClass('is-invalid');
         $('.error').remove();
         document.getElementById("cod").disabled = false;
-        document.getElementById("heading").innerHTML = "Nuevo";
+        document.getElementById("heading").innerHTML = "NUEVO TIPO PRODUCTO";
         $('#modal').modal('show');
         $('#form').trigger('reset');
     });

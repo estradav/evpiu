@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     $(document).on('click', '#nuevo', function () {
         document.getElementById("cod").disabled = false;
-        document.getElementById("heading").innerHTML = "Nuevo";
+        document.getElementById("heading").innerHTML = "NUEVO MATERIAL";
         $('input').closest('.form-control').removeClass('is-invalid');
         $('.error').remove();
         $('#sublinea').empty().append('<option value="">Seleccione... </option>');
