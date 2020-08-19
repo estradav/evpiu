@@ -460,7 +460,6 @@ $(document).ready(function () {
 
     $(document).on('click', '.send_email', function () {
         let id = this.id
-
         swal.mixin({
             title: 'Reenviar factura',
             text: 'Escriba los email a los cuales desea enviar esta factura',
@@ -502,20 +501,45 @@ $(document).ready(function () {
                 }
             },
         ]).then((result) => {
-            $.ajax({
-                url: '/aplicaciones/facturacion_electronica/web_service/enviar_documento_electronico',
-                type: 'post',
-                data: {
-                    id : id,
-                    correos: result.value[0]
-                },
-                success:function (data) {
-                    alert('correo enviado')
-                },
-                error: function (data) {
-                    alert('hubo un error')
-                }
-            })
+            if (result.value) {
+                Swal.fire({
+                    icon: false,
+                    title: 'Enviando correo(s), un momento por favor...',
+                    html: '<br><video autoplay loop muted playsinline  width="70%"><source src="/img/shake.mp4" type="video/mp4"></video> </div>',
+                    showConfirmButton: false,
+                    showCancelButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                });
+
+                $.ajax({
+                    url: '/aplicaciones/facturacion_electronica/web_service/enviar_documento_electronico',
+                    type: 'post',
+                    data: {
+                        id : id,
+                        correos: result.value[0]
+                    },
+                    success:function () {
+                        sweetAlert.close();
+                        Swal.fire({
+                            title: 'Factura(s) enviada(s)!',
+                            html: 'Proceso finalizado con exito!.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                        });
+                    },
+                    error: function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: data.responseText,
+                        });
+                    }
+                })
+            }else{
+                result.dismiss === Swal.DismissReason.cancel
+            }
+
         });
 
 
