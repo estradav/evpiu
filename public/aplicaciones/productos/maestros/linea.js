@@ -17,7 +17,7 @@ $(document).ready(function () {
         $('input').closest('.form-control').removeClass('is-invalid');
         $('.error').remove();
         document.getElementById("cod").disabled = false;
-        document.getElementById("heading").innerHTML = "Nuevo";
+        document.getElementById("heading").innerHTML = "NUEVA LINEA";
         $('#modal').modal('show');
         $('#form').trigger('reset');
     });

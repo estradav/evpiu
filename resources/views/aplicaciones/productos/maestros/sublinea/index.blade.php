@@ -35,6 +35,7 @@
                             <table class="table table-striped table-sm" id="table">
                                 <thead>
                                     <tr>
+                                        <th>COD LINEA</th>
                                         <th>LINEA</th>
                                         <th>CODIGO</th>
                                         <th>NOMBRE</th>
@@ -47,6 +48,7 @@
                                 <tbody>
                                     @foreach( $data as $row)
                                         <tr>
+                                            <td>{{ $row->cod_linea }}</td>
                                             <td>{{ $row->linea }}</td>
                                             <td>{{ $row->cod }}</td>
                                             <td>{{ $row->name }}</td>
