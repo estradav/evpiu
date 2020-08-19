@@ -29,79 +29,124 @@
                         Aplicaciones
                     </div>
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row mr-1 ml-1 mt-1 mb-1">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="btn-group special" role="group">
-                                    <a href="http://192.168.1.53:81/intraciev/cartera/index.php" class="btn btn-outline-light subir_archivos_soporte">
-                                        <i class="pe-7s-cloud-upload pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                        <b class="icon-gradient bg-plum-plate">Gestionar clientes MAX</b>
-                                    </a>
-                                    <a href="http://192.168.1.5/ev-tickets/" class="btn btn-outline-light btn-dashed subir_archivos_soporte">
-                                        <i class="pe-7s-cloud-upload pe-4x icon-gradient bg-plum-plate"></i> <br>
-                                        <b class="icon-gradient bg-plum-plate">Tickets</b>
-                                    </a>
+                                    @can('aplicativos_externos.gestionar_clientes_max')
+                                        <a href="http://192.168.1.53:81/intraciev/cartera/index.php" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-users pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">GESTIONAR CLIENTES MAX</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.ev_tickets')
+                                        <a href="http://192.168.1.5/ev-tickets/" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-help1 pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">TICKETS</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.mantenimiento')
+                                        <a href="http://192.168.1.65/auth/login" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-tools pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">MANTENIMIENTO</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.creacion_articulos')
+                                        <a href="http://192.168.1.5/intranetev/index.php/aplicaciones-informaticas/creacion-de-articulos" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-box1 pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">CREACION ARTICULOS</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.reque_2d_3d')
+                                        <a href="http://192.168.1.5/intranetev/index.php/aplicaciones-informaticas/creacion-de-articulos" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-box2 pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">REQUERIMIENTOS 2D - 3D</b>
+                                        </a>
+                                    @endcan
                                 </div>
-                            </div>
-
-                            <br>
-                            <div class="col-12 text-center">
-                                @can('aplicativos_externos.gestionar_clientes_max')
-                                    <a href="http://192.168.1.53:81/intraciev/cartera/index.php" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-user-tie fa-3x"></i><br> Gestionar clientes MAX </a>
-                                @endcan
-                                @can('aplicativos_externos.ev_tickets')
-                                    <a href="http://192.168.1.5/ev-tickets/" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-ticket-alt fa-3x"></i><br> Tickets </a>
-                                @endcan
-                                @can('aplicativos_externos.mantenimiento')
-                                    <a href="http://192.168.1.65/auth/login" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-tools fa-3x"></i><br> Mantenimiento </a>
-                                @endcan
-                                @can('aplicativos_externos.creacion_articulos')
-                                    <a href="http://192.168.1.5/intranetev/index.php/aplicaciones-informaticas/creacion-de-articulos" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-box-open fa-3x"></i><br> Creacion articulos </a>
-                                @endcan
-                                @can('aplicativos_externos.reque_2d_3d')
-                                    <a href="http://192.168.1.12/intranet_ci" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-palette fa-3x"></i><br> Requerimientos 2D - 3D </a>
-                                @endcan
-                                @can('aplicativos_externos.admin_diseños_2d')
-                                    <a href="http://192.168.1.54:81/intraciev/artes/listaartes.php" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-paint-brush fa-3x"></i><br> Administrar diseños 2D </a>
-                                @endcan
-                                @can('aplicativos_externos.tranferencia_inventarios')
-                                    <a href="http://192.168.1.53:81/intraciev/puntosventa/parametrizacion.php" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-dolly-flatbed fa-3x"></i><br> Transferencia Inventarios </a>
-                                @endcan
-                                @can('aplicativos_externos.glpi')
-                                    <a href="http://192.168.1.5/ev-glpi/" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-headset fa-3x"></i><br> Gestion TI </a>
-                                @endcan
-                                @can('aplicativos_externos.admin_gestion_facturacion')
-                                    <a href="http://192.168.1.53:81/intraciev/sistemas/" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-file-invoice-dollar fa-3x"></i><br> Transferencia de facturacion </a>
-                                @endcan
-                                @can('aplicativos_externos.pedidos_ev')
-                                    <a href="http://192.168.1.53:81/intraciev/ventas/ordenes/index.php" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-store fa-3x"></i><br> Pedidos EV </a>
-                                @endcan
-                                @can('aplicativos_externos.recibos_caja')
-                                    <a href="http://192.168.1.54:81/intranet_ci/rc" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-cash-register fa-3x"></i><br> Recibos de caja </a>
-                                @endcan
-                                @can('aplicativos_externos.ensamble_externo')
-                                    <a href="http://192.168.1.53:81/intraciev/ensambladores/index.php" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-screwdriver fa-3x"></i><br> Ensamble externo </a>
-                                @endcan
-                                @can('aplicativos_externos.etiquetas')
-                                    <a href="http://192.168.1.5/ev-piu/Etiquetas" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-barcode fa-3x"></i><br> Etiquetado </a>
-                                @endcan
-                                @can('aplicativos_externos.admin_estruc_product')
-                                    <a href="http://192.168.1.53:81/intraciev/produccion/estructuras/" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-project-diagram fa-3x"></i><br> Estructura de producto </a>
-                                @endcan
-                                @can('aplicativos_externos.remisiones_ev')
-                                    <a href="http://192.168.1.53:81/intraciev/ventas/remisiones/index.php" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-book fa-3x"></i><br> Remisiones </a>
-                                @endcan
-                                @can('aplicativos_externos.remisiones_puntos_venta')
-                                    <a href="http://192.168.1.53:81/intraciev/puntosventa/remisiones/index.php" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-receipt fa-3x"></i><br> Remisiones puntos de venta </a>
-                                @endcan
-                                @can('aplicativos_externos.control_salida_equipos')
-                                    <a href="http://192.168.1.53:81/intraciev/sistemas/salidaequipos/" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-laptop-medical fa-3x"></i><br> Control de salida equipos TI </a>
-                                @endcan
-                                @can('aplicativos_externos.auditoria_ev')
-                                    <a href="http://192.168.1.53:81/intraciev/sistemas/auditoriaov/" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-tasks fa-3x"></i><br> Auditoria ordenes de venta </a>
-                                @endcan
-                                @can('aplicativos_externos.cierre_ov')
-                                    <a href="http://192.168.1.53:81/intraciev/sistemas/cierreov" target="_blank" class="btn btn-primary" style="height: 100px; width: 145px"> <i class="fas fa-times fa-3x"></i><br> Cierre ordenes de venta </a>
-                                @endcan
+                                <div class="btn-group special" role="group">
+                                    @can('aplicativos_externos.admin_diseños_2d')
+                                        <a href="http://192.168.1.54:81/intraciev/artes/listaartes.php" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-paint-bucket pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">ADMINISTRAR DISEÑOS 2D</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.tranferencia_inventarios')
+                                        <a href="http://192.168.1.53:81/intraciev/puntosventa/parametrizacion.php" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-way pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">TRANSFERENCIA INVENTARIOS</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.glpi')
+                                        <a href="http://glpi.ciev.local" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-call pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">GESTION TI</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.admin_gestion_facturacion')
+                                        <a href="http://192.168.1.53:81/intraciev/sistemas/" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-copy-file pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">TRANSFERENCIA DE FACTURACION</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.pedidos_ev')
+                                        <a href="http://192.168.1.53:81/intraciev/ventas/ordenes/index.php" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-date pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">PEDIDOS EV</b>
+                                        </a>
+                                    @endcan
+                                </div>
+                                <div class="btn-group special" role="group">
+                                    @can('aplicativos_externos.ensamble_externo')
+                                        <a href="http://192.168.1.53:81/intraciev/ensambladores/index.php" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-plugin pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">ENSAMBLE EXTERNO</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.etiquetas')
+                                        <a href="http://192.168.1.5/ev-piu/Etiquetas" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-ticket pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">ETIQUETADO</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.admin_estruc_product')
+                                        <a href="http://192.168.1.53:81/intraciev/produccion/estructuras/" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-share pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">ESTRUCTURA DE PRODUCTO</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.remisiones_ev')
+                                        <a href="http://192.168.1.53:81/intraciev/ventas/remisiones/index.php" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-notebook pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">REMISIONES</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.remisiones_puntos_venta')
+                                        <a href="http://192.168.1.53:81/intraciev/puntosventa/remisiones/index.php" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-cart pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">REMISIONES PUNTOS DE VENTA</b>
+                                        </a>
+                                    @endcan
+                                </div>
+                                <div class="btn-group special" role="group">
+                                    @can('aplicativos_externos.control_salida_equipos')
+                                        <a href="http://192.168.1.53:81/intraciev/sistemas/salidaequipos/" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-network pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">CONTROL DE SALIDA EQUIPOS TI</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.auditoria_ev')
+                                        <a href="http://192.168.1.53:81/intraciev/sistemas/auditoriaov/" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-note2 pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">AUDITORIA ORDENES DE VENTA</b>
+                                        </a>
+                                    @endcan
+                                    @can('aplicativos_externos.cierre_ov')
+                                        <a href="http://192.168.1.53:81/intraciev/sistemas/cierreov" class="btn btn-outline-light" target="_blank">
+                                            <i class="pe-7s-close-circle pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                            <b class="icon-gradient bg-premium-dark">CIERRE ORDENES DE VENTA</b>
+                                        </a>
+                                    @endcan
+                                </div>
                             </div>
                         </div>
                     </div>
