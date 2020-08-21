@@ -150,7 +150,7 @@
                                                     <button type="button" class="btn btn-light ver_anticipo" id="{{ $row->id }}" data-toggle="tooltip" data-placement="top" title="Ver"><i class="fas fa-eye"></i></button>
                                                     <button type="button" class="btn btn-light cartera_anticipo" id="{{ $row->id.','.$row->state }}" data-toggle="tooltip" data-placement="top" title="Enviar a cartera"><i class="fas fa-paper-plane"></i></button>
                                                     <button type="button" class="btn btn-light anular_anticipo" id="{{ $row->id.','.$row->state }}" data-toggle="tooltip" data-placement="top" title="Anular"><i class="fas fa-window-close"></i></button>
-                                                    <a href="{{ route('recibos_caja.edit', $row->id) }}" type="button" class="btn btn-light editar_anticipo" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('recibos_caja_anticipo.edit', $row->id) }}" type="button" class="btn btn-light editar_anticipo" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
                                                 </div>
                                             </td>
                                         </tr>

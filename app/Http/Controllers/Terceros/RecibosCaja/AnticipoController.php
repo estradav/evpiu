@@ -105,27 +105,27 @@ class AnticipoController extends Controller
                 ->where('id','=', $request->id)
                 ->first();
 
-            $numero_rc =  DB::connection('FE')
+            $numero_rc =  DB::connection('DMS')
                 ->table('documentos')
                 ->where('tipo','=', 'RCCO')
                 ->max('numero');
 
-            $vendedor_asociado = DB::connection('FE')
+            $vendedor_asociado = DB::connection('DMS')
                 ->table('terceros')
                 ->where('nit','=', $enc->nit)
                 ->pluck('vendedor');
 
 
-            $concepto_cliente = DB::connection('FE')
+            $concepto_cliente = DB::connection('DMS')
                 ->table('terceros')
                 ->where('nit','=',$enc->nit)
                 ->pluck('concepto_4')->first();
 
 
 
-            DB::connection('FE')->beginTransaction();
+            DB::connection('DMS')->beginTransaction();
             try {
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('documentos')
                     ->insert([
                         'sw'                    =>  '5',
@@ -166,7 +166,7 @@ class AnticipoController extends Controller
                 }
 
 
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('movimiento')
                     ->insert([
                         'tipo'                  =>  'RCCO',
@@ -181,7 +181,7 @@ class AnticipoController extends Controller
                     ]);
 
 
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('movimiento')
                     ->insert([
                         'tipo'                  =>  'RCCO',
@@ -199,13 +199,13 @@ class AnticipoController extends Controller
 
 
 
-                $banco = DB::connection('FE')
+                $banco = DB::connection('DMS')
                     ->table('bancos')
                     ->where('cuenta','=',$enc->account_paid)
                     ->pluck('banco')->first();
 
 
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('documentos_che')
                     ->insert([
                         'sw'                    =>  '5',
@@ -230,7 +230,7 @@ class AnticipoController extends Controller
                 $formatter = new NumeroALetras;
                 $valor_letras = $formatter->toMoney($enc->total_paid, 0, 'PESOS', 'CENTAVOS');
 
-                DB::connection('FE')
+                DB::connection('DMS')
                     ->table('documentos_monto')
                     ->insert([
                         'tipo'      =>  'RCCO',
@@ -239,7 +239,7 @@ class AnticipoController extends Controller
                     ]);
 
 
-                DB::connection('FE')->commit();
+                DB::connection('DMS')->commit();
                 return response()
                     ->json('Anticipo ha sido finalizado y subido a DMS con el numero '.$rc, 200);
             }catch (\Exception $e){
@@ -247,5 +247,9 @@ class AnticipoController extends Controller
                 return response()->json($e->getMessage(), 500);
             }
         }
+    }
+
+    public function edit($id){
+
     }
 }
