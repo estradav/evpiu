@@ -161,6 +161,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                         Route::post('guardar_anticipo','Terceros\RecibosCaja\AnticipoController@store')->name('recibos_caja.guardar_anticipo');
                         Route::get('consultar_anticipo', 'Terceros\RecibosCaja\AnticipoController@consultar_anticipo');
                         Route::post('cambiar_estado','Terceros\RecibosCaja\AnticipoController@change_state');
+                        Route::post('finalizar_anticipo','Terceros\RecibosCaja\AnticipoController@finalizar_anticipo');
 
                     });
                 });
