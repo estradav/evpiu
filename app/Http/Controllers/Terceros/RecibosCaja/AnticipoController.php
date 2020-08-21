@@ -99,7 +99,7 @@ class AnticipoController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function finalizar_rc(Request $request){
+    public function finalizar_anticipo(Request $request){
         if ($request->ajax()){
             $enc = DB::table('recibos_caja_anticipos')
                 ->where('id','=', $request->id)
