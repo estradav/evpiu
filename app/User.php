@@ -4,6 +4,7 @@ namespace App;
 
 use App\Traits\LockableTrait;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
@@ -40,5 +41,9 @@ class User extends Authenticatable
      */
     public function posts() {
         return $this->hasMany(Post::class);
+    }
+
+    public function isOnline(){
+        return Cache::has('user-is-online-' . $this->id);
     }
 }
