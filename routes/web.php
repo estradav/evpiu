@@ -138,21 +138,32 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                 Route::get('/FacturacionElectronicaGc','GestionClientesController@FacturacionElectronica');*/
                 //edit items from clients
 
-
                 Route::get('recibos_caja','Terceros\RecibosCaja\RecibosController@index')->name('recibos_caja.index');
-                Route::get('recibos_caja/nuevo','Terceros\RecibosCaja\RecibosController@create')->name('recibos_caja.nuevo');
-                Route::get('recibos_caja/cartera','Terceros\RecibosCaja\RecibosController@cartera')->name('recibos_caja.cartera');
-                Route::get('recibos_caja/buscar_cliente','Terceros\RecibosCaja\RecibosController@buscar_cliente');
-                Route::get('recibos_caja/consultar_recibos_cliente','Terceros\RecibosCaja\RecibosController@consultar_recibos_cliente');
-                Route::get('recibos_caja/consultar_recibo','Terceros\RecibosCaja\RecibosController@consultar_recibo');
-                Route::get('recibos_caja/consultar_tipo_venta', 'Terceros\RecibosCaja\RecibosController@consultar_tipo_venta');
-                Route::get('recibos_caja/{recibo}/edit','Terceros\RecibosCaja\RecibosController@edit')->name('recibos_caja.edit');
-                Route::get('recibos_caja/consultar_documento', 'Terceros\RecibosCaja\RecibosController@consultar_documento');
-                Route::post('recibos_caja/guardar_recibo_caja','Terceros\RecibosCaja\RecibosController@guardar_recibo_caja');
-                Route::post('recibos_caja/guardar_recibo_caja_edit','Terceros\RecibosCaja\RecibosController@guardar_recibo_caja_edit');
-                Route::post('recibos_caja/cambiar_estado','Terceros\RecibosCaja\RecibosController@cambiar_estado');
-                Route::post('recibos_caja/finalizar_rc','Terceros\RecibosCaja\RecibosController@finalizar_rc');
-                Route::get('recibos_caja/datos_rc_informe', 'Terceros\RecibosCaja\RecibosController@datos_rc_informe');
+                Route::prefix('recibos_caja')->group(function () {
+                    Route::get('nuevo','Terceros\RecibosCaja\RecibosController@create')->name('recibos_caja.nuevo');
+                    Route::get('cartera','Terceros\RecibosCaja\RecibosController@cartera')->name('recibos_caja.cartera');
+                    Route::get('buscar_cliente','Terceros\RecibosCaja\RecibosController@buscar_cliente');
+                    Route::get('consultar_recibos_cliente','Terceros\RecibosCaja\RecibosController@consultar_recibos_cliente');
+                    Route::get('consultar_recibo','Terceros\RecibosCaja\RecibosController@consultar_recibo');
+                    Route::get('consultar_tipo_venta', 'Terceros\RecibosCaja\RecibosController@consultar_tipo_venta');
+                    Route::get('{recibo}/edit','Terceros\RecibosCaja\RecibosController@edit')->name('recibos_caja.edit');
+                    Route::get('consultar_documento', 'Terceros\RecibosCaja\RecibosController@consultar_documento');
+                    Route::post('guardar_recibo_caja','Terceros\RecibosCaja\RecibosController@guardar_recibo_caja');
+                    Route::post('guardar_recibo_caja_edit','Terceros\RecibosCaja\RecibosController@guardar_recibo_caja_edit');
+                    Route::post('cambiar_estado','Terceros\RecibosCaja\RecibosController@cambiar_estado');
+                    Route::post('finalizar_rc','Terceros\RecibosCaja\RecibosController@finalizar_rc');
+                    Route::get('datos_rc_informe', 'Terceros\RecibosCaja\RecibosController@datos_rc_informe');
+
+
+
+                    Route::prefix('anticipo')->group(function () {
+                        Route::get('nuevo','Terceros\RecibosCaja\AnticipoController@index')->name('recibos_caja.nuevo_anticipo');
+                        Route::post('guardar_anticipo','Terceros\RecibosCaja\AnticipoController@store')->name('recibos_caja.guardar_anticipo');
+                        Route::get('consultar_anticipo', 'Terceros\RecibosCaja\AnticipoController@consultar_anticipo');
+                        Route::post('cambiar_estado','Terceros\RecibosCaja\AnticipoController@change_state');
+
+                    });
+                });
 
 
                 Route::prefix('productos')->group(function () {
