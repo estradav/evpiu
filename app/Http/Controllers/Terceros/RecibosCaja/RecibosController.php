@@ -23,18 +23,38 @@ class RecibosController extends Controller
      * @return Factory|View
      */
     public function index(){
-        $data = DB::table('recibos_caja')
-            ->where('created_by', '=', Auth::user()->username)
-            ->orderBy('id','desc')
-            ->get();
+        if (Auth::user()->hasRole('super-admin')){
+            $data = DB::table('recibos_caja')
+                ->orderBy('id','desc')
+                ->get();
 
-        $sum_rc = DB::table('recibos_caja')
-            ->where('created_by', '=', Auth::user()->username)
-            ->where('state', '=', '3')
-            ->orderBy('id','desc')
-            ->sum('total');
+            $data_ant = DB::table('recibos_caja_anticipos')
+                ->orderBy('id','desc')
+                ->get();
 
-        return view('aplicaciones.gestion_terceros.recibos_caja.index', compact('data','sum_rc'));
+            $sum_rc = DB::table('recibos_caja')
+                ->where('state', '=', '3')
+                ->orderBy('id','desc')
+                ->sum('total');
+        }else{
+            $data = DB::table('recibos_caja')
+                ->where('created_by', '=', Auth::user()->username)
+                ->orderBy('id','desc')
+                ->get();
+
+            $data_ant = DB::table('recibos_caja_anticipos')
+                ->where('created_by', '=', Auth::user()->id)
+                ->orderBy('id','desc')
+                ->get();
+
+            $sum_rc = DB::table('recibos_caja')
+                ->where('created_by', '=', Auth::user()->username)
+                ->where('state', '=', '3')
+                ->orderBy('id','desc')
+                ->sum('total');
+        }
+        return view('aplicaciones.gestion_terceros.recibos_caja.index',
+            compact('data','sum_rc', 'data_ant'));
     }
 
 
@@ -168,10 +188,14 @@ class RecibosController extends Controller
      */
     public function cartera(){
         $data = DB::table('recibos_caja')
-            ->where('state','=', [2,3])
+            ->where('state','=', 2)
             ->get();
 
-        return view('aplicaciones.gestion_terceros.recibos_caja.cartera', compact('data'));
+        $data_ant = DB::table('recibos_caja_anticipos')
+            ->where('state','=', 2)
+            ->get();
+
+        return view('aplicaciones.gestion_terceros.recibos_caja.cartera', compact('data', 'data_ant'));
     }
 
 

@@ -31,6 +31,29 @@ $(document).ready(function () {
     });
 
 
+
+    $('#table_anticipos').dataTable({
+        language:{
+            url: '/Spanish.json'
+        },
+        columns: [
+            { "orderable": false, "searchable": true },
+            { "orderable": true, "searchable": true },
+            { "orderable": true, "searchable": true },
+            { "orderable": true, "searchable": true },
+            { "orderable": true, "searchable": false },
+            { "orderable": true, "searchable": false },
+            { "orderable": false, "searchable": false },
+            { "orderable": false, "searchable": false },
+            { "orderable": false, "searchable": false },
+            { "orderable": false, "searchable": false },
+        ],
+        order: [
+            [ 0, "desc" ]
+        ]
+    });
+
+
     $(document).on('click', '.cartera', function () {
         let id_val = this.id;
         id_val = id_val.split(',');
@@ -366,5 +389,230 @@ $(document).ready(function () {
                 });
             }
         });
+    });
+
+
+
+
+
+    /*Anticipos*/
+
+    $(document).on('click', '.ver_anticipo', function () {
+        const id = this.id;
+        console.log(id);
+        $.ajax({
+            url: '/aplicaciones/recibos_caja/anticipo/consultar_anticipo',
+            type: 'get',
+            data: { id: id },
+            success: function (data) {
+                const formatter = new Intl.NumberFormat('es-CO', {
+                    style: 'currency',
+                    currency: 'COP',
+                    minimumFractionDigits: 0
+                });
+
+                $('#ver_anticipo_modal_title').html('').html('ANTICIPO # ' + id);
+
+                function t($string){
+                    if ($string === '' || $string == null){
+                        return '';
+                    }else{
+                        return $string;
+                    }
+                }
+
+                $('#ver_anticipo_modal_body').html('').append(`
+                    <div class="row justify-content-center">
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                            <h5><b>CLIENTE:</b>
+                            `+ data.client +` </h5>
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                            <h5><b>NIT:</b>
+                            `+ data.nit +` </h5>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                            <h5><b>FECHA CREACION:</b>
+                            `+ data.created_at +` </h5>
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                            <h5><b>TOTAL ANTICIPO:</b>
+                            `+ formatter.format(data.total_paid )+` </h5>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 text-center" >
+                            <h5><b>COMENTARIOS:</b>  <br>
+                            `+ t(data.details) +` </h5>
+                        </div>
+                    </div>
+                `);
+
+                $('#ver_anticipo_modal').modal('show');
+            },
+            error: function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al obtener datos',
+                    text: data.responseText,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Aceptar',
+                });
+            }
+        });
+    });
+
+
+    $(document).on('click', '.cartera_anticipo', function () {
+        let id_val = this.id;
+        id_val = id_val.split(',');
+
+        let id = id_val[0];
+        let estado = parseInt(id_val[1]);
+
+        if (estado === 1 || estado === 4){
+            Swal.fire({
+                icon: 'question',
+                title: '¿Enviar a cartera?',
+                html: "Una vez enviado el anticipo a cartera no podra editarlo. <br> ¿Desea continuar?",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, enviar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: '/aplicaciones/recibos_caja/anticipo/cambiar_estado',
+                        type: 'post',
+                        data: {
+                            id:id,
+                            estado: 2
+                        },
+                        success:function (data) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Enviado a cartera',
+                                text: data,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Aceptar',
+                            });
+                            window.location.reload(true);
+                        },
+                        error: function (data) {
+                            Swal.fire({
+                                icon: 'error',
+                                text: data.responseText,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Aceptar',
+                            });
+                        }
+                    });
+                }
+            });
+        }else if (estado === 2){
+            Swal.fire({
+                icon: 'error',
+                title: 'Anticipo en cartera',
+                text: 'Este Anticipo ya fue enviado a cartera',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+            });
+
+        }else if (estado === 3){
+            Swal.fire({
+                icon: 'error',
+                title: 'Anticipo finalizado',
+                text: 'Este Anticipo ya fue validado por cartera y subido a DMS',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+            });
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Anticipo anulado',
+                text: 'Solo puedes enviar Anticipos a cartera si estan en estado Borrador',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+            });
+        }
+    });
+
+
+    $(document).on('click', '.anular_anticipo', function () {
+        let id_val = this.id;
+        id_val = id_val.split(',');
+
+        let id = id_val[0];
+        let estado = parseInt(id_val[1]);
+
+        if (estado === 1 || estado === 4){
+            Swal.fire({
+                icon: 'question',
+                title: '¿Anular?',
+                text: "¿Esta seguro de anular este anticipo?",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, anular!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: '/aplicaciones/recibos_caja/anticipo/cambiar_estado',
+                        type: 'post',
+                        data: {
+                            id:id,
+                            estado: 0
+                        },
+                        success:function (data) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Enviado a cartera',
+                                text: data,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Aceptar',
+                            });
+                            window.location.reload(true);
+                        },
+                        error: function (data) {
+                            Swal.fire({
+                                icon: 'error',
+                                text: data.responseText,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Aceptar',
+                            });
+                        }
+                    });
+                }
+            });
+        }else if (estado === 2){
+            Swal.fire({
+                icon: 'error',
+                title: 'Anticipo en cartera',
+                text: 'Este Anticipo ya fue enviado a cartera y no puede ser anulado',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+            });
+
+        }else if (estado === 3){
+            Swal.fire({
+                icon: 'error',
+                title: 'Anticipo finalizado',
+                text: 'Este Anticipo ya fue validado por cartera y subido a DMS y no puede ser anulado',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+            });
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Anticipo anulado',
+                text: 'Este Anticipo ya esta anulado',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+            });
+        }
     });
 });
