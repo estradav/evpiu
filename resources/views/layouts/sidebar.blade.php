@@ -311,13 +311,19 @@
                             <li class="{{ request()->route()->named('recibos_caja.index') ? 'mm-active' : '' }}">
                                 <a href="{{ route('recibos_caja.index') }}">
                                     <i class="metismenu-icon"></i>
-                                    Mis recibos de caja
+                                    Mis RC - Anticipos
                                 </a>
                             </li>
                             <li class="{{ request()->route()->named('recibos_caja.nuevo') ? 'mm-active' : '' }}">
                                 <a href="{{ route('recibos_caja.nuevo') }}">
                                     <i class="metismenu-icon"></i>
-                                    Nuevo
+                                    Nuevo RC
+                                </a>
+                            </li>
+                            <li class="{{ request()->route()->named('recibos_caja.nuevo_anticipo') ? 'mm-active' : '' }}">
+                                <a href="{{ route('recibos_caja.nuevo_anticipo') }}">
+                                    <i class="metismenu-icon"></i>
+                                    Nuevo anticipo
                                 </a>
                             </li>
                             <li class="{{ request()->route()->named('recibos_caja.cartera') ? 'mm-active' : '' }}">
