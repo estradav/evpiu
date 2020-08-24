@@ -175,10 +175,10 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" id="arte_item" name="arte_item" class="form-control form-control-sm arte_item">
+                                                <input type="text" id="arte_item" name="arte_item" class="form-control form-control-sm arte_item" onkeyup="this.value=this.value.toUpperCase();">
                                             </td>
                                             <td>
-                                                <input type="text" id="notas_item" name="notas_item" class="form-control form-control-sm">
+                                                <input type="text" id="notas_item" name="notas_item" class="form-control form-control-sm" onkeyup="this.value=this.value.toUpperCase();">
                                             </td>
                                             <td>
                                                 <select name="um_item" id="um_item" class="form-control form-control-sm">
