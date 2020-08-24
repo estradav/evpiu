@@ -130,6 +130,7 @@ $(document).ready(function () {
             cod: {
                 remote: {
                     type: 'POST',
+                    url: '/aplicaciones/productos/maestros/caracteristica/validar_codigo',
                     async: false,
                     data: {
                         linea: function () {
@@ -154,6 +155,7 @@ $(document).ready(function () {
             $(element).closest('.form-control').removeClass('is-invalid');
         },
         submitHandler: function (form) {
+            alert('testing');
             $.ajax({
                 url: "/aplicaciones/productos/maestros/caracteristica",
                 type: "POST",

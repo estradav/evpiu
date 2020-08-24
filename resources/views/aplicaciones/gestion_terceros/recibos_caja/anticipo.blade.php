@@ -139,7 +139,6 @@
                 document.getElementById('cliente_seleccionado').innerText = cliente
                 $('#seleccionar_cliente').prop("disabled", true);
                 $('#registrar_anticipo').prop("disabled", false);
-
             });
 
 
