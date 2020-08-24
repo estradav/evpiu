@@ -155,7 +155,6 @@ $(document).ready(function () {
             $(element).closest('.form-control').removeClass('is-invalid');
         },
         submitHandler: function (form) {
-            alert('testing');
             $.ajax({
                 url: "/aplicaciones/productos/maestros/caracteristica",
                 type: "POST",
