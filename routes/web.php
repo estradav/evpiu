@@ -311,6 +311,14 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                     Route::get('requerimientos_admon', 'MesaAyuda\MesaAyudaController@requerimientos_admon')->name('mesa_ayuda.requerimientos_admon');
                 });
 
+                Route::get('consultas', function () {
+                    return view('aplicaciones.consultas.index');
+                });
+                Route::prefix('consultas')->group(function () {
+                    Route::get('reenvio_facturas', 'Consulta\FacturaElectronicaController@index')->name('consultas.reenvio_facturas');
+                    Route::post('verificar_documento', 'Consulta\FacturaElectronicaController@obtener_factura');
+                });
+
 
 
             });
