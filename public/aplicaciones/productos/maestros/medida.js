@@ -116,15 +116,15 @@ $(document).ready(function () {
 
                 for (let i = 0; i < data.carac_unidades_medida.length; i++) {
                     $('#campos').append(`
-                                <div class='col-sm-6'>
-                                    <div class='form-group'>
-                                        <label class="col-sm-12" for="`+ data.carac_unidades_medida[i].name +`">`+ data.carac_unidades_medida[i].name +`:</label>
-                                        <div class="col-sm-12">
-                                            <input type="number" class="form-control `+ data.carac_unidades_medida[i].name +`" id="`+ data.carac_unidades_medida[i].name +`" name="`+ data.carac_unidades_medida[i].name +`" >
-                                        </div>
-                                    </div>
+                        <div class='col-sm-6'>
+                            <div class='form-group'>
+                                <label class="col-sm-12" for="`+ data.carac_unidades_medida[i].name +`">`+ data.carac_unidades_medida[i].name +`:</label>
+                                <div class="col-sm-12">
+                                    <input type="number" class="form-control `+ data.carac_unidades_medida[i].name +`" id="`+ data.carac_unidades_medida[i].name +`" name="`+ data.carac_unidades_medida[i].name +`" >
                                 </div>
-                            `);
+                            </div>
+                        </div>
+                    `);
                 }
             },
             error: function (data) {
@@ -618,10 +618,10 @@ $(document).ready(function () {
                     type: 'POST',
                     data: {
                         linea: function () {
-                            return $("#linea").val();
+                            return document.getElementById('linea').value;
                         },
                         sublinea: function () {
-                            return $("#sublinea").val();
+                            return document.getElementById('sublinea').value;
                         },
                     },
                     async: true,
