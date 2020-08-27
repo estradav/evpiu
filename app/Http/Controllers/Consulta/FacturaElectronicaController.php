@@ -18,8 +18,8 @@ class FacturaElectronicaController extends Controller
     public function obtener_factura(Request $request){
         if ($request->ajax()){
             try {
+                $data = $this->validar_documento($request->id);
                 if (Auth::user()->hasRole('super-admin')){
-                    $data = $this->validar_documento($request->id);
                     if (empty($data)){
                         return response()->json([
                             'code' => 101,
@@ -37,7 +37,8 @@ class FacturaElectronicaController extends Controller
                         ->where('NUMERO', '=', $request->id)
                         ->pluck('CODVENDEDOR')->first();
 
-                    if ($result == Auth::user()->codvendedor){
+
+                    if (trim($result) == Auth::user()->codvendedor){
                         if (empty($data)){
                             return response()->json([
                                 'code' => 101,
