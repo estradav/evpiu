@@ -20,7 +20,7 @@
                     </i>Accesos remotos
                 </a>
             </li>
-            
+
             <li class="{{ request()->route()->named('tickets.index') ? 'mm-active' : '' }}">
                 <a href="#">
                     <i class="metismenu-icon pe-7s-call"></i>
