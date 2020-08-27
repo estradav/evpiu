@@ -131,9 +131,9 @@ class MedidaController extends Controller
         if ($request->ajax()){
             try {
                 $data = DB::table('cod_medidas')
-                    ->where('med_lineas_id','=',$request->linea)
-                    ->where('med_lineas_id','=',$request->sublinea)
-                    ->where('cod','=',$request->cod)
+                    ->where('med_lineas_id','=', $request->linea)
+                    ->where('med_lineas_id','=', $request->sublinea)
+                    ->where('denominacion','=', $request->denominacion)
                     ->count();
                 if ($data === 0){
                     return response()->json(true,200);
