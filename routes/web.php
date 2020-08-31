@@ -323,6 +323,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                  Route::prefix('comercial')->group(function () {
                      Route::get('eventos_actividades', 'Comercial\EventoController@index');
                      Route::get('obtener_eventos', 'Comercial\EventoController@obtener_eventos');
+                     Route::post('guardar_evento', 'Comercial\EventoController@store');
                 });
 
 

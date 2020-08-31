@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Comercial;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,7 @@ class EventoController extends Controller
                 $clientes = DB::connection('MAX')
                     ->table('CIEV_V_Clientes')
                     ->orderBy('RAZON_SOCIAL', 'asc')
+                    ->take(10)
                     ->get();
             } else {
                 $clientes = DB::connection('MAX')
@@ -58,5 +60,21 @@ class EventoController extends Controller
             return response()->json($e->getMessage(), 500);
         }
 
+    }
+
+    public function store(Request $request){
+        if($request->ajax()){
+            try{
+                dd($request);
+                DB::table('users')
+                    ->insert([
+                        ''
+
+                    ]);
+
+            }catch(Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
     }
 }

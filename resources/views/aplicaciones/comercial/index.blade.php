@@ -27,9 +27,9 @@
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
                     <div class="card igualar">
                         <div class="card-body">
-                            <div class="btn-group btn-lg special" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-outline-primary btn-lg">EVENTOS</button>
-                                <button type="button" class="btn btn-outline-primary btn-lg">ACTIVIDADES</button>
+                            <div class="btn-group btn-lg special" role="group">
+                                <button type="button" class="btn btn-outline-primary btn-lg" id="type_event">EVENTOS</button>
+                                <button type="button" class="btn btn-outline-primary btn-lg" id="type_activies">ACTIVIDADES</button>
                             </div>
                             <hr>
                             <h6 class="text-center">CLIENTES</h6>
@@ -40,12 +40,12 @@
                                 @endphp
                                 @foreach($clientes as $cliente)
                                     @if ($idx == 0)
-                                        <button  class="list-group-item list-group-item-action idx_{{ $idx }} active" id="{{ $cliente->NIT }}">
+                                        <button  class="list-group-item list-group-item-action idx_{{ $idx }} client  active" id="{{ trim($cliente->NIT) }}">
                                             <b>{{ $cliente->RAZON_SOCIAL }} </b>  <br>
                                             <b class="text-success"> Meta : $0 </b>
                                         </button>
                                     @else
-                                        <button  class="list-group-item list-group-item-action idx_{{ $idx }}" id="{{ $cliente->NIT }}">
+                                        <button  class="list-group-item list-group-item-action idx_{{ $idx }} client" id="{{ trim($cliente->NIT) }}">
                                             <b>{{ $cliente->RAZON_SOCIAL }} </b>  <br>
                                             <b class="text-success"> Meta : $0 </b>
                                         </button>
@@ -85,12 +85,31 @@
 
     <script type="text/javascript">
         $(document).ready(function (){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             var client_nit = 0;
+            var type = 0;
             var items = document.getElementsByClassName("list-group-item-action active");
             for (let i = 0; i < items.length; i++) {
                 console.log(items[i].id);
                 client_nit = items[i].id;
             }
+
+            $(document).on('click', '.client', function() {
+                document.getElementById(client_nit).classList.remove('active');
+
+                client_nit = this.id;
+                document.getElementById(client_nit).classList.add('active');
+                calendar.refetchEvents();
+            });
+
+            $(document).on('click', '#type_event', function() {
+                document.ge
+            });
 
 
 
@@ -100,8 +119,8 @@
                 timeZone: 'America/Bogota',
                 themeSystem: 'bootstrap',
                 buttonText: {
-                    prev:     "Anterior",
-                    next:     "Siguiente",
+                    prev:     "Ant",
+                    next:     "Sig",
                     today:    'Hoy',
                     month:    'Mes',
                     week:     'Semana',
@@ -121,11 +140,17 @@
                     method: 'get',
                     extraParams: {
                         client: client_nit,
-                        type: 1
+                        type: type
                     },
                     failure: function() {
                         alert('there was an error while fetching events!');
                     },
+                },
+                selectable: true,
+                dateClick: function(info) {
+                    console.log(info);
+                    document.getElementById('new_event_modal_title').innerHTML = info.dateStr;
+                    $('#new_event_modal').modal('show');
                 }
 
 
@@ -138,11 +163,53 @@
                 console.log(altura)
                 $('.igualar').css('height', altura);
                 $('.list-group').css('height', altura-200);
-            }, 3000);
+            }, 2000);
 
 
 
+            $('#modal_form').validate({
+                ignore: "",
+                rules: {
+                    inicio: {
+                        required: true
+                    },
+                    final: {
+                        required: true
+                    },
+                    titulo: {
+                        required: true
+                    }
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.form-control').removeClass('is-invalid');
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: '/aplicaciones/comercial/guardar_evento',
+                        type: 'post',
+                        data: $('#modal_form').serialize(),
+                        dataType: 'json',
+                        success: function(data){
+                            console.log(data);
+                            calendar.refetchEvents()
+                        },
+                        error: function (data) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops',
+                                text: data.responseText
+                            });
+                        }
+                    });
+                }
+
+            });
         });
+
+
 
 
 
@@ -163,3 +230,40 @@
         }
     </style>
 @endpush
+
+@section('modal')
+<div class="modal fade" id="new_event_modal" tabindex="-1" aria-labelledby="new_event_modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="new_event_modal_title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="modal_form">
+            <div class="modal-body">
+                <input type="hidden" name="nit" id="nit">
+                <input type="hidden" name="type" id="type">
+                <div class="form-group">
+                    <b>Hora de inicio</b>
+                    <input class="form-control" type="time" name="inicio" id="inicio">
+                </div>
+                <div class="form-group">
+                    <b>Hora final</b>
+                    <input class="form-control" type="time" name="final" id="final">
+                </div>
+                <div class="form-group">
+                    <b>Titulo</b>
+                    <input class="form-control" type="text" name="titulo" id="titulo">
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+@endsection
