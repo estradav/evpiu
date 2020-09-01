@@ -85,7 +85,10 @@ $(document).ready(function () {
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'Aceptar',
                     });
-                    //$('#create-form').trigger("reset");
+                    $('#create-form').trigger("reset");
+                    setTimeout(function() {
+                        window.location.reload(true);
+                    }, 3000);
                 },
                 error: function(jqXHR, textStatus, err){
                     console.log('text status '+textStatus+', err '+err);
@@ -111,7 +114,7 @@ $(document).ready(function () {
                 especial_chars_name: true
             },
             M_Razon_comercial: {
-                required: true,
+                required: false,
                 minlength: 4,
                 maxlength: 60,
                 especial_chars_razon_social: true

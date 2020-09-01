@@ -250,7 +250,7 @@
                                             <select name="M_actividad_principal" id="M_actividad_principal" class="form-control">
                                                 <option value="" selected>Seleccione...</option>
                                                 @foreach($razones_comerciales as $option)
-                                                    <option value="{{ $option->codigo }}">{{ $option->descripcion }}</option>
+                                                    <option value="{{ $option->codigo }}">{{ $option->codigo.'-'.$option->descripcion }}</option>
                                                 @endforeach
                                             </select>
                                             <div class="input-group-append">
