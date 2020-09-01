@@ -87,7 +87,6 @@ Route::middleware(['auth'])->group(function() {
             Route::prefix('terceros')->group(function () {
                 Route::resource('cliente','Terceros\Clientes\ClientesController')->only('index');
 
-
                 Route::get('listar_ciudades','Terceros\Clientes\ClientesController@listar_ciudades');
                 Route::get('listar_departamentos','Terceros\Clientes\ClientesController@listar_departamentos');
                 Route::get('listar_plazos','Terceros\Clientes\ClientesController@listar_plazos');
@@ -287,61 +286,61 @@ Route::middleware(['auth'])->group(function() {
 
             Route::prefix('requerimientos')->group(function () {
                 Route::resource('ventas', 'Requerimientos\RequerimientoController')->only('index','store', 'edit');
-                Route::get('ventas/listar_clientes', 'Requerimientos\RequerimientoController@listar_clientes');
-                Route::get('ventas/listar_marcas', 'Requerimientos\RequerimientoController@listar_marcas');
-                Route::get('ventas/listar_productos', 'Requerimientos\RequerimientoController@listar_productos');
-                Route::post('ventas/validar_marca','Requerimientos\RequerimientoController@validar_marca');
-                Route::post('ventas/guardar_marca','Requerimientos\RequerimientoController@guardar_marca');
 
 
+                Route::prefix('ventas')->group(function () {
+                    Route::get('listar_clientes', 'Requerimientos\RequerimientoController@listar_clientes');
+                    Route::get('listar_marcas', 'Requerimientos\RequerimientoController@listar_marcas');
+                    Route::get('listar_productos', 'Requerimientos\RequerimientoController@listar_productos');
+                    Route::post('validar_marca','Requerimientos\RequerimientoController@validar_marca');
+                    Route::post('guardar_marca','Requerimientos\RequerimientoController@guardar_marca');
+                });
 
-                Route::post('transaccion/eliminar_archivo', 'Requerimientos\TransactionController@eliminar_archivo');
-                Route::post('transaccion/subir_archivos_soporte', 'Requerimientos\TransactionController@subir_archivos_soporte');
-                Route::post('transaccion/enviar_render','Requerimientos\TransactionController@enviar_render');
-                Route::post('transaccion/solicitar_plano','Requerimientos\TransactionController@solicitar_plano');
-                Route::post('transaccion/cambiar_estado','Requerimientos\TransactionController@cambiar_estado');
-                Route::post('transaccion/anular','Requerimientos\TransactionController@anular');
-                Route::post('transaccion/finalizar','Requerimientos\TransactionController@finalizar');
-                Route::get('transaccion/listar_disenadores','Requerimientos\TransactionController@listar_disenadores');
-                Route::post('transaccion/cambiar_disenador','Requerimientos\TransactionController@cambiar_disenador');
-                Route::post('transaccion/enviar_diseno','Requerimientos\TransactionController@enviar_diseno');
-                Route::post('transaccion/agregar_comentario','Requerimientos\TransactionController@agregar_comentario');
-                Route::get('transaccion/listar_productos', 'Requerimientos\TransactionController@listar_productos');
-                Route::post('transaccion/agregar_propuesta','Requerimientos\TransactionController@agregar_propuesta');
-                Route::get('transaccion/descargar_soporte/{id}/{file}','Requerimientos\TransactionController@descargar_archivo_soporte')->name('transaccion.descargar.soporte');
-                Route::get('transaccion/obtener_datos_propuesta','Requerimientos\TransactionController@obtener_datos_propuesta');
-                Route::post('transaccion/subir_archivo_2d','Requerimientos\TransactionController@subir_archivo_2d');
-                Route::post('transaccion/subir_archivo_3d','Requerimientos\TransactionController@subir_archivo_3d');
-                Route::post('transaccion/subir_archivo_plano','Requerimientos\TransactionController@subir_archivo_plano');
-                Route::post('transaccion/agregar_comentario_propuesta', 'Requerimientos\TransactionController@agregar_comentario_propuesta');
 
-                Route::post('transaccion/aprobar_propuesta', 'Requerimientos\TransactionController@aprobar_propuesta');
-                Route::post('transaccion/rechazar_propuesta', 'Requerimientos\TransactionController@rechazar_propuesta');
-                Route::post('transaccion/enviar_aprobar_propuesta', 'Requerimientos\TransactionController@enviar_aprobar_propuesta');
+                Route::prefix('transaccion')->group(function () {
+                    Route::post('eliminar_archivo', 'Requerimientos\TransactionController@eliminar_archivo');
+                    Route::post('subir_archivos_soporte', 'Requerimientos\TransactionController@subir_archivos_soporte');
+                    Route::post('enviar_render','Requerimientos\TransactionController@enviar_render');
+                    Route::post('solicitar_plano','Requerimientos\TransactionController@solicitar_plano');
+                    Route::post('cambiar_estado','Requerimientos\TransactionController@cambiar_estado');
+                    Route::post('anular','Requerimientos\TransactionController@anular');
+                    Route::post('finalizar','Requerimientos\TransactionController@finalizar');
+                    Route::get('listar_disenadores','Requerimientos\TransactionController@listar_disenadores');
+                    Route::post('cambiar_disenador','Requerimientos\TransactionController@cambiar_disenador');
+                    Route::post('enviar_diseno','Requerimientos\TransactionController@enviar_diseno');
+                    Route::post('agregar_comentario','Requerimientos\TransactionController@agregar_comentario');
+                    Route::get('listar_productos', 'Requerimientos\TransactionController@listar_productos');
+                    Route::post('agregar_propuesta','Requerimientos\TransactionController@agregar_propuesta');
+                    Route::get('descargar_soporte/{id}/{file}','Requerimientos\TransactionController@descargar_archivo_soporte')->name('transaccion.descargar.soporte');
+                    Route::get('obtener_datos_propuesta','Requerimientos\TransactionController@obtener_datos_propuesta');
+                    Route::post('subir_archivo_2d','Requerimientos\TransactionController@subir_archivo_2d');
+                    Route::post('subir_archivo_3d','Requerimientos\TransactionController@subir_archivo_3d');
+                    Route::post('subir_archivo_plano','Requerimientos\TransactionController@subir_archivo_plano');
+                    Route::post('agregar_comentario_propuesta', 'Requerimientos\TransactionController@agregar_comentario_propuesta');
 
-                Route::get('transaccion/comprobar_estado_propuesta', 'Requerimientos\TransactionController@comprobar_estado_propuesta');
-                Route::post('transaccion/finalizar_propuesta', 'Requerimientos\TransactionController@finalizar_propuesta');
+                    Route::post('aprobar_propuesta', 'Requerimientos\TransactionController@aprobar_propuesta');
+                    Route::post('rechazar_propuesta', 'Requerimientos\TransactionController@rechazar_propuesta');
+                    Route::post('enviar_aprobar_propuesta', 'Requerimientos\TransactionController@enviar_aprobar_propuesta');
+
+                    Route::get('comprobar_estado_propuesta', 'Requerimientos\TransactionController@comprobar_estado_propuesta');
+                    Route::post('finalizar_propuesta', 'Requerimientos\TransactionController@finalizar_propuesta');
+                });
 
 
                 Route::get('diseno_grafico', 'Requerimientos\DisenoController@index')->name('requerimientos.diseno_grafico');
                 Route::get('render', 'Requerimientos\RenderController@index')->name('requerimientos.render');
                 Route::get('plano', 'Requerimientos\PlanoController@index')->name('requerimientos.plano');
-
-
             });
-
-
-
-
 
 
             Route::prefix('mesa_ayuda')->group(function () {
                 Route::get('requerimientos_admon', 'MesaAyuda\MesaAyudaController@requerimientos_admon')->name('mesa_ayuda.requerimientos_admon');
             });
 
-            Route::get('consultas', function () {
+            /*Route::get('consultas', function () {
                 return view('aplicaciones.consultas.index');
-            });
+            });*/
+
 
             Route::prefix('consultas')->group(function () {
                 Route::get('reenvio_facturas', 'Consulta\FacturaElectronicaController@index')->name('consultas.reenvio_facturas');
@@ -349,6 +348,13 @@ Route::middleware(['auth'])->group(function() {
             });
 
 
+            Route::prefix('calidad')->group(function () {
+                Route::get('revision', 'Calidad\CentroTrabajoController@index');
+
+                Route::prefix('revision')->group(function () {
+                    Route::get('consultar_op', 'Calidad\CentroTrabajoController@consultar_op');
+                });
+            });
 
         });
 

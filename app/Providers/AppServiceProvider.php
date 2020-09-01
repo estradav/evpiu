@@ -3,21 +3,17 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use ConsoleTVs\Charts\Registrar as Charts;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
      *
-     * @param Charts $charts
      * @return void
      */
-    public function boot(Charts $charts)
+    public function boot()
     {
-        $charts->register([
-        \App\Charts\SampleChart::class
-    ]);
+        //
     }
 
     /**
