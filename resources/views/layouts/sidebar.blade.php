@@ -288,6 +288,7 @@
                     </li>
                 </ul>
             </li>
+
             <li>
                 <a href="#">
                     <i class="metismenu-icon pe-7s-user"></i>
@@ -300,6 +301,27 @@
                             <i class="metismenu-icon">
                             </i>Clientes
                         </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="metismenu-icon  pe-7s-graph1"></i>
+                            Comercial
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li class="{{ request()->route()->named('eventos_actividades') ? 'mm-active' : '' }}">
+                                <a href="{{ route('eventos_actividades') }}">
+                                    <i class="metismenu-icon"></i>
+                                    Visitas / Actividades
+                                </a>
+                            </li>
+                            <li class="{{ request()->route()->named('comercial.dashboard') ? 'mm-active' : '' }}">
+                                <a href="{{ route('comercial.dashboard') }}">
+                                    <i class="metismenu-icon"></i>
+                                    Dashboard
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="#">
@@ -334,6 +356,7 @@
                             </li>
                         </ul>
                     </li>
+
                 </ul>
 
             </li>

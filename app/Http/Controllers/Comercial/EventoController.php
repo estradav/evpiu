@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Comercial;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,9 +52,6 @@ class EventoController extends Controller
                 ->where('end', '<=', $request->end)
                 ->get();
 
-
-
-
             return response()->json($data, 200);
 
         }catch (\Exception $e){
@@ -65,13 +63,25 @@ class EventoController extends Controller
     public function store(Request $request){
         if($request->ajax()){
             try{
-                dd($request);
-                DB::table('users')
+                $start =  strtotime($request->date.' '.$request->start);
+                $start = date('Y-m-d H:i:s', $start);
+
+                $end = strtotime($request->date.' '.$request->end);
+                $end = date('Y-m-d H:i:s', $end);
+
+
+                DB::table('events_activities')
                     ->insert([
-                        ''
-
+                        'title'         =>  $request->title,
+                        'start'         =>  $start,
+                        'end'           =>  $end,
+                        'type'          =>  $request->type,
+                        'nit'           =>  $request->nit,
+                        'created_by'    =>  Auth::user()->id,
+                        'created_at'    =>  Carbon::now(),
+                        'updated_at'    =>  Carbon::now()
                     ]);
-
+                return response()->json('success', 200);
             }catch(Exception $e){
                 return response()->json($e->getMessage(), 500);
             }
