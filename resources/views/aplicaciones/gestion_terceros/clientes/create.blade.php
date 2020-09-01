@@ -42,7 +42,7 @@
 
                 <div class="main-card mb-3 card">
                     <div class="card-body">
-                        <form id="create-form" >
+                        <form id="create-form">
                             <h3>Cliente</h3>
                             <fieldset>
                                 <div class="row">
@@ -238,20 +238,25 @@
                                         </a>
                                         <input id="M_Porcentaje_descuento" name="M_Porcentaje_descuento" type="number" class="form-control required" value="0">
                                     </div>
-                                    <div class="col-sm-3">
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-12">
                                         <label for="M_actividad_principal">Actividad principal:</label>
                                         <a class="right ModalTooltip" rel="tooltip" data-placement="right" data-toggle="tooltip" href="javascript:void(0)" data-original-title="Codigo de la actividad principal del client, esta informacion se puede consultar en el RUT">
                                             <span style="color: Mediumslateblue;">  <i class="fas fa-info-circle"></i> </span>
                                         </a>
-
                                         <div class="input-group">
-                                            <select class="form-control" id="M_actividad_principal">
+                                            <select name="M_actividad_principal" id="M_actividad_principal" class="form-control">
+                                                <option value="" selected>Seleccione...</option>
+                                                @foreach($razones_comerciales as $option)
+                                                    <option value="{{ $option->codigo }}">{{ $option->descripcion }}</option>
+                                                @endforeach
                                             </select>
                                             <div class="input-group-append">
                                                 <button class="btn btn-outline-secondary" type="button" id="agregar_actividad_economica">Agregar</button>
                                             </div>
                                         </div>
-
                                         {{--<input id="M_actividad_principal" name="M_actividad_principal" type="number" class="form-control required">--}}
                                     </div>
                                 </div>
@@ -377,7 +382,7 @@
                                     <div class="col-sm-12">
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="document_rut" aria-describedby="document_rut">
+                                                <input type="file" class="custom-file-input" id="document_rut" aria-describedby="document_rut" accept="application/pdf">
                                                 <label class="custom-file-label" for="document_rut">Seleccionar archivo...</label>
                                             </div>
                                         </div>
@@ -553,6 +558,38 @@
             </div>
         </div>
     </div>
+
+
+
+    <div class="modal fade" id="modal_actividad_economica" tabindex="-1" aria-labelledby="modal_actividad_economica" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_actividad_economica_title">Agregar actividad economica</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="actividad_economica_form">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="codigo">Codigo:</label>
+                            <input type="number" class="form-control" id="codigo" name="codigo">
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripcion:</label>
+                            <input type="text" class="form-control" id="descripcion" name="descripcion">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('styles')
     <link rel="stylesheet" href="{{ asset('jquery-steps/style.css') }}">
@@ -572,7 +609,7 @@
                 var fileName = document.getElementById("document_rut").files[0].name;
                 var nextSibling = e.target.nextElementSibling;
                 nextSibling.innerText = fileName
-            })
+            });
         });
     </script>
 @endpush

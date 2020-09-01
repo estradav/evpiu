@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Yajra\DataTables\DataTables;
@@ -72,8 +74,13 @@ class ClientesController extends Controller
             ->table('y_paises')
             ->get();
 
+        $razones_comerciales = DB::connection('DMS')
+            ->table('Terceros_actividad_economica')
+            ->orderBy('descripcion', 'asc')
+            ->get();
+
         return view('aplicaciones.gestion_terceros.clientes.create',
-            compact('plazos','forma_envio', 'vendedores', 'tipo_cliente', 'paises'));
+            compact('plazos','forma_envio', 'vendedores', 'tipo_cliente', 'paises', 'razones_comerciales'));
     }
 
 
@@ -165,7 +172,7 @@ class ClientesController extends Controller
             $nombre = $request->M_Nit_cc;
             $ext = $file->getClientOriginalExtension();
 
-            \Storage::disk('rut_clientes')->put($nombre.'.'.$ext,  \File::get($file));
+            Storage::disk('rut_clientes')->put($nombre.'.'.$ext,  \File::get($file));
         }
 
         $termino_dms = '';
@@ -227,14 +234,17 @@ class ClientesController extends Controller
             ->pluck('SLSTER_26');
 
 
-        $apellidos_lenght = $request->M_primer_apellido.' '.$request->M_segundo_apellido;
-        $apellidos_lenght = strlen($apellidos_lenght ) +1;
+
 
         $nombre_max = '';
         if (trim($request->M_primer_apellido) != ''){
             $nombre_max = $request->M_primer_apellido.' '.$request->M_segundo_apellido.' '.$request->M_primer_nombre.' '.$request->M_segundo_nombre;
+
+            $apellidos_lenght = $request->M_primer_apellido.' '.$request->M_segundo_apellido;
+            $apellidos_lenght = strlen($apellidos_lenght);
         }else{
             $nombre_max = $request->M_primer_nombre;
+            $apellidos_lenght = 0;
         }
 
 
@@ -1454,9 +1464,8 @@ class ClientesController extends Controller
     /**
      * permite subir el rut / el nombre del archivo es el nit del cliente
      *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @param $file
+     * @return RedirectResponse
      */
     public function descargar_rut($file){
         $file_name = explode('-',$file);
@@ -1470,7 +1479,22 @@ class ClientesController extends Controller
                     'alert-type' => 'error'
                 ]);
         }
+    }
 
+
+    public function crear_actividad_economica(Request  $request){
+        if ($request->ajax()){
+            try {
+                DB::table('Terceros_actividad_economica')->insert([
+                   'codigo'         => $request->codigo,
+                   'descripcion'    => $request->descripcion
+                ]);
+
+                return response()->json('Actividad guardada con exito', 200);
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
     }
 
 

@@ -104,10 +104,17 @@ $(document).ready(function () {
         errorPlacement: function errorPlacement(error, element)
         { element.after(error); },
         rules: {
-            M_nombre: {
+            M_primer_nombre: {
+                required: true,
+                minlength: 4,
+                maxlength: 20,
+                especial_chars_name: true
+            },
+            M_Razon_comercial: {
                 required: true,
                 minlength: 4,
                 maxlength: 60,
+                especial_chars_razon_social: true
             },
             M_direccion1: {
                 required: true,
@@ -148,7 +155,7 @@ $(document).ready(function () {
             M_Contacto: {
                 required: true,
                 minlength: 4,
-                maxlength: 40,
+                maxlength: 20,
             },
             M_Telefono: {
                 required: true,
@@ -181,8 +188,7 @@ $(document).ready(function () {
             },
             M_actividad_principal: {
                 required: false,
-                maxlength: 7,
-                minlength: 3
+                selectcheck: true
             },
             M_Codigo_fiscal_2: {
                 required: false,
@@ -212,7 +218,8 @@ $(document).ready(function () {
         messages:{
             M_Nit_cc: "",
             M_Nit_cc_dg: "",
-            acceptTerms: ""
+            acceptTerms: "",
+            M_actividad_principal: ""
         },
         errorElement: 'label',
         errorLabelContainer: '.errorTxt'
@@ -232,6 +239,19 @@ $(document).ready(function () {
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(value);
     }, "Por favor, escribe una dirección de correo válida.");
+
+    jQuery.validator.addMethod("especial_chars_name", function (value){
+        var re = /^[a-zA-Z]{4,20}$/;
+        return re.test(value);
+    }, "Ingrese un nombre valido!");
+
+
+    jQuery.validator.addMethod("especial_chars_razon_social", function (value){
+        var re = /^[a-zA-Z0-9@& ]{4,60}$/;
+        return re.test(value);
+    }, "La razon social no debe tener caracteres especial excepto (@, &)");
+
+
 
     $('#M_Pais').on( "change", function() {
         $('#M_Departamento').html('');
@@ -407,25 +427,56 @@ $(document).ready(function () {
     });
 
 
-    $('#M_actividad_principal').select2({
-        placeholder: "Seleccione...",
-        ajax: {
-            url: '/aplicaciones/terceros/listar_actividad_economica',
-            dataType: 'json',
-            data: function (params) {
-                return {
-                    q: $.trim(params.term)
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        },
-        required: true
+    $(document).on('click', '#agregar_actividad_economica', function (){
+        $('#modal_actividad_economica').modal('show');
     });
+
+
+    $('#actividad_economica_form').validate({
+        ignore: "",
+        rules: {
+            codigo: {
+                required: true,
+                minlength: 4,
+                maxlength: 4,
+                digits: true
+            },
+            descripcion: {
+                required: true
+            }
+        },
+        highlight: function (element) {
+            $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function (element) {
+            $(element).closest('.form-control').removeClass('is-invalid');
+        },
+        submitHandler: function (form) {
+            $.ajax({
+                data: $('#actividad_economica_form').serialize(),
+                url: "/aplicaciones/terceros/cliente/crear_actividad_economica",
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Guardado!',
+                        text: "Actividad economica guardada, refresque la pagina para visualizar la opcion en el grid.",
+                    });
+                    $('#actividad_economica_form').trigger("reset");
+                    $('#modal_actividad_economica').modal('hide');
+                },
+                error: function (data) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops',
+                        text: data.responseText
+                    });
+                }
+            });
+        }
+    });
+
 
 
     function generar_direccion(tipo_via, numero_1, letra_1, complemento_1, numero_2, letra_2, complemento_2, numero_3, complemnto_3, numero_4) {
