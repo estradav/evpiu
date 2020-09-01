@@ -15,9 +15,9 @@ class CreateEventsActivitiesTable extends Migration
     {
         Schema::create('events_activities', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->date('start');
-            $table->date('end');
+            $table->longText('title');
+            $table->dateTime('start');
+            $table->dateTime('end');
             $table->boolean('type');
             $table->integer('nit');
             $table->unsignedBigInteger('created_by');
