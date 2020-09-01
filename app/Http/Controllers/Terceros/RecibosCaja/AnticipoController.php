@@ -176,7 +176,7 @@ class AnticipoController extends Controller
                         'centro'                =>  '0',
                         'nit'                   =>  $enc->nit,
                         'fec'                   =>  $enc->date_paid,
-                        'valor'                 =>  $enc->total_paid,
+                        'valor'                 =>  -abs($enc->total_paid),
                         'documento'             =>  '1',
                     ]);
 

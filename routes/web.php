@@ -314,9 +314,16 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
                 Route::get('consultas', function () {
                     return view('aplicaciones.consultas.index');
                 });
+
                 Route::prefix('consultas')->group(function () {
                     Route::get('reenvio_facturas', 'Consulta\FacturaElectronicaController@index')->name('consultas.reenvio_facturas');
                     Route::post('verificar_documento', 'Consulta\FacturaElectronicaController@obtener_factura');
+                });
+
+                 Route::prefix('comercial')->group(function () {
+                     Route::get('eventos_actividades', 'Comercial\EventoController@index');
+                     Route::get('obtener_eventos', 'Comercial\EventoController@obtener_eventos');
+                     Route::post('guardar_evento', 'Comercial\EventoController@store');
                 });
 
 
