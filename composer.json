@@ -24,7 +24,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.5",
         "knplabs/knp-snappy": "^1.2",
-        "laravel/framework": "7.22.*",
+        "laravel/framework": "7.27.*",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "6.0.*",

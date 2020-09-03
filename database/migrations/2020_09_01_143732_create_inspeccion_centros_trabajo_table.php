@@ -13,24 +13,25 @@ class CreateInspeccionCentrosTrabajoTable extends Migration
      */
     public function up()
     {
-        Schema::create('inspeccion_centros_trabajo', function (Blueprint $table) {
+        Schema::create('inspection_work_centers', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity_inspected');
-            $table->integer('conforming_quantity');
-            $table->integer('non_conforming_quantity');
-            $table->string('cause');
-            $table->unsignedBigInteger('operator_id');
+            $table->bigInteger('production_order')->comment('Numero de orden de produccion');
+            $table->bigInteger('quantity_inspected')->comment('Cantidad inspeccionada');
+            $table->bigInteger('conforming_quantity')->comment('Cantidad conforme');
+            $table->bigInteger('non_conforming_quantity')->comment('Cantidad no conforme');
+            $table->string('cause')->comment('causa de la no conformidad');
+
+            $table->unsignedBigInteger('operator_id')->comment('Operario');
             $table->foreign('operator_id')->references('id')->on('users');
 
-            $table->unsignedBigInteger('inspector_id');
+            $table->unsignedBigInteger('inspector_id')->comment('Inspector que realiza la revision');;
             $table->foreign('inspector_id')->references('id')->on('users');
 
-            $table->longText('non-compliant treatment');
-            $table->longText('action');
-            $table->longText('observation');
-            $table->string('centro');
-
-
+            $table->longText('non-compliant_treatment')->comment('tratamiento a la no conformidad');
+            $table->longText('action')->comment('accion realizada');
+            $table->longText('observation')->comment('observaciones');
+            $table->string('center')->comment('centro de trabajo');
+            
             $table->timestamps();
         });
     }

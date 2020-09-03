@@ -353,6 +353,7 @@ Route::middleware(['auth'])->group(function() {
 
                 Route::prefix('revision')->group(function () {
                     Route::get('consultar_op', 'Calidad\CentroTrabajoController@consultar_op');
+                    Route::post('guardar', 'Calidad\CentroTrabajoController@store');
                 });
             });
 

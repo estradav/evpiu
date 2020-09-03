@@ -115,7 +115,6 @@ $(document).ready(function () {
             },
             M_Razon_comercial: {
                 required: false,
-                minlength: 4,
                 maxlength: 60,
                 especial_chars_razon_social: true
             },
@@ -250,7 +249,7 @@ $(document).ready(function () {
 
 
     jQuery.validator.addMethod("especial_chars_razon_social", function (value){
-        var re = /^[a-zA-Z0-9@& ]{4,60}$/;
+        var re = /^[a-zA-Z0-9@& ]{1,60}$/;
         return re.test(value);
     }, "La razon social no debe tener caracteres especial excepto (@, &)");
 
