@@ -110,7 +110,7 @@ $(document).ready(function () {
             M_primer_nombre: {
                 required: true,
                 minlength: 4,
-                maxlength: 20,
+                maxlength: 60,
                 especial_chars_name: true
             },
             M_Razon_comercial: {
@@ -244,7 +244,7 @@ $(document).ready(function () {
     }, "Por favor, escribe una dirección de correo válida.");
 
     jQuery.validator.addMethod("especial_chars_name", function (value){
-        var re = /^[a-zA-Z]{4,20}$/;
+        var re = /^[a-zA-Z]{4,60}$/;
         return re.test(value);
     }, "Ingrese un nombre valido!");
 
