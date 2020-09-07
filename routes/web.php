@@ -246,6 +246,19 @@ Route::middleware(['auth'])->group(function() {
                 Route::resource('clonado','Productos\Clonador\ClonadorController')->only('index', 'store');
                 Route::get('/clonado/obtener_info_producto_clonar', 'Productos\Clonador\ClonadorController@obtener_info_producto_clonar');
                 Route::get('/clonado/obtener_producto_codificador', 'Productos\Clonador\ClonadorController@obtener_producto_codificador');
+
+
+
+                /*Control de calidad*/
+                Route::prefix('calidad')->group(function () {
+                    Route::get('revision', 'Productos\Calidad\CentroTrabajoController@index')->name('calidad.revision_op');
+                    Route::prefix('revision')->group(function () {
+                        Route::get('consultar_op', 'Productos\Calidad\CentroTrabajoController@consultar_op');
+                        Route::post('guardar', 'Productos\Calidad\CentroTrabajoController@store');
+                        Route::get('info_review', 'Productos\Calidad\CentroTrabajoController@info_review');
+                        Route::get('consultar_descripcion_centro_trabajo', 'Productos\Calidad\CentroTrabajoController@consultar_descripcion_centro_trabajo');
+                    });
+                });
             });
 
 
@@ -347,15 +360,6 @@ Route::middleware(['auth'])->group(function() {
                 Route::post('verificar_documento', 'Consulta\FacturaElectronicaController@obtener_factura');
             });
 
-
-            Route::prefix('calidad')->group(function () {
-                Route::get('revision', 'Calidad\CentroTrabajoController@index');
-
-                Route::prefix('revision')->group(function () {
-                    Route::get('consultar_op', 'Calidad\CentroTrabajoController@consultar_op');
-                    Route::post('guardar', 'Calidad\CentroTrabajoController@store');
-                });
-            });
 
         });
 

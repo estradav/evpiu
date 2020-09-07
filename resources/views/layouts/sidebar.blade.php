@@ -142,6 +142,22 @@
                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                 </a>
                 <ul>
+                    <li>
+                        <a href="#">
+                            <i class="metismenu-icon">
+                            </i>Calidad
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li class="{{ request()->route()->named('calidad.revision_op') ? 'mm-active' : '' }}">
+                                <a href="{{ route('calidad.revision_op') }}">
+                                    <i class="metismenu-icon">
+                                    </i>Revision OP
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="{{ request()->route()->named('clonado.index') ? 'mm-active' : '' }}">
                         <a href="{{ route('clonado.index') }}">
                             <i class="metismenu-icon"></i>
