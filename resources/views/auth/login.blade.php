@@ -19,7 +19,7 @@
             .contentContainer {
                 position: relative;
                 margin: 130px auto 0;
-                padding: 30px 10% 50px;
+                padding: 30px 4% 50px;
                 -webkit-border-radius: 5px;
                 -moz-border-radius: 5px;
                 -khtml-border-radius: 5px;
@@ -149,44 +149,55 @@
             <section id="login" class="login" data-role="page" data-title="Log in to your PayPal account">
                 <div class="corral">
                     <div id="content" class="contentContainer">
-                        <header>
-                            <p class="paypal-logo paypal-logo-long">
-                            <center>
-                                <img src="/img/letras.png">
-                            </center></p>
-                        </header>
-                        <form method="POST" action="{{ route('login') }}" name="login" autocomplete="off">
-                            @csrf
-                            <div id="passwordSection" class="clearfix">
-                                <div class="textInput" id="login_emaildiv">
-                                    <div class="fieldWrapper">
-                                        <label for="username" class="fieldLabel">Email</label>
-                                        <input id="username" name="username" type="text" class="form-control form-control-lg{{ $errors->has('login') ? ' is-invalid' : '' }}" required="required" aria-required="true" autocomplete="off" placeholder="Usuario" value="{{ old('username') }}" autofocus>
-                                    </div>
-                                </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <header>
+                                    <p class="paypal-logo paypal-logo-long">
+                                    <center>
+                                        <img src="/img/letras.png">
+                                    </center></p>
+                                </header>
+                                <hr>
+                                <br>
+                                <form method="POST" action="{{ route('login') }}" name="login" autocomplete="off">
+                                    @csrf
+                                    <div id="passwordSection" class="clearfix">
+                                        <div class="textInput" id="login_emaildiv">
+                                            <div class="fieldWrapper">
+                                                <label for="username" class="fieldLabel">Email</label>
+                                                <input id="username" name="username" type="text" class="form-control form-control-lg{{ $errors->has('login') ? ' is-invalid' : '' }}" required="required" aria-required="true" autocomplete="off" placeholder="Usuario" value="{{ old('username') }}" autofocus>
+                                            </div>
+                                        </div>
 
-                                <div class="textInput" id="login_passworddiv">
-                                    <div class="fieldWrapper">
-                                        <label for="password" class="fieldLabel">Password</label>
-                                        <input id="password" name="password" type="password" class="form-control form-control-lg{{ $errors->has('login') ? ' is-invalid' : '' }}" required="required" aria-required="true"   placeholder="Contraseña">
-                                        @if ($errors->has('login'))
-                                            <span class="invalid-feedback text-center" role="alert" style="display: block !important; font-size: 96% !important;">
+                                        <div class="textInput" id="login_passworddiv">
+                                            <div class="fieldWrapper">
+                                                <label for="password" class="fieldLabel">Password</label>
+                                                <input id="password" name="password" type="password" class="form-control form-control-lg{{ $errors->has('login') ? ' is-invalid' : '' }}" required="required" aria-required="true"   placeholder="Contraseña">
+                                                @if ($errors->has('login'))
+                                                    <span class="invalid-feedback text-center" role="alert" style="display: block !important; font-size: 96% !important;">
                                                 <strong>{{ $errors->first('login') }}</strong>
                                             </span>
-                                        @endif
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="actions actionsSpaced">
+                                        <button class="button actionContinue" type="submit" id="btnLogin" name="btnLogin">Iniciar sesión</button>
+                                    </div>
+                                </form>
+                                <br>
+                                <hr>
+
+                                <p class="mt-3 mb-2 text-center">
+                                    Copyright © <script>const d = new Date();
+                                        document.write(d.getFullYear());</script> <a href="https://estradavelasquez.com/">&nbsp;Estrada Velasquez</a>.
+                                    <br> Todos los derechos reservados.
+                                </p>
                             </div>
-                            <div class="actions actionsSpaced">
-                                <button class="button actionContinue" type="submit" id="btnLogin" name="btnLogin">Iniciar sesión</button>
-                            </div>
-                        </form>
-                        <p class="mt-5 mb-3 text-center">
-                            Copyright © <script>var d = new Date(); document.write(d.getFullYear());</script> <a href="https://estradavelasquez.com/">&nbsp;Estrada Velasquez</a>.
-                            <br> Todos los derechos reservados.
-                        </p>
+                        </div>
                     </div>
                 </div>
+
             </section>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

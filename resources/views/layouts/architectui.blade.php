@@ -146,7 +146,7 @@
                                     </div>
                                     <div class="widget-content-left  ml-3 header-user-info">
                                         <div class="widget-heading">
-                                            {{ Auth::user()->name  }}
+                                           {{-- {{ Auth::user()->name  }}--}}
                                         </div>
                                     </div>
                                 </div>
