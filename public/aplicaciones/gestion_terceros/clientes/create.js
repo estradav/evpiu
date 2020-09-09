@@ -116,7 +116,7 @@ $(document).ready(function () {
             M_Razon_comercial: {
                 required: false,
                 maxlength: 60,
-                especial_chars_razon_social: true
+                especial_chars_razon_social: false
             },
             M_direccion1: {
                 required: true,
@@ -190,7 +190,7 @@ $(document).ready(function () {
             },
             M_actividad_principal: {
                 required: false,
-                selectcheck: true
+                selectcheck: false
             },
             M_Codigo_fiscal_2: {
                 required: false,
