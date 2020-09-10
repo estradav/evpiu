@@ -82,7 +82,7 @@
 @endsection
 
 @push('javascript')
-    <script src="{{ asset('fullcalendar/main.js') }}"></script>
+    <script src="{{ asset('librerias_javascript/fullcalendar/main.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function (){
@@ -254,7 +254,7 @@
 @endpush
 
 @push('styles')
-    <link href="{{ asset('fullcalendar/main.css') }}" rel='stylesheet' />
+    <link href="{{ asset('librerias_javascript/fullcalendar/main.css') }}" rel='stylesheet' />
     <style>
 
         .btn-group.special {

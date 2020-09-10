@@ -592,7 +592,7 @@
     </div>
 @endsection
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('jquery-steps/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('librerias_javascript/jquery-steps/style.css') }}">
     <style>
         input{
            text-transform:uppercase !important;
@@ -600,9 +600,9 @@
     </style>
 @endpush
 @push('javascript')
-    <script> let Username =  @json( Auth::user()->username );   const form = $("#create-form"); </script>
+    <script> let Username =  @json( auth()->user()->username );   const form = $("#create-form"); </script>
     <script type="text/javascript" src="{{ asset('aplicaciones/gestion_terceros/clientes/create.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('jquery-steps/jquery.steps.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('librerias_javascript/jquery-steps/jquery.steps.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             document.querySelector('.custom-file-input').addEventListener('change',function(e){

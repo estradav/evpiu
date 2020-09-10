@@ -21,7 +21,7 @@
         <input type="hidden" id="id_req" name="id_req" value="{{ $data->id }}">
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="ain-card mb-3 card igualar_div">
+                <div class="main-card mb-3 card igualar_div">
                     <div class="card-header">
                         INFORMACION GENERAL
                     </div>

@@ -258,7 +258,7 @@ class TransactionController extends Controller
         if ($request->ajax()){
             try {
                 $values = DB::table('users')
-                    ->where('app_roll','=', 'diseñador')
+                    ->whereIn('app_roll', ['diseñador','super_diseno'])
                     ->select('name','id')
                     ->get();
 

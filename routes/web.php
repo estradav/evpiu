@@ -258,6 +258,13 @@ Route::middleware(['auth'])->group(function() {
                         Route::get('info_review', 'Productos\Calidad\CentroTrabajoController@info_review');
                         Route::get('consultar_descripcion_centro_trabajo', 'Productos\Calidad\CentroTrabajoController@consultar_descripcion_centro_trabajo');
                     });
+
+
+                    Route::get('dashboard', 'Productos\Calidad\DashboardController@index');
+
+                    Route::prefix('dashboard')->group(function () {
+
+                    });
                 });
             });
 
