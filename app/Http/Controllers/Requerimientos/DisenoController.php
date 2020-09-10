@@ -10,7 +10,7 @@ class DisenoController extends Controller
 {
     public function index(){
         try {
-            if (Auth::user()->hasRole('super-admin')){
+            if (Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('super-diseno')){
                 $data = DB::table('encabezado_requerimientos')
                     ->leftJoin('cod_codigos','encabezado_requerimientos.producto_id','=','cod_codigos.id')
                     ->select('encabezado_requerimientos.id as id',
