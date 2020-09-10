@@ -54,7 +54,19 @@ class CentroTrabajoController extends Controller
                 $centros_trabajo = DB::connection('MAX')
                     ->table('CIEV_V_EstadoOP')
                     ->where('ORDNUM_14', '=', $request->production_order)
+                    ->orderBy('OPRSEQ_14', 'asc')
                     ->pluck('WRKCTR_14')->toArray();
+
+
+                $centro_actual = DB::connection('MAX')
+                    ->table('CIEV_V_EstadoOP')
+                    ->where('ORDNUM_14', '=', $request->production_order)
+                    ->where('CTActual', '=', 'Y')
+                    ->orderBy('OPRSEQ_14', 'asc')
+                    ->pluck('WRKCTR_14')->toArray();
+
+                $centro_actual = array_unique($centro_actual, SORT_STRING);
+                $centro_actual =  array_merge($centro_actual, array());
 
 
                 $result = array_unique($centros_trabajo, SORT_STRING);
@@ -62,9 +74,10 @@ class CentroTrabajoController extends Controller
 
 
                 return response()->json([
-                    'registros' => $registros,
-                    'data_max'  => $data_max,
-                    'centros'   => $result //SFC_WORK_CENTER
+                    'registros'     => $registros,
+                    'data_max'      => $data_max,
+                    'centros'       => $result, //SFC_WORK_CENTER,
+                    'centro_actual' => $centro_actual
                 ], 200);
 
             }catch (\Exception $e){

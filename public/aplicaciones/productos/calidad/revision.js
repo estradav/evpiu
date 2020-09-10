@@ -71,11 +71,21 @@ $(document).ready(function (){
 
 
 
+                        function centro_actual(centro){
+                            for (let i = 0; i < data.centro_actual.length; i++) {
+                                if (data.centro_actual[i] == centro){
+                                    return 'text-success';
+                                }else{
+                                    return '';
+                                }
+                            }
+                        }
+
 
                         for (let i = 0; i < data.centros.length; i++) {
 
                             $('.accordion').append(`
-                                <h3>`+ data.centros[i] +` - `+ get_description(data.centros[i]) +`</h3>
+                                <h3 class="` + centro_actual(data.centros[i]) + `">`+ data.centros[i] +` - `+ get_description(data.centros[i]) +`</h3>
                                 <div>
                                     <button class="btn btn-success btn-sm add_review" id="`+ production_order +`" name="`+ data.centros[i] +`"> <i class="fas fa-plus-circle"></i> Agregar</button>
                                     <hr>
@@ -345,29 +355,6 @@ $(document).ready(function (){
         $('#ViewArtModal').modal('show');
     });
 
-
-    $(document).on('keyup', '#quantity_inspected', function () {
-       let quantity_inspected = this.value;
-       let conforming_quantity = document.getElementById('conforming_quantity').value;
-
-        if (conforming_quantity){
-            document.getElementById('non_conforming_quantity').value = quantity_inspected - conforming_quantity;
-        }else{
-            document.getElementById('non_conforming_quantity').value = 0;
-        }
-    });
-
-
-    $(document).on('keyup', '#conforming_quantity', function () {
-        let conforming_quantity = this.value;
-        let quantity_inspected = document.getElementById('quantity_inspected').value;
-
-        if (quantity_inspected){
-            document.getElementById('non_conforming_quantity').value = quantity_inspected - conforming_quantity;
-        }else{
-            document.getElementById('non_conforming_quantity').value = 0;
-        }
-    });
 
 
     jQuery.extend(jQuery.validator.messages, {
