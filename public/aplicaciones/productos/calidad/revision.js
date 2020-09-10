@@ -12,7 +12,7 @@ $(document).ready(function (){
 
         if (production_order !== ''){
             $('#result_search').html('').append(`
-                <div id="loader-wrapper">
+                <div class="row justify-content-center">
                     <div id="loader"></div>
                 </div>
                 <h4 class="text-center">Recuperando informacion, un momento por favor...</h4>
@@ -40,7 +40,7 @@ $(document).ready(function (){
                     }else{
                         $('#result_search').html('').append(`
                             <div class="row justify-content-center mb-2">
-                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
                                     <h5 class="text-center"><b> ORDER DE PRODUCCION</b></h5>
                                     <h5 class="text-center"><b>`+ production_order +`</b></h5>
                                 </div>
@@ -343,6 +343,30 @@ $(document).ready(function (){
         $('#ViewArtTitle').html('Arte #'+ Art);
         PDFObject.embed("http://192.168.1.12/intranet_ci/assets/Artes/"+Art+".pdf", "#ViewArtPdf");
         $('#ViewArtModal').modal('show');
+    });
+
+
+    $(document).on('keyup', '#quantity_inspected', function () {
+       let quantity_inspected = this.value;
+       let conforming_quantity = document.getElementById('conforming_quantity').value;
+
+        if (conforming_quantity){
+            document.getElementById('non_conforming_quantity').value = quantity_inspected - conforming_quantity;
+        }else{
+            document.getElementById('non_conforming_quantity').value = 0;
+        }
+    });
+
+
+    $(document).on('keyup', '#conforming_quantity', function () {
+        let conforming_quantity = this.value;
+        let quantity_inspected = document.getElementById('quantity_inspected').value;
+
+        if (quantity_inspected){
+            document.getElementById('non_conforming_quantity').value = quantity_inspected - conforming_quantity;
+        }else{
+            document.getElementById('non_conforming_quantity').value = 0;
+        }
     });
 
 
