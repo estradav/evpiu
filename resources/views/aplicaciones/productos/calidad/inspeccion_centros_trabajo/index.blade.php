@@ -208,7 +208,6 @@
         #loader {
             display: block;
             position: relative;
-            left: 45%;
             top: 50%;
             width: 150px;
             height: 150px;

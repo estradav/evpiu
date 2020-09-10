@@ -111,12 +111,12 @@ $(document).ready(function () {
                 required: true,
                 minlength: 4,
                 maxlength: 20,
-                especial_chars_name: true
+                especial_chars_name: false
             },
             M_Razon_comercial: {
                 required: false,
                 maxlength: 60,
-                especial_chars_razon_social: true
+                especial_chars_razon_social: false
             },
             M_direccion1: {
                 required: true,
@@ -155,7 +155,7 @@ $(document).ready(function () {
                 selectcheck: true
             },
             M_Contacto: {
-                required: true,
+                required: false,
                 minlength: 4,
                 maxlength: 20,
             },
@@ -243,7 +243,7 @@ $(document).ready(function () {
     }, "Por favor, escribe una dirección de correo válida.");
 
     jQuery.validator.addMethod("especial_chars_name", function (value){
-        var re = /^[a-zA-Z]{4,20}$/;
+        var re = /^[a-zA-Z ]{1,20}$/;
         return re.test(value);
     }, "Ingrese un nombre valido!");
 
