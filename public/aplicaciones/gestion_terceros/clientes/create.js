@@ -110,8 +110,8 @@ $(document).ready(function () {
             M_primer_nombre: {
                 required: true,
                 minlength: 4,
-                maxlength: 20,
-                especial_chars_name: false
+                maxlength: 60,
+                especial_chars_name: true
             },
             M_Razon_comercial: {
                 required: false,
@@ -190,7 +190,7 @@ $(document).ready(function () {
             },
             M_actividad_principal: {
                 required: false,
-                selectcheck: true
+                selectcheck: false
             },
             M_Codigo_fiscal_2: {
                 required: false,
@@ -243,6 +243,7 @@ $(document).ready(function () {
     }, "Por favor, escribe una dirección de correo válida.");
 
     jQuery.validator.addMethod("especial_chars_name", function (value){
+
         var re = /^[a-zA-Z ]{1,20}$/;
         return re.test(value);
     }, "Ingrese un nombre valido!");
