@@ -170,7 +170,6 @@
 <div class="denied__wrapper">
     <h1>503</h1>
     <h3>Estamos realizando tareas de mantenimiento, en breve volveremos a estar en linea.</h3>
-    <h3 style="color: red">{{ json_decode(file_get_contents(storage_path('framework/down')), true)['message'] }}</h3>
     <svg id="astronaut" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
         <style>
             .st0{fill:none;} .st1{fill:#504E55;} .st2{fill:#F39E72;} .st3{fill:#FFFFFF;} .st4{opacity:0.24;} .st5{fill:#77574E;} .st6{fill:#FBD68D;} .st7{fill:#ECECEC;} .st8{fill:#F4A89C;} .st9{fill:#CFC9E5;} .st10{opacity:0.28;} .st11{opacity:0.25;} .st12{fill:#6F635C;} .st13{fill:#DAE7BE;} .st14{fill:#FFE0A6;} .st15{fill:#5F5E60;} .st16{fill:#CFE1AF;} .st17{fill:#EBE9F5;} .st18{fill:#53515A;} .st19{opacity:0.42;} .st20{fill:#53515B;}
