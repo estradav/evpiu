@@ -1060,7 +1060,7 @@ class FacturasController extends Controller
      * @throws \SoapFault
      */
     public function edit($numero_factura){
-        $login1   = "dcorreah";
+        /*$login1   = "dcorreah";
         $password = "FE2020ev*";
         $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
         $client = new SoapClient($wsdl_url);
@@ -1103,14 +1103,13 @@ class FacturasController extends Controller
         $return = json_decode($return->return);
 
         if (sizeof($return->data) > 0){
-
             return redirect()
                 ->route('factura.index')
                 ->with([
                     'message'    => 'Esta factura ya fue subida a la DIAN y no puede ser editada.',
                     'alert-type' => 'error'
                 ]);
-        }else{
+        }else{*/
             try {
                 $encabezado =  DB::connection('MAXP')
                     ->table('CIEV_V_FE')
@@ -1192,7 +1191,7 @@ class FacturasController extends Controller
                     ]);
             }
 
-        }
+        /*}*/
     }
 
 
