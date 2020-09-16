@@ -244,7 +244,7 @@ $(document).ready(function () {
 
     jQuery.validator.addMethod("especial_chars_name", function (value){
 
-        var re = /^[a-zA-Z ]{1,20}$/;
+        var re = /^[a-zA-Z ]{1,60}$/;
         return re.test(value);
     }, "Ingrese un nombre valido!");
 
