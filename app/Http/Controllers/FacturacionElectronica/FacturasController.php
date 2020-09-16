@@ -1213,7 +1213,7 @@ class FacturasController extends Controller
                         ->table('Invoice_master')
                         ->where('INVCE_31', '=', $num_factura)
                         ->update([
-                            'COMNT1_31' => $request->encabezado['notas'],
+                            'COMNT1_31' => $request->encabezado['notas'] ?? " ",
                             'REASON_31' => $request->encabezado['motivo'],
                             'TAX1_31'   => $request->encabezado['iva'],
                             'LNETOT_31' => $request->encabezado['bruto'],
