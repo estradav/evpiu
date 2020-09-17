@@ -14,7 +14,7 @@
         "ext-simplexml": "*",
         "ext-soap": "*",
         "ext-xmlwriter": "*",
-        "adldap2/adldap2-laravel": "6.0.*",
+        "adldap2/adldap2-laravel": "6.1.*",
         "barryvdh/laravel-dompdf": "^0.8.5",
         "barryvdh/laravel-snappy": "^0.4.7",
         "biscolab/laravel-recaptcha": "^4.1",
@@ -22,29 +22,30 @@
         "dompdf/dompdf": "^0.8.5",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^6.5",
+        "guzzlehttp/guzzle": "^7.0.1",
         "knplabs/knp-snappy": "^1.2",
-        "laravel/framework": "7.27.*",
+        "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0",
-        "laravelcollective/html": "6.0.*",
+        "laravel/ui": "^3.0",
+        "laravelcollective/html": "6.2.*",
         "luecano/numero-a-letras": "^2.0",
-        "milon/barcode": "^7.0",
+        "milon/barcode": "^8.0",
         "phpmailer/phpmailer": "^6.1",
         "ramsey/uuid": "^4.1",
         "rap2hpoutre/laravel-log-viewer": "^1.4",
         "spatie/laravel-backup": "^6.7",
         "spatie/laravel-permission": "^3.0",
+        "spatie/laravel-schedule-monitor": "^1.0",
         "yajra/laravel-datatables-oracle": "^9.6"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
-        "facade/ignition": "^2.0",
+        "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.3.1",
-        "nunomaduro/collision": "^4.1",
-        "phpunit/phpunit": "^8.5"
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.0"
     },
     "config": {
         "optimize-autoloader": true,
@@ -58,7 +59,9 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         },
         "classmap": [
             "database/seeds",

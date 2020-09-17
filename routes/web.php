@@ -263,6 +263,7 @@ Route::middleware(['auth'])->group(function() {
                     Route::get('dashboard', 'Productos\Calidad\DashboardController@index');
 
                     Route::prefix('dashboard')->group(function () {
+                        Route::get('consultar_bimestre', 'Productos\Calidad\DashboardController@consultar_bimestre');
 
                     });
                 });
@@ -427,13 +428,6 @@ Route::middleware(['auth'])->group(function() {
 
 
 
-
-        Route::resource('Requerimientoss','RequerimientosController');
-        Route::get('/misrequerimientos','RequerimientosController@MisRequerimientos');
-        Route::resource('requerimientos_dashboard','RequerimientosChartsController');
-        Route::get('/req_dash_requerimientosxdiseñador','RequerimientosChartsController@RequerimientosxDiseñador');
-        Route::get('/req_dash_Prop_x_Estado','RequerimientosChartsController@Est_Propuestas');
-        Route::get('/req_dash_All_Req','RequerimientosChartsController@All_req_est');
 
 
 

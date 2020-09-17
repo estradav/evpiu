@@ -296,8 +296,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="{{ request()->route()->named('requerimientos_dashboard.index') ? 'mm-active' : '' }}">
-                        <a href="{{ route('requerimientos_dashboard.index') }}">
+                    <li>
+                        <a href="#">
                             <i class="metismenu-icon"></i>
                             Indicadores
                         </a>
