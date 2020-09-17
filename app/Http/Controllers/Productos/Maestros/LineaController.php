@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Productos\Maestros;
 
 use App\CodLinea;
+use App\CodTipoProducto;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
@@ -19,9 +20,10 @@ class LineaController extends Controller
      * @return Factory|View
      */
     public function index(){
-        $data = CodLinea::all();
+        $data = CodLinea::with('tipos_producto')->get();
+        $tipos_productos = CodTipoProducto::orderBy('name', 'asc')->get();
 
-        return view('aplicaciones.productos.maestros.linea.index', compact('data'));
+        return view('aplicaciones.productos.maestros.linea.index', compact('data','tipos_productos'));
     }
 
 
@@ -49,7 +51,10 @@ class LineaController extends Controller
      */
     public function edit($id){
         try {
-            $data = CodLinea::find($id);
+            $data = CodLinea::with('tipos_producto')
+                ->where('id', $id)
+                ->first();
+
             return response()->json($data);
         }catch (\Exception $e){
             return response()->json($e->getMessage(),500);
@@ -66,13 +71,13 @@ class LineaController extends Controller
     public function store(Request $request){
         if ($request->ajax()){
             try {
-                CodLinea::updateOrCreate(
-                    ['id' => $request->id], [
-                        'cod'               => $request->cod ?? $request->code,
-                        'name'              => $request->name,
-                        'abreviatura'       => $request->abrev,
-                        'coments'           => $request->comments,
-                        'usuario'           => Auth::user()->username,
+                CodLinea::updateOrCreate(['id' => $request->id], [
+                    'id_tipo_producto'  => $request->tipo_producto,
+                    'cod'               => $request->cod ?? $request->code,
+                    'name'              => $request->name,
+                    'abreviatura'       => $request->abrev,
+                    'coments'           => $request->comments,
+                    'user_id'           => Auth::user()->id,
                 ]);
                 return response()->json('registro guardado', 200);
             }catch (\Exception $e){
@@ -94,8 +99,10 @@ class LineaController extends Controller
         if ($request->ajax()){
             try {
                 $data = DB::table('cod_lineas')
+                    ->where('id_tipo_producto', '=', $request->tipo_producto)
                     ->where('cod','=', $request->cod)
                     ->count();
+
                 if($data == 0) {
                     return response()->json(true,200);
                 }else {

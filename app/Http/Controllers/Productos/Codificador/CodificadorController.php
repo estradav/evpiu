@@ -25,23 +25,17 @@ class CodificadorController extends Controller
      * @return Factory|View
      */
     public function index(){
-        $data = DB::table('cod_codigos')
-            ->leftJoin('cod_tipo_productos','cod_codigos.cod_tipo_producto_id','=','cod_tipo_productos.id')
-            ->leftJoin('cod_lineas','cod_codigos.cod_lineas_id','=','cod_lineas.id')
-            ->leftJoin('cod_sublineas','cod_codigos.cod_sublineas_id','=','cod_sublineas.id')
-            ->leftJoin('cod_medidas','cod_codigos.cod_medidas_id','=','cod_medidas.id')
-            ->leftJoin('cod_materials','cod_codigos.cod_materials_id','=','cod_materials.id')
-            ->leftJoin('cod_caracteristicas','cod_codigos.cod_caracteristicas_id','=','cod_caracteristicas.id')
-            ->select('cod_codigos.codigo as codigo','cod_codigos.coments as coment','cod_codigos.descripcion as desc','cod_codigos.usuario','cod_codigos.usuario_aprobo',
-                'cod_codigos.arte','cod_codigos.estado','cod_codigos.area','cod_codigos.costo_base','cod_codigos.generico','cod_codigos.created_at',
-                'cod_codigos.updated_at','cod_tipo_productos.name as tp','cod_lineas.name as lin','cod_sublineas.name as subl','cod_medidas.denominacion as med','cod_materials.name as mat',
-                'cod_caracteristicas.name as car','cod_codigos.id as id')
+        $data = CodCodigo::with('tipo_producto')
+            ->with('linea')
+            ->with('sublinea')
+            ->with('medida')
+            ->with('caracteristica')
+            ->with('material')
             ->get();
 
         $tipo_productos = CodTipoProducto::orderBy('name', 'asc')->get();
-        $lineas = CodLinea::orderBy('name', 'asc')->get();
 
-        return view('aplicaciones.productos.codificador.index', compact('data', 'tipo_productos', 'lineas'));
+        return view('aplicaciones.productos.codificador.index', compact('data', 'tipo_productos'));
     }
 
 
@@ -90,6 +84,28 @@ class CodificadorController extends Controller
     }
 
 
+
+    /**
+     * Lista lineas
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function listar_lineas(Request $request) {
+        if ($request->ajax()) {
+            try {
+                $data = CodLinea::where('id_tipo_producto', $request->id)
+                    ->orderBy('name', 'asc')
+                    ->get();
+                return response()->json($data,200);
+
+            }catch (\Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
     /**
      * Lista sublineas
      *
@@ -126,9 +142,10 @@ class CodificadorController extends Controller
                     ->get();
 
                 $materiales = CodMaterial::where('mat_lineas_id', '=', $request->linea_id)
+                    ->with('materiales')
                     ->where('mat_sublineas_id', '=', $request->sublinea_id)
-                    ->orderBy('name', 'asc')
                     ->get();
+
 
                 $medidas = CodMedida::where('med_lineas_id', '=', $request->linea_id)
                     ->where('med_sublineas_id', '=', $request->sublinea_id)
@@ -173,8 +190,12 @@ class CodificadorController extends Controller
                     ->select('abreviatura','cod')
                     ->first();
 
+
+
                 $material = CodMaterial::where('id', '=', $request->material)
-                    ->select('abreviatura','cod')
+                    ->with(array('materiales'=>function($query){
+                        $query->select('abbreviation','code');
+                    }))
                     ->first();
 
                 $medida = CodMedida::where('id', '=', $request->medida)

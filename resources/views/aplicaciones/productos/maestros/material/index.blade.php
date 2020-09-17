@@ -47,12 +47,12 @@
                                 <tbody>
                                     @foreach( $data as $row)
                                         <tr>
-                                            <td>{{ $row->linea }}</td>
-                                            <td>{{ $row->sublinea }}</td>
-                                            <td>{{ $row->cod }}</td>
-                                            <td>{{ $row->name }}</td>
-                                            <td>{{ $row->coment }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($row->updated)->diffForHumans() }}</td>
+                                            <td>{{ $row->Codlineas->name }}</td>
+                                            <td>{{ $row->CodSublineas->name }}</td>
+                                            <td>{{ $row->materiales->code }}</td>
+                                            <td>{{ $row->materiales->name }}</td>
+                                            <td>{{ $row->coments }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($row->updated_at)->diffForHumans() }}</td>
                                             <td>
                                                 <div class="btn-group ml-auto">
                                                     @can("aplicaciones.maestros.material.editar")
@@ -115,21 +115,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="cod" class="col-sm-6 control-label">Codigo:</label>
+                            <label for="material" class="col-sm-6 control-label">Material:</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="cod" name="cod" onkeyup="this.value=this.value.toUpperCase();">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="col-sm-6 control-label">Nombre:</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" onkeyup="this.value=this.value.toUpperCase();">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="abrev" class="col-sm-2 control-label">Abreviatura:</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="abrev" name="abrev"  onkeyup="this.value=this.value.toUpperCase();">
+                                <select class="form-control" name="material" id="material">
+                                    <option value="">Seleccione... </option>
+                                    @foreach ($materiales as $material)
+                                        <option value="{{$material->id}}">{{$material->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

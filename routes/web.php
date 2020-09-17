@@ -236,10 +236,14 @@ Route::middleware(['auth'])->group(function() {
 
                 /*Codificador*/
                 Route::resource('codificado', 'Productos\Codificador\CodificadorController')->only('index', 'destroy', 'store');
-                Route::get('/codificado/listar_sublineas', 'Productos\Codificador\CodificadorController@listar_sublineas');
-                Route::get('/codificado/listar_caracteristicas_materiales_medidas', 'Productos\Codificador\CodificadorController@listar_caracteristicas_materiales_medidas');
-                Route::get('/codificado/obtener_datos_generacion_cod_desc','Productos\Codificador\CodificadorController@obtener_datos_generacion_cod_desc');
-                Route::post('/codificado/validar_codigo', 'Productos\Codificador\CodificadorController@validar_codigo');
+                Route::prefix('codificado')->group(function () {
+                    Route::get('/listar_lineas', 'Productos\Codificador\CodificadorController@listar_lineas');
+                    Route::get('/listar_sublineas', 'Productos\Codificador\CodificadorController@listar_sublineas');
+                    Route::get('/listar_caracteristicas_materiales_medidas', 'Productos\Codificador\CodificadorController@listar_caracteristicas_materiales_medidas');
+                    Route::get('/obtener_datos_generacion_cod_desc','Productos\Codificador\CodificadorController@obtener_datos_generacion_cod_desc');
+                    Route::post('/validar_codigo', 'Productos\Codificador\CodificadorController@validar_codigo');
+                });
+
 
 
                 /*Clonador*/

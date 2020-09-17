@@ -35,6 +35,7 @@
                             <table class="table table-striped table-sm" id="table">
                                 <thead>
                                     <tr>
+                                        <th>TIPO PRODUCTO</th>
                                         <th>CODIGO</th>
                                         <th>NOMBRE</th>
                                         <th>ABREVIATURA</th>
@@ -46,11 +47,12 @@
                                 <tbody>
                                     @foreach( $data as $row)
                                         <tr>
+                                            <td>{{ $row->tipos_producto->name }}</td>
                                             <td>{{ $row->cod }}</td>
                                             <td>{{ $row->name }}</td>
                                             <td>{{ $row->abreviatura }}</td>
                                             <td>{{ $row->coments }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($row->update)->diffForHumans() }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($row->updated_at)->diffForHumans()  }}</td>
                                             <td>
                                                 <div class="btn-group ml-auto">
                                                     @can("aplicaciones.maestros.linea.editar")
@@ -94,6 +96,17 @@
                     <div class="modal-body">
                         <input type="hidden" id="id" name="id">
                         <input type="hidden" id="code" name="code">
+                        <div class="form-group">
+                            <label for="tipo_producto" class="col-sm-6 control-label">Tipo Producto:</label>
+                            <div class="col-sm-12">
+                                <select name="tipo_producto" id="tipo_producto" class="form-control">
+                                    <option value="">Seleccione...</option>
+                                    @foreach ($tipos_productos as $tp)
+                                        <option value="{{ $tp->id }}">{{ $tp->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="cod" class="col-sm-6 control-label">Codigo:</label>
                             <div class="col-sm-12">

@@ -44,10 +44,6 @@
                                 <label for="linea" class="col-sm-3 control-label">Linea:</label>
                                 <div class="col-sm-12">
                                     <select class="form-control" name="linea" id="linea">
-                                        <option value="" selected>Seleccione... </option>
-                                        @foreach( $lineas as $l)
-                                            <option value="{{ $l->id }}"> {{ $l->name }} </option>
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
