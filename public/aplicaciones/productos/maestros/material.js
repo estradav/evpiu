@@ -14,7 +14,6 @@ $(document).ready(function () {
 
 
     $(document).on('click', '#nuevo', function () {
-        document.getElementById("cod").disabled = false;
         document.getElementById("heading").innerHTML = "NUEVO MATERIAL";
         $('input').closest('.form-control').removeClass('is-invalid');
         $('.error').remove();
@@ -26,7 +25,6 @@ $(document).ready(function () {
 
     $(document).on('click', '.edit', function () {
         let id = this.id;
-        document.getElementById("cod").disabled = true;
         $('input').closest('.form-control').removeClass('is-invalid');
         $('.error').remove();
 
@@ -35,13 +33,9 @@ $(document).ready(function () {
             url:  '/aplicaciones/productos/maestros/material/' + id + '/edit',
             type: 'get',
             success: function (data) {
-                document.getElementById("cod").disabled = true;
-                document.getElementById('code').value = data.cod;
+                document.getElementById('material').value = data.id_material;
                 document.getElementById('linea').value = data.mat_lineas_id;
                 document.getElementById('id').value = data.id;
-                document.getElementById('cod').value = data.cod;
-                document.getElementById('name').value = data.name;
-                document.getElementById('abrev').value = data.abreviatura;
                 document.getElementById('coments').value = data.coments;
                 document.getElementById('heading').innerHTML = "EDITAR "+ data.name;
 
@@ -156,7 +150,7 @@ $(document).ready(function () {
             sublinea: {
                 select_check: true,
             },
-            cod: {
+            material: {
                 remote: {
                     url: '/aplicaciones/productos/maestros/material/validar_codigo',
                     type: 'POST',
@@ -168,14 +162,15 @@ $(document).ready(function () {
                         sublinea: function () {
                             return $("#sublinea").val();
                         },
+                        material: function (){
+                            return $("#material").val();
+                        }
                     }
                 },
                 required: true,
                 maxlength: 1,
                 minlength: 1
-            },
-            name: "required",
-            abrev: "required",
+            }
         },
         highlight: function (element) {
             $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');

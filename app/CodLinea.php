@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class CodLinea extends Model
 {
     protected $fillable = [
-        'name', 'cod','coments','abreviatura','usuario'
+        'name', 'cod','coments','abreviatura','user_id','id_tipo_producto'
     ];
 
 
-    public function CodTipoProductos ()
-    {
-        return $this->belongsTo(CodTipoProducto::class); // pertecene a Tipo de producto
+    public function tipos_producto(){
+        return $this->belongsTo(CodTipoProducto::class, 'id_tipo_producto'); // pertecene a Tipo de producto
     }
 
     public function CodSublineas()
@@ -21,19 +20,4 @@ class CodLinea extends Model
         return $this->hasMany(CodSublinea::class); // tiene muchas sublineas
     }
 
-
-    public function CodMateriales()
-    {
-        return $this->hasMany(CodMaterial::class); // tiene muchos materiales
-    }
-
-    public function CodMedidas()
-    {
-        return $this->hasMany(CodMedida::class); // tiene muchas medidas
-    }
-
-    public function CodCaracteristicas()
-    {
-        return $this->hasMany(CodCaracteristica::class); // tiene muchas caracteristicas
-    }
 }

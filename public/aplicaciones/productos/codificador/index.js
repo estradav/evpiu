@@ -22,6 +22,33 @@ $(document).ready(function () {
 
     $(document).on('change', '#tipo_producto', function () {
         obtener_data_cod_desc();
+        let id = this.value;
+        $.ajax({
+            url: '/aplicaciones/productos/codificado/listar_lineas',
+            type: 'get',
+            data:{
+                id:id
+            },
+            success:function (data) {
+                $('#linea').empty().append('<option value="" selected>Seleccione...</option>');
+                $('#sublinea').empty().append('<option value="" selected>Seleccione...</option>');
+                $('#caracteristica').empty().append('<option value="" selected>Seleccione...</option>');
+                $('#material').empty().append('<option value="" selected>Seleccione...</option>');
+                $('#medida').empty().append('<option value="" selected>Seleccione...</option>');
+
+
+                for (let i = 0; i < data.length; i++) {
+                    $('#linea').append('<option value="'+ data[i].id +'">'+ data[i].name +'</option>')
+                }
+            },
+            error:function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops',
+                    text: data.responseText
+                });
+            }
+        });
     });
 
 
@@ -83,7 +110,7 @@ $(document).ready(function () {
                 }
 
                 for (let j = 0; j < materiales.length; j++) {
-                    $('#material').append('<option value="'+ materiales[j].id +'" >'+ materiales[j].name +'</option>')
+                    $('#material').append('<option value="'+ materiales[j].id +'" >'+ materiales[j].materiales.name +'</option>')
                 }
 
                 for (let k = 0; k < medidas.length; k++) {

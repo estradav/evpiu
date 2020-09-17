@@ -34,6 +34,7 @@ $(document).ready(function () {
             type: 'get',
             success: function (data) {
                 document.getElementById("id").value = id;
+                document.getElementById('tipo_producto').value = data.id_tipo_producto;
                 document.getElementById("cod").value = data.cod;
                 document.getElementById("code").value = data.cod;
                 document.getElementById("name").value = data.name;
@@ -105,6 +106,11 @@ $(document).ready(function () {
                     url: '/aplicaciones/productos/maestros/linea/validar_codigo',
                     type: 'POST',
                     async: false,
+                    data: {
+                        tipo_producto: function () {
+                            return $("#tipo_producto").val();
+                        }
+                    }
 
                 },
                 required: true,

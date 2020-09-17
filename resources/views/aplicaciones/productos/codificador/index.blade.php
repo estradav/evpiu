@@ -51,14 +51,14 @@
                                     @foreach( $data as $row)
                                         <tr>
                                             <td>{{ $row->codigo }}</td>
-                                            <td>{{ $row->desc }}</td>
-                                            <td>{{ $row->tp }}</td>
-                                            <td>{{ $row->lin }}</td>
-                                            <td>{{ $row->subl }}</td>
-                                            <td>{{ $row->med }}</td>
-                                            <td>{{ $row->car }}</td>
-                                            <td>{{ $row->mat }}</td>
-                                            <td>{{ $row->coment }}</td>
+                                            <td>{{ $row->descripcion }}</td>
+                                            <td>{{ $row->tipo_producto->name }}</td>
+                                            <td>{{ $row->linea->name }}</td>
+                                            <td>{{ $row->sublinea->name }}</td>
+                                            <td>{{ $row->medida->denominacion }}</td>
+                                            <td>{{ $row->caracteristica->name }}</td>
+                                            <td>{{ $row->material->materiales->name }}</td>
+                                            <td>{{ $row->coments }}</td>
                                             <td>
                                                 <div class="btn-group ml-auto">
                                                     @can("aplicaciones.codificador.eliminar")
