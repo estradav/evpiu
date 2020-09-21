@@ -10,6 +10,7 @@ $(document).ready(function () {
         ajax: {
             url:'/aplicaciones/pedidos/venta',
         },
+        dom: 'Blfrtip',
         columns: [
             {data: 'id', name: 'id', orderable: false, searchable: true},
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
@@ -74,8 +75,10 @@ $(document).ready(function () {
 
 
     $(document).on('draw.dt', '#table', function() {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="dropdown"]').dropdown();
     });
+
+
 
 
     $(document).on('click', '.promover', function (){
@@ -181,6 +184,49 @@ $(document).ready(function () {
                             title: 'Pedido abierto',
                         });
                         $('#table').DataTable().ajax.reload();
+                    },
+                    error: function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: '<b>'+ data.responseText +'</b>' ,
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+
+    $(document).on('click', '.clonar', function () {
+        const id = this.id;
+        Swal.fire({
+            title: '¿Clonar pedido?',
+            text: "Se clonara este pedido y seras enviado a la pantalla de edicion del nuevo pedido",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Clonar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: "/aplicaciones/pedidos/venta/clonar_pedido",
+                    type: "post",
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pedido clonado con exito!',
+                            text: 'El numero del nuevo pedido es '+ data + ', en los proximos 5 segundos seras redirigido a la pagina de edicion del nuevo pedido.'
+                        });
+                        setTimeout(function() {
+                            window.location = "/aplicaciones/pedidos/venta/" + data + "/edit"
+                        }, 4000);
+
                     },
                     error: function (data) {
                         Swal.fire({
