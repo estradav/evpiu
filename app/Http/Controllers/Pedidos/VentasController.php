@@ -40,13 +40,21 @@ class VentasController extends Controller
             return Datatables::of($data)
                 ->addColumn('opciones', function($row){
                     return '
-                    <div class="btn-group btn-sm" role="group">
-                        <button class="btn btn-light promover" id="'.$row->id.'" data-toggle="tooltip" data-placement="top" title="Enviar a cartera"><i class="fas fa-check"></i></button>
-                        <button class="btn btn-light anular" id="'.$row->id.'" data-toggle="tooltip" data-placement="top" title="Anular"><i class="fas fa-times"></i></button>
-                        <button class="btn btn-light re_abrir" id="'.$row->id.'" data-toggle="tooltip" data-placement="top" title="Re-abrir"><i class="fas fa-door-open"></i></button>
-                        <button class="btn btn-light ver_pdf" id="'.$row->id.'" data-toggle="tooltip" data-placement="top" title="Ver"><i class="fas fa-file-pdf"></i></button>
-                        <a class="btn btn-light" href="'.route('venta.edit', $row->id).'" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-edit"></i></a>
-                    </div>';
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="option_dropdown_menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               <i class="fas fa-bars"></i>  Acciones
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <button class="dropdown-item promover" type="button" id="'.$row->id.'">ENVIAR A CARTERA</button>
+                                <button class="dropdown-item anular" type="button" id="'.$row->id.'">ANULAR</button>
+                                <button class="dropdown-item re_abrir" type="button" id="'.$row->id.'">RE-ABRIR</button>
+                                <button class="dropdown-item ver_pdf" type="button" id="'.$row->id.'">VER</button>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="'.route('venta.edit', $row->id).'" >EDITAR</a>
+                                <button class="dropdown-item clonar" type="button" id="'.$row->id.'">CLONAR</button>
+                            </div>
+                        </div>
+                    ';
                 })
                 ->rawColumns(['opciones'])
                 ->make(true);
@@ -1546,6 +1554,85 @@ class VentasController extends Controller
                 }else{
                     return response()->json('Debes agregar al menos un item al pedido', 500);
                 }
+            }catch (Exception $e){
+                DB::rollBack();
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    public function clonar_pedido(Request $request){
+        if ($request->ajax()) {
+            DB::beginTransaction();
+            try{
+                $id_origen = $request->get('id');
+
+                $encabezado_origen = DB::table('encabezado_pedidos')
+                    ->where('id', '=', $id_origen)->first();
+
+
+                $detalle_origen =  DB::table('detalle_pedidos')
+                    ->where('idPedido', '=', $id_origen)->get();
+
+
+                $maestro = DB::table('maestro_pedidos')
+                    ->insertGetId([
+                        'created_at'    =>  Carbon::now(),
+                        'updated_at'    =>  Carbon::now()
+                    ]);
+
+
+                $encabezado_destino = DB::table('encabezado_pedidos')
+                    ->insertGetId([
+                       'OrdenCompra'        =>  $encabezado_origen->OrdenCompra,
+                        'CodCliente'        =>  $encabezado_origen->CodCliente,
+                        'NombreCliente'     =>  $encabezado_origen->NombreCliente,
+                        'DireccionCliente'  =>  $encabezado_origen->DireccionCliente,
+                        'Ciudad'            =>  $encabezado_origen->Ciudad,
+                        'Telefono'          =>  $encabezado_origen->Telefono,
+                        'CodVendedor'       =>  $encabezado_origen->CodVendedor,
+                        'NombreVendedor'    =>  $encabezado_origen->NombreVendedor,
+                        'CondicionPago'     =>  $encabezado_origen->CondicionPago,
+                        'Descuento'         =>  $encabezado_origen->Descuento,
+                        'Iva'               =>  $encabezado_origen->Iva,
+                        'Estado'            =>  '1',
+                        'Bruto'             =>  $encabezado_origen->Bruto,
+                        'TotalDescuento'    =>  $encabezado_origen->TotalDescuento,
+                        'TotalSubtotal'     =>  $encabezado_origen->TotalSubtotal,
+                        'TotalIVA'          =>  $encabezado_origen->TotalIVA,
+                        'TotalPedido'       =>  $encabezado_origen->TotalPedido,
+                        'Notas'             =>  $encabezado_origen->Notas,
+                        'Destino'           =>  $encabezado_origen->Destino,
+                        'created_at'        =>  Carbon::now(),
+                        'updated_at'        =>  Carbon::now(),
+                        'id_maestro'        =>  $maestro
+                    ]);
+
+
+                foreach ($detalle_origen as $detalle){
+                    DB::table('detalle_pedidos')
+                        ->insert([
+                            'idPedido'          =>  $encabezado_destino,
+                            'CodigoProducto'    =>  $detalle->CodigoProducto,
+                            'Descripcion'       =>  $detalle->Descripcion,
+                            'Arte'              =>  $detalle->Arte,
+                            'Notas'             =>  $detalle->Notas,
+                            'Unidad'            =>  $detalle->Unidad,
+                            'Cantidad'          =>  $detalle->Cantidad,
+                            'Precio'            =>  $detalle->Precio,
+                            'Total'             =>  $detalle->Total,
+                            'Destino'           =>  $detalle->Destino,
+                            'R_N'               =>  $detalle->R_N,
+                            'Estado'            =>  $detalle->Estado ?? null,
+                            'created_at'        =>  Carbon::now(),
+                            'updated_at'        =>  Carbon::now()
+                        ]);
+                }
+
+                DB::commit();
+                return response()->json($encabezado_destino, 200);
+
             }catch (Exception $e){
                 DB::rollBack();
                 return response()->json($e->getMessage(), 500);

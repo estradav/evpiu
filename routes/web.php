@@ -278,15 +278,19 @@ Route::middleware(['auth'])->group(function() {
             Route::prefix('pedidos')->group(function () {
                 /*ventas*/
                 Route::resource('venta','Pedidos\VentasController')->only('index', 'edit', 'create', 'store');
-                Route::post('/venta/enviar_cartera', 'Pedidos\VentasController@enviar_cartera');
-                Route::post('/venta/anular_pedido', 'Pedidos\VentasController@anular_pedido');
-                Route::post('/venta/re_abrir_pedido', 'Pedidos\VentasController@re_abrir_pedido');
-                Route::get('/venta/listar_productos_max', 'Pedidos\VentasController@listar_productos_max');
-                Route::get('/venta/listar_artes', 'Pedidos\VentasController@listar_artes');
-                Route::put('/venta/actualizar_pedido','Pedidos\VentasController@update');
-                Route::get('/venta/ver_pedido_pdf','Pedidos\VentasController@ver_pedido_pdf');
-                Route::get('/venta/info_area', 'Pedidos\VentasController@info_area');
-                Route::get('/venta/info_cliente', 'Pedidos\VentasController@info_cliente');
+                Route::prefix('venta')->group(function () {
+                    Route::post('/enviar_cartera', 'Pedidos\VentasController@enviar_cartera');
+                    Route::post('/anular_pedido', 'Pedidos\VentasController@anular_pedido');
+                    Route::post('/re_abrir_pedido', 'Pedidos\VentasController@re_abrir_pedido');
+                    Route::get('/listar_productos_max', 'Pedidos\VentasController@listar_productos_max');
+                    Route::get('/listar_artes', 'Pedidos\VentasController@listar_artes');
+                    Route::put('/actualizar_pedido','Pedidos\VentasController@update');
+                    Route::get('/ver_pedido_pdf','Pedidos\VentasController@ver_pedido_pdf');
+                    Route::get('/info_area', 'Pedidos\VentasController@info_area');
+                    Route::get('/info_cliente', 'Pedidos\VentasController@info_cliente');
+                    Route::post('/clonar_pedido', 'Pedidos\VentasController@clonar_pedido');
+                });
+
 
 
                 /*Cartera*/
