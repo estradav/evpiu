@@ -1610,6 +1610,13 @@ class VentasController extends Controller
                     ]);
 
 
+                DB::table('pedidos_detalles_area')
+                    ->insert([
+                        'idPedido'     =>  $encabezado_destino,
+                        'created_at'   =>  Carbon::now(),
+                        'updated_at'   =>  Carbon::now(),
+                    ]);
+
                 foreach ($detalle_origen as $detalle){
                     DB::table('detalle_pedidos')
                         ->insert([
