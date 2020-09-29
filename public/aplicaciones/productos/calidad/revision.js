@@ -177,7 +177,7 @@ $(document).ready(function (){
                 theResponse = respText;
             },
             error: function (data){
-                console.log('error');
+                console.log(data);
                 return result
             }
         });
@@ -198,6 +198,11 @@ $(document).ready(function (){
     $('#new_review_modal_form').validate({
         ignore: "",
         rules: {
+            quantity_operation: {
+                required: true,
+                digits: true,
+                min: 1,
+            },
             quantity_inspected: {
                 required: true,
                 digits: true,
@@ -206,7 +211,7 @@ $(document).ready(function (){
             conforming_quantity: {
                 required: true,
                 digits: true,
-                min: 1,
+                min: 0,
             },
             non_conforming_quantity: {
                 required: true,
@@ -291,11 +296,15 @@ $(document).ready(function (){
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                            <span class="badge badge-secondary">CANT. EN OPERACION</span> <br>
+                            <span class="text-muted">`+ data.quantity_operation +`</span>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
                             <span class="badge badge-secondary">CANT. INSPECCIONADA</span> <br>
                             <span class="text-muted">`+ data.quantity_inspected +`</span>
                         </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
                             <span class="badge badge-secondary">CANT. CONFORME</span> <br>
                             <span class="text-muted">`+ data.conforming_quantity +`</span>
                         </div>
@@ -308,7 +317,7 @@ $(document).ready(function (){
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                             <span class="badge badge-secondary">CAUSA</span> <br>
-                            <span class="text-muted">`+ data.cause +`</span>
+                            <span class="text-muted">`+ data.cause.name +`</span>
                         </div>
                     </div>
                     <hr>

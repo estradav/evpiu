@@ -249,7 +249,6 @@
             min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
             selectcheck: "Por favor seleccione una opcion!"
         });
-
     </script>
 @endpush
 

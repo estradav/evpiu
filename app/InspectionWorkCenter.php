@@ -14,8 +14,8 @@ class InspectionWorkCenter extends Model
      * @var array
      */
     protected $fillable = ['production_order', 'quantity_inspected', 'conforming_quantity',
-        'non_conforming_quantity', 'cause', 'operator_id', 'inspector_id', 'non_compliant_treatment',
-        'action', 'observation', 'center'];
+        'non_conforming_quantity', 'cause_id', 'operator_id', 'inspector_id', 'non_compliant_treatment',
+        'action', 'observation', 'center', 'quantity_operation'];
 
 
     /**
@@ -32,8 +32,7 @@ class InspectionWorkCenter extends Model
      * @return BelongsTo
      * @var string
      */
-    public function inspector()
-    {
+    public function inspector(){
         return $this->belongsTo(User::class, 'inspector_id');
     }
 
@@ -44,8 +43,18 @@ class InspectionWorkCenter extends Model
      * @return BelongsTo
      * @var string
      */
-    public function operator()
-    {
+    public function operator(){
         return $this->belongsTo(User::class, 'operator_id');
+    }
+
+
+    /**
+     * Get cause data.
+     *
+     * @return BelongsTo
+     * @var string
+     */
+    public function cause(){
+        return $this->belongsTo(CauseInspWorkCenter::class, 'cause_id');
     }
 }

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use phpDocumentor\Reflection\Types\Object_;
 
 class CodificadorController extends Controller
 {
@@ -192,11 +193,18 @@ class CodificadorController extends Controller
 
 
 
-                $material = CodMaterial::where('id', '=', $request->material)
-                    ->with(array('materiales'=>function($query){
-                        $query->select('abbreviation','code');
-                    }))
+                $material = CodMaterial::where('id', $request->material)
+                    ->with('materiales')
                     ->first();
+
+                if ($material) {
+                    $material = [
+                        'abreviatura'  => $material->materiales->abbreviation,
+                        'cod'          => $material->materiales->code,
+                    ];
+                }
+
+
 
                 $medida = CodMedida::where('id', '=', $request->medida)
                     ->select('denominacion','cod')

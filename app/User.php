@@ -16,7 +16,6 @@ class User extends Authenticatable
     use LockableTrait;
 
 
-
     /** The attributes that are mass assignable.
      *
      * @var array
@@ -24,6 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'username','menu','password','created_at','objectguid','lockout_time'
     ];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -33,6 +33,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
 
     /**
      * Obtiene todas las publicaciones que posee el usuario.
