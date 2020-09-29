@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Productos\Calidad;
 
+use App\CauseInspWorkCenter;
 use App\Http\Controllers\Controller;
 use App\InspectionWorkCenter;
 use App\User;
@@ -20,8 +21,13 @@ class CentroTrabajoController extends Controller
      * @return Factory|View
      */
     public function index(){
-        $operators = User::where('app_roll', 'operario')->get();
-        return view('aplicaciones.productos.calidad.inspeccion_centros_trabajo.index', compact('operators'));
+        $operators = User::where('app_roll', 'operario')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        $causes = CauseInspWorkCenter::orderBy('name', 'asc')->get();
+
+        return view('aplicaciones.productos.calidad.inspeccion_centros_trabajo.index', compact('operators', 'causes'));
     }
 
 
@@ -46,6 +52,7 @@ class CentroTrabajoController extends Controller
                 $registros = InspectionWorkCenter::where('production_order', $op)
                     ->with('inspector')
                     ->with('operator')
+                    ->with('cause')
                     ->get();
 
                 $registros = $this->group_by("center", $registros);
@@ -120,6 +127,7 @@ class CentroTrabajoController extends Controller
                 $data = InspectionWorkCenter::where('id', $request->id)
                     ->with('inspector')
                     ->with('operator')
+                    ->with('cause')
                     ->first();
 
                 return response()->json($data, 200);

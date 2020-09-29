@@ -89,6 +89,10 @@
                             <input type="number" class="form-control" id="quantity_inspected" name="quantity_inspected">
                         </div>
                         <div class="form-group">
+                            <label for="quantity_operation">Cantidad en operacion</label>
+                            <input type="number" class="form-control" id="quantity_operation" name="quantity_operation">
+                        </div>
+                        <div class="form-group">
                             <label for="conforming_quantity">Cantidad conforme</label>
                             <input type="number" class="form-control" id="conforming_quantity" name="conforming_quantity">
                         </div>
@@ -97,27 +101,12 @@
                             <input type="number" class="form-control" id="non_conforming_quantity" name="non_conforming_quantity">
                         </div>
                         <div class="form-group">
-                            <label for="cause">Causa</label>
-                            <select class="form-control" name="cause" id="cause">
+                            <label for="cause_id">Causa</label>
+                            <select class="form-control" name="cause_id" id="cause_id">
                                 <option value="" selected>Seleccione...</option>
-                                <option value="CASCARA">CASCARA</option>
-                                <option value="CONTAMINACION DE LOTE">CONTAMINACION DE LOTE</option>
-                                <option value="EMBOMBADAS">EMBOMBADAS</option>
-                                <option value="FUERA DE MEDIDA">FUERA DE MEDIDA</option>
-                                <option value="HUNDIDOS">HUNDIDOS</option>
-                                <option value="LASER BORRADO">LASER BORRADO</option>
-                                <option value="MAL ENSAMBLE">MAL ENSAMBLE</option>
-                                <option value="MANCHADAS">MANCHADAS</option>
-                                <option value="MUY PULIDO">MUY PULIDO</option>
-                                <option value="OPACAS">OPACAS</option>
-                                <option value="PEGADOS">PEGADOS</option>
-                                <option value="PICADAS">PICADAS</option>
-                                <option value="PIEL POROSA">PIEL POROSA</option>
-                                <option value="POROSIDAD MATERIAL">POROSIDAD MATERIAL</option>
-                                <option value="QUEMADAS">QUEMADAS</option>
-                                <option value="REBABA">REBABA</option>
-                                <option value="REVIENTA TERMINADO">REVIENTA TERMINADO</option>
-                                <option value="TALLON">TALLON</option>
+                                @foreach ($causes as $cause)
+                                    <option value="{{ $cause->id }}">{{ $cause->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
