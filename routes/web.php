@@ -377,6 +377,15 @@ Route::middleware(['auth'])->group(function() {
             });
 
 
+            Route::prefix('CRM')->group(function (){
+                Route::prefix('comercial')->group(function (){
+                    Route::get('visitas_actividades','CRM\EventVisitController@index');
+                    Route::get('get_all_events_and_activities', 'CRM\EventVisitController@get_all_events_and_activities');
+                    Route::get('get_events_and_activities', 'CRM\EventVisitController@get_events_and_activities');
+
+                });
+            });
+
         });
 
 

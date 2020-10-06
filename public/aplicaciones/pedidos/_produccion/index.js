@@ -129,25 +129,62 @@ $(document).ready(function () {
             $(element).closest('.form-control').removeClass('is-invalid');
         },
         submitHandler: function (form) {
-            $.ajax({
-                data: $('#form').serialize(),
-                url: "/aplicaciones/pedidos/produccion/actualizar_estado",
-                type: "POST",
-                dataType: 'json',
-                success: function (data) {
-                    $('#opciones').modal('hide');
-                    $('#table').DataTable().ajax.reload();
-                    $('#table_terminados').DataTable().ajax.reload();
-                    toastr.success(data);
-                },
-                error: function (data) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops',
-                        text: data.responseText
-                    });
-                }
-            });
+            let estado = document.getElementById('estado').value;
+
+            if (estado == 10){
+                Swal.fire({
+                    title: '¿Finalizar pedido y subir a MAX?',
+                    html: "<span class='badge badge-danger'>ESTA ACCION NO ES REVERSIBLE </span>",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '¡Si, finalizar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            data: $('#form').serialize(),
+                            url: "/aplicaciones/pedidos/produccion/actualizar_estado",
+                            type: "POST",
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#opciones').modal('hide');
+                                $('#table').DataTable().ajax.reload();
+                                $('#table_terminados').DataTable().ajax.reload();
+                                toastr.success(data);
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops',
+                                    text: data.responseText
+                                });
+                            }
+                        });
+                    }
+                })
+            }else{
+                $.ajax({
+                    data: $('#form').serialize(),
+                    url: "/aplicaciones/pedidos/produccion/actualizar_estado",
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#opciones').modal('hide');
+                        $('#table').DataTable().ajax.reload();
+                        $('#table_terminados').DataTable().ajax.reload();
+                        toastr.success(data);
+                    },
+                    error: function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops',
+                            text: data.responseText
+                        });
+                    }
+                });
+            }
             return false;
         }
     });

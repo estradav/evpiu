@@ -20,14 +20,14 @@ class Permission extends \Spatie\Permission\Models\Permission
      * Obtiene el grupo al que pertenece cada permiso del parámetro.
      *
      * @param  array $permissions
-     * @return \Spatie\Permission\Models\Permission
+     * @return array
      */
     public static function getGroups(array $permissions) {
         return array_map(function ($permission){
             return static::where('id', $permission)
-                        ->with('group')
-                        ->get()
-                        ->first()['group'];
+                ->with('group')
+                ->get()
+                ->first()['group'];
         }, $permissions);
     }
 
