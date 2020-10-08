@@ -75,6 +75,7 @@ class ProduccionController extends Controller
                     'encabezado_pedidos.CondicionPago as CondicionPago',
                     'encabezado_pedidos.Descuento as Descuento',
                     'encabezado_pedidos.Iva as Iva',
+                    'encabezado_pedidos.Ped_MAX',
                     'encabezado_pedidos.Estado as Estado',
                     'encabezado_pedidos.created_at as created_at',
                     'pedidos_detalles_area.Produccion as SubEstado')
@@ -106,6 +107,7 @@ class ProduccionController extends Controller
     public function actualizar_estado(Request $request){
         if ($request->ajax()){
             try {
+
                 DB::beginTransaction();
                 DB::connection('MAXP')->beginTransaction();
 
@@ -160,7 +162,10 @@ class ProduccionController extends Controller
 
 
                     $max_ordnum_27 =  DB::connection('MAXP')
-                        ->table('SO_Master')->max('ORDNUM_27');
+                        ->table('SO_Master')
+                        ->where('STYPE_27', '=', 'CU')
+                        ->max('ORDNUM_27');
+
 
                     $max_ordnum_27 = $max_ordnum_27 + 1;
 
@@ -175,9 +180,6 @@ class ProduccionController extends Controller
                         ->first();
 
 
-
-
-
                     $detalle_ped = DB::table('detalle_pedidos')
                         ->where('idPedido', '=', $request->id)->get();
 
@@ -190,8 +192,8 @@ class ProduccionController extends Controller
                             'GLXREF_27'     =>  41209505                                                                                                                                                       ,
                             'STYPE_27'      =>  'CU',
                             'STATUS_27'     =>  3,
-                            'CUSTPO_27'     =>  $encabezado_ped->OrdenCompra,
-                            'ORDID_27'      =>  '', /*empty*/
+                            'CUSTPO_27'     =>  $encabezado_ped->OrdenCompra ?? '',
+                            'ORDID_27'      =>  $encabezado_ped->id,
                             'ORDDTE_27'     =>  Carbon::now(),
                             'FILL01A_27'    =>  '', /*empty*/
                             'FILL01_27'     =>  '', /*empty*/
@@ -207,10 +209,10 @@ class ProduccionController extends Controller
                             'SHPVIA_27'     =>  $cliente->SHPVIA_23,
                             'XURR_27'       =>  '', /*empty*/
                             'FOB_27'        =>  $cliente->CITY_23,
-                            'TAXCD1_27'     =>  $cliente->TAXCDE1_23,
+                            'TAXCD1_27'     =>  $cliente->TXCDE1_23,
                             'TAXCD2_27'     =>  '', /*empty*/
                             'TAXCD3_27'     =>  '', /*empty*/
-                            'COMNT1_27'     =>  '', /*empty*/
+                            'COMNT1_27'     =>  $encabezado_ped->Notas ?? '', /*empty*/
                             'COMNT2_27'     =>  '', /*empty*/
                             'COMNT3_27'     =>  '', /*empty*/
                             'SHPLBL_27'     =>  0,
@@ -248,7 +250,7 @@ class ProduccionController extends Controller
                             'XDFINT_27'     =>  0,
                             'XDFFLT_27'     =>  0,
                             'XDFBOL_27'     =>  '', /*empty*/
-                            'XDFDTE_27'     =>  '', /*empty*/
+                            'XDFDTE_27'     =>  null, /*empty*/
                             'XDFTXT_27'     =>  '', /*empty*/
                             'FILLER_27'     =>  '', /*empty*/
                             'CreatedBy'     =>  'EVPIU-'.auth()->user()->username ,
@@ -271,6 +273,15 @@ class ProduccionController extends Controller
                             ->first();
 
 
+                        $fcha_entrega = $this->calcular_fecha_entrega($part->MFGLT_01);
+
+
+                        $almacen =  DB::connection('MAXP')
+                            ->table('Part_Sales')
+                            ->where('PRTNUM_29', '=', $dp->CodigoProducto)
+                            ->pluck('STK_29');
+
+
                         DB::connection('MAXP')
                             ->table('SO_Detail')
                             ->insert([
@@ -283,28 +294,28 @@ class ProduccionController extends Controller
                                 'EDILIN_28'     =>  '', /*empty*/
                                 'TAXABL_28'     =>  $cliente->TAXABL_23,
                                 'GLXREF_28'     =>  61209505,
-                                'CURDUE_28'     =>  '',
+                                'CURDUE_28'     =>  $fcha_entrega->DateValue, /*empty*/
                                 'QTLINE_28'     =>  '', /*empty*/
-                                'ORGDUE_28'     =>  '',
+                                'ORGDUE_28'     =>  $fcha_entrega->DateValue,
                                 'QTDEL_28'      =>  '', /*empty*/
-                                'CUSDUE_28'     =>  '',
+                                'CUSDUE_28'     =>  $fcha_entrega->DateValue,
                                 'PROBAB_28'     =>  0,
-                                'SHPDTE_28'     =>  '',
+                                'SHPDTE_28'     =>  null,  /*empty*/
                                 'FILL04_28'     =>  '', /*empty*/
                                 'SLSUOM_28'     =>  'UN',
-                                'REFRNC_28'     =>  '',
+                                'REFRNC_28'     =>  $max_ordnum_27.$n2."01",
                                 'PRICE_28'      =>  $dp->Precio,
                                 'ORGQTY_28'     =>  $dp->Cantidad,
                                 'CURQTY_28'     =>  $dp->Cantidad,
                                 'BCKQTY_28'     =>  0,
-                                'SHPQTY_28'     =>  $dp->Cantidad,
-                                'DUEQTY_28'     =>  0,
+                                'SHPQTY_28'     =>  0,
+                                'DUEQTY_28'     =>  $dp->Cantidad,
                                 'INVQTY_28'     =>  0,
-                                'DISC_28'       =>  $dp->Cantidad,
+                                'DISC_28'       =>  0,
                                 'STYPE_28'      =>  'CU',
                                 'PRNT_28'       =>  'N',
                                 'AKPRNT_28'     =>  'N',
-                                'STK_28'        =>  '', /*empty*/
+                                'STK_28'        =>  $almacen[0], /*empty*/
                                 'COCFLG_28'     =>  '', /*empty*/
                                 'FORCUR_28'     =>  $dp->Precio,
                                 'HSTAT_28'      =>  'R',
@@ -312,7 +323,7 @@ class ProduccionController extends Controller
                                 'COMMIS_28'     =>  0,
                                 'DRPSHP_28'     =>  '', /*empty*/
                                 'QUMQTY_28'     =>  0,
-                                'TAXCDE1_28'    =>  $cliente->TAXCDE1_23,
+                                'TAXCDE1_28'    =>  $cliente->TXCDE1_23,
                                 'TAX1_28'       =>  ($dp->Precio * $dp->Cantidad) * 0.19,
                                 'TAXCDE2_28'    =>  '', /*empty*/
                                 'TAX2_28'       =>  0,
@@ -349,6 +360,7 @@ class ProduccionController extends Controller
                                 'CONSGND_28'    =>  0,
                                 'CURCONSGND_28' =>  0,
                                 'CONSIGNSTK_28' =>  '', /*empty*/
+                                'CURSHP_28'     => 0
                             ]);
 
 
@@ -363,6 +375,8 @@ class ProduccionController extends Controller
                             ]);
 
 
+
+
                         DB::connection('MAXP')
                             ->table('Order_Master')
                             ->insert([
@@ -370,20 +384,20 @@ class ProduccionController extends Controller
                                 'LINNUM_10'     =>  $n2,
                                 'DELNUM_10'     =>  '01',
                                 'PRTNUM_10'     =>  $dp->CodigoProducto,
-                                'CURDUE_10'     =>  '',
+                                'CURDUE_10'     =>  $fcha_entrega->DateValue,
                                 'RECFLG_10'     =>  'N',
                                 'TAXABLE_10'    =>  'N',
                                 'TYPE_10'       =>  'CU',
                                 'ORDER_10'      =>  $max_ordnum_27.$n2."01",
                                 'VENID_10'      =>  '',  /*empty*/
-                                'ORGDUE_10'     =>  '',
+                                'ORGDUE_10'     =>  $fcha_entrega->DateValue,
                                 'PURUOM_10'     =>  '',  /*empty*/
                                 'CURQTY_10'     =>  $dp->Cantidad,
                                 'ORGQTY_10'     =>  $dp->Cantidad,
                                 'DUEQTY_10'     =>  0,
-                                'CURPRM_10'     =>  '',
+                                'CURPRM_10'     =>  $fcha_entrega->DateValue,
                                 'FILL03_10'     =>  '', /*empty*/
-                                'ORGPRM_10'     =>  '',
+                                'ORGPRM_10'     =>  $fcha_entrega->DateValue,
                                 'FILL04_10'     =>  '', /*empty*/
                                 'FRMPLN_10'     =>  'Y',
                                 'STATUS_10'     =>  '3',
@@ -471,15 +485,51 @@ class ProduccionController extends Controller
                             ->pluck('QTYCOM_29');
 
 
+
                         DB::connection('MAXP')
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
                             ->update([
-                                'QTYCOM_29' => $cant_comprometida+$dp->Cantidad
+                                'QTYCOM_29' => $cant_comprometida[0] + floatval($dp->Cantidad)
+                            ]);
+
+
+                        DB::connection('MAXP')
+                            ->table('SO_Note')
+                            ->insert([
+                                'ORDNUM_30'     => $max_ordnum_27,
+                                'LINNUM_30'     => '01',
+                                'DELNUM_30'     => $n2,
+                                'COMNUM_30'     => '01',
+                                'CODE_30'       => 'B',
+                                'COMNT_30'      => $dp->Notas ?? '',
+                                'CUSTID_30'     =>  '',
+                                'PIDCOD_30'     =>  '',
+                                'MCOMP_30'      =>  '',
+                                'MSITE_30'      =>  '',
+                                'UDFKEY_30'     =>  '',
+                                'UDFREF_30'     =>  '',
+                                'XDFINT_30'     =>  0,
+                                'XDFFLT_30'     =>  0,
+                                'XDFBOL_30'     =>  '',
+                                'XDFDTE_30'     =>  null,
+                                'XDFTXT_30'     =>  '',
+                                'FILLER_30'     =>  '',
+                                'CreatedBy'     =>  null,
+                                'CreationDate'  =>  Carbon::now(),
+                                'ModifiedBy'    =>  null,
+                                'ModificationDate' => Carbon::now(),
+                                'RECTYP_30' =>  'ST'
                             ]);
 
                         $idx++;
                     }
+
+                    DB::table('encabezado_pedidos')
+                        ->where('id', '=', $request->id)
+                        ->update([
+                            'Ped_MAX' => $max_ordnum_27
+                        ]);
                 }
                 DB::commit();
                 DB::connection('MAXP')->commit();
@@ -491,6 +541,18 @@ class ProduccionController extends Controller
                 return response()->json($e->getMessage(), 500);
             }
         }
+    }
+
+
+    private function calcular_fecha_entrega( $cantidad_dias){
+       $dias_habiles =  DB::connection('MAXP')
+           ->table('Shop_Calendar')
+           ->where('ShopDay', '=', 1)
+           ->whereDate('DateValue', '>=', Carbon::now())
+           ->get();
+
+       return $dias_habiles[$cantidad_dias-1];
+
     }
 
 }

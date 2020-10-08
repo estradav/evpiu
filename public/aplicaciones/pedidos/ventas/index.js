@@ -14,6 +14,7 @@ $(document).ready(function () {
         columns: [
             {data: 'id', name: 'id', orderable: false, searchable: true},
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
+            {data: 'Ped_MAX', name: 'Ped_MAX', orderable: false, searchable: true},
             {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
             {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
             {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: false},
@@ -31,44 +32,51 @@ $(document).ready(function () {
         ],
         rowCallback: function (row, data, index) {
             if (data.Estado == 1) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-info">Borrador</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-info">Borrador</span>');
             }
             if (data.Estado == 0) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-danger">Anulado Vendedor</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-danger">Anulado Vendedor</span>');
                 $("#Reopen").prop('disabled',true);
             }
             if (data.Estado == 2) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-primary">Cartera</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Cartera</span>');
             }
             if (data.Estado == 3) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-warning">Rechazado Cartera</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Cartera</span>');
             }
             if (data.Estado == 4) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-primary">Costos</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Costos</span>');
             }
             if (data.Estado == 5) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-warning">Rechazado Costos</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Costos</span>');
             }
             if (data.Estado == 6) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-primary">Produccion</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Produccion</span>');
             }
             if (data.Estado == 7) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-warning">Rechazado Produccion</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Produccion</span>');
             }
             if (data.Estado == 8) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-primary">Bodega</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Bodega</span>');
             }
             if (data.Estado == 9) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-warning">Rechazado Bodega</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Bodega</span>');
             }
             if (data.Estado == 10) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-success">Completado</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-success">Completado</span>');
             }
             if (data.Iva == 'Y') {
-                $(row).find('td:eq(6)').html('<span class="badge badge-success">SI</span>');
+                $(row).find('td:eq(7)').html('<span class="badge badge-success">SI</span>');
             }
             else{
-                $(row).find('td:eq(6)').html('<span class="badge badge-danger">NO</span>');
+                $(row).find('td:eq(7)').html('<span class="badge badge-danger">NO</span>');
+            }
+
+
+            if (data.Ped_MAX){
+                $(row).find('td:eq(2)').html('<span class="badge badge-success">'+ data.Ped_MAX +'</span>');
+            }else{
+                $(row).find('td:eq(2)').html('<span class="badge badge-danger">N/A</span>');
             }
         }
     });

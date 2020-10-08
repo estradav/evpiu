@@ -18,7 +18,6 @@
                         <div class="page-title-subheading">
                             Gestion de pedidos
                         </div>
-5n
                     </div>
                 </div>
             </div>
@@ -64,6 +63,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>OC</th>
+                                        <th>PED MAX</th>
                                         <th>COD CLIENTE</th>
                                         <th>CLIENTE</th>
                                         <th>VENDEDOR</th>

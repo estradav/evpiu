@@ -188,7 +188,7 @@ $(document).ready(function () {
                                     <td><input type="number" id="`+ data[i].numero +`" class="form-control form-control-sm otros_ingre_`+ data[i].numero +` otros_ingre" value="0" disabled></td>
                                     <td><input type="number" class="form-control form-control-sm total_`+ data[i].numero +` total" value="0" id="total" name="total" disabled ></td>
                                     <td>
-                                         <button class="btn btn-outline-info btn-sm info_documento" id="`+ data[i].numero +`"><i class="fas fa-info-circle"></i> Info</button>
+                                         <button class="btn btn-outline-info btn-sm info_documento" id="`+ data[i].numero +`" name="`+ data[i].nit +`"><i class="fas fa-info-circle"></i> Info</button>
                                     </td>
                                     <td style="display: none !important;">
                                         <input type="number" class="form-control form-control-sm iva_`+ data[i].numero +` iva" value="`+ data[i].iva +`">
@@ -557,10 +557,14 @@ $(document).ready(function () {
 
     $(document).on('click', '.info_documento', function () {
         let id = this.id;
+        let nit = this.name;
         $.ajax({
             url: '/aplicaciones/recibos_caja/consultar_documento',
             type: 'get',
-            data: {id:id},
+            data: {
+                id: id,
+                nit: nit
+            },
             success: function (data) {
                 const formatter = new Intl.NumberFormat('es-CO', {
                     style: 'currency',

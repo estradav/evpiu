@@ -815,6 +815,7 @@ class RecibosController extends Controller
             try {
                 $consulta = DB::connection('DMS')
                     ->table('V_CIEV_Saldofacturas')
+                    ->where('nit', '=', $request->nit)
                     ->where('numero','=', $request->id)
                     ->first();
 
