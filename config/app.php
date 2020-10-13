@@ -198,6 +198,9 @@ return [
         Adldap\Laravel\AdldapAuthServiceProvider::class,
 
         Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
+
+        Barryvdh\Debugbar\ServiceProvider::class,
+
     ],
 
     /*
@@ -254,6 +257,8 @@ return [
         'Arr' => Illuminate\Support\Arr::class,
         'Str' => Illuminate\Support\Str::class,
         'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+
 
     ],
 

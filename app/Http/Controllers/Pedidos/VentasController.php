@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pedidos;
 
+use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
 use App\User;
 use Carbon\Carbon;
@@ -27,17 +28,21 @@ class VentasController extends Controller
     public function index(Request $request){
         if ($request->ajax()){
             if (Auth::user()->hasRole('super-admin')){
-                $data = DB::table('encabezado_pedidos')
-                    ->orderBy('id','desc')
-                    ->get();
+
+                $data = EncabezadoPedido::orderBy('id', 'asc')->with('cliente' ,'info_area')->get();
+
             }else{
-                $data = DB::table('encabezado_pedidos')
-                    ->where('CodVendedor', '=', Auth::user()->codvendedor)
+                $data = EncabezadoPedido::where('CodVendedor', auth()->user()->codvendedor)
+                    ->with('cliente')
                     ->orderBy('id','desc')
                     ->get();
             }
 
             return Datatables::of($data)
+                ->editColumn('created_at', function ($row){
+                    Carbon::setLocale('es');
+                    return  $row->created_at->format('d M Y h:i a');
+                })
                 ->addColumn('opciones', function($row){
                     return '
                         <div class="dropdown">
@@ -74,27 +79,25 @@ class VentasController extends Controller
      */
     public function enviar_cartera(Request $request){
         if ($request->ajax()){
+            DB::beginTransaction();
             try {
-                $pedido = DB::table('encabezado_pedidos')
-                    ->where('id', '=', $request->id)
-                    ->first();
+                $pedido =  EncabezadoPedido::find($request->id);
+
 
                 if ($pedido->Estado == 0){
                     return response()
                         ->json('Este pedido esta anulado, para poder enviarlo a cartera debe estar en estado borrador', 500);
 
                 } else if ($pedido->Estado == 1){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                           'Estado' => '2'
-                        ]);
 
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido','=',$request->id)
-                        ->update([
-                            'Cartera' => 2
+                    $pedido->update([
+                        'Estado'   =>  2,
                     ]);
+
+                    $pedido->info_area->update([
+                        'Cartera'   => 2
+                    ]);
+
                     return response()->json('Pedido enviado a cartera', 200);
 
                 }else if ($pedido->Estado == 2){
@@ -110,7 +113,10 @@ class VentasController extends Controller
                         ->json('Este pedido ya fue completado', 500);
 
                 }
+                DB::commit();
+
             }catch (Exception $e){
+                DB::rollBack();
                 return response()->json($e->getMessage(), 500);
             }
         }
