@@ -14,9 +14,9 @@
                     <div class="page-title-icon">
                         <i class="pe-7s-note2 icon-gradient bg-mean-fruit"></i>
                     </div>
-                    <div>Pedido {{ $encabezado->id }}
+                    <div>Pedido ~ {{ $encabezado->id }}
                         <div class="page-title-subheading">
-                            {{ $encabezado->NombreCliente }}
+                            {{ $encabezado->cliente->RAZON_SOCIAL }}
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Cliente</span>
                                         </div>
-                                        <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" value="{{ $encabezado->NombreCliente }}" disabled>
+                                        <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" value="{{ $encabezado->cliente->RAZON_SOCIAL }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -70,7 +70,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Direccion</span>
                                         </div>
-                                        <input type="text" class="form-control" id="direccion" name="direccion" value="{{ $encabezado->DireccionCliente }}" disabled>
+                                        <input type="text" class="form-control" id="direccion" name="direccion" value="{{ $encabezado->cliente->DIRECCION }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -78,7 +78,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Ciudad</span>
                                         </div>
-                                        <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $encabezado->Ciudad }}" disabled>
+                                        <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $encabezado->cliente->CIUDAD }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -86,7 +86,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Telefono</span>
                                         </div>
-                                        <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $encabezado->Telefono }}" disabled>
+                                        <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $encabezado->cliente->TEL1 }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -95,7 +95,7 @@
                                             <span class="input-group-text">Condicion pago</span>
                                         </div>
                                         <select name="condicion_pago" id="condicion_pago" class="form-control" disabled >
-                                            <option value="{{ $encabezado->CondicionPago }}">{{ $encabezado->CondicionPago }}</option>
+                                            <option value="{{ $encabezado->cliente->PLAZO }}">{{ $encabezado->cliente->PLAZO }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -141,8 +141,6 @@
                                             <th>PRODUCTO</th>
                                             <th>DESTINO</th>
                                             <th>N/R</th>
-                                           {{-- <th>ARTE</th>
-                                            <th>NOTAS</th>--}}
                                             <th>U/M</th>
                                             <th>PRECIO</th>
                                             <th>CANT</th>
@@ -170,12 +168,6 @@
                                                     <option value="Repro">Repro.</option>
                                                 </select>
                                             </td>
-                                            {{--<td>
-                                                <input type="text" id="arte_item" name="arte_item" class="form-control form-control-sm" onkeyup="this.value=this.value.toUpperCase();">
-                                            </td>
-                                            <td>
-                                                <input type="text" id="notas_item" name="notas_item" class="form-control form-control-sm" onkeyup="this.value=this.value.toUpperCase();">
-                                            </td> --}}
                                             <td>
                                                 <select name="um_item" id="um_item" class="form-control form-control-sm">
                                                     <option value="Unidad" selected >Unidad</option>
@@ -237,7 +229,7 @@
                                         $idx = 0
                                     @endphp
 
-                                    @foreach($detalle as $d)
+                                    @foreach($encabezado->detalle as $d)
                                         <tr>
                                             <td class="item_cod_producto">{{ $d->CodigoProducto }}</td>
                                             <td class="item_cod_client" id="item_cod_client_{{ $idx }}">{{ $d->Cod_prod_cliente }}</td>
@@ -395,7 +387,5 @@
 @stop
 
 @push('javascript')
-    <script type="text/javascript" src="{{ asset('aplicaciones/pedidos/ventas/edit.js') }}">
-
-    </script>
+    <script type="text/javascript" src="{{ asset('aplicaciones/pedidos/ventas/edit.js') }}"></script>
 @endpush

@@ -12,13 +12,12 @@ $(document).ready(function () {
         columns: [
             {data: 'id', name: 'id', orderable: false, searchable: true},
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
-            {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
-            {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
-            {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: false},
+            {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+            {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: false},
             {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
-            {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
-            {data: 'SubEstado', name: 'SubEstado', orderable: false, searchable: false},
-            {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: true},
+            {data: 'Destino', name: 'Destino', orderable: false, searchable: true},
+            {data: 'info_area.Costos', name: 'info_area.Costos', orderable: false, searchable: false},
+            {data: 'vendedor.name', name: 'vendedor.name', orderable: false, searchable: true},
             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
         ],
@@ -29,17 +28,19 @@ $(document).ready(function () {
             [ 0, "asc" ]
         ],
         rowCallback: function (row, data, index) {
-            if (data.Iva == 'Y') {
-                $(row).find('td:eq(6)').html('<span class="badge badge-success">SI</span>');
+            if (data.Destino == 1){
+                $(row).find('td:eq(5)').html('<span class="badge badge-primary">Produccion</span>');
+            }else if (data.Destino == 2){
+                $(row).find('td:eq(5)').html('<span class="badge badge-info">Bodega</span>');
+            }else if (data.Destino == 3){
+                $(row).find('td:eq(5)').html('<span class="badge badge-warning">Troqueles</span>');
             }
-            else{
-                $(row).find('td:eq(6)').html('<span class="badge badge-danger">NO</span>');
+
+            if(data.info_area.Costos == 4){
+                $(row).find('td:eq(6)').html('<span class="badge badge-success">Pendiente</span>');
             }
-            if(data.SubEstado == 4){
-                $(row).find('td:eq(7)').html('<span class="badge badge-success">Pendiente</span>');
-            }
-            if(data.SubEstado == 5){
-                $(row).find('td:eq(7)').html('<span class="badge badge-danger">Rechazado</span>');
+            if(data.info_area.Costos == 5){
+                $(row).find('td:eq(6)').html('<span class="badge badge-danger">Rechazado</span>');
             }
         }
     });

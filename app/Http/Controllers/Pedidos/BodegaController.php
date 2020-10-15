@@ -36,7 +36,8 @@ class BodegaController extends Controller
                     'encabezado_pedidos.Estado as Estado',
                     'encabezado_pedidos.created_at as created_at',
                     'pedidos_detalles_area.Bodega as SubEstado')
-                ->where('Estado', '=', '8')->orWhere('Estado', '=', '9')
+                ->where('Estado', '=', '8')
+                ->orWhere('Estado', '=', '9')
                 ->get();
 
             return Datatables::of($data)

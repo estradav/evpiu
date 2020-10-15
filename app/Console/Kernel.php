@@ -19,7 +19,9 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\ExitAllEmployees',
         'App\Console\Commands\PermisionFolder',
         'App\Console\Commands\GetAllFilesToSensors',
-        'App\Console\Commands\GetSensorsData'
+        'App\Console\Commands\GetSensorsData',
+        'App\Console\Commands\ReplaceDataPedidos',
+        'App\Console\Commands\ReplaceDataEncabezadoPedidos'
     ];
 
     /**

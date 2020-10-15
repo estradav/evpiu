@@ -164,7 +164,7 @@
                                                     <option value="" selected>Seleccione..</option>
                                                     <option value="Bodega">Bodega</option> // ojo value 2
                                                     <option value="Produccion">Produccion</option> //ojo validar value 1
-                                                    <option value="Troqueles" disabled>Troqueles</option>
+                                                    <option value="Troqueles">Troqueles</option>
                                                 </select>
                                             </td>
                                             <td>

@@ -33,11 +33,10 @@
                                         <tr>
                                             <th>#</th>
                                             <th>OC</th>
-                                            <th>COD CLIENTE</th>
                                             <th>NOMBRE CLIENTE</th>
                                             <th>CONDICION PAGO</th>
                                             <th>DESCUENTO</th>
-                                            <th>IVA</th>
+                                            <th>DESTINO</th>
                                             <th>SUB ESTADO</th>
                                             <th>VENDEDOR</th>
                                             <th>FECHA CREACION</th>

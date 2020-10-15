@@ -65,6 +65,13 @@ $(document).ready(function () {
             if (data.Estado == 10) {
                 $(row).find('td:eq(8)').html('<span class="badge badge-success">Completado</span>');
             }
+            if (data.Estado == 11) {
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Troqueles</span>');
+            }
+            if (data.Estado == 12) {
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Troqueles</span>');
+            }
+
             if (data.Iva == 'Y') {
                 $(row).find('td:eq(7)').html('<span class="badge badge-success">SI</span>');
             }

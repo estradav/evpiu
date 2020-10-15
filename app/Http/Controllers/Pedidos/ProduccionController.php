@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pedidos;
 
+use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Exception;
@@ -24,23 +25,15 @@ class ProduccionController extends Controller
      */
     public function index(Request $request){
         if ($request->ajax()) {
-            $data = DB::table('encabezado_pedidos')
-                ->join('pedidos_detalles_area','encabezado_pedidos.id','=','pedidos_detalles_area.idPedido')
-                ->select('encabezado_pedidos.id as id',
-                    'encabezado_pedidos.OrdenCompra as OrdenCompra',
-                    'encabezado_pedidos.NombreCliente as NombreCliente',
-                    'encabezado_pedidos.CodCliente as CodCliente',
-                    'encabezado_pedidos.NombreVendedor as NombreVendedor',
-                    'encabezado_pedidos.CondicionPago as CondicionPago',
-                    'encabezado_pedidos.Descuento as Descuento',
-                    'encabezado_pedidos.Iva as Iva',
-                    'encabezado_pedidos.Estado as Estado',
-                    'encabezado_pedidos.created_at as created_at',
-                    'pedidos_detalles_area.Produccion as SubEstado')
-                ->where('Estado', '=', '6')
+            $data = EncabezadoPedido::with('cliente' ,'info_area' , 'vendedor')
+                ->where('Estado', '6')
                 ->get();
 
             return Datatables::of($data)
+                ->editColumn('created_at', function ($row){
+                    Carbon::setLocale('es');
+                    return  $row->created_at->format('d M Y h:i a');
+                })
                 ->addColumn('opciones', function($row){
                     return '
                         <div class="btn-group btn-sm" role="group">
@@ -65,24 +58,16 @@ class ProduccionController extends Controller
      */
     public function listar_terminados(Request $request){
         if ($request->ajax()){
-            $data = DB::table('encabezado_pedidos')
-                ->join('pedidos_detalles_area','encabezado_pedidos.id','=','pedidos_detalles_area.idPedido')
-                ->select('encabezado_pedidos.id as id',
-                    'encabezado_pedidos.OrdenCompra as OrdenCompra',
-                    'encabezado_pedidos.NombreCliente as NombreCliente',
-                    'encabezado_pedidos.CodCliente as CodCliente',
-                    'encabezado_pedidos.NombreVendedor as NombreVendedor',
-                    'encabezado_pedidos.CondicionPago as CondicionPago',
-                    'encabezado_pedidos.Descuento as Descuento',
-                    'encabezado_pedidos.Iva as Iva',
-                    'encabezado_pedidos.Ped_MAX',
-                    'encabezado_pedidos.Estado as Estado',
-                    'encabezado_pedidos.created_at as created_at',
-                    'pedidos_detalles_area.Produccion as SubEstado')
-                ->where('Estado', '=', '10')
+
+            $data = EncabezadoPedido::with('cliente' ,'info_area' , 'vendedor')
+                ->where('Estado', '10')
                 ->get();
 
             return Datatables::of($data)
+                ->editColumn('created_at', function ($row){
+                    Carbon::setLocale('es');
+                    return  $row->created_at->format('d M Y h:i a');
+                })
                 ->addColumn('opciones', function($row){
                     return '
                         <div class="btn-group btn-sm" role="group">

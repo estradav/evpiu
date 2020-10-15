@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pedidos;
 
 use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
+use App\MaestroPedido;
 use App\User;
 use Carbon\Carbon;
 use Exception;
@@ -28,11 +29,12 @@ class VentasController extends Controller
     public function index(Request $request){
         if ($request->ajax()){
             if (Auth::user()->hasRole('super-admin')){
-
-                $data = EncabezadoPedido::orderBy('id', 'asc')->with('cliente' ,'info_area')->get();
+                $data = EncabezadoPedido::orderBy('id', 'asc')
+                    ->with('cliente' ,'info_area')
+                    ->get();
 
             }else{
-                $data = EncabezadoPedido::where('CodVendedor', auth()->user()->codvendedor)
+                $data = EncabezadoPedido::where('vendedor_id', auth()->user()->id)
                     ->with('cliente')
                     ->orderBy('id','desc')
                     ->get();
@@ -68,35 +70,30 @@ class VentasController extends Controller
     }
 
 
-
     /**
      * Enviar el pedido al area de cartera,
      * evalua si cumple las condiciones para ser enviado
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws Exception
      */
     public function enviar_cartera(Request $request){
         if ($request->ajax()){
-            DB::beginTransaction();
             try {
-                $pedido =  EncabezadoPedido::find($request->id);
+                $pedido = EncabezadoPedido::find($request->id);
 
-
-                if ($pedido->Estado == 0){
+                if ($pedido->Estado == "0"){
                     return response()
                         ->json('Este pedido esta anulado, para poder enviarlo a cartera debe estar en estado borrador', 500);
 
-                } else if ($pedido->Estado == 1){
+                } else if ($pedido->Estado == "1"){
+                    $pedido->Estado = "2";
+                    $pedido->save();
 
-                    $pedido->update([
-                        'Estado'   =>  2,
+                    $pedido->info_area()->update([
+                        'Cartera' => 2
                     ]);
 
-                    $pedido->info_area->update([
-                        'Cartera'   => 2
-                    ]);
 
                     return response()->json('Pedido enviado a cartera', 200);
 
@@ -113,10 +110,7 @@ class VentasController extends Controller
                         ->json('Este pedido ya fue completado', 500);
 
                 }
-                DB::commit();
-
             }catch (Exception $e){
-                DB::rollBack();
                 return response()->json($e->getMessage(), 500);
             }
         }
@@ -134,16 +128,13 @@ class VentasController extends Controller
     public function anular_pedido(Request $request){
         if ($request->ajax()){
             try {
-                $pedido = DB::table('encabezado_pedidos')
-                    ->where('id', '=', $request->id)
-                    ->first();
+                $pedido = EncabezadoPedido::find($request->id);
 
                 if ($pedido->Estado > 0 && $pedido->Estado <= 5){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => '0'
-                        ]);
+
+                    $pedido->Estado = 0;
+                    $pedido->save();
+
                     return response()
                         ->json('Pedido anulado', 200);
 
@@ -155,7 +146,8 @@ class VentasController extends Controller
                         ->json('Este pedido no puede ser anulado', 500);
                 }
             }catch (Exception $e){
-                return response()->json($e->getMessage(), 500);
+                return response()
+                    ->json($e->getMessage(), 500);
             }
         }
     }
@@ -173,22 +165,22 @@ class VentasController extends Controller
     public function re_abrir_pedido(Request $request){
         if ($request->ajax()){
             try {
-                $pedido = DB::table('encabezado_pedidos')
-                    ->where('id', '=', $request->id)
-                    ->first();
+                $pedido = EncabezadoPedido::find($request->id);
 
                 if ($pedido->Estado == 0){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => '1'
-                        ]);
-                    return response()->json('Pedido actualizado', 200);
+
+                    $pedido->Estado = 1;
+                    $pedido->save();
+
+                    return response()
+                        ->json('Pedido actualizado', 200);
                 }else{
-                    return response()->json('Solo puedes re-abrir pedidos que han sido anulados', 500);
+                    return response()
+                        ->json('Solo puedes re-abrir pedidos que han sido anulados', 500);
                 }
             }catch (Exception $e){
-                return response()->json($e->getMessage(), 500);
+                return response()
+                    ->json($e->getMessage(), 500);
             }
         }
     }
@@ -205,17 +197,12 @@ class VentasController extends Controller
      */
     public function edit($id){
         try {
-            $encabezado = DB::table('encabezado_pedidos')
-                ->where('id','=', $id)
-                ->first();
-
-            $detalle = DB::table('detalle_pedidos')
-                ->where('idPedido','=',$id)
-                ->get();
+            $encabezado = EncabezadoPedido::with('detalle', 'cliente')->find($id);
 
             if ($encabezado->Estado == 0 || $encabezado->Estado == 1 || $encabezado->Estado == 3 || $encabezado->Estado == 5 || $encabezado->Estado == 7 || $encabezado->Estado == 9){
                 return view('aplicaciones.pedidos.ventas.edit',
-                    compact('encabezado', 'detalle'));
+                    compact('encabezado'));
+
             }else{
                 return redirect()
                     ->back()
@@ -340,8 +327,7 @@ class VentasController extends Controller
                         ->json('Debe agregar al menos un producto antes de guardar el pedido', 500);
                 }else{
                     if(sizeof($destino_produccion) == sizeof($detalle)){
-                        DB::table('encabezado_pedidos')
-                            ->where('id','=', $encabezado['id'])
+                        EncabezadoPedido::where('id', $encabezado['id'])
                             ->update([
                                 'OrdenCompra'       =>  $encabezado['oc'],
                                 'Descuento'         =>  $encabezado['descuento'],
@@ -356,9 +342,11 @@ class VentasController extends Controller
                                 'Destino'           =>  1
                             ]);
 
+
+
                         if (!empty($encabezado['id_maestro'])){
-                            DB::table('maestro_pedidos')
-                                ->where('id', '=', $encabezado['id_maestro'])
+
+                            MaestroPedido::where('id', $encabezado['id_maestro'])
                                 ->update([
                                     'id_bodega'     => null,
                                     'id_produccion' => $encabezado['id'],
@@ -1680,7 +1668,6 @@ class VentasController extends Controller
                             'updated_at'        =>  Carbon::now()
                         ]);
                 }
-
                 DB::commit();
                 return response()->json($encabezado_destino, 200);
 

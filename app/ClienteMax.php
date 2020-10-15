@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class ClienteMax extends Model
 {
@@ -31,5 +32,23 @@ class ClienteMax extends Model
      * @var string
      */
     public $primaryKey = 'CODIGO_CLIENTE';
+
+
+
+
+    /**
+     * The database primary key type
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+
+
+
+
+
+
+
 
 }

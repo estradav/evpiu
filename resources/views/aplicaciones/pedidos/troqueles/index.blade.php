@@ -29,13 +29,31 @@
                         Pedidos Pendientes
                     </div>
                     <div class="card-body">
-                        {{ $data2 }}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm" id="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>OC</th>
+                                        <th>COD CLIENTE</th>
+                                        <th>CLIENTE</th>
+                                        <th>VENDEDOR</th>
+                                        <th>CONDICION PAGO</th>
+                                        <th>DESCUENTO</th>
+                                        <th>IVA</th>
+                                        <th>SUB ESTADO</th>
+                                        <th>FECHA CREACION</th>
+                                        <th style="text-align:center ">ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     @else
         <div class="card">
             <div class="card-body text-center">
@@ -46,3 +64,57 @@
         </div>
     @endcan
 @endsection
+
+
+@push('javascript')
+    <script>
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+
+            $('#table').dataTable({
+                ajax: {
+                    url: '/aplicaciones/pedidos/troqueles'
+                },
+                columns: [
+                    {data: 'id', name: 'id', orderable: false, searchable: false},
+                    {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
+                    {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
+                    {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+                    {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: true},
+                    {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: true},
+                    {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
+                    {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
+                    {data: 'info_area.Troqueles', name: 'info_area.Troqueles', orderable: false, searchable: true},
+                    {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
+                    {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+                ],
+                language: {
+                    url: '/Spanish.json'
+                },
+                order: [
+                    [ 0, "asc" ]
+                ],
+                rowCallback: function (row, data, index) {
+                    if (data.Iva == 'Y') {
+                        $(row).find('td:eq(7)').html('<span class="badge badge-success">SI</span>');
+                    }
+                    else{
+                        $(row).find('td:eq(7)').html('<span class="badge badge-danger">NO</span>');
+                    }
+                    if(data.info_area.Troqueles == 11){
+                        $(row).find('td:eq(8)').html('<span class="badge badge-success">Pendiente</span>');
+                    }
+
+                    if(data.info_area.Troqueles == 12){
+                        $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado</span>');
+                    }
+                }
+            });
+        });
+    </script>
+@endpush

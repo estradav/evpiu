@@ -15,10 +15,13 @@ class InfoAreaPedido extends Model
      *
      * @var array
      */
-    protected $fillable = [ 'id_d', 'idPedido', 'Cartera', 'DetalleCartera', 'AproboCartera', 'Notas','Unidad','Cantidad', 'Precio','Total',
-        'Destino','R_N','Estado'];
-
-
+    protected $fillable = ['id_d', 'idPedido',
+        'Cartera', 'DetalleCartera', 'cartera_fecha_resp', 'aprobo_cartera',
+        'Costos', 'DetalleCostos', 'costos_fecha_resp', 'aprobo_costos',
+        'Produccion', 'DetalleProduccion', 'produccion_fecha_resp', 'aprobo_produccion',
+        'Bodega', 'DetalleBodega', 'bodega_fecha_resp', 'aprobo_bodega',
+        'Troqueles', 'DetalleTroqueles', 'troqueles_fecha_resp', 'aprobo_troqueles'
+    ];
 
 
     /**
