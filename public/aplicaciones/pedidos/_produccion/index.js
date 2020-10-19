@@ -14,12 +14,12 @@ $(document).ready(function () {
             {data: 'id', name: 'id', orderable: false, searchable: false},
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
             {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
-            {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
-            {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: true},
-            {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: true},
+            {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+            {data: 'vendedor.name', name: 'vendedor.name', orderable: false, searchable: true},
+            {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: false},
             {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
             {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
-            {data: 'SubEstado', name: 'SubEstado', orderable: false, searchable: true},
+            {data: 'info_area.Produccion', name: 'info_area.Produccion', orderable: false, searchable: false},
             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
 
@@ -33,15 +33,13 @@ $(document).ready(function () {
         rowCallback: function (row, data, index) {
             if (data.Iva == 'Y') {
                 $(row).find('td:eq(7)').html('<span class="badge badge-success">SI</span>');
-            }
-            else{
+            }else{
                 $(row).find('td:eq(7)').html('<span class="badge badge-danger">NO</span>');
             }
-            if(data.SubEstado == 6){
-                $(row).find('td:eq(8)').html('<span class="badge badge-success">Pendiente</span>');
-            }
 
-            if(data.SubEstado == 7){
+            if(data.info_area.Produccion == 6){
+                $(row).find('td:eq(8)').html('<span class="badge badge-success">Pendiente</span>');
+            } else if(data.info_area.Produccion == 7){
                 $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado</span>');
             }
         }
@@ -56,13 +54,14 @@ $(document).ready(function () {
         columns: [
             {data: 'id', name: 'id', orderable: false, searchable: true},
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
+            {data: 'Ped_MAX', name: 'Ped_MAX', orderable: false, searchable: true},
             {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
-            {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
-            {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: true},
-            {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: true},
+            {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+            {data: 'vendedor.name', name: 'vendedor.name', orderable: false, searchable: true},
+            {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: false},
             {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
             {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
-            {data: 'Estado', name: 'Estado', orderable: false, searchable: true},
+            {data: 'info_area.Produccion', name: 'info_area.Produccion', orderable: false, searchable: false},
             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
 
@@ -75,14 +74,20 @@ $(document).ready(function () {
         ],
         rowCallback: function (row, data, index) {
             if (data.Estado == 10) {
-                $(row).find('td:eq(8)').html('<span class="badge badge-success">Finalizado</span>');
+                $(row).find('td:eq(9)').html('<span class="badge badge-success">Finalizado</span>');
             }else{
-                $(row).find('td:eq(8)').html('<span class="badge badge-danger">Error</span>');
+                $(row).find('td:eq(9)').html('<span class="badge badge-danger">Error</span>');
             }
             if (data.Iva == 'Y') {
-                $(row).find('td:eq(7)').html('<span class="badge badge-success">SI</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-success">SI</span>');
             } else{
-                $(row).find('td:eq(7)').html('<span class="badge badge-danger">NO</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-danger">NO</span>');
+            }
+
+            if (data.Ped_MAX){
+                $(row).find('td:eq(2)').html('<span class="badge badge-success">'+ data.Ped_MAX +'</span>');
+            }else{
+                $(row).find('td:eq(2)').html('<span class="badge badge-danger">N/A</span>');
             }
         }
     });
@@ -129,25 +134,62 @@ $(document).ready(function () {
             $(element).closest('.form-control').removeClass('is-invalid');
         },
         submitHandler: function (form) {
-            $.ajax({
-                data: $('#form').serialize(),
-                url: "/aplicaciones/pedidos/produccion/actualizar_estado",
-                type: "POST",
-                dataType: 'json',
-                success: function (data) {
-                    $('#opciones').modal('hide');
-                    $('#table').DataTable().ajax.reload();
-                    $('#table_terminados').DataTable().ajax.reload();
-                    toastr.success(data);
-                },
-                error: function (data) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops',
-                        text: data.responseText
-                    });
-                }
-            });
+            let estado = document.getElementById('estado').value;
+
+            if (estado == 10){
+                Swal.fire({
+                    title: '¿Finalizar pedido y subir a MAX?',
+                    html: "<span class='badge badge-danger'>ESTA ACCION NO ES REVERSIBLE </span>",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '¡Si, finalizar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            data: $('#form').serialize(),
+                            url: "/aplicaciones/pedidos/produccion/actualizar_estado",
+                            type: "POST",
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#opciones').modal('hide');
+                                $('#table').DataTable().ajax.reload();
+                                $('#table_terminados').DataTable().ajax.reload();
+                                toastr.success(data);
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops',
+                                    text: data.responseText
+                                });
+                            }
+                        });
+                    }
+                })
+            }else{
+                $.ajax({
+                    data: $('#form').serialize(),
+                    url: "/aplicaciones/pedidos/produccion/actualizar_estado",
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#opciones').modal('hide');
+                        $('#table').DataTable().ajax.reload();
+                        $('#table_terminados').DataTable().ajax.reload();
+                        toastr.success(data);
+                    },
+                    error: function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops',
+                            text: data.responseText
+                        });
+                    }
+                });
+            }
             return false;
         }
     });

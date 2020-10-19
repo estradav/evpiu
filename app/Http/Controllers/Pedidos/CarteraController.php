@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Pedidos;
 
+use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,28 +20,22 @@ class CarteraController extends Controller
      * lista de pedidos pendientes por gestion
      *
      * @param Request $request
-     * @return Factory|View
+     * @return JsonResponse
      * @throws Exception
      */
     public function index(Request $request){
         if ($request->ajax()){
             try {
-                $data = DB::table('encabezado_pedidos')
-                    ->join('pedidos_detalles_area','encabezado_pedidos.id','=','pedidos_detalles_area.idPedido')
-                    ->select('encabezado_pedidos.id as id',
-                        'encabezado_pedidos.OrdenCompra as OrdenCompra',
-                        'encabezado_pedidos.NombreCliente as NombreCliente',
-                        'encabezado_pedidos.CodCliente as CodCliente',
-                        'encabezado_pedidos.NombreVendedor as NombreVendedor',
-                        'encabezado_pedidos.CondicionPago as CondicionPago',
-                        'encabezado_pedidos.Descuento as Descuento',
-                        'encabezado_pedidos.Iva as Iva',
-                        'encabezado_pedidos.Estado as Estado',
-                        'encabezado_pedidos.created_at as created_at',
-                        'pedidos_detalles_area.Cartera as SubEstado')
-                    ->where('Estado', '=', '2')
+
+                $data = EncabezadoPedido::with('cliente' ,'info_area', 'vendedor')
+                    ->where('Estado', '2')
                     ->get();
+
                 return Datatables::of($data)
+                    ->editColumn('created_at', function ($row){
+                        Carbon::setLocale('es');
+                        return  $row->created_at->format('d M Y h:i a');
+                    })
                     ->addColumn('opciones', function($row){
                         return '
                             <div class="btn-group btn-sm" role="group">
@@ -64,62 +61,41 @@ class CarteraController extends Controller
      * seleccionada en el modal 'opciones'
      *
      * @param Request $request
-     * @return Factory|View
+     * @return JsonResponse
      * @throws Exception
      */
     public function actualizar_estado(Request $request){
         if ($request->ajax()){
             try {
-                DB::beginTransaction();
+                $pedido =  EncabezadoPedido::find($request->id);
 
                 if ($request->estado == 3){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => $request->estado
-                        ]);
+                    $pedido->Estado = $request->estado;
+                    $pedido->save();
 
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido', '=', $request->id)
-                        ->update([
-                            'Cartera' => $request->estado,
-                            'DetalleCartera' => $request->descripcion,
+                    $pedido->info_area()->update([
+                        'Cartera'           =>  $request->estado,
+                        'DetalleCartera'    =>  $request->descripcion,
                     ]);
 
                 }else if($request->estado == 4){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => $request->estado
-                        ]);
+                    $pedido->Estado = $request->estado;
+                    $pedido->save();
 
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido', '=', $request->id)
-                        ->update([
-                            'Cartera'           => $request->estado,
-                            'DetalleCartera'    => $request->descripcion,
-                            'AproboCartera'     => Auth::user()->name,
-                            'Costos'            => $request->estado,
+                    $pedido->info_area()->update([
+                        'Cartera'               => $request->estado,
+                        'DetalleCartera'        => $request->descripcion,
+                        'aprobo_cartera'        => auth()->user()->id,
+                        'cartera_fecha_resp'    => Carbon::now(),
+                        'Costos'                => $request->estado,
                     ]);
 
-                }else if($request->estado == 3.1){
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido', '=', $request->id)
-                        ->update([
-                            'Cartera'           => $request->estado,
-                            'DetalleCartera'    => $request->descripcion,
-                    ]);
-
-                }else if ($request->estado == 3.2){
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido', '=', $request->id)
-                        ->update([
-                            'Cartera'           => $request->estado,
-                            'DetalleCartera'    => $request->descripcion,
+                }else if($request->estado == 3.1 || $request->estado == 3.2){
+                    $pedido->info_area()->update([
+                        'Cartera'           => $request->estado,
+                        'DetalleCartera'    => $request->descripcion,
                     ]);
                 }
-
-                DB::commit();
                 return response()->json('Pedido actualizado', 200);
             }catch (\Exception $e){
                 return response()->json($e->getMessage(), 500);

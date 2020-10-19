@@ -1,6 +1,6 @@
 @extends('layouts.architectui')
 
-@section('page_title', 'Factura #'. $numero_factura )
+@section('page_title', 'Factura # '. $factura->NUMERO )
 
 @section('action_recaptcha')
     {!! htmlScriptTagJsApi([ 'action' => 'facturacion_electronica_edicion' ]) !!}
@@ -8,8 +8,8 @@
 
 @section('content')
     @can('facturacion.edit')
-        <div class="col-12"><h3> Factura #: {{ $numero_factura }} </h3></div>
-        <input type="hidden" name="num_fac" id="num_fac" value="{{ $numero_factura }}">
+        <div class="col-12"><h3> Factura #: {{ $factura->NUMERO }} </h3></div>
+        <input type="hidden" name="num_fac" id="num_fac" value="{{ $factura->NUMERO }}">
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <div class="main-card mb-3 card">
@@ -19,37 +19,37 @@
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>Razon social:</label>
-                                    <input type="text" class="form-control" id="razon_social" name="razon_social" readonly="readonly" value="{{ $encabezado->nombres }}">
+                                    <input type="text" class="form-control" id="razon_social" name="razon_social" readonly="readonly" value="{{ $factura->cliente->RAZON_SOCIAL }}">
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>Direccion:</label>
-                                    <input type="text" class="form-control" id="direccion" name="direccion" readonly="readonly" value="{{ $encabezado->direccion }}">
+                                    <input type="text" class="form-control" id="direccion" name="direccion" readonly="readonly" value="{{ $factura->cliente->DIRECCION }}">
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>Tipo de Cliente:</label>
-                                    <input type="text" class="form-control" id="tipo_cliente" name="tipo_cliente" readonly="readonly" value="{{ $encabezado->tipo_cliente }}">
+                                    <input type="text" class="form-control" id="tipo_cliente" name="tipo_cliente" readonly="readonly" value="{{ $factura->cliente->TIPO_CLIENTE }}">
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>Telefono:</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono" readonly="readonly" value="{{ $encabezado->telefono }}">
+                                    <input type="text" class="form-control" id="telefono" name="telefono" readonly="readonly" value="{{ $factura->cliente->TEL1 }}">
                                 </div>
                             </div>
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="form-group">
                                     <label>Ciudad, Estado, Pais:</label>
-                                    <input type="text" class="form-control" id="ciudad_est_pais" name="ciudad_est_pais" readonly="readonly" value="{{ $encabezado->ciudad.'-'.$encabezado->dpto.'-'.$encabezado->pais }}">
+                                    <input type="text" class="form-control" id="ciudad_est_pais" name="ciudad_est_pais" readonly="readonly" value="{{ trim($factura->cliente->CIUDAD).'-'.trim($factura->cliente->ESTADO).'-'.trim($factura->cliente->PAIS) }}">
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>Contacto:</label>
-                                    <input type="text" class="form-control" id="contacto" name="contacto" readonly="readonly" value="{{ $encabezado->nombres }}">
+                                    <input type="text" class="form-control" id="contacto" name="contacto" readonly="readonly" value="{{ trim($factura->cliente->CONTACTO)}}">
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
@@ -57,7 +57,7 @@
                                     <label for="motivo">Motivo:</label>
                                     <select  class="form-control" id="motivo" name="motivo">
                                         @foreach($motivos as $motivo)
-                                            <option value="{{ $motivo->CODE_36 }}" {{ $motivo->CODE_36 == $encabezado->motivo ? 'selected' : '' }}>{{ $motivo->DESC_36 }}</option>
+                                            <option value="{{ $motivo->CODE_36 }}" {{ $motivo->CODE_36 == $factura->MOTIVO ? 'selected' : '' }}>{{ $motivo->DESC_36 }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -65,22 +65,22 @@
                             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                                 <div class="form-group">
                                     <label>% Descuento:</label>
-                                    <input type="number" id="descuento" name="descuento" class="form-control" max="100" min="0" value="{{ ($encabezado->descuento * 100) / $encabezado->bruto }}">
+                                    <input type="number" id="descuento" name="descuento" class="form-control" max="100" min="0" value="{{ ($factura->DESCUENTO * 100) / $factura->BRUTO }}">
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                                 <div class="form-group">
                                     <label>IVA:</label>
                                     <select name="tieneiva" id="tieneiva" class="form-control">
-                                        <option value="1" {{ $encabezado->iva > 0 ? 'selected' : '' }}>Si</option>
-                                        <option value="2" {{ $encabezado->iva == 0 ? 'selected' : '' }}>No</option>
+                                        <option value="1" {{ $factura->IVA > 0 ? 'selected' : '' }}>Si</option>
+                                        <option value="2" {{ $factura->IVA == 0 ? 'selected' : '' }}>No</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                 <div class="form-group">
                                     <label>Orden Compra:</label>
-                                    <input type="text" id="oc" name="oc" class="form-control" value="{{ $encabezado->OC }}">
+                                    <input type="text" id="oc" name="oc" class="form-control" value="{{ $factura->OC }}">
                                 </div>
                             </div>
                         </div>
@@ -96,13 +96,13 @@
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                     <div class="form-group">
                                         <label>Cedula o Nit:</label>
-                                        <input type="text" class="form-control" id="documento" name="documento" readonly="readonly" value="{{ $encabezado->nit_cliente}}">
+                                        <input type="text" class="form-control" id="documento" name="documento" readonly="readonly" value="{{ $factura->cliente->NIT}}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                     <div class="form-group">
                                         <label>Fecha Factura:</label>
-                                        <input type="text" class="form-control" id="fecha_factura" name="fecha_factura" readonly="readonly" value="{{ $encabezado->fechadocumento}}">
+                                        <input type="text" class="form-control" id="fecha_factura" name="fecha_factura" readonly="readonly" value="{{ $factura->FECHA}}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
@@ -110,7 +110,7 @@
                                         <label for="condicion_pago">Condiciones de pago:</label>
                                         <select id="condicion_pago" name="condicion_pago" class="form-control" >
                                             @foreach ( $condicion_pago as $condicion )
-                                                <option value="{{ $condicion->CODE_36 }}" {{ $condicion->DESC_36 == $encabezado->plazo ? 'selected' : '' }}>{{ trim($condicion->DESC_36) }}</option>
+                                                <option value="{{ $condicion->CODE_36 }}" {{ $condicion->DESC_36 == $factura->DESCPLAZO ? 'selected' : '' }}>{{ trim($condicion->DESC_36) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -118,25 +118,25 @@
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                     <div class="form-group">
                                         <label>Fecha Vencimiento:</label>
-                                        <input type="text" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" readonly="readonly" value="{{ $encabezado->fechavencimiento }}">
+                                        <input type="text" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" readonly="readonly" value="{{ $factura->VENCIMIENTO }}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                     <div class="form-group">
                                         <label>Codigo Cliente:</label>
-                                        <input type="text" class="form-control" id="codigo_cliente" name="codigo_cliente" readonly="readonly" value="{{ $encabezado->codigocliente }}">
+                                        <input type="text" class="form-control" id="codigo_cliente" name="codigo_cliente" readonly="readonly" value="{{ $factura->cliente->CODIGO_CLIENTE }}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                     <div class="form-group">
                                         <label>Orden de venta:</label>
-                                        <input type="text" class="form-control" id="remision" name="remision" readonly="readonly" value="{{ $encabezado->ov }}">
+                                        <input type="text" class="form-control" id="remision" name="remision" readonly="readonly" value="{{ $factura->OV }}">
                                     </div>
                                 </div>
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="form-group">
                                         <label>Notas Factura:</label>
-                                        <textarea cols="30" rows="5" class="form-control" id="notas_factura" name="notas_factura">{{ $encabezado->notas }}</textarea>
+                                        <textarea cols="30" rows="5" class="form-control" id="notas_factura" name="notas_factura">{{ $factura->COMENTARIOS }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -168,17 +168,17 @@
                                 @php
                                     $id = 1
                                 @endphp
-                                @foreach($detalles as $detalle)
+                                @foreach($factura->detalle as $detalle)
                                     <tr>
-                                        <td>{{ $detalle->OV }}</td>
+                                        <td>{{ $detalle->ORDNUM_32 }}</td>
                                         <td>{{ $detalle->CodigoProducto }}</td>
-                                        <td>{{ $detalle->descripcionproducto }}</td>
+                                        <td>{{ $detalle->DescripcionProducto }}</td>
                                         <td>{{ $detalle->UM == 94 ? 'UND' : '' }}</td>
-                                        <td><input type="number" class="form-control cantidad_{{ $id }} cantidad" value="{{ trim($detalle->cantidad) }}" id="{{ $id }}" disabled></td>
-                                        <td><input type="number" class="form-control precio_{{ $id }} precio" value="{{ trim($detalle->precio) }}" id="{{ $id }}"></td>
-                                        <td><input type="number" class="form-control total_{{ $id }} total" name="total" value="{{ $detalle->totalitem }}" disabled></td>
-                                        <td><input type="number" class="form-control iva_{{ $id }} iva" name="iva" value="{{ trim($detalle->iva_item) }}" disabled></td>
-                                        <td style="display: none !important;"><input type="text" name="id_reg" id="id_reg" value="{{ $detalle->factura.'-'.$detalle->OV.'-'.$detalle->item }}" class="form-control id_reg"></td>
+                                        <td><input type="number" class="form-control cantidad_{{ $id }} cantidad" value="{{ trim($detalle->Cantidad) }}" id="{{ $id }}" disabled></td>
+                                        <td><input type="number" class="form-control precio_{{ $id }} precio" value="{{ trim($detalle->Precio) }}" id="{{ $id }}"></td>
+                                        <td><input type="number" class="form-control total_{{ $id }} total" name="total" value="{{ $detalle->TotalItem }}" disabled></td>
+                                        <td><input type="number" class="form-control iva_{{ $id }} iva" name="iva" value="{{ trim($detalle->IVA) }}" disabled></td>
+                                        <td style="display: none !important;"><input type="text" name="id_reg" id="id_reg" value="{{ $detalle->Factura.'-'.$detalle->OV.'-'.$detalle->Item }}" class="form-control id_reg"></td>
                                     </tr>
                                     @php
                                         $id++;
@@ -207,21 +207,21 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input type="number" class="form-control" style="text-align: right" id="total_bruto" value="{{ $encabezado->bruto }}" disabled></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="total_descuento" value="{{ $encabezado->descuento }}" disabled></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="total_bruto" value="{{ $factura->BRUTO }}" disabled></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="total_descuento" value="{{ $factura->DESCUENTO }}" disabled></td>
                                 <td>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <button class="btn btn-secondary retencion_btn" type="button" id="{{ $numero_factura.','.$encabezado->tipo_cliente }}"><i class="fas fa-calculator"></i></button>
+                                            <button class="btn btn-secondary retencion_btn" type="button" id="{{ $factura->NUMERO.','.$factura->TIPOCLIENTE }}"><i class="fas fa-calculator"></i></button>
                                         </div>
-                                        <input type="number" class="form-control" style="text-align: right" id="total_retencion" value="{{ $encabezado->retefte }}">
+                                        <input type="number" class="form-control" style="text-align: right" id="total_retencion" value="{{ $factura->RTEFTE }}">
                                     </div>
                                 </td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="total_seguro" value="{{ $encabezado->seguros }}" {{ $encabezado->tipo_cliente != 'EX' ? 'disabled': '' }}></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="total_flete" value="{{ $encabezado->fletes }}" {{ $encabezado->tipo_cliente != 'EX' ? 'disabled': '' }}></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="total_subtotal"  value="{{ $encabezado->subtotal }}" disabled></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="total_iva" value="{{ $encabezado->iva }}" disabled></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="total_factura" value="{{ $encabezado->subtotal + $encabezado->iva  - $encabezado->retefte }}" disabled></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="total_seguro" value="{{ $factura->SEGUROS }}" {{ $factura->TIPOCLIENTE != 'EX' ? 'disabled': '' }}></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="total_flete" value="{{ $factura->FLETES }}" {{ $factura->TIPOCLIENTE != 'EX' ? 'disabled': '' }}></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="total_subtotal"  value="{{ $factura->SUBTOTAL }}" disabled></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="total_iva" value="{{ $factura->IVA }}" disabled></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="total_factura" value="{{ $factura->subtotal + $factura->iva  - $factura->RTEFTE }}" disabled></td>
                             </tr>
                         </tbody>
                     </table>

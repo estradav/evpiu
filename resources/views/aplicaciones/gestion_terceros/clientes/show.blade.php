@@ -186,7 +186,7 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <b>GRAN CONTRIBUYENTE:</b>
-                                                    @if($cliente->GRANCONTRIBUYENTE == null || 0)
+                                                    @if($cliente->GRAN_CONTRIBUYENTE == null || 0)
                                                         <label class="text-danger">NO</label>
                                                     @else
                                                         <label class="text-success">SI</label>
@@ -195,7 +195,7 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <b>RESPOSABLE IVA:</b>
-                                                    @if($cliente->RESPONSABLEIVA == null || 0)
+                                                    @if($cliente->RESPONSABLE_IVA == null || 0)
                                                         <label class="text-danger">NO</label>
                                                     @else
                                                         <label class="text-success">SI</label>
@@ -203,22 +203,22 @@
                                                     @can('editar_info_cliente') <a href="javascript:void(0)" id="change_responsable_iva"><i class="fas fa-pen-square"></i></a>  @endcan
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>RESPOSABLE FE:</b> <label> {{$cliente->RESPONSABLEFE}} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_responsable_fe"><i class="fas fa-pen-square"></i></a> @endcan</label>
+                                                    <b>RESPOSABLE FE:</b> <label> {{$cliente->RESPONSABLE_FE}} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_responsable_fe"><i class="fas fa-pen-square"></i></a> @endcan</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>TELEFONO FE:</b> <label> {{ $cliente->TELFE }} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_tel_fe"><i class="fas fa-pen-square"></i></a> @endcan</label>
+                                                    <b>TELEFONO FE:</b> <label> {{ $cliente->TEL_FE }} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_tel_fe"><i class="fas fa-pen-square"></i></a> @endcan</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>COD. CIUDAD EXT:</b> <label> {{ $cliente->CIUDADEXT }} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_ciudad_ext"><i class="fas fa-pen-square"></i></a> @endcan</label>
+                                                    <b>COD. CIUDAD EXT:</b> <label> {{ $cliente->CIUDAD_EXT }} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_ciudad_ext"><i class="fas fa-pen-square"></i></a> @endcan</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <b>GRUPO ECONOMICO:</b><label> {{ $cliente->GRUPOECONOMICO }} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_grupo_economico"><i class="fas fa-pen-square"></i></a> @endcan</label>
+                                                    <b>GRUPO ECONOMICO:</b><label> {{ $cliente->GRUPO_ECONOMICO }} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_grupo_economico"><i class="fas fa-pen-square"></i></a> @endcan</label>
                                                 </div>
                                             </div>
                                             <hr>
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <b>CORREOS COPIA:</b> <label> {{ $cliente->CORREOSCOPIA }} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_correos_copia" class="change_correos_copia"><i class="fas fa-pen-square"></i></a> @endcan</label>
+                                                    <b>CORREOS COPIA:</b> <label> {{ $cliente->CORREOS_COPIA }} @can('editar_info_cliente') <a href="javascript:void(0)" id="change_correos_copia" class="change_correos_copia"><i class="fas fa-pen-square"></i></a> @endcan</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1814,7 +1814,7 @@
                 });
 
                 $('#change_correos_copia').on('click',function () {
-                    var correos_copia = @json(trim($cliente->CORREOSCOPIA));
+                    var correos_copia = @json(trim($cliente->CORREOS_COPIA));
 
                     var Array = [];
                     function MailCopy(){
@@ -2166,7 +2166,7 @@
                 $('#change_responsable_fe').on('click',function () {
                     var username = @json(Auth::user()->name);
                     var cliente = @json($cliente->CODIGO_CLIENTE);
-                    var responsable_fe = @json($cliente->RESPONSABLEFE);
+                    var responsable_fe = @json($cliente->RESPONSABLE_FE);
 
                     swal.mixin({
                         icon: 'question',
@@ -2246,7 +2246,7 @@
                 $('#change_tel_fe').on('click',function () {
                     var username = @json(Auth::user()->name);
                     var cliente = @json($cliente->CODIGO_CLIENTE);
-                    var tel_fe = @json($cliente->TELFE);
+                    var tel_fe = @json($cliente->TEL_FE);
 
                     swal.mixin({
                         icon: 'question',
@@ -2326,7 +2326,7 @@
                 $('#change_ciudad_ext').on('click',function () {
                     var username = @json(Auth::user()->name);
                     var cliente = @json($cliente->CODIGO_CLIENTE);
-                    var cod_city_ex = @json($cliente->CIUDADEXT);
+                    var cod_city_ex = @json($cliente->CIUDAD_EXT);
 
                     swal.mixin({
                         icon: 'question',
@@ -2406,7 +2406,7 @@
                 $('#change_grupo_economico').on('click',function () {
                     var username = @json(Auth::user()->name);
                     var cliente = @json($cliente->CODIGO_CLIENTE);
-                    var group_economic = @json($cliente->GRUPOECONOMICO);
+                    var group_economic = @json($cliente->GRUPO_ECONOMICO);
 
                     swal.mixin({
                         icon: 'question',
@@ -2483,10 +2483,11 @@
                     })
                 });
 
+
+
                 $(document).on('click', '#subir_rut', function () {
                     var nit = @json( $cliente->NIT );
                     nit = nit.split('-');
-
 
                     Swal.fire({
                         icon: 'info',

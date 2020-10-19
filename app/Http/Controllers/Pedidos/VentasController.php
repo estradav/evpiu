@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Pedidos;
 
+use App\ClienteMax;
+use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
+use App\MaestroPedido;
 use App\User;
 use Carbon\Carbon;
 use Exception;
@@ -27,17 +30,22 @@ class VentasController extends Controller
     public function index(Request $request){
         if ($request->ajax()){
             if (Auth::user()->hasRole('super-admin')){
-                $data = DB::table('encabezado_pedidos')
-                    ->orderBy('id','desc')
+                $data = EncabezadoPedido::orderBy('id', 'asc')
+                    ->with('cliente' ,'info_area')
                     ->get();
+
             }else{
-                $data = DB::table('encabezado_pedidos')
-                    ->where('CodVendedor', '=', Auth::user()->codvendedor)
+                $data = EncabezadoPedido::where('vendedor_id', auth()->user()->id)
+                    ->with('cliente')
                     ->orderBy('id','desc')
                     ->get();
             }
 
             return Datatables::of($data)
+                ->editColumn('created_at', function ($row){
+                    Carbon::setLocale('es');
+                    return  $row->created_at->format('d M Y h:i a');
+                })
                 ->addColumn('opciones', function($row){
                     return '
                         <div class="dropdown">
@@ -63,45 +71,38 @@ class VentasController extends Controller
     }
 
 
-
     /**
      * Enviar el pedido al area de cartera,
      * evalua si cumple las condiciones para ser enviado
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws Exception
      */
     public function enviar_cartera(Request $request){
         if ($request->ajax()){
             try {
-                $pedido = DB::table('encabezado_pedidos')
-                    ->where('id', '=', $request->id)
-                    ->first();
+                $pedido = EncabezadoPedido::find($request->id);
 
                 if ($pedido->Estado == 0){
                     return response()
                         ->json('Este pedido esta anulado, para poder enviarlo a cartera debe estar en estado borrador', 500);
 
                 } else if ($pedido->Estado == 1){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                           'Estado' => '2'
-                        ]);
+                    $pedido->Estado = 2;
+                    $pedido->save();
 
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido','=',$request->id)
-                        ->update([
-                            'Cartera' => 2
+                    $pedido->info_area()->update([
+                        'Cartera' => 2
                     ]);
-                    return response()->json('Pedido enviado a cartera', 200);
+
+                    return response()
+                        ->json('Pedido enviado a cartera', 200);
 
                 }else if ($pedido->Estado == 2){
                     return response()
                         ->json('Este pedido ya fue enviado a cartera', 500);
 
-                }else if ($pedido->Estado > 3 && $pedido->Estado < 10){
+                }else if ($pedido->Estado > 3 && $pedido->Estado < 11){
                     return response()
                         ->json('Este pedido no puede ser enviado a cartera, por que actualmente lo esta gestionando otra area', 500);
 
@@ -128,16 +129,13 @@ class VentasController extends Controller
     public function anular_pedido(Request $request){
         if ($request->ajax()){
             try {
-                $pedido = DB::table('encabezado_pedidos')
-                    ->where('id', '=', $request->id)
-                    ->first();
+                $pedido = EncabezadoPedido::find($request->id);
 
                 if ($pedido->Estado > 0 && $pedido->Estado <= 5){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => '0'
-                        ]);
+
+                    $pedido->Estado = 0;
+                    $pedido->save();
+
                     return response()
                         ->json('Pedido anulado', 200);
 
@@ -149,7 +147,8 @@ class VentasController extends Controller
                         ->json('Este pedido no puede ser anulado', 500);
                 }
             }catch (Exception $e){
-                return response()->json($e->getMessage(), 500);
+                return response()
+                    ->json($e->getMessage(), 500);
             }
         }
     }
@@ -167,22 +166,22 @@ class VentasController extends Controller
     public function re_abrir_pedido(Request $request){
         if ($request->ajax()){
             try {
-                $pedido = DB::table('encabezado_pedidos')
-                    ->where('id', '=', $request->id)
-                    ->first();
+                $pedido = EncabezadoPedido::find($request->id);
 
                 if ($pedido->Estado == 0){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => '1'
-                        ]);
-                    return response()->json('Pedido actualizado', 200);
+
+                    $pedido->Estado = 1;
+                    $pedido->save();
+
+                    return response()
+                        ->json('Pedido actualizado', 200);
                 }else{
-                    return response()->json('Solo puedes re-abrir pedidos que han sido anulados', 500);
+                    return response()
+                        ->json('Solo puedes re-abrir pedidos que han sido anulados', 500);
                 }
             }catch (Exception $e){
-                return response()->json($e->getMessage(), 500);
+                return response()
+                    ->json($e->getMessage(), 500);
             }
         }
     }
@@ -199,17 +198,13 @@ class VentasController extends Controller
      */
     public function edit($id){
         try {
-            $encabezado = DB::table('encabezado_pedidos')
-                ->where('id','=', $id)
-                ->first();
+            $encabezado = EncabezadoPedido::with('detalle', 'cliente')
+                ->find($id);
 
-            $detalle = DB::table('detalle_pedidos')
-                ->where('idPedido','=',$id)
-                ->get();
-
-            if ($encabezado->Estado == 0 || $encabezado->Estado == 1 || $encabezado->Estado == 3 || $encabezado->Estado == 5 || $encabezado->Estado == 7 || $encabezado->Estado == 9){
+            if ($encabezado->Estado == 0 || $encabezado->Estado == 1 || $encabezado->Estado == 3 || $encabezado->Estado == 5 || $encabezado->Estado == 7 || $encabezado->Estado == 9 ||  $encabezado->Estado == 12){
                 return view('aplicaciones.pedidos.ventas.edit',
-                    compact('encabezado', 'detalle'));
+                    compact('encabezado'));
+
             }else{
                 return redirect()
                     ->back()
@@ -243,7 +238,7 @@ class VentasController extends Controller
                 $query = $request->get('query');
                 $results = array();
                 $queries = DB::connection('MAX')
-                    ->table('CIEV_V_productos')
+                    ->table('CIEV_V_ProductosVentas')
                     ->where('Descripcion', 'LIKE', '%'.$query.'%')
                     ->orWhere('Pieza', 'LIKE', '%'.$query.'%')
                     ->take(20)
@@ -300,6 +295,37 @@ class VentasController extends Controller
 
 
     /**
+     * Listado de marcas
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function listar_marcas(Request $request){
+        if ($request->ajax()){
+            try {
+                $query = $request->get('query');
+                $results = array();
+                $queries = DB::connection('EVPIUM')
+                    ->table('Marcas')
+                    ->where('NombreMarca', 'LIKE', $query.'%')
+                    ->take(10)
+                    ->get();
+
+                foreach ($queries as $q) {
+                    $results[] = [
+                        'value' =>  trim($q->NombreMarca)
+                    ];
+                }
+                return response()->json($results, 200);
+            }catch (Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    /**
      * Actualizacion de pedido luego de la edicion
      *
      * @param Request $request
@@ -334,8 +360,7 @@ class VentasController extends Controller
                         ->json('Debe agregar al menos un producto antes de guardar el pedido', 500);
                 }else{
                     if(sizeof($destino_produccion) == sizeof($detalle)){
-                        DB::table('encabezado_pedidos')
-                            ->where('id','=', $encabezado['id'])
+                        EncabezadoPedido::where('id', $encabezado['id'])
                             ->update([
                                 'OrdenCompra'       =>  $encabezado['oc'],
                                 'Descuento'         =>  $encabezado['descuento'],
@@ -351,8 +376,8 @@ class VentasController extends Controller
                             ]);
 
                         if (!empty($encabezado['id_maestro'])){
-                            DB::table('maestro_pedidos')
-                                ->where('id', '=', $encabezado['id_maestro'])
+
+                            MaestroPedido::where('id', $encabezado['id_maestro'])
                                 ->update([
                                     'id_bodega'     => null,
                                     'id_produccion' => $encabezado['id'],
@@ -381,14 +406,18 @@ class VentasController extends Controller
                                     ->update([
                                         'idPedido'          =>  $encabezado['id'],
                                         'CodigoProducto'    =>  $det['cod'] ,
+                                        'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                         'Descripcion'       =>  $det['producto'],
                                         'Arte'              =>  $det['arte'],
+                                        'Marca'             =>  $det['marca'],
                                         'Notas'             =>  $det['notas'],
+                                        'R_N'               =>  $det['n_r'],
                                         'Unidad'            =>  $det['unidad'],
                                         'Precio'            =>  $det['precio'],
                                         'Cantidad'          =>  $det['cantidad'],
                                         'Total'             =>  $det['total'],
                                         'Destino'           =>  1,
+
                                     ]);
 
                                 array_push($id_no_borrar, intval($det['id']));
@@ -398,15 +427,17 @@ class VentasController extends Controller
                                     ->insertGetId([
                                         'idPedido'          =>  $encabezado['id'],
                                         'CodigoProducto'    =>  $det['cod'] ,
+                                        'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                         'Descripcion'       =>  $det['producto'],
                                         'Arte'              =>  $det['arte'],
+                                        'Marca'             =>  $det['marca'],
                                         'Notas'             =>  $det['notas'],
+                                        'R_N'               =>  $det['n_r'],
                                         'Unidad'            =>  $det['unidad'],
                                         'Precio'            =>  $det['precio'],
                                         'Cantidad'          =>  $det['cantidad'],
                                         'Total'             =>  $det['total'],
                                         'Destino'           =>  1,
-                                        'R_N'               =>  $det['n_r'],
 
                                     ]);
                                 array_push($id_no_borrar, intval($id));
@@ -467,9 +498,12 @@ class VentasController extends Controller
                                     ->update([
                                         'idPedido'          =>  $encabezado['id'],
                                         'CodigoProducto'    =>  $det['cod'] ,
+                                        'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                         'Descripcion'       =>  $det['producto'],
                                         'Arte'              =>  $det['arte'],
+                                        'Marca'             =>  $det['marca'],
                                         'Notas'             =>  $det['notas'],
+                                        'R_N'               =>  $det['n_r'],
                                         'Unidad'            =>  $det['unidad'],
                                         'Precio'            =>  $det['precio'],
                                         'Cantidad'          =>  $det['cantidad'],
@@ -484,15 +518,17 @@ class VentasController extends Controller
                                     ->insertGetId([
                                         'idPedido'          =>  $encabezado['id'],
                                         'CodigoProducto'    =>  $det['cod'] ,
+                                        'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                         'Descripcion'       =>  $det['producto'],
                                         'Arte'              =>  $det['arte'],
+                                        'Marca'             =>  $det['marca'],
                                         'Notas'             =>  $det['notas'],
+                                        'R_N'               =>  $det['n_r'],
                                         'Unidad'            =>  $det['unidad'],
                                         'Precio'            =>  $det['precio'],
                                         'Cantidad'          =>  $det['cantidad'],
                                         'Total'             =>  $det['total'],
                                         'Destino'           =>  2,
-                                        'R_N'               =>  $det['n_r'],
 
                                     ]);
                                 array_push($id_no_borrar, intval($id));
@@ -553,9 +589,12 @@ class VentasController extends Controller
                                     ->update([
                                         'idPedido'          =>  $encabezado['id'],
                                         'CodigoProducto'    =>  $det['cod'] ,
+                                        'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                         'Descripcion'       =>  $det['producto'],
                                         'Arte'              =>  $det['arte'],
+                                        'Marca'             =>  $det['marca'],
                                         'Notas'             =>  $det['notas'],
+                                        'R_N'               =>  $det['n_r'],
                                         'Unidad'            =>  $det['unidad'],
                                         'Precio'            =>  $det['precio'],
                                         'Cantidad'          =>  $det['cantidad'],
@@ -570,15 +609,17 @@ class VentasController extends Controller
                                     ->insertGetId([
                                         'idPedido'          =>  $encabezado['id'],
                                         'CodigoProducto'    =>  $det['cod'] ,
+                                        'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                         'Descripcion'       =>  $det['producto'],
                                         'Arte'              =>  $det['arte'],
+                                        'Marca'             =>  $det['marca'],
                                         'Notas'             =>  $det['notas'],
+                                        'R_N'               =>  $det['n_r'],
                                         'Unidad'            =>  $det['unidad'],
                                         'Precio'            =>  $det['precio'],
                                         'Cantidad'          =>  $det['cantidad'],
                                         'Total'             =>  $det['total'],
                                         'Destino'           =>  3,
-                                        'R_N'               =>  $det['n_r'],
 
                                     ]);
                                 array_push($id_no_borrar, intval($id));
@@ -616,9 +657,12 @@ class VentasController extends Controller
                                             ->update([
                                                 'idPedido'          =>  $maestro->id_produccion,
                                                 'CodigoProducto'    =>  $det['cod'] ,
+                                                'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                                 'Descripcion'       =>  $det['producto'],
                                                 'Arte'              =>  $det['arte'],
+                                                'Marca'             =>  $det['marca'],
                                                 'Notas'             =>  $det['notas'],
+                                                'R_N'               =>  $det['n_r'],
                                                 'Unidad'            =>  $det['unidad'],
                                                 'Precio'            =>  $det['precio'],
                                                 'Cantidad'          =>  $det['cantidad'],
@@ -630,15 +674,17 @@ class VentasController extends Controller
                                             ->insertGetId([
                                                 'idPedido'          =>  $maestro->id_produccion,
                                                 'CodigoProducto'    =>  $det['cod'] ,
+                                                'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                                 'Descripcion'       =>  $det['producto'],
                                                 'Arte'              =>  $det['arte'],
+                                                'Marca'             =>  $det['marca'],
                                                 'Notas'             =>  $det['notas'],
+                                                'R_N'               =>  $det['n_r'],
                                                 'Unidad'            =>  $det['unidad'],
                                                 'Precio'            =>  $det['precio'],
                                                 'Cantidad'          =>  $det['cantidad'],
                                                 'Total'             =>  $det['total'],
                                                 'Destino'           =>  1,
-                                                'R_N'               =>  $det['n_r'],
                                             ]);
                                     }
                                 }
@@ -672,18 +718,19 @@ class VentasController extends Controller
                                 foreach ($destino_produccion as $item){
                                     DB::table('detalle_pedidos')
                                         ->insert([
-                                            'idPedido'         => $id_pedido,
-                                            'CodigoProducto'   => $item['cod'],
-                                            'Descripcion'      => $item['producto'],
-                                            'Arte'             => $item['arte'],
-                                            'Notas'            => $item['notas'],
-                                            'Unidad'           => $item['unidad'],
-                                            'Cantidad'         => $item['cantidad'],
-                                            'Precio'           => $item['precio'],
-                                            'Total'            => $item['total'],
-                                            'Destino'          => 1,
-                                            'R_N'              => $item['n_r'],
-                                            'created_at'       => Carbon::now(),
+                                            'idPedido'          =>  $id_pedido,
+                                            'CodigoProducto'    =>  $item['cod'] ,
+                                            'Cod_prod_cliente'  =>  $item['cod_prod_cliente'],
+                                            'Descripcion'       =>  $item['producto'],
+                                            'Arte'              =>  $item['arte'],
+                                            'Marca'             =>  $item['marca'],
+                                            'Notas'             =>  $item['notas'],
+                                            'R_N'               =>  $item['n_r'],
+                                            'Unidad'            =>  $item['unidad'],
+                                            'Precio'            =>  $item['precio'],
+                                            'Cantidad'          =>  $item['cantidad'],
+                                            'Total'             =>  $item['total'],
+                                            'Destino'           =>  1,
                                     ]);
                                 }
 
@@ -751,9 +798,12 @@ class VentasController extends Controller
                                             ->update([
                                                 'idPedido'          =>  $maestro->id_bodega,
                                                 'CodigoProducto'    =>  $det['cod'] ,
+                                                'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                                 'Descripcion'       =>  $det['producto'],
                                                 'Arte'              =>  $det['arte'],
+                                                'Marca'             =>  $det['marca'],
                                                 'Notas'             =>  $det['notas'],
+                                                'R_N'               =>  $det['n_r'],
                                                 'Unidad'            =>  $det['unidad'],
                                                 'Precio'            =>  $det['precio'],
                                                 'Cantidad'          =>  $det['cantidad'],
@@ -765,15 +815,17 @@ class VentasController extends Controller
                                             ->insertGetId([
                                                 'idPedido'          =>  $maestro->id_bodega,
                                                 'CodigoProducto'    =>  $det['cod'] ,
+                                                'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                                 'Descripcion'       =>  $det['producto'],
                                                 'Arte'              =>  $det['arte'],
+                                                'Marca'             =>  $det['marca'],
                                                 'Notas'             =>  $det['notas'],
+                                                'R_N'               =>  $det['n_r'],
                                                 'Unidad'            =>  $det['unidad'],
                                                 'Precio'            =>  $det['precio'],
                                                 'Cantidad'          =>  $det['cantidad'],
                                                 'Total'             =>  $det['total'],
                                                 'Destino'           =>  2,
-                                                'R_N'               =>  $det['n_r'],
                                             ]);
                                     }
                                 }
@@ -806,18 +858,20 @@ class VentasController extends Controller
                                 foreach ($destino_bodega as $item){
                                     DB::table('detalle_pedidos')
                                         ->insert([
-                                            'idPedido'         => $id_pedido,
-                                            'CodigoProducto'   => $item['cod'],
-                                            'Descripcion'      => $item['producto'],
-                                            'Arte'             => $item['arte'],
-                                            'Notas'            => $item['notas'],
-                                            'Unidad'           => $item['unidad'],
-                                            'Cantidad'         => $item['cantidad'],
-                                            'Precio'           => $item['precio'],
-                                            'Total'            => $item['total'],
-                                            'Destino'          => 2,
-                                            'R_N'              => $item['n_r'],
-                                            'created_at'       => Carbon::now(),
+                                            'idPedido'          => $id_pedido,
+                                            'CodigoProducto'    =>  $item['cod'] ,
+                                            'Cod_prod_cliente'  =>  $item['cod_prod_cliente'],
+                                            'Descripcion'       =>  $item['producto'],
+                                            'Arte'              =>  $item['arte'],
+                                            'Marca'             =>  $item['marca'],
+                                            'Notas'             =>  $item['notas'],
+                                            'R_N'               =>  $item['n_r'],
+                                            'Unidad'            =>  $item['unidad'],
+                                            'Precio'            =>  $item['precio'],
+                                            'Cantidad'          =>  $item['cantidad'],
+                                            'Total'             =>  $item['total'],
+                                            'Destino'           =>  2,
+                                            'created_at'        => Carbon::now(),
                                         ]);
                                 }
 
@@ -885,9 +939,12 @@ class VentasController extends Controller
                                             ->update([
                                                 'idPedido'          =>  $maestro->id_troqueles,
                                                 'CodigoProducto'    =>  $det['cod'] ,
+                                                'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                                 'Descripcion'       =>  $det['producto'],
                                                 'Arte'              =>  $det['arte'],
+                                                'Marca'             =>  $det['marca'],
                                                 'Notas'             =>  $det['notas'],
+                                                'R_N'               =>  $det['n_r'],
                                                 'Unidad'            =>  $det['unidad'],
                                                 'Precio'            =>  $det['precio'],
                                                 'Cantidad'          =>  $det['cantidad'],
@@ -899,15 +956,17 @@ class VentasController extends Controller
                                             ->insertGetId([
                                                 'idPedido'          =>  $maestro->id_troqueles,
                                                 'CodigoProducto'    =>  $det['cod'] ,
+                                                'Cod_prod_cliente'  =>  $det['cod_prod_cliente'],
                                                 'Descripcion'       =>  $det['producto'],
                                                 'Arte'              =>  $det['arte'],
+                                                'Marca'             =>  $det['marca'],
                                                 'Notas'             =>  $det['notas'],
+                                                'R_N'               =>  $det['n_r'],
                                                 'Unidad'            =>  $det['unidad'],
                                                 'Precio'            =>  $det['precio'],
                                                 'Cantidad'          =>  $det['cantidad'],
                                                 'Total'             =>  $det['total'],
                                                 'Destino'           =>  3,
-                                                'R_N'               =>  $det['n_r'],
                                             ]);
                                     }
                                 }
@@ -941,17 +1000,19 @@ class VentasController extends Controller
                                     DB::table('detalle_pedidos')
                                         ->insert([
                                             'idPedido'         => $id_pedido,
-                                            'CodigoProducto'   => $item['cod'],
-                                            'Descripcion'      => $item['producto'],
-                                            'Arte'             => $item['arte'],
-                                            'Notas'            => $item['notas'],
-                                            'Unidad'           => $item['unidad'],
-                                            'Cantidad'         => $item['cantidad'],
-                                            'Precio'           => $item['precio'],
-                                            'Total'            => $item['total'],
-                                            'Destino'          => 3,
-                                            'R_N'              => $item['n_r'],
-                                            'created_at'       => Carbon::now(),
+                                            'CodigoProducto'    =>  $item['cod'] ,
+                                            'Cod_prod_cliente'  =>  $item['cod_prod_cliente'],
+                                            'Descripcion'       =>  $item['producto'],
+                                            'Arte'              =>  $item['arte'],
+                                            'Marca'             =>  $item['marca'],
+                                            'Notas'             =>  $item['notas'],
+                                            'R_N'               =>  $item['n_r'],
+                                            'Unidad'            =>  $item['unidad'],
+                                            'Precio'            =>  $item['precio'],
+                                            'Cantidad'          =>  $item['cantidad'],
+                                            'Total'             =>  $item['total'],
+                                            'Destino'           =>  3,
+                                            'created_at'        => Carbon::now(),
                                         ]);
                                 }
 
@@ -1027,21 +1088,11 @@ class VentasController extends Controller
     public function ver_pedido_pdf(Request $request){
         if ($request->ajax()){
             try {
-                $encabezado = DB::table('encabezado_pedidos')
-                    ->join('pedidos_detalles_area','encabezado_pedidos.id','=','pedidos_detalles_area.idPedido')
-                    ->where('id', '=', $request->id)
-                    ->first();
-
-
-                $detalle = DB::table('detalle_pedidos')
-                    ->where('idPedido', '=', $request->id)
-                    ->get();
+                $pedido = EncabezadoPedido::with('info_area', 'detalle', 'cliente', 'vendedor')
+                    ->find($request->id);
 
                 return response()
-                    ->json([
-                        'encabezado' => $encabezado,
-                        'detalle' => $detalle
-                    ], 200);
+                    ->json($pedido, 200);
 
             }catch (Exception $e){
                 return response()
@@ -1350,13 +1401,7 @@ class VentasController extends Controller
                             ->insertGetId([
                                 'OrdenCompra'       => $request->encabezado['oc'],
                                 'CodCliente'        => $request->encabezado['cod_cliente'],
-                                'NombreCliente'     => $request->encabezado['nombre_cliente'],
-                                'DireccionCliente'  => $request->encabezado['direccion'],
-                                'Ciudad'            => $request->encabezado['ciudad'],
-                                'Telefono'          => $request->encabezado['telefono'],
-                                'CodVendedor'       => $request->encabezado['vendedor'],
-                                'NombreVendedor'    => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
-                                'CondicionPago'     => $request->encabezado['condicion_pago'],
+                                'vendedor_id'       => $request->encabezado['vendedor'],
                                 'Descuento'         => $request->encabezado['descuento'],
                                 'Iva'               => $request->encabezado['tiene_iva'],
                                 'Estado'            => 1,
@@ -1378,31 +1423,34 @@ class VentasController extends Controller
                             ]);
 
                         foreach ($produccion as $item){
-                            DB::table('detalle_pedidos')->insert([
-                                'idPedido'         => $id_pedido,
-                                'CodigoProducto'   => $item['cod'],
-                                'Descripcion'      => $item['producto'],
-                                'Arte'             => $item['arte'],
-                                'Notas'            => $item['notas'],
-                                'Unidad'           => $item['unidad'],
-                                'Cantidad'         => $item['cantidad'],
-                                'Precio'           => $item['precio'],
-                                'Total'            => $item['total'],
-                                'Destino'          => 1,
-                                'R_N'              => $item['n_r'],
-                                'created_at'       => Carbon::now(),
-                            ]);
+                            DB::table('detalle_pedidos')
+                                ->insert([
+                                    'idPedido'         => $id_pedido,
+                                    'CodigoProducto'   => $item['cod'],
+                                    'Cod_prod_cliente' => $item['cod_prod_cliente'],
+                                    'Descripcion'      => $item['producto'],
+                                    'Arte'             => $item['arte'],
+                                    'Marca'            => $item['marca'],
+                                    'Notas'            => $item['notas'],
+                                    'Unidad'           => $item['unidad'],
+                                    'Cantidad'         => $item['cantidad'],
+                                    'Precio'           => $item['precio'],
+                                    'Total'            => $item['total'],
+                                    'Destino'          => 1,
+                                    'R_N'              => $item['n_r'],
+                                    'created_at'       => Carbon::now(),
+                                ]);
                         }
 
-                       /* DB::table('pedidos_log')
+                        DB::table('pedidos_log')
                             ->insert([
                                 'id_pedido'     =>  $id_pedido,
                                 'area'          =>  'VENTAS',
                                 'detalle'       =>  'creo un pedido para produccion',
-                                'usuario'       =>  Auth::user()->username,
+                                'usuario'       =>  auth()->user()->id,
                                 'created_at'    =>  Carbon::now(),
                                 'updated_at'    =>  Carbon::now()
-                            ]);*/
+                            ]);
 
                         DB::table('pedidos_detalles_area')
                             ->insert([
@@ -1417,13 +1465,7 @@ class VentasController extends Controller
                             ->insertGetId([
                                 'OrdenCompra'       => $request->encabezado['oc'],
                                 'CodCliente'        => $request->encabezado['cod_cliente'],
-                                'NombreCliente'     => $request->encabezado['nombre_cliente'],
-                                'DireccionCliente'  => $request->encabezado['direccion'],
-                                'Ciudad'            => $request->encabezado['ciudad'],
-                                'Telefono'          => $request->encabezado['telefono'],
-                                'CodVendedor'       => $request->encabezado['vendedor'],
-                                'NombreVendedor'    => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
-                                'CondicionPago'     => $request->encabezado['condicion_pago'],
+                                'vendedor_id'       => $request->encabezado['vendedor'],
                                 'Descuento'         => $request->encabezado['descuento'],
                                 'Iva'               => $request->encabezado['tiene_iva'],
                                 'Estado'            => 1,
@@ -1445,31 +1487,34 @@ class VentasController extends Controller
                             ]);
 
                         foreach ($bodega as $item){
-                            DB::table('detalle_pedidos')->insert([
-                                'idPedido'         => $id_pedido,
-                                'CodigoProducto'   => $item['cod'],
-                                'Descripcion'      => $item['producto'],
-                                'Arte'             => $item['arte'],
-                                'Notas'            => $item['notas'],
-                                'Unidad'           => $item['unidad'],
-                                'Cantidad'         => $item['cantidad'],
-                                'Precio'           => $item['precio'],
-                                'Total'            => $item['total'],
-                                'Destino'          => 2,
-                                'R_N'              => $item['n_r'],
-                                'created_at'       => Carbon::now(),
-                            ]);
+                            DB::table('detalle_pedidos')
+                                ->insert([
+                                    'idPedido'         => $id_pedido,
+                                    'CodigoProducto'   => $item['cod'],
+                                    'Cod_prod_cliente' => $item['cod_prod_cliente'],
+                                    'Descripcion'      => $item['producto'],
+                                    'Arte'             => $item['arte'],
+                                    'Marca'            => $item['marca'],
+                                    'Notas'            => $item['notas'],
+                                    'Unidad'           => $item['unidad'],
+                                    'Cantidad'         => $item['cantidad'],
+                                    'Precio'           => $item['precio'],
+                                    'Total'            => $item['total'],
+                                    'Destino'          => 2,
+                                    'R_N'              => $item['n_r'],
+                                    'created_at'       => Carbon::now(),
+                                ]);
                         }
 
-                    /*    DB::table('pedidos_log')
+                        DB::table('pedidos_log')
                             ->insert([
                                 'id_pedido'     =>  $id_pedido,
                                 'area'          =>  'VENTAS',
                                 'detalle'       =>  'creo un pedido para bodega',
-                                'usuario'       =>  Auth::user()->username,
+                                'usuario'       =>  auth()->user()->id,
                                 'created_at'    =>  Carbon::now(),
                                 'updated_at'    =>  Carbon::now()
-                            ]);*/
+                            ]);
 
                         DB::table('pedidos_detalles_area')
                             ->insert([
@@ -1485,13 +1530,7 @@ class VentasController extends Controller
                             ->insertGetId([
                                 'OrdenCompra'       => $request->encabezado['oc'],
                                 'CodCliente'        => $request->encabezado['cod_cliente'],
-                                'NombreCliente'     => $request->encabezado['nombre_cliente'],
-                                'DireccionCliente'  => $request->encabezado['direccion'],
-                                'Ciudad'            => $request->encabezado['ciudad'],
-                                'Telefono'          => $request->encabezado['telefono'],
-                                'CodVendedor'       => $request->encabezado['vendedor'],
-                                'NombreVendedor'    => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
-                                'CondicionPago'     => $request->encabezado['condicion_pago'],
+                                'vendedor_id'       => $request->encabezado['vendedor'],
                                 'Descuento'         => $request->encabezado['descuento'],
                                 'Iva'               => $request->encabezado['tiene_iva'],
                                 'Estado'            => 1,
@@ -1513,31 +1552,33 @@ class VentasController extends Controller
                             ]);
 
                         foreach ($troqueles as $item){
-                            DB::table('detalle_pedidos')->insert([
-                                'idPedido'         => $id_pedido,
-                                'CodigoProducto'   => $item['cod'],
-                                'Descripcion'      => $item['producto'],
-                                'Arte'             => $item['arte'],
-                                'Notas'            => $item['notas'],
-                                'Unidad'           => $item['unidad'],
-                                'Cantidad'         => $item['cantidad'],
-                                'Precio'           => $item['precio'],
-                                'Total'            => $item['total'],
-                                'Destino'          => 3,
-                                'R_N'              => $item['n_r'],
-                                'created_at'       => Carbon::now(),
-                            ]);
+                            DB::table('detalle_pedidos')
+                                ->insert([
+                                    'idPedido'         => $id_pedido,
+                                    'CodigoProducto'   => $item['cod'],
+                                    'Cod_prod_cliente' => $item['cod_prod_cliente'],
+                                    'Descripcion'      => $item['producto'],
+                                    'Arte'             => $item['arte'],
+                                    'Marca'            => $item['marca'],
+                                    'Notas'            => $item['notas'],
+                                    'Unidad'           => $item['unidad'],
+                                    'Cantidad'         => $item['cantidad'],
+                                    'Precio'           => $item['precio'],
+                                    'Total'            => $item['total'],
+                                    'Destino'          => 3,
+                                    'R_N'              => $item['n_r'],
+                                    'created_at'       => Carbon::now(),
+                                ]);
                         }
-
-                       /* DB::table('pedidos_log')
+                        DB::table('pedidos_log')
                             ->insert([
                                 'id_pedido'     =>  $id_pedido,
                                 'area'          =>  'VENTAS',
                                 'detalle'       =>  'creo un pedido para troqueles',
-                                'usuario'       =>  Auth::user()->username,
+                                'usuario'       =>  auth()->user()->id,
                                 'created_at'    =>  Carbon::now(),
                                 'updated_at'    =>  Carbon::now()
-                            ]);*/
+                            ]);
 
 
 
@@ -1562,18 +1603,30 @@ class VentasController extends Controller
     }
 
 
+
+
+    /**
+     * Permite clonar un pedido ya existente
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
     public function clonar_pedido(Request $request){
         if ($request->ajax()) {
             DB::beginTransaction();
             try{
-                $id_origen = $request->get('id');
+                $result = $request->result['value'][0];
+
 
                 $encabezado_origen = DB::table('encabezado_pedidos')
-                    ->where('id', '=', $id_origen)->first();
+                    ->where('id', '=', $result['id'])
+                    ->first();
 
 
                 $detalle_origen =  DB::table('detalle_pedidos')
-                    ->where('idPedido', '=', $id_origen)->get();
+                    ->where('idPedido', '=', $result['id'])
+                    ->get();
 
 
                 $maestro = DB::table('maestro_pedidos')
@@ -1585,15 +1638,9 @@ class VentasController extends Controller
 
                 $encabezado_destino = DB::table('encabezado_pedidos')
                     ->insertGetId([
-                       'OrdenCompra'        =>  $encabezado_origen->OrdenCompra,
-                        'CodCliente'        =>  $encabezado_origen->CodCliente,
-                        'NombreCliente'     =>  $encabezado_origen->NombreCliente,
-                        'DireccionCliente'  =>  $encabezado_origen->DireccionCliente,
-                        'Ciudad'            =>  $encabezado_origen->Ciudad,
-                        'Telefono'          =>  $encabezado_origen->Telefono,
-                        'CodVendedor'       =>  $encabezado_origen->CodVendedor,
-                        'NombreVendedor'    =>  $encabezado_origen->NombreVendedor,
-                        'CondicionPago'     =>  $encabezado_origen->CondicionPago,
+                        'OrdenCompra'       =>  $encabezado_origen->OrdenCompra,
+                        'CodCliente'        =>  $result['cod_cliente'],
+                        'vendedor_id'       =>  auth()->user()->id,
                         'Descuento'         =>  $encabezado_origen->Descuento,
                         'Iva'               =>  $encabezado_origen->Iva,
                         'Estado'            =>  '1',
@@ -1617,31 +1664,58 @@ class VentasController extends Controller
                         'updated_at'   =>  Carbon::now(),
                     ]);
 
-                foreach ($detalle_origen as $detalle){
+                foreach ($detalle_origen as $item){
+
                     DB::table('detalle_pedidos')
                         ->insert([
-                            'idPedido'          =>  $encabezado_destino,
-                            'CodigoProducto'    =>  $detalle->CodigoProducto,
-                            'Descripcion'       =>  $detalle->Descripcion,
-                            'Arte'              =>  $detalle->Arte,
-                            'Notas'             =>  $detalle->Notas,
-                            'Unidad'            =>  $detalle->Unidad,
-                            'Cantidad'          =>  $detalle->Cantidad,
-                            'Precio'            =>  $detalle->Precio,
-                            'Total'             =>  $detalle->Total,
-                            'Destino'           =>  $detalle->Destino,
-                            'R_N'               =>  $detalle->R_N,
-                            'Estado'            =>  $detalle->Estado ?? null,
-                            'created_at'        =>  Carbon::now(),
-                            'updated_at'        =>  Carbon::now()
+                            'idPedido'         => $encabezado_destino,
+                            'CodigoProducto'   => $item->CodigoProducto,
+                            'Cod_prod_cliente' => $item->Cod_prod_cliente,
+                            'Descripcion'      => $item->Descripcion,
+                            'Arte'             => $item->Arte,
+                            'Marca'            => $item->Marca,
+                            'Notas'            => $item->Notas,
+                            'Unidad'           => $item->Unidad,
+                            'Cantidad'         => $item->Cantidad,
+                            'Precio'           => $item->Precio,
+                            'Total'            => $item->Total,
+                            'Destino'          => $item->Destino,
+                            'R_N'              => $item->R_N,
+                            'created_at'       => Carbon::now(),
+                            'updated_at'       => Carbon::now()
                         ]);
                 }
-
                 DB::commit();
                 return response()->json($encabezado_destino, 200);
 
             }catch (Exception $e){
                 DB::rollBack();
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+
+    public function listar_clientes(Request $request){
+        if ($request->ajax()){
+            try {
+                $query = $request->get('query');
+                $results = array();
+
+                $queries = ClienteMax::where('RAZON_SOCIAL', 'LIKE', '%'.$query.'%')
+                    ->orWhere('CODIGO_CLIENTE', 'LIKE', '%'.$query.'%')
+                    ->take(20)
+                    ->get();
+
+                foreach ($queries as $q) {
+                    $results[] = [
+                        'value'     => trim($q->RAZON_SOCIAL),
+                        'code'      => trim($q->CODIGO_CLIENTE),
+                    ];
+                }
+                return response()->json($results, 200);
+            }catch (\Exception $e){
                 return response()->json($e->getMessage(), 500);
             }
         }

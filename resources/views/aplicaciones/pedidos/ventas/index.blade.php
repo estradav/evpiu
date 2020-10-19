@@ -37,6 +37,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>OC</th>
+                                        <th>PED MAX</th>
                                         <th>COD CLIENTE</th>
                                         <th>NOMBRE CLIENTE</th>
                                         <th>CONDICION PAGO</th>

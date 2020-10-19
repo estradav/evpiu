@@ -14,9 +14,9 @@
                     <div class="page-title-icon">
                         <i class="pe-7s-note2 icon-gradient bg-mean-fruit"></i>
                     </div>
-                    <div>Pedido {{ $encabezado->id }}
+                    <div>Pedido ~ {{ $encabezado->id }}
                         <div class="page-title-subheading">
-                            {{ $encabezado->NombreCliente }}
+                            {{ $encabezado->cliente->RAZON_SOCIAL }}
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Cliente</span>
                                         </div>
-                                        <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" value="{{ $encabezado->NombreCliente }}" disabled>
+                                        <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" value="{{ $encabezado->cliente->RAZON_SOCIAL }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -70,7 +70,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Direccion</span>
                                         </div>
-                                        <input type="text" class="form-control" id="direccion" name="direccion" value="{{ $encabezado->DireccionCliente }}" disabled>
+                                        <input type="text" class="form-control" id="direccion" name="direccion" value="{{ $encabezado->cliente->DIRECCION }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -78,7 +78,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Ciudad</span>
                                         </div>
-                                        <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $encabezado->Ciudad }}" disabled>
+                                        <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $encabezado->cliente->CIUDAD }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -86,7 +86,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Telefono</span>
                                         </div>
-                                        <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $encabezado->Telefono }}" disabled>
+                                        <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $encabezado->cliente->TEL1 }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -95,7 +95,7 @@
                                             <span class="input-group-text">Condicion pago</span>
                                         </div>
                                         <select name="condicion_pago" id="condicion_pago" class="form-control" disabled >
-                                            <option value="{{ $encabezado->CondicionPago }}">{{ $encabezado->CondicionPago }}</option>
+                                            <option value="{{ $encabezado->cliente->PLAZO }}">{{ $encabezado->cliente->PLAZO }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -141,8 +141,6 @@
                                             <th>PRODUCTO</th>
                                             <th>DESTINO</th>
                                             <th>N/R</th>
-                                            <th>ARTE</th>
-                                            <th>NOTAS</th>
                                             <th>U/M</th>
                                             <th>PRECIO</th>
                                             <th>CANT</th>
@@ -171,12 +169,6 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" id="arte_item" name="arte_item" class="form-control form-control-sm" onkeyup="this.value=this.value.toUpperCase();">
-                                            </td>
-                                            <td>
-                                                <input type="text" id="notas_item" name="notas_item" class="form-control form-control-sm" onkeyup="this.value=this.value.toUpperCase();">
-                                            </td>
-                                            <td>
                                                 <select name="um_item" id="um_item" class="form-control form-control-sm">
                                                     <option value="Unidad" selected >Unidad</option>
                                                     <option value="Kilos">Kilos</option>
@@ -193,12 +185,23 @@
                                                 <input type="text" id="total_item" name="total_item" class="form-control form-control-sm" readonly="readonly" value="0">
                                             </td>
                                             <td>
+                                                <button type="button" class="btn btn-info btn-sm" id="add_info" disabled><i class="fa fa-comment"></i></button>
                                                 <button type="submit" class="btn btn-success btn-sm" id="agregar_item" disabled><i class="fa fa-plus"></i></button>
                                             </td>
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <td colspan="10"></td>
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <td colspan="10"></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <input type="hidden" id="notas_item">
+                            <input type="hidden" id="arte_item">
+                            <input type="hidden" id="marca_item">
+                            <input type="hidden" id="cod_cliente_item">
                         </form>
 
                         <div class="table-responsive">
@@ -206,10 +209,12 @@
                                 <thead>
                                     <tr>
                                         <th>COD</th>
+                                        <th>COD CLIENTE	</th>
                                         <th>DESCRIPCION</th>
                                         <th>DESTINO</th>
                                         <th>N/R</th>
                                         <th>ARTE</th>
+                                        <th>MARCA</th>
                                         <th>NOTAS</th>
                                         <th>U/M</th>
                                         <th>PRECIO</th>
@@ -224,14 +229,15 @@
                                         $idx = 0
                                     @endphp
 
-
-                                    @foreach($detalle as $d)
+                                    @foreach($encabezado->detalle as $d)
                                         <tr>
                                             <td class="item_cod_producto">{{ $d->CodigoProducto }}</td>
+                                            <td class="item_cod_client" id="item_cod_client_{{ $idx }}">{{ $d->Cod_prod_cliente }}</td>
                                             <td class="item_descripcion">{{ $d->Descripcion }}</td>
                                             <td class="item_destino" id="item_destino_{{ $idx }}">{{ $d->Destino == 1 ? "Produccion": ($d->Destino == 2 ? "Bodega" : "Troqueles")  }} </td>
                                             <td class="item_n_r" id="item_nr_{{ $idx }}"> {{ $d->R_N }}</td>
                                             <td class="item_arte" id="item_arte_{{ $idx }}"><a href="javascript:void(0);" id="{{ $d->Arte }}" class="ver_arte" name="ver_arte_{{ $idx }}">{{ $d->Arte }}</a></td>
+                                            <td class="item_marca" id="item_marca_{{ $idx }}">{{ $d->Marca }}</td>
                                             <td class="item_notas" id="item_notas_{{ $idx }}">{{ $d->Notas }}</td>
                                             <td class="item_unidad" id="item_unidad_{{ $idx }}">{{ $d->Unidad }}</td>
                                             <td class="item_precio" id="item_precio_{{ $idx }}">{{ $d->Precio }}</td>
@@ -327,10 +333,59 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="add_info_modal" tabindex="-1" aria-labelledby="add_info_modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add_info_modal_title">Agregar info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="add_info_modal_form">
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Arte</span>
+                            </div>
+                            <input type="text" class="form-control" id="add_info_modal_art" name="add_info_modal_art" placeholder="Numero de arte" aria-label="add_info_modal_art" aria-describedby="add_info_modal_art">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" >Marca</span>
+                            </div>
+                            <input type="text" class="form-control" id="add_info_modal_marca" name="add_info_modal_marca" placeholder="Numero de marca" aria-label="add_info_modal_marca" aria-describedby="add_info_modal_marca">
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" >CP. Cliente</span>
+                            </div>
+                            <input type="text" class="form-control" id="add_info_modal_cp_client" name="add_info_modal_cp_client" placeholder="Codigo producto cliente" aria-label="add_info_modal_cp_client" aria-describedby="add_info_modal_cp_client">
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Notas</span>
+                            </div>
+                            <textarea type="text" class="form-control" id="add_info_modal_notas" name="add_info_modal_notas" placeholder="Notas" aria-label="add_info_modal_notas" aria-describedby="add_info_modal_notas" cols="30" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="add_info_modal_save">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @stop
 
 @push('javascript')
-    <script type="text/javascript" src="{{ asset('aplicaciones/pedidos/ventas/edit.js') }}">
-
-    </script>
+    <script type="text/javascript" src="{{ asset('aplicaciones/pedidos/ventas/edit.js') }}"></script>
 @endpush

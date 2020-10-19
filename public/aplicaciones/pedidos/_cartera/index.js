@@ -14,12 +14,12 @@ $(document).ready(function(){
             {data: 'id', name: 'id', orderable: false, searchable: true},
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
             {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
-            {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
-            {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: false},
+            {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+            {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: false},
             {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
             {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
-            {data: 'SubEstado', name: 'SubEstado', orderable: false, searchable: false},
-            {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: true},
+            {data: 'info_area.Cartera', name: 'info_area.Cartera', orderable: false, searchable: false},
+            {data: 'vendedor.name', name: 'vendedor.name', orderable: false, searchable: true},
             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
         ],
@@ -36,19 +36,19 @@ $(document).ready(function(){
             else{
                 $(row).find('td:eq(6)').html('<span class="badge badge-danger">NO</span>');
             }
-            if(data.SubEstado == 2){
+            if(data.info_area.Cartera == 2){
                 $(row).find('td:eq(7)').html('<span class="badge badge-success">Pendiente</span>');
             }
 
-            if(data.SubEstado == 3.1){
+            if(data.info_area.Cartera == 3.1){
                 $(row).find('td:eq(7)').html('<span class="badge badge-warning">En estudio</span>');
             }
 
-            if(data.SubEstado == 3.2){
+            if(data.info_area.Cartera == 3.2){
                 $(row).find('td:eq(7)').html('<span class="badge badge-warning">Retenido</span>');
             }
 
-            if(data.SubEstado == 3){
+            if(data.info_area.Cartera == 3){
                 $(row).find('td:eq(7)').html('<span class="badge badge-danger">Rechazado</span>');
             }
         }

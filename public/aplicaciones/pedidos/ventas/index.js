@@ -14,9 +14,10 @@ $(document).ready(function () {
         columns: [
             {data: 'id', name: 'id', orderable: false, searchable: true},
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
+            {data: 'Ped_MAX', name: 'Ped_MAX', orderable: false, searchable: true},
             {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
-            {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
-            {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: false},
+            {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+            {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: false},
             {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
             {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
             {data: 'Estado', name: 'Estado', orderable: false, searchable: true},
@@ -31,44 +32,58 @@ $(document).ready(function () {
         ],
         rowCallback: function (row, data, index) {
             if (data.Estado == 1) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-info">Borrador</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-info">Borrador</span>');
             }
             if (data.Estado == 0) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-danger">Anulado Vendedor</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-danger">Anulado Vendedor</span>');
                 $("#Reopen").prop('disabled',true);
             }
             if (data.Estado == 2) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-primary">Cartera</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Cartera</span>');
             }
             if (data.Estado == 3) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-warning">Rechazado Cartera</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Cartera</span>');
             }
             if (data.Estado == 4) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-primary">Costos</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Costos</span>');
             }
             if (data.Estado == 5) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-warning">Rechazado Costos</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Costos</span>');
             }
             if (data.Estado == 6) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-primary">Produccion</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Produccion</span>');
             }
             if (data.Estado == 7) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-warning">Rechazado Produccion</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Produccion</span>');
             }
             if (data.Estado == 8) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-primary">Bodega</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Bodega</span>');
             }
             if (data.Estado == 9) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-warning">Rechazado Bodega</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Bodega</span>');
             }
             if (data.Estado == 10) {
-                $(row).find('td:eq(7)').html('<span class="badge badge-success">Completado</span>');
+                $(row).find('td:eq(8)').html('<span class="badge badge-success">Completado</span>');
             }
+            if (data.Estado == 11) {
+                $(row).find('td:eq(8)').html('<span class="badge badge-primary">Troqueles</span>');
+            }
+            if (data.Estado == 12) {
+                $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado Troqueles</span>');
+            }
+
             if (data.Iva == 'Y') {
-                $(row).find('td:eq(6)').html('<span class="badge badge-success">SI</span>');
+                $(row).find('td:eq(7)').html('<span class="badge badge-success">SI</span>');
             }
             else{
-                $(row).find('td:eq(6)').html('<span class="badge badge-danger">NO</span>');
+                $(row).find('td:eq(7)').html('<span class="badge badge-danger">NO</span>');
+            }
+
+
+            if (data.Ped_MAX){
+                $(row).find('td:eq(2)').html('<span class="badge badge-success">'+ data.Ped_MAX +'</span>');
+            }else{
+                $(row).find('td:eq(2)').html('<span class="badge badge-danger">N/A</span>');
             }
         }
     });
@@ -200,22 +215,48 @@ $(document).ready(function () {
 
     $(document).on('click', '.clonar', function () {
         const id = this.id;
-        Swal.fire({
-            title: '¿Clonar pedido?',
-            text: "Se clonara este pedido y seras enviado a la pantalla de edicion del nuevo pedido",
+
+
+        swal.mixin({
             icon: 'question',
-            showCancelButton: true,
+            title: '¿Clonar pedido?',
+            text: 'Se clonara este pedido y seras enviado a la pantalla de edicion del nuevo pedido',
+            confirmButtonText: 'Clonar',
+            cancelButtonText: 'Cancelar',
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: '¡Clonar!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
+            buttonsStyling: true,
+            showCancelButton: true,
+            input: 'text',
+        }).queue([
+            {
+                html: '<form action="" id="form"><label>Cliente:</label><br>' +
+                    '<input type="text" class="form-control" id="cliente" placeholder="Busca aqui el cliente"><br>' +
+                    '<input type="hidden" class="form-control" id="cod_cliente">' +
+                    '</form>',
+
+                inputValidator: () => {
+                    if (document.getElementById('cliente').value == '') {
+                        return 'Por favor, busca y selecciona un cliente';
+                    }
+                },
+                preConfirm: function () {
+                    return {
+                        'cod_cliente': document.getElementById('cod_cliente').value,
+                        'id': id
+                    }
+                },
+                onBeforeOpen: function (dom) {
+                    swal.getInput().style.display = 'none';
+                }
+            }
+        ]).then((result) => {
             if (result.value) {
                 $.ajax({
                     url: "/aplicaciones/pedidos/venta/clonar_pedido",
                     type: "post",
                     data: {
-                        id: id
+                        result
                     },
                     success: function (data) {
                         Swal.fire({
@@ -238,5 +279,42 @@ $(document).ready(function () {
                 });
             }
         });
+
+
+        $(document).find( "#cliente" ).autocomplete({
+            appendTo: $(".swal2-popup"),
+            source: function (request, response) {
+                const query = document.getElementById('cliente').value;
+                $.ajax({
+                    url: "/aplicaciones/pedidos/venta/listar_clientes",
+                    method: "get",
+                    data: {
+                        query: query,
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        const resp = $.map(data, function (obj) {
+                            return obj
+                        });
+                        response(resp);
+                    }
+                })
+            },
+            focus: function (event, ui) {
+                document.getElementById('cod_cliente').value = ui.item.code;
+                document.getElementById('cliente').value = ui.item.value
+
+                return true;
+            },
+            select: function (event, ui) {
+                document.getElementById('cod_cliente').value = ui.item.code;
+                document.getElementById('cliente').value = ui.item.value
+            },
+            minlength: 2
+        });
     });
+
+
+
+
 });

@@ -76,7 +76,7 @@
         @stack('styles')
     </head>
     <body>
-        <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header closed-sidebar">
             <div class="app-header header-shadow">
                 <div class="app-header__logo">
                     <img src="{{ asset('architectui/assets/images/logo_ev.png') }}" class="logo-src">

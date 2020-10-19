@@ -41,19 +41,28 @@ class GetTRM extends Command
      * Execute the console command.
      *
      * @return mixed
-     * @throws SoapFault
      */
     public function handle()
     {
         $date = Carbon::now()->format("Y-m-d");
 
-
         try {
-            $soap = new soapclient("https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL", array(
-                'soap_version'   => SOAP_1_1,
+
+                // SOAP 1.2 client
+            $params = array(
+                'cache_wsdl' => 0,
                 'trace' => 1,
-                "location" => "https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService",
-            ));
+                'stream_context' => stream_context_create(array(
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                )),
+                'location'  => 'https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService'
+            );
+
+            $soap = new soapclient("https://www.superfinanciera.gov.co/SuperfinancieraWebServiceTRM/TCRMServicesWebService/TCRMServicesWebService?WSDL", $params);
 
             $response = $soap->queryTCRM(array('tcrmQueryAssociatedDate' => $date));
             $response = $response->return;
@@ -91,7 +100,10 @@ class GetTRM extends Command
                     $msj->cc("dcorrea@estradavelasquez.com");
                 });
             }
-        } catch(\Exception $e){
+
+
+
+        } catch(SoapFault $e){
             Log::emergency('[TAREAS AUTOMATICAS]: '. $e->getMessage());
             $subject = "ERROR AL SUBIR TRM";
             Mail::send('mails.automatic_task.fail_trm',[], function($msj) use($subject){

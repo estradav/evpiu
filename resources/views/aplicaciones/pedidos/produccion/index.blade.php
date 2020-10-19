@@ -63,6 +63,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>OC</th>
+                                        <th>PED MAX</th>
                                         <th>COD CLIENTE</th>
                                         <th>CLIENTE</th>
                                         <th>VENDEDOR</th>

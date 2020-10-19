@@ -12,6 +12,7 @@
                     <li id="ProgCostos"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepCostos" id="StepCostos">Costos</a></li>
                     <li id="ProgProduccion"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepProduccion" id="StepProduccion">Produccion</a></li>
                     <li id="ProgBodega"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepBodega" id="StepBodega">Bodega</a></li>
+                    <li id="ProgTroqueles"><a href="javascript:void(0);" style="color: #7d7d7d" class="StepTroqueles" id="StepTroqueles">Troqueles</a></li>
                 </ul>
             </div>
             <div class="text-center ml-2 mr-2">
@@ -68,6 +69,7 @@
                                             <th>DESTINO</th>
                                             <th>R/N</th>
                                             <th>ARTE</th>
+                                            <th>MARCA</th>
                                             <th>NOTAS</th>
                                             <th>U/M</th>
                                             <th>CANT</th>
@@ -108,7 +110,7 @@
                         <br>
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 invoice-col">
-                                <h6><b> NOTAS GENERALES:</b></h6> <h6 id="pdf_notas_generales"></h6>
+                                <h6 class="font-weight-bold">NOTAS GENERALES:</h6> <h6 id="pdf_notas_generales"></h6>
                             </div>
                         </div>
                     </section>
@@ -141,18 +143,14 @@
 </div>
 
 <style>
-    .container {
-        width: 750px;
-        margin: 10px auto;
-    }
     .progressbar {
         counter-reset: step;
     }
     .progressbar li {
         list-style-type: none;
-        width: 20%;
+        width: 16%;
         float: left;
-        font-size: 12px;
+        font-size: 13px;
         position: relative;
         text-align: center;
         text-transform: uppercase;

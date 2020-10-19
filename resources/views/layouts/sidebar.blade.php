@@ -254,6 +254,12 @@
                             </i>Bodega
                         </a>
                     </li>
+                    <li class="{{ request()->route()->named('troqueles.index') ? 'mm-active' : '' }}">
+                        <a href="{{ route('troqueles.index') }}">
+                            <i class="metismenu-icon">
+                            </i>Troqueles
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li>

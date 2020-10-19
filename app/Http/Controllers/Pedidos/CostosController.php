@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Pedidos;
 
+use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
@@ -24,24 +26,15 @@ class CostosController extends Controller
     public  function index(Request $request){
         if ($request->ajax()){
             try {
-                $data = DB::table('encabezado_pedidos')
-                    ->join('pedidos_detalles_area','encabezado_pedidos.id','=','pedidos_detalles_area.idPedido')
-                    ->select('encabezado_pedidos.id as id',
-                        'encabezado_pedidos.OrdenCompra as OrdenCompra',
-                        'encabezado_pedidos.NombreCliente as NombreCliente',
-                        'encabezado_pedidos.CodCliente as CodCliente',
-                        'encabezado_pedidos.NombreVendedor as NombreVendedor',
-                        'encabezado_pedidos.CondicionPago as CondicionPago',
-                        'encabezado_pedidos.Descuento as Descuento',
-                        'encabezado_pedidos.Iva as Iva',
-                        'encabezado_pedidos.Estado as Estado',
-                        'encabezado_pedidos.created_at as created_at',
-                        'pedidos_detalles_area.Costos as SubEstado')
-                    ->where('Estado', '=', '4')
+                $data = EncabezadoPedido::with('cliente' ,'info_area' , 'vendedor')
+                    ->where('Estado', '4')
                     ->get();
 
-
                 return Datatables::of($data)
+                    ->editColumn('created_at', function ($row){
+                        Carbon::setLocale('es');
+                        return  $row->created_at->format('d M Y h:i a');
+                    })
                     ->addColumn('opciones', function($row){
                         return '
                             <div class="btn-group btn-sm" role="group">
@@ -75,78 +68,76 @@ class CostosController extends Controller
             DB::beginTransaction();
             try {
                 if ($request->estado == 5) {
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => $request->estado
-                        ]);
+                    $pedido = EncabezadoPedido::find($request->id);
 
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido', '=', $request->id)
-                        ->update([
-                            'Costos'        => $request->estado,
-                            'DetalleCostos' => $request->descripcion,
-                        ]);
+
+                    $pedido->Estado = $request->estado;
+                    $pedido->save();
+
+                    $pedido->info_area()->update([
+                        'Costos'        => $request->estado,
+                        'DetalleCostos' => $request->descripcion,
+                    ]);
+
 
                 }else if ($request->estado == 6){
-                    $destino = DB::table('encabezado_pedidos')
-                        ->where('id','=',$request->id)
-                        ->select('Destino')
-                        ->first();
+                    $pedido = EncabezadoPedido::find($request->id);
 
-                    if ($destino->Destino == 1){
-                        DB::table('encabezado_pedidos')
-                            ->where('id', '=', $request->id)
-                            ->update([
-                                'Estado' => $request->estado
-                            ]);
+                    if ($pedido->Destino == 1){
 
-                        DB::table('pedidos_detalles_area')
-                            ->where('idPedido', '=', $request->id)
-                            ->update([
-                                'Costos'        => $request->estado,
-                                'DetalleCostos' => $request->descripcion,
-                                'AproboCostos'  => Auth::user()->username,
-                                'Produccion'    => $request->estado,
+                        $pedido->Estado = $request->estado;
+                        $pedido->save();
+
+                        $pedido->info_area()->update([
+                            'Costos'            => $request->estado,
+                            'DetalleCostos'     => $request->descripcion,
+                            'costos_fecha_resp' => Carbon::now(),
+                            'aprobo_costos'     => auth()->user()->id,
+                            'Produccion'        => $request->estado,
                         ]);
-                    }elseif ($destino->Destino == 2){
-                        DB::table('encabezado_pedidos')
-                            ->where('id', '=', $request->id)
-                            ->update([
-                                'Estado' => '8'
-                            ]);
 
-                        DB::table('pedidos_detalles_area')
-                            ->where('idPedido', '=', $request->id)
-                            ->update([
-                                'Costos'            => '6',
-                                'DetalleCostos'     => $request->descripcion,
-                                'AproboCostos'      => Auth::user()->username,
-                                'Produccion'        => '8',
-                                'DetalleProduccion' => 'Este pedido es de bodega',
-                                'AproboProduccion'  => Auth::user()->username,
-                                'Bodega'            => '8'
-                            ]);
-                    }elseif ($destino->Destino == 3){
 
+                    }elseif ($pedido->Destino == 2){
+
+                        $pedido->Estado = 8;
+                        $pedido->save();
+
+                        $pedido->info_area()->update([
+                            'Costos'            => 6,
+                            'DetalleCostos'     => $request->descripcion,
+                            'aprobo_costos'     => auth()->user()->id,
+
+                            'Produccion'        => 8,
+                            'DetalleProduccion' => 'Este pedido es de bodega',
+                            'aprobo_produccion' => null,
+                            'Bodega'            => 8
+                        ]);
+
+                    }elseif ($pedido->Destino == 3){
                         /*este destino no funciona correctamente*/
-                        DB::table('encabezado_pedidos')
-                            ->where('id', '=', $request->id)
-                            ->update([
-                                'Estado' => '8'
-                            ]);
 
-                        DB::table('pedidos_detalles_area')
-                            ->where('idPedido', '=', $request->id)
-                            ->update([
-                                'Costos'            => '6',
-                                'DetalleCostos'     => $request->descripcion,
-                                'AproboCostos'      => Auth::user()->username,
-                                'Produccion'        => '8',
-                                'DetalleProduccion' => 'Pedido de troqueles',
-                                'AproboProduccion'  => Auth::user()->username,
-                                'Bodega'            => '8'
-                            ]);
+                        $pedido->Estado = 11;
+                        $pedido->save();
+
+                        $pedido->info_area()->update([
+                            'Costos'                => 6,
+                            'DetalleCostos'         => $request->descripcion,
+                            'aprobo_costos'         => auth()->user()->id,
+                            'costos_fecha_resp'     => Carbon::now(),
+
+                            'Produccion'            => 8,
+                            'DetalleProduccion'     => 'Pedido de troqueles',
+                            'produccion_fecha_resp' => Carbon::now(),
+
+
+                            'Bodega'                => 8,
+                            'DetalleBodega'         => 'Pedido de troqueles',
+                            'bodega_fecha_resp'     => Carbon::now(),
+
+
+                            'Troqueles'             => 11
+                        ]);
+
                     }
                 }
                 DB::commit();

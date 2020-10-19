@@ -32,7 +32,7 @@ $(document).ready(function () {
         },
         focus: function (event, ui) {
             codigo_producto_max = ui.item.codigo;
-            descripcion_producto_max = ui.item.Descripcion;
+            descripcion_producto_max = ui.item.descripcion;
             document.getElementById('precio_item').value = 0;
             document.getElementById('stock_item').innerHTML = ui.item.stock;
 
@@ -43,7 +43,7 @@ $(document).ready(function () {
             descripcion_producto_max = ui.item.descripcion;
             document.getElementById('precio_item').value = 0;
             document.getElementById('stock_item').innerHTML = ui.item.stock;
-            document.getElementById('agregar_item').disabled = false;
+            document.getElementById('add_info').disabled = false;
 
         },
         minlength: 2
@@ -165,10 +165,12 @@ $(document).ready(function () {
             $('#tabla_items_body').append(`
                  <tr>
                     <td class="item_cod_producto">`+ codigo_producto_max +`</td>
+                    <td class="item_cod_client" id="item_cod_client_`+ idx +`"> `+ document.getElementById('cod_cliente_item').value +` </td>
                     <td class="item_descripcion">`+ descripcion_producto_max +`</td>
                     <td class="item_destino" id="item_destino_`+ idx +`">`+ document.getElementById('destino_item').value +`</td>
                     <td class="item_n_r" id="item_nr_`+ idx +`">`+ document.getElementById('n_r_item').value +`</td>
                     <td class="item_arte" id="item_arte_`+ idx +`"><a href="javascript:void(0);" id="`+ document.getElementById('arte_item').value +`" class="ver_arte" name="ver_arte_`+ idx +`">`+ document.getElementById('arte_item').value +`</a></td>
+                    <td class="item_marca" id="item_marca_`+ idx +`">`+ document.getElementById('marca_item').value +` </td>
                     <td class="item_notas"  id="item_notas_`+ idx +`">`+ document.getElementById('notas_item').value +`</td>
                     <td class="item_unidad" id="item_unidad_`+ idx +`">`+ document.getElementById('um_item').value +`</td>
                     <td class="item_precio" id="item_precio_`+ idx +`">`+ document.getElementById('precio_item').value +`</td>
@@ -227,23 +229,31 @@ $(document).ready(function () {
         document.getElementById("save_item_"+no).style.display = "block";
 
 
+        const cod_prod_client = document.getElementById("item_cod_client_" + no);
         const destino = document.getElementById("item_destino_" + no);
         const n_r = document.getElementById("item_nr_"+no);
         const arte = document.getElementById("item_arte_"+no);
+        const marca = document.getElementById("item_marca_"+no);
         const notas = document.getElementById("item_notas_"+no);
         const unidad = document.getElementById("item_unidad_"+no);
         const cantidad = document.getElementById("item_cantidad_"+no);
         const precio = document.getElementById("item_precio_"+no);
 
 
+
+        const cod_prod_client_data = cod_prod_client.innerText;
         const destino_data = destino.innerText;
         const n_r_data = n_r.innerText;
         const arte_data = document.getElementsByName("ver_arte_"+no)[0].innerText;
+        const marca_data = marca.innerText;
         const notas_data = notas.innerHTML;
         const unidad_data = unidad.innerHTML;
         const cantidad_data = cantidad.innerHTML;
         const precio_data = precio.innerHTML;
 
+
+
+        cod_prod_client.innerHTML = `<input type="text" id="input_cod_prod_client_`+no+`" name="input_cod_prod_client_`+no+`" class="form-control form-control-sm" value="`+ cod_prod_client_data +`">`;
 
         destino.innerHTML = `
             <select name="input_destino_`+no+`" id="input_destino_`+no+`" class="form-control form-control-sm">
@@ -262,7 +272,11 @@ $(document).ready(function () {
 
 
         arte.innerHTML = `<input type="text" id="arte_item_`+no+`" name="arte_item_`+no+`" class="form-control form-control-sm arte_item" value="`+ arte_data+`">`;
+
+        marca.innerHTML = `<input type="text" id="input_marca_`+no+`" name="input_marca_`+no+`" class="form-control form-control-sm marca_item" value="`+ marca_data+`">`;
+
         notas.innerHTML = `<input type="text" id="input_notas_`+no+`" name="input_notas_`+no+`" class="form-control form-control-sm" value="`+ notas_data+`">`;
+
 
         unidad.innerHTML = `
             <select name="input_unidad_`+no+`" id="input_unidad_`+no+`" class="form-control form-control-sm">
@@ -278,7 +292,7 @@ $(document).ready(function () {
 
         $('.arte_item').autocomplete({
             source: function (request, response) {
-                const query = document.getElementById('arte_item').value;
+                const query = $('.arte_item').val();
                 $.ajax({
                     url: "/aplicaciones/pedidos/venta/listar_artes",
                     method: "get",
@@ -295,25 +309,53 @@ $(document).ready(function () {
                 });
             }
         });
+
+
+        $('.marca_item').autocomplete({
+            source: function (request, response) {
+                const query = $('.marca_item').val();
+                $.ajax({
+                    url: "/aplicaciones/pedidos/venta/listar_marcas",
+                    method: "get",
+                    data: {
+                        query: query,
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        const resp = $.map(data, function (obj) {
+                            return obj
+                        });
+                        response(resp);
+                    }
+                });
+            }
+        });
+
+
+
     });
 
 
     $(document).on('click', '.save_item', function () {
         let no = this.name;
 
-
+        const cod_prod_client = document.getElementById("input_cod_prod_client_"+no).value;
         const destino = document.getElementById("input_destino_"+no).value;
         const n_r = document.getElementById("input_nr_"+no).value;
         const arte = document.getElementById("arte_item_"+no).value;
+        const marca = document.getElementById("input_marca_"+no).value;
         const notas = document.getElementById("input_notas_"+no).value;
         const unidad = document.getElementById("input_unidad_"+no).value;
         const cantidad = document.getElementById("input_cantidad_"+no).value;
         const precio = document.getElementById("input_precio_"+no).value;
 
 
+
+        document.getElementById('item_cod_client_' + no).innerHTML = cod_prod_client;
         document.getElementById("item_destino_" + no).innerHTML = destino;
         document.getElementById("item_nr_"+no).innerHTML = n_r;
         document.getElementById("item_arte_"+no).innerHTML = `<a href="javascript:void(0)" class="ver_arte" id="`+ arte +`" name="ver_arte_`+no+`">`+ arte +`</a>`;
+        document.getElementById("item_marca_"+no).innerHTML = marca;
         document.getElementById("item_notas_"+no).innerHTML = notas;
         document.getElementById("item_unidad_"+no).innerHTML = unidad;
         document.getElementById("item_cantidad_"+no).innerHTML = cantidad;
@@ -367,13 +409,8 @@ $(document).ready(function () {
                 id: document.getElementById('id').value,
                 id_maestro: document.getElementById('id_maestro').value,
                 vendedor: document.getElementById('vendedor').value,
-                nombre_cliente: document.getElementById('nombre_cliente').value,
                 cod_cliente: document.getElementById('cod_cliente').value,
                 oc: document.getElementById('orden_compra').value,
-                direccion: document.getElementById('direccion').value,
-                ciudad: document.getElementById('ciudad').value,
-                telefono: document.getElementById('telefono').value,
-                condicion_pago: document.getElementById('condicion_pago').value,
                 notas_generales: document.getElementById('notas_generales').value,
                 descuento: document.getElementById('descuento').value,
                 tiene_iva: document.getElementById('iva').value,
@@ -387,10 +424,12 @@ $(document).ready(function () {
             document.querySelectorAll('#tabla_items tbody tr').forEach(function(e){
                 let fila = {
                     cod: e.querySelector('.item_cod_producto').innerText,
+                    cod_prod_cliente: e.querySelector('.item_cod_client').innerText,
                     producto: e.querySelector('.item_descripcion').innerText,
                     destino: e.querySelector('.item_destino').innerText,
                     n_r: e.querySelector('.item_n_r').innerText,
                     arte: e.querySelector('.item_arte').innerText,
+                    marca: e.querySelector('.item_marca').innerText,
                     notas: e.querySelector('.item_notas').innerText,
                     unidad: e.querySelector('.item_unidad').innerText,
                     precio: e.querySelector('.item_precio').innerText,
@@ -447,6 +486,101 @@ $(document).ready(function () {
         PDFObject.embed('//192.168.1.12/intranet_ci/assets/Artes/'+Art+'.pdf', '#ViewArtPdf');
         $('#ViewArtModal').modal('show');
     });
+
+
+
+    $(document).on('click', '#add_info', function (){
+        $('#add_info_modal').modal('show');
+    });
+
+    $(document).on('click', '#add_info_modal_save', function () {
+        const form = $("#add_info_modal_form").valid();
+
+        if(form === true){
+            document.getElementById('agregar_item').disabled = false;
+
+            var arte = document.getElementById('add_info_modal_art').value;
+            var marca = document.getElementById('add_info_modal_marca').value;
+            var cp_cliente = document.getElementById('add_info_modal_cp_client').value;
+            var notas = document.getElementById('add_info_modal_notas').value;
+
+
+            document.getElementById('notas_item').value = notas;
+            document.getElementById('arte_item').value = arte;
+            document.getElementById('marca_item').value = marca;
+            document.getElementById('cod_cliente_item').value = cp_cliente;
+
+            $('#add_info_modal').modal('hide');
+        }else{
+            return false;
+        }
+    });
+
+    $('#add_info_modal_form').validate({
+        ignore: "",
+        rules: {
+            add_info_modal_art: "required",
+            add_info_modal_marca: "required",
+            add_info_modal_cp_client: "required",
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        highlight: function (element) {
+            $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function (element) {
+            $(element).closest('.form-control').removeClass('is-invalid');
+        }
+    });
+
+
+    $('#add_info_modal_art').autocomplete({
+        appendTo: "#add_info_modal",
+        source: function (request, response) {
+            const query = document.getElementById('add_info_modal_art').value;
+            $.ajax({
+                url: "/aplicaciones/pedidos/venta/listar_artes",
+                method: "get",
+                data: {
+                    query: query,
+                },
+                dataType: "json",
+                success: function (data) {
+                    const resp = $.map(data, function (obj) {
+                        return obj
+                    });
+                    response(resp);
+                }
+            });
+        }
+    });
+
+
+
+    $('#add_info_modal_marca').autocomplete({
+        appendTo: "#add_info_modal",
+        source: function (request, response) {
+            const query = document.getElementById('add_info_modal_marca').value;
+            $.ajax({
+                url: "/aplicaciones/pedidos/venta/listar_marcas",
+                method: "get",
+                data: {
+                    query: query,
+                },
+                dataType: "json",
+                success: function (data) {
+                    const resp = $.map(data, function (obj) {
+                        return obj
+                    });
+                    response(resp);
+                }
+            });
+        }
+    });
+
+
+
 
 
     jQuery.extend(jQuery.validator.messages, {
