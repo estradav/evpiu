@@ -215,22 +215,48 @@ $(document).ready(function () {
 
     $(document).on('click', '.clonar', function () {
         const id = this.id;
-        Swal.fire({
-            title: '¿Clonar pedido?',
-            text: "Se clonara este pedido y seras enviado a la pantalla de edicion del nuevo pedido",
+
+
+        swal.mixin({
             icon: 'question',
-            showCancelButton: true,
+            title: '¿Clonar pedido?',
+            text: 'Se clonara este pedido y seras enviado a la pantalla de edicion del nuevo pedido',
+            confirmButtonText: 'Clonar',
+            cancelButtonText: 'Cancelar',
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: '¡Clonar!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
+            buttonsStyling: true,
+            showCancelButton: true,
+            input: 'text',
+        }).queue([
+            {
+                html: '<form action="" id="form"><label>Cliente:</label><br>' +
+                    '<input type="text" class="form-control" id="cliente" placeholder="Busca aqui el cliente"><br>' +
+                    '<input type="hidden" class="form-control" id="cod_cliente">' +
+                    '</form>',
+
+                inputValidator: () => {
+                    if (document.getElementById('cliente').value == '') {
+                        return 'Por favor, busca y selecciona un cliente';
+                    }
+                },
+                preConfirm: function () {
+                    return {
+                        'cod_cliente': document.getElementById('cod_cliente').value,
+                        'id': id
+                    }
+                },
+                onBeforeOpen: function (dom) {
+                    swal.getInput().style.display = 'none';
+                }
+            }
+        ]).then((result) => {
             if (result.value) {
                 $.ajax({
                     url: "/aplicaciones/pedidos/venta/clonar_pedido",
                     type: "post",
                     data: {
-                        id: id
+                        result
                     },
                     success: function (data) {
                         Swal.fire({
@@ -253,5 +279,42 @@ $(document).ready(function () {
                 });
             }
         });
+
+
+        $(document).find( "#cliente" ).autocomplete({
+            appendTo: $(".swal2-popup"),
+            source: function (request, response) {
+                const query = document.getElementById('cliente').value;
+                $.ajax({
+                    url: "/aplicaciones/pedidos/venta/listar_clientes",
+                    method: "get",
+                    data: {
+                        query: query,
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        const resp = $.map(data, function (obj) {
+                            return obj
+                        });
+                        response(resp);
+                    }
+                })
+            },
+            focus: function (event, ui) {
+                document.getElementById('cod_cliente').value = ui.item.code;
+                document.getElementById('cliente').value = ui.item.value
+
+                return true;
+            },
+            select: function (event, ui) {
+                document.getElementById('cod_cliente').value = ui.item.code;
+                document.getElementById('cliente').value = ui.item.value
+            },
+            minlength: 2
+        });
     });
+
+
+
+
 });

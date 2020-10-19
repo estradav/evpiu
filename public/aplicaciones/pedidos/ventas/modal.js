@@ -20,8 +20,7 @@ $(document).ready(function () {
             data: {id: id},
             dataType: "json",
             success: function (data) {
-                console.log(data);
-                document.getElementById('pdf_titulo').innerText = 'Pedido '+data.id;
+                document.getElementById('pdf_titulo').innerText = 'Pedido ~ '+data.id;
                 document.getElementById('pdf_cliente').innerText = data.cliente.RAZON_SOCIAL;
                 document.getElementById('pdf_fecha').innerText = data.created_at;
                 document.getElementById('pdf_codigo_cliente').innerText = data.CodCliente;

@@ -53,7 +53,7 @@ class TroquelesController extends Controller
      * seleccionada en el modal 'opciones'
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function actualizar_pedido(Request $request){
         if ($request->ajax()){
@@ -70,21 +70,17 @@ class TroquelesController extends Controller
                         'DetalleTroqueles'    =>  $request->descripcion,
                     ]);
 
-
                     $max_ordnum_27 =  DB::connection('MAXP')
                         ->table('SO_Master')
                         ->where('STYPE_27', '=', 'CU')
                         ->max('ORDNUM_27');
 
-
                     $max_ordnum_27 = $max_ordnum_27 + 1;
 
-                    $encabezado_ped =  DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)->first();
 
 
 
-                    dd($pedido->cliente);
+
 
                     DB::connection('MAXP')
                         ->table('SO_Master')
@@ -94,24 +90,24 @@ class TroquelesController extends Controller
                             'GLXREF_27'     =>  41209505                                                                                                                                                       ,
                             'STYPE_27'      =>  'CU',
                             'STATUS_27'     =>  3,
-                            'CUSTPO_27'     =>  $encabezado_ped->OrdenCompra ?? '',
+                            'CUSTPO_27'     =>  $pedido->OrdenCompra ?? '',
                             'ORDID_27'      =>  $pedido->id,
                             'ORDDTE_27'     =>  Carbon::now(),
                             'FILL01A_27'    =>  '', /*empty*/
                             'FILL01_27'     =>  '', /*empty*/
                             'SHPCDE_27'     =>  '', /*empty*/
-                            'REP1_27'       =>  $pedido->cliente->SLSREP_23 ?? '',
+                            'REP1_27'       =>  $pedido->cliente_info->SLSREP_23,
                             'SPLIT1_27'     =>  100,
                             'REP2_27'       =>  '', /*empty*/
                             'SPLIT2_27'     =>  0,
                             'REP3_27'       =>  '', /*empty*/
                             'SPLIT3_27'     =>  0,
-                            'COMMIS_27'     =>  $pedido->cliente->COMMIS_23 ,
-                            'TERMS_27'      =>  $pedido->cliente->TERMS_23,
-                            'SHPVIA_27'     =>  $pedido->cliente->SHPVIA_23,
+                            'COMMIS_27'     =>  $pedido->cliente_info->COMMIS_23 ,
+                            'TERMS_27'      =>  $pedido->cliente_info->TERMS_23,
+                            'SHPVIA_27'     =>  $pedido->cliente_info->SHPVIA_23,
                             'XURR_27'       =>  '', /*empty*/
-                            'FOB_27'        =>  $pedido->cliente->CITY_23,
-                            'TAXCD1_27'     =>  $pedido->cliente->TXCDE1_23,
+                            'FOB_27'        =>  $pedido->cliente_info->CITY_23,
+                            'TAXCD1_27'     =>  $pedido->cliente_info->TXCDE1_23,
                             'TAXCD2_27'     =>  '', /*empty*/
                             'TAXCD3_27'     =>  '', /*empty*/
                             'COMNT1_27'     =>  $pedido->Notas ?? '', /*empty*/
@@ -121,31 +117,31 @@ class TroquelesController extends Controller
                             'INVCE_27'      =>  'N',
                             'APPINV_27'     =>  '', /*empty*/
                             'REASON_27'     =>  21, // 23 si es bodega
-                            'NAME_27'       =>  $pedido->cliente->NAME_23,
-                            'ADDR1_27'      =>  $pedido->cliente->ADDR1_23,
-                            'ADDR2_27'      =>  $pedido->cliente->ADDR2_23,
-                            'CITY_27'       =>  $pedido->cliente->CITY_23,
-                            'STATE_27'      =>  $pedido->cliente->STATE_23,
-                            'ZIPCD_27'      =>  $pedido->cliente->ZIPCD_23,
-                            'CNTRY_27'      =>  $pedido->cliente->CNTRY_23,
-                            'PHONE_27'      =>  $pedido->cliente->PHONE_23,
-                            'CNTCT_27'      =>  $pedido->cliente->CNTCT_23,
-                            'TAXPRV_27'     =>  $pedido->cliente->TAXPRV_23,
+                            'NAME_27'       =>  $pedido->cliente_info->NAME_23,
+                            'ADDR1_27'      =>  $pedido->cliente_info->ADDR1_23,
+                            'ADDR2_27'      =>  $pedido->cliente_info->ADDR2_23,
+                            'CITY_27'       =>  $pedido->cliente_info->CITY_23,
+                            'STATE_27'      =>  $pedido->cliente_info->STATE_23,
+                            'ZIPCD_27'      =>  $pedido->cliente_info->ZIPCD_23,
+                            'CNTRY_27'      =>  $pedido->cliente_info->CNTRY_23,
+                            'PHONE_27'      =>  $pedido->cliente_info->PHONE_23,
+                            'CNTCT_27'      =>  $pedido->cliente_info->CNTCT_23,
+                            'TAXPRV_27'     =>  $pedido->cliente_info->TAXPRV_23,
                             'FEDTAX_27'     =>  'N',
-                            'TAXABL_27'     =>  $pedido->cliente->TAXABL_23,
+                            'TAXABL_27'     =>  $pedido->cliente_info->TAXABL_23,
                             'EXCRTE_27'     =>  1,
                             'FIXVAR_27'     =>  'V',
-                            'CURR_27'       =>  $pedido->cliente->CURR_23,
+                            'CURR_27'       =>  $pedido->cliente_info->CURR_23,
                             'RCLDTE_27'     =>  null,
                             'FILL02_27'     =>  '', /*empty*/
                             'TTAX_27'       =>  '', /*empty*/
                             'LNETAX_27'     =>  'N',
-                            'ADDR3_27'      =>  $pedido->cliente->ADDR3_23,
-                            'ADDR4_27'      =>  $pedido->cliente->ADDR4_23,
-                            'ADDR5_27'      =>  $pedido->cliente->ADDR5_23,
-                            'ADDR6_27'      =>  $pedido->cliente->ADDR6_23,
-                            'MCOMP_27'      =>  $pedido->cliente->MCOMP_23,
-                            'MSITE_27'      =>  $pedido->cliente->MSITE_23,
+                            'ADDR3_27'      =>  $pedido->cliente_info->ADDR3_23,
+                            'ADDR4_27'      =>  $pedido->cliente_info->ADDR4_23,
+                            'ADDR5_27'      =>  $pedido->cliente_info->ADDR5_23,
+                            'ADDR6_27'      =>  $pedido->cliente_info->ADDR6_23,
+                            'MCOMP_27'      =>  $pedido->cliente_info->MCOMP_23,
+                            'MSITE_27'      =>  $pedido->cliente_info->MSITE_23,
                             'UDFKEY_27'     =>  '', /*empty*/
                             'UDFREF_27'     =>  '', /*empty*/
                             'SHPTHRU_27'    =>  '', /*empty*/
@@ -175,10 +171,12 @@ class TroquelesController extends Controller
                             ->first();
 
 
+
+
                         $fcha_entrega = $this->calcular_fecha_entrega($part->MFGLT_01);
 
 
-                        $almacen =  DB::connection('MAXP')
+                        $almacen =  DB::connection('MAX')
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
                             ->pluck('STK_29');
@@ -194,7 +192,7 @@ class TroquelesController extends Controller
                                 'CUSTID_28'     =>  $pedido->CodCliente,
                                 'PRTNUM_28'     =>  $dp->CodigoProducto,
                                 'EDILIN_28'     =>  '', /*empty*/
-                                'TAXABL_28'     =>  $pedido->cliente->TAXABL_23,
+                                'TAXABL_28'     =>  $pedido->cliente_info->TAXABL_23,
                                 'GLXREF_28'     =>  61209505,
                                 'CURDUE_28'     =>  $fcha_entrega->DateValue, /*empty*/
                                 'QTLINE_28'     =>  '', /*empty*/
@@ -225,7 +223,7 @@ class TroquelesController extends Controller
                                 'COMMIS_28'     =>  0,
                                 'DRPSHP_28'     =>  '', /*empty*/
                                 'QUMQTY_28'     =>  0,
-                                'TAXCDE1_28'    =>  $pedido->cliente->TXCDE1_23,
+                                'TAXCDE1_28'    =>  $pedido->cliente_info->TXCDE1_23,
                                 'TAX1_28'       =>  ($dp->Precio * $dp->Cantidad) * 0.19,
                                 'TAXCDE2_28'    =>  '', /*empty*/
                                 'TAX2_28'       =>  0,
@@ -431,7 +429,7 @@ class TroquelesController extends Controller
                             ->insert([
                                 'ORDER_11'      =>  $max_ordnum_27.$n2."01",
                                 'PRTNUM_11'     =>  $dp->CodigoProducto,
-                                'CURDUE_11'     =>  $fcha_entrega,
+                                'CURDUE_11'     =>  $fcha_entrega->DateValue,
                                 'FILL01_11'     =>  '',
                                 'TYPE_11'       =>  'CU',
                                 'ORDNUM_11'     =>  $max_ordnum_27,
@@ -485,8 +483,27 @@ class TroquelesController extends Controller
                 return response()->json('Pedido actualizado', 200);
             }catch (\Exception $e){
                 DB::rollBack();
-                return response()->json($e->getMessage(), 500);
+                return response()->json($e, 500);
             }
+        }
+    }
+
+
+    private function calcular_fecha_entrega( $cantidad_dias){
+        $dias_habiles =  DB::connection('MAXP')
+            ->table('Shop_Calendar')
+            ->where('ShopDay', '=', 1)
+            ->whereDate('DateValue', '>=', Carbon::now())
+            ->get();
+
+
+        if ($cantidad_dias > 0) {
+            return $dias_habiles[$cantidad_dias-1];
+        }else{
+            $date = Carbon::now()->format('Y-m-d h:m:i');
+            return (object) [
+                'DateValue' => $date
+            ];
         }
     }
 }

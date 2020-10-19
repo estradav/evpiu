@@ -88,4 +88,10 @@ class EncabezadoPedido extends Model
     public function vendedor(){
         return $this->hasOne(User::class, 'id', 'vendedor_id');
     }
+
+
+
+    public function cliente_info() {
+        return $this->hasOne(CustomerMaster::class, 'CUSTID_23', 'CodCliente');
+    }
 }

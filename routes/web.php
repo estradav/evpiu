@@ -327,11 +327,13 @@ Route::middleware(['auth'])->group(function() {
                     Route::post('/re_abrir_pedido', [VentasController::class, 're_abrir_pedido']);
                     Route::get('/listar_productos_max', [VentasController::class, 'listar_productos_max']);
                     Route::get('/listar_artes', [VentasController::class, 'listar_artes']);
+                    Route::get('/listar_marcas', [VentasController::class, 'listar_marcas']);
                     Route::put('/actualizar_pedido', [VentasController::class, 'update']);
                     Route::get('/ver_pedido_pdf', [VentasController::class, 'ver_pedido_pdf']);
                     Route::get('/info_area', [VentasController::class, 'info_area']);
                     Route::get('/info_cliente', [VentasController::class, 'info_cliente']);
                     Route::post('/clonar_pedido', [VentasController::class, 'clonar_pedido']);
+                    Route::get('/listar_clientes', [VentasController::class, 'listar_clientes']);
                 });
 
 

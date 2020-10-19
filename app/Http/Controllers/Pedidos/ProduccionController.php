@@ -110,7 +110,7 @@ class ProduccionController extends Controller
                             'DetalleProduccion' => $request->descripcion,
                     ]);
 
-                }elseif ($request->estado == 8){
+                }else if ($request->estado == 8){
                     DB::table('encabezado_pedidos')
                         ->where('id', '=', $request->id)
                         ->update([
@@ -127,108 +127,84 @@ class ProduccionController extends Controller
                     ]);
 
                 }else if($request->estado == 10){
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => $request->estado
-                        ]);
+                    $pedido =  EncabezadoPedido::find($request->id);
 
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido', '=', $request->id)
-                        ->update([
-                            'Produccion'        => 8,
-                            'DetalleProduccion' => $request->descripcion,
-                            'AproboProduccion'  => Auth::user()->username,
-                            'Bodega'            => $request->estado,
-                            'DetalleBodega'     => $request->descripcion,
-                            'AproboBodega'      => Auth::user()->username,
-                        ]);
+                    $pedido->Estado = $request->estado;
+                    $pedido->save();
 
-
+                    $pedido->info_area()->update([
+                        'Troqueles'           =>  $request->estado,
+                        'DetalleTroqueles'    =>  $request->descripcion,
+                    ]);
 
                     $max_ordnum_27 =  DB::connection('MAXP')
                         ->table('SO_Master')
                         ->where('STYPE_27', '=', 'CU')
                         ->max('ORDNUM_27');
 
-
                     $max_ordnum_27 = $max_ordnum_27 + 1;
-
-                    $encabezado_ped =  DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)->first();
-
-
-
-                    $cliente = DB::connection('MAXP')
-                        ->table('Customer_Master')
-                        ->where('CUSTID_23', '=',  $encabezado_ped->CodCliente)
-                        ->first();
-
-
-                    $detalle_ped = DB::table('detalle_pedidos')
-                        ->where('idPedido', '=', $request->id)->get();
 
 
                     DB::connection('MAXP')
                         ->table('SO_Master')
                         ->insert([
                             'ORDNUM_27'     =>  $max_ordnum_27,
-                            'CUSTID_27'     =>  $encabezado_ped->CodCliente,
+                            'CUSTID_27'     =>  $pedido->CodCliente,
                             'GLXREF_27'     =>  41209505                                                                                                                                                       ,
                             'STYPE_27'      =>  'CU',
                             'STATUS_27'     =>  3,
-                            'CUSTPO_27'     =>  $encabezado_ped->OrdenCompra ?? '',
-                            'ORDID_27'      =>  $encabezado_ped->id,
+                            'CUSTPO_27'     =>  $pedido->OrdenCompra ?? '',
+                            'ORDID_27'      =>  $pedido->id,
                             'ORDDTE_27'     =>  Carbon::now(),
                             'FILL01A_27'    =>  '', /*empty*/
                             'FILL01_27'     =>  '', /*empty*/
                             'SHPCDE_27'     =>  '', /*empty*/
-                            'REP1_27'       =>  $cliente->SLSREP_23,
+                            'REP1_27'       =>  $pedido->cliente_info->SLSREP_23,
                             'SPLIT1_27'     =>  100,
                             'REP2_27'       =>  '', /*empty*/
                             'SPLIT2_27'     =>  0,
                             'REP3_27'       =>  '', /*empty*/
                             'SPLIT3_27'     =>  0,
-                            'COMMIS_27'     =>  $cliente->COMMIS_23,
-                            'TERMS_27'      =>  $cliente->TERMS_23,
-                            'SHPVIA_27'     =>  $cliente->SHPVIA_23,
+                            'COMMIS_27'     =>  $pedido->cliente_info->COMMIS_23 ,
+                            'TERMS_27'      =>  $pedido->cliente_info->TERMS_23,
+                            'SHPVIA_27'     =>  $pedido->cliente_info->SHPVIA_23,
                             'XURR_27'       =>  '', /*empty*/
-                            'FOB_27'        =>  $cliente->CITY_23,
-                            'TAXCD1_27'     =>  $cliente->TXCDE1_23,
+                            'FOB_27'        =>  $pedido->cliente_info->CITY_23,
+                            'TAXCD1_27'     =>  $pedido->cliente_info->TXCDE1_23,
                             'TAXCD2_27'     =>  '', /*empty*/
                             'TAXCD3_27'     =>  '', /*empty*/
-                            'COMNT1_27'     =>  $encabezado_ped->Notas ?? '', /*empty*/
+                            'COMNT1_27'     =>  $pedido->Notas ?? '', /*empty*/
                             'COMNT2_27'     =>  '', /*empty*/
                             'COMNT3_27'     =>  '', /*empty*/
                             'SHPLBL_27'     =>  0,
                             'INVCE_27'      =>  'N',
                             'APPINV_27'     =>  '', /*empty*/
                             'REASON_27'     =>  21, // 23 si es bodega
-                            'NAME_27'       =>  $cliente->NAME_23,
-                            'ADDR1_27'      =>  $cliente->ADDR1_23,
-                            'ADDR2_27'      =>  $cliente->ADDR2_23,
-                            'CITY_27'       =>  $cliente->CITY_23,
-                            'STATE_27'      =>  $cliente->STATE_23,
-                            'ZIPCD_27'      =>  $cliente->ZIPCD_23,
-                            'CNTRY_27'      =>  $cliente->CNTRY_23,
-                            'PHONE_27'      =>  $cliente->PHONE_23,
-                            'CNTCT_27'      =>  $cliente->CNTCT_23,
-                            'TAXPRV_27'     =>  $cliente->TAXPRV_23,
+                            'NAME_27'       =>  $pedido->cliente_info->NAME_23,
+                            'ADDR1_27'      =>  $pedido->cliente_info->ADDR1_23,
+                            'ADDR2_27'      =>  $pedido->cliente_info->ADDR2_23,
+                            'CITY_27'       =>  $pedido->cliente_info->CITY_23,
+                            'STATE_27'      =>  $pedido->cliente_info->STATE_23,
+                            'ZIPCD_27'      =>  $pedido->cliente_info->ZIPCD_23,
+                            'CNTRY_27'      =>  $pedido->cliente_info->CNTRY_23,
+                            'PHONE_27'      =>  $pedido->cliente_info->PHONE_23,
+                            'CNTCT_27'      =>  $pedido->cliente_info->CNTCT_23,
+                            'TAXPRV_27'     =>  $pedido->cliente_info->TAXPRV_23,
                             'FEDTAX_27'     =>  'N',
-                            'TAXABL_27'     =>  $cliente->TAXABL_23,
+                            'TAXABL_27'     =>  $pedido->cliente_info->TAXABL_23,
                             'EXCRTE_27'     =>  1,
                             'FIXVAR_27'     =>  'V',
-                            'CURR_27'       =>  $cliente->CURR_23,
+                            'CURR_27'       =>  $pedido->cliente_info->CURR_23,
                             'RCLDTE_27'     =>  null,
                             'FILL02_27'     =>  '', /*empty*/
                             'TTAX_27'       =>  '', /*empty*/
                             'LNETAX_27'     =>  'N',
-                            'ADDR3_27'      =>  $cliente->ADDR3_23,
-                            'ADDR4_27'      =>  $cliente->ADDR4_23,
-                            'ADDR5_27'      =>  $cliente->ADDR5_23,
-                            'ADDR6_27'      =>  $cliente->ADDR6_23,
-                            'MCOMP_27'      =>  $cliente->MCOMP_23,
-                            'MSITE_27'      =>  $cliente->MSITE_23,
+                            'ADDR3_27'      =>  $pedido->cliente_info->ADDR3_23,
+                            'ADDR4_27'      =>  $pedido->cliente_info->ADDR4_23,
+                            'ADDR5_27'      =>  $pedido->cliente_info->ADDR5_23,
+                            'ADDR6_27'      =>  $pedido->cliente_info->ADDR6_23,
+                            'MCOMP_27'      =>  $pedido->cliente_info->MCOMP_23,
+                            'MSITE_27'      =>  $pedido->cliente_info->MSITE_23,
                             'UDFKEY_27'     =>  '', /*empty*/
                             'UDFREF_27'     =>  '', /*empty*/
                             'SHPTHRU_27'    =>  '', /*empty*/
@@ -238,9 +214,9 @@ class ProduccionController extends Controller
                             'XDFDTE_27'     =>  null, /*empty*/
                             'XDFTXT_27'     =>  '', /*empty*/
                             'FILLER_27'     =>  '', /*empty*/
-                            'CreatedBy'     =>  'EVPIU-'.auth()->user()->username ,
+                            'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
                             'CreationDate'  =>  Carbon::now(),
-                            'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username ,
+                            'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
                             'ModificationDate'  =>  Carbon::now(),
                             'BILLCDE_27'    =>  '' /*empty*/
                         ]);
@@ -248,7 +224,7 @@ class ProduccionController extends Controller
 
                     $idx = 0;
 
-                    foreach ($detalle_ped as $dp){
+                    foreach ($pedido->detalle as $dp){
                         $n2 = str_pad($idx + 1, 2, 0, STR_PAD_LEFT);
 
 
@@ -274,10 +250,10 @@ class ProduccionController extends Controller
                                 'LINNUM_28'     =>  $n2,
                                 'DELNUM_28'     =>  '01',
                                 'STATUS_28'     =>  3,
-                                'CUSTID_28'     =>  $encabezado_ped->CodCliente,
+                                'CUSTID_28'     =>  $pedido->CodCliente,
                                 'PRTNUM_28'     =>  $dp->CodigoProducto,
                                 'EDILIN_28'     =>  '', /*empty*/
-                                'TAXABL_28'     =>  $cliente->TAXABL_23,
+                                'TAXABL_28'     =>  $pedido->cliente_info->TAXABL_23,
                                 'GLXREF_28'     =>  61209505,
                                 'CURDUE_28'     =>  $fcha_entrega->DateValue, /*empty*/
                                 'QTLINE_28'     =>  '', /*empty*/
@@ -308,7 +284,7 @@ class ProduccionController extends Controller
                                 'COMMIS_28'     =>  0,
                                 'DRPSHP_28'     =>  '', /*empty*/
                                 'QUMQTY_28'     =>  0,
-                                'TAXCDE1_28'    =>  $cliente->TXCDE1_23,
+                                'TAXCDE1_28'    =>  $pedido->cliente_info->TXCDE1_23,
                                 'TAX1_28'       =>  ($dp->Precio * $dp->Cantidad) * 0.19,
                                 'TAXCDE2_28'    =>  '', /*empty*/
                                 'TAX2_28'       =>  0,
@@ -349,7 +325,6 @@ class ProduccionController extends Controller
                             ]);
 
 
-
                         DB::connection('MAXP')
                             ->table('SO_Detail_Ext')
                             ->insert([
@@ -360,8 +335,6 @@ class ProduccionController extends Controller
                             ]);
 
 
-
-
                         DB::connection('MAXP')
                             ->table('Order_Master')
                             ->insert([
@@ -369,20 +342,20 @@ class ProduccionController extends Controller
                                 'LINNUM_10'     =>  $n2,
                                 'DELNUM_10'     =>  '01',
                                 'PRTNUM_10'     =>  $dp->CodigoProducto,
-                                'CURDUE_10'     =>  $fcha_entrega->DateValue,
+                                'CURDUE_10'     =>  '',
                                 'RECFLG_10'     =>  'N',
                                 'TAXABLE_10'    =>  'N',
                                 'TYPE_10'       =>  'CU',
                                 'ORDER_10'      =>  $max_ordnum_27.$n2."01",
                                 'VENID_10'      =>  '',  /*empty*/
-                                'ORGDUE_10'     =>  $fcha_entrega->DateValue,
+                                'ORGDUE_10'     =>  '',
                                 'PURUOM_10'     =>  '',  /*empty*/
                                 'CURQTY_10'     =>  $dp->Cantidad,
                                 'ORGQTY_10'     =>  $dp->Cantidad,
                                 'DUEQTY_10'     =>  0,
-                                'CURPRM_10'     =>  $fcha_entrega->DateValue,
+                                'CURPRM_10'     =>  '',
                                 'FILL03_10'     =>  '', /*empty*/
-                                'ORGPRM_10'     =>  $fcha_entrega->DateValue,
+                                'ORGPRM_10'     =>  '',
                                 'FILL04_10'     =>  '', /*empty*/
                                 'FRMPLN_10'     =>  'Y',
                                 'STATUS_10'     =>  '3',
@@ -507,14 +480,13 @@ class ProduccionController extends Controller
                                 'RECTYP_30' =>  'ST'
                             ]);
 
-                        
 
                         DB::connection('MAXP')
                             ->table('Requirement_detail')
                             ->insert([
                                 'ORDER_11'      =>  $max_ordnum_27.$n2."01",
                                 'PRTNUM_11'     =>  $dp->CodigoProducto,
-                                'CURDUE_11'     =>  $fcha_entrega,
+                                'CURDUE_11'     =>  $fcha_entrega->DateValue,
                                 'FILL01_11'     =>  '',
                                 'TYPE_11'       =>  'CU',
                                 'ORDNUM_11'     =>  $max_ordnum_27,
@@ -551,11 +523,10 @@ class ProduccionController extends Controller
                         $idx++;
                     }
 
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Ped_MAX' => $max_ordnum_27
-                        ]);
+                    $pedido->Ped_MAX = $max_ordnum_27;
+                    $pedido->save();
+
+
                 }
                 DB::commit();
                 DB::connection('MAXP')->commit();
@@ -564,7 +535,7 @@ class ProduccionController extends Controller
             }catch (\Exception $e){
                 DB::rollBack();
                 DB::connection('MAXP')->rollBack();
-                return response()->json($e->getMessage(), 500);
+                return response()->json($e, 500);
             }
         }
     }

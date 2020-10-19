@@ -14,12 +14,12 @@ $(document).ready(function () {
             {data: 'id', name: 'id', orderable: false, searchable: false},
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
             {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
-            {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
-            {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: true},
-            {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: true},
+            {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+            {data: 'vendedor.name', name: 'vendedor.name', orderable: false, searchable: true},
+            {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: false},
             {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
             {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
-            {data: 'SubEstado', name: 'SubEstado', orderable: false, searchable: true},
+            {data: 'info_area.Bodega', name: 'info_area.Bodega', orderable: false, searchable: false},
             {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
             {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
         ],
@@ -36,11 +36,11 @@ $(document).ready(function () {
             else{
                 $(row).find('td:eq(7)').html('<span class="badge badge-danger">NO</span>');
             }
-            if(data.SubEstado == 8){
+            if(data.info_area.Bodega == 8){
                 $(row).find('td:eq(8)').html('<span class="badge badge-success">Pendiente</span>');
             }
 
-            if(data.SubEstado == 9){
+            if(data.info_area.Bodega == 9){
                 $(row).find('td:eq(8)').html('<span class="badge badge-warning">Rechazado</span>');
             }
         }
@@ -56,9 +56,9 @@ $(document).ready(function () {
             {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
             {data: 'Ped_MAX', name: 'Ped_MAX', orderable: false, searchable: true},
             {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
-            {data: 'NombreCliente', name: 'NombreCliente', orderable: false, searchable: true},
-            {data: 'NombreVendedor', name: 'NombreVendedor', orderable: false, searchable: true},
-            {data: 'CondicionPago', name: 'CondicionPago', orderable: false, searchable: true},
+            {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+            {data: 'vendedor.name', name: 'vendedor.name', orderable: false, searchable: true},
+            {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: false},
             {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
             {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
             {data: 'Estado', name: 'Estado', orderable: false, searchable: true},

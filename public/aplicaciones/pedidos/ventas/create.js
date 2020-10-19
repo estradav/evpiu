@@ -292,7 +292,7 @@ $(document).ready(function () {
 
         arte.innerHTML = `<input type="text" id="arte_item_`+no+`" name="arte_item_`+no+`" class="form-control form-control-sm arte_item" value="`+ arte_data+`">`;
 
-        marca.innerHTML = `<input type="text" id="input_marca_`+no+`" name="input_marca_`+no+`" class="form-control form-control-sm" value="`+ marca_data+`">`;
+        marca.innerHTML = `<input type="text" id="input_marca_`+no+`" name="input_marca_`+no+`" class="form-control form-control-sm marca_item" value="`+ marca_data+`">`;
 
         notas.innerHTML = `<input type="text" id="input_notas_`+no+`" name="input_notas_`+no+`" class="form-control form-control-sm" value="`+ notas_data+`">`;
 
@@ -539,6 +539,72 @@ $(document).ready(function () {
         },
         unhighlight: function (element) {
             $(element).closest('.form-control').removeClass('is-invalid');
+        }
+    });
+
+
+
+
+    $('#add_info_modal_art').autocomplete({
+        source: function (request, response) {
+            const query = document.getElementById('add_info_modal_art').value;
+            $.ajax({
+                url: "/aplicaciones/pedidos/venta/listar_artes",
+                method: "get",
+                data: {
+                    query: query,
+                },
+                dataType: "json",
+                success: function (data) {
+                    const resp = $.map(data, function (obj) {
+                        return obj
+                    });
+                    response(resp);
+                }
+            });
+        }
+    });
+
+
+
+    $('#add_info_modal_marca').autocomplete({
+        source: function (request, response) {
+            const query = document.getElementById('add_info_modal_marca').value;
+            $.ajax({
+                url: "/aplicaciones/pedidos/venta/listar_marcas",
+                method: "get",
+                data: {
+                    query: query,
+                },
+                dataType: "json",
+                success: function (data) {
+                    const resp = $.map(data, function (obj) {
+                        return obj
+                    });
+                    response(resp);
+                }
+            });
+        }
+    });
+
+
+    $('.marca_item').autocomplete({
+        source: function (request, response) {
+            const query = document.getElementById('add_info_modal_marca').value;
+            $.ajax({
+                url: "/aplicaciones/pedidos/venta/listar_marcas",
+                method: "get",
+                data: {
+                    query: query,
+                },
+                dataType: "json",
+                success: function (data) {
+                    const resp = $.map(data, function (obj) {
+                        return obj
+                    });
+                    response(resp);
+                }
+            });
         }
     });
 

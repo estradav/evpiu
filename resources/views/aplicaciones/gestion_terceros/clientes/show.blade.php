@@ -2483,10 +2483,11 @@
                     })
                 });
 
+
+
                 $(document).on('click', '#subir_rut', function () {
                     var nit = @json( $cliente->NIT );
                     nit = nit.split('-');
-
 
                     Swal.fire({
                         icon: 'info',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pedidos;
 
+use App\ClienteMax;
 use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
 use App\MaestroPedido;
@@ -197,7 +198,8 @@ class VentasController extends Controller
      */
     public function edit($id){
         try {
-            $encabezado = EncabezadoPedido::with('detalle', 'cliente')->find($id);
+            $encabezado = EncabezadoPedido::with('detalle', 'cliente')
+                ->find($id);
 
             if ($encabezado->Estado == 0 || $encabezado->Estado == 1 || $encabezado->Estado == 3 || $encabezado->Estado == 5 || $encabezado->Estado == 7 || $encabezado->Estado == 9 ||  $encabezado->Estado == 12){
                 return view('aplicaciones.pedidos.ventas.edit',
@@ -236,7 +238,7 @@ class VentasController extends Controller
                 $query = $request->get('query');
                 $results = array();
                 $queries = DB::connection('MAX')
-                    ->table('CIEV_V_productos')
+                    ->table('CIEV_V_ProductosVentas')
                     ->where('Descripcion', 'LIKE', '%'.$query.'%')
                     ->orWhere('Pieza', 'LIKE', '%'.$query.'%')
                     ->take(20)
@@ -293,6 +295,37 @@ class VentasController extends Controller
 
 
     /**
+     * Listado de marcas
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function listar_marcas(Request $request){
+        if ($request->ajax()){
+            try {
+                $query = $request->get('query');
+                $results = array();
+                $queries = DB::connection('EVPIUM')
+                    ->table('Marcas')
+                    ->where('NombreMarca', 'LIKE', $query.'%')
+                    ->take(10)
+                    ->get();
+
+                foreach ($queries as $q) {
+                    $results[] = [
+                        'value' =>  trim($q->NombreMarca)
+                    ];
+                }
+                return response()->json($results, 200);
+            }catch (Exception $e){
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+    /**
      * Actualizacion de pedido luego de la edicion
      *
      * @param Request $request
@@ -341,8 +374,6 @@ class VentasController extends Controller
                                 'Estado'            =>  1,
                                 'Destino'           =>  1
                             ]);
-
-
 
                         if (!empty($encabezado['id_maestro'])){
 
@@ -1585,15 +1616,16 @@ class VentasController extends Controller
         if ($request->ajax()) {
             DB::beginTransaction();
             try{
-                $id_origen = $request->get('id');
+                $result = $request->result['value'][0];
+
 
                 $encabezado_origen = DB::table('encabezado_pedidos')
-                    ->where('id', '=', $id_origen)
+                    ->where('id', '=', $result['id'])
                     ->first();
 
 
                 $detalle_origen =  DB::table('detalle_pedidos')
-                    ->where('idPedido', '=', $id_origen)
+                    ->where('idPedido', '=', $result['id'])
                     ->get();
 
 
@@ -1607,8 +1639,8 @@ class VentasController extends Controller
                 $encabezado_destino = DB::table('encabezado_pedidos')
                     ->insertGetId([
                         'OrdenCompra'       =>  $encabezado_origen->OrdenCompra,
-                        'CodCliente'        =>  $encabezado_origen->CodCliente,
-                        'vendedor_id'       =>  $request->encabezado['vendedor'],
+                        'CodCliente'        =>  $result['cod_cliente'],
+                        'vendedor_id'       =>  auth()->user()->id,
                         'Descuento'         =>  $encabezado_origen->Descuento,
                         'Iva'               =>  $encabezado_origen->Iva,
                         'Estado'            =>  '1',
@@ -1633,23 +1665,24 @@ class VentasController extends Controller
                     ]);
 
                 foreach ($detalle_origen as $item){
+
                     DB::table('detalle_pedidos')
                         ->insert([
-                            'idPedido'         =>  $encabezado_destino,
-                            'CodigoProducto'   => $item['cod'],
-                            'Cod_prod_cliente' => $item['cod_prod_cliente'],
-                            'Descripcion'      => $item['producto'],
-                            'Arte'             => $item['arte'],
-                            'Marca'            => $item['marca'],
-                            'Notas'            => $item['notas'],
-                            'Unidad'           => $item['unidad'],
-                            'Cantidad'         => $item['cantidad'],
-                            'Precio'           => $item['precio'],
-                            'Total'            => $item['total'],
-                            'Destino'          => 3,
-                            'R_N'              => $item['n_r'],
+                            'idPedido'         => $encabezado_destino,
+                            'CodigoProducto'   => $item->CodigoProducto,
+                            'Cod_prod_cliente' => $item->Cod_prod_cliente,
+                            'Descripcion'      => $item->Descripcion,
+                            'Arte'             => $item->Arte,
+                            'Marca'            => $item->Marca,
+                            'Notas'            => $item->Notas,
+                            'Unidad'           => $item->Unidad,
+                            'Cantidad'         => $item->Cantidad,
+                            'Precio'           => $item->Precio,
+                            'Total'            => $item->Total,
+                            'Destino'          => $item->Destino,
+                            'R_N'              => $item->R_N,
                             'created_at'       => Carbon::now(),
-                            'updated_at'       =>  Carbon::now()
+                            'updated_at'       => Carbon::now()
                         ]);
                 }
                 DB::commit();
@@ -1657,6 +1690,32 @@ class VentasController extends Controller
 
             }catch (Exception $e){
                 DB::rollBack();
+                return response()->json($e->getMessage(), 500);
+            }
+        }
+    }
+
+
+
+    public function listar_clientes(Request $request){
+        if ($request->ajax()){
+            try {
+                $query = $request->get('query');
+                $results = array();
+
+                $queries = ClienteMax::where('RAZON_SOCIAL', 'LIKE', '%'.$query.'%')
+                    ->orWhere('CODIGO_CLIENTE', 'LIKE', '%'.$query.'%')
+                    ->take(20)
+                    ->get();
+
+                foreach ($queries as $q) {
+                    $results[] = [
+                        'value'     => trim($q->RAZON_SOCIAL),
+                        'code'      => trim($q->CODIGO_CLIENTE),
+                    ];
+                }
+                return response()->json($results, 200);
+            }catch (\Exception $e){
                 return response()->json($e->getMessage(), 500);
             }
         }
