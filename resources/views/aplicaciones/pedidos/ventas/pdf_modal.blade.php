@@ -68,6 +68,7 @@
                                             <th>DESTINO</th>
                                             <th>R/N</th>
                                             <th>ARTE</th>
+                                            <th>MARCA</th>
                                             <th>NOTAS</th>
                                             <th>U/M</th>
                                             <th>CANT</th>

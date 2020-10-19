@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pedidos;
 
+use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Exception;
@@ -23,22 +24,11 @@ class BodegaController extends Controller
      */
     public function index(Request $request){
         if ($request->ajax()){
-            $data = DB::table('encabezado_pedidos')
-                ->join('pedidos_detalles_area','encabezado_pedidos.id','=','pedidos_detalles_area.idPedido')
-                ->select('encabezado_pedidos.id as id',
-                    'encabezado_pedidos.OrdenCompra as OrdenCompra',
-                    'encabezado_pedidos.NombreCliente as NombreCliente',
-                    'encabezado_pedidos.CodCliente as CodCliente',
-                    'encabezado_pedidos.NombreVendedor as NombreVendedor',
-                    'encabezado_pedidos.CondicionPago as CondicionPago',
-                    'encabezado_pedidos.Descuento as Descuento',
-                    'encabezado_pedidos.Iva as Iva',
-                    'encabezado_pedidos.Estado as Estado',
-                    'encabezado_pedidos.created_at as created_at',
-                    'pedidos_detalles_area.Bodega as SubEstado')
-                ->where('Estado', '=', '8')
-                ->orWhere('Estado', '=', '9')
+            $data = EncabezadoPedido::with('cliente' ,'info_area', 'vendedor')
+                ->where('Estado', '=','8')
+                ->orWhere('Estado', '=','9')
                 ->get();
+
 
             return Datatables::of($data)
                 ->addColumn('opciones', function($row){
@@ -69,18 +59,15 @@ class BodegaController extends Controller
             DB::beginTransaction();
             try {
                 if ($request->estado == 10) {
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => $request->estado
-                        ]);
+                    $pedido =  EncabezadoPedido::find($request->id);
 
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido', '=', $request->id)
-                        ->update([
-                            'Bodega' => $request->estado,
-                            'DetalleBodega' => $request->descripcion,
-                        ]);
+                    $pedido->Estado = $request->estado;
+                    $pedido->save();
+
+                    $pedido->info_area()->update([
+                        'Bodega'           =>  $request->estado,
+                        'DetalleBodega'    =>  $request->descripcion,
+                    ]);
 
 
                     $max_ordnum_27 =  DB::connection('MAXP')
@@ -96,76 +83,66 @@ class BodegaController extends Controller
 
 
 
-                    $cliente = DB::connection('MAXP')
-                        ->table('Customer_Master')
-                        ->where('CUSTID_23', '=',  $encabezado_ped->CodCliente)
-                        ->first();
-
-
-                    $detalle_ped = DB::table('detalle_pedidos')
-                        ->where('idPedido', '=', $request->id)->get();
-
-
                     DB::connection('MAXP')
                         ->table('SO_Master')
                         ->insert([
                             'ORDNUM_27'     =>  $max_ordnum_27,
-                            'CUSTID_27'     =>  $encabezado_ped->CodCliente,
+                            'CUSTID_27'     =>  $pedido->CodCliente,
                             'GLXREF_27'     =>  41209505                                                                                                                                                       ,
                             'STYPE_27'      =>  'CU',
                             'STATUS_27'     =>  3,
                             'CUSTPO_27'     =>  $encabezado_ped->OrdenCompra ?? '',
-                            'ORDID_27'      =>  $encabezado_ped->id,
+                            'ORDID_27'      =>  $pedido->id,
                             'ORDDTE_27'     =>  Carbon::now(),
                             'FILL01A_27'    =>  '', /*empty*/
                             'FILL01_27'     =>  '', /*empty*/
                             'SHPCDE_27'     =>  '', /*empty*/
-                            'REP1_27'       =>  $cliente->SLSREP_23,
+                            'REP1_27'       =>  $pedido->cliente->SLSREP_23,
                             'SPLIT1_27'     =>  100,
                             'REP2_27'       =>  '', /*empty*/
                             'SPLIT2_27'     =>  0,
                             'REP3_27'       =>  '', /*empty*/
                             'SPLIT3_27'     =>  0,
-                            'COMMIS_27'     =>  $cliente->COMMIS_23,
-                            'TERMS_27'      =>  $cliente->TERMS_23,
-                            'SHPVIA_27'     =>  $cliente->SHPVIA_23,
+                            'COMMIS_27'     =>  $pedido->cliente->COMMIS_23,
+                            'TERMS_27'      =>  $pedido->cliente->TERMS_23,
+                            'SHPVIA_27'     =>  $pedido->cliente->SHPVIA_23,
                             'XURR_27'       =>  '', /*empty*/
-                            'FOB_27'        =>  $cliente->CITY_23,
-                            'TAXCD1_27'     =>  $cliente->TXCDE1_23,
+                            'FOB_27'        =>  $pedido->cliente->CITY_23,
+                            'TAXCD1_27'     =>  $pedido->cliente->TXCDE1_23,
                             'TAXCD2_27'     =>  '', /*empty*/
                             'TAXCD3_27'     =>  '', /*empty*/
-                            'COMNT1_27'     =>  $encabezado_ped->Notas ?? '', /*empty*/
+                            'COMNT1_27'     =>  $pedido->Notas ?? '', /*empty*/
                             'COMNT2_27'     =>  '', /*empty*/
                             'COMNT3_27'     =>  '', /*empty*/
                             'SHPLBL_27'     =>  0,
                             'INVCE_27'      =>  'N',
                             'APPINV_27'     =>  '', /*empty*/
                             'REASON_27'     =>  21, // 23 si es bodega
-                            'NAME_27'       =>  $cliente->NAME_23,
-                            'ADDR1_27'      =>  $cliente->ADDR1_23,
-                            'ADDR2_27'      =>  $cliente->ADDR2_23,
-                            'CITY_27'       =>  $cliente->CITY_23,
-                            'STATE_27'      =>  $cliente->STATE_23,
-                            'ZIPCD_27'      =>  $cliente->ZIPCD_23,
-                            'CNTRY_27'      =>  $cliente->CNTRY_23,
-                            'PHONE_27'      =>  $cliente->PHONE_23,
-                            'CNTCT_27'      =>  $cliente->CNTCT_23,
-                            'TAXPRV_27'     =>  $cliente->TAXPRV_23,
+                            'NAME_27'       =>  $pedido->cliente->NAME_23,
+                            'ADDR1_27'      =>  $pedido->cliente->ADDR1_23,
+                            'ADDR2_27'      =>  $pedido->cliente->ADDR2_23,
+                            'CITY_27'       =>  $pedido->cliente->CITY_23,
+                            'STATE_27'      =>  $pedido->cliente->STATE_23,
+                            'ZIPCD_27'      =>  $pedido->cliente->ZIPCD_23,
+                            'CNTRY_27'      =>  $pedido->cliente->CNTRY_23,
+                            'PHONE_27'      =>  $pedido->cliente->PHONE_23,
+                            'CNTCT_27'      =>  $pedido->cliente->CNTCT_23,
+                            'TAXPRV_27'     =>  $pedido->cliente->TAXPRV_23,
                             'FEDTAX_27'     =>  'N',
-                            'TAXABL_27'     =>  $cliente->TAXABL_23,
+                            'TAXABL_27'     =>  $pedido->cliente->TAXABL_23,
                             'EXCRTE_27'     =>  1,
                             'FIXVAR_27'     =>  'V',
-                            'CURR_27'       =>  $cliente->CURR_23,
+                            'CURR_27'       =>  $pedido->cliente->CURR_23,
                             'RCLDTE_27'     =>  null,
                             'FILL02_27'     =>  '', /*empty*/
                             'TTAX_27'       =>  '', /*empty*/
                             'LNETAX_27'     =>  'N',
-                            'ADDR3_27'      =>  $cliente->ADDR3_23,
-                            'ADDR4_27'      =>  $cliente->ADDR4_23,
-                            'ADDR5_27'      =>  $cliente->ADDR5_23,
-                            'ADDR6_27'      =>  $cliente->ADDR6_23,
-                            'MCOMP_27'      =>  $cliente->MCOMP_23,
-                            'MSITE_27'      =>  $cliente->MSITE_23,
+                            'ADDR3_27'      =>  $pedido->cliente->ADDR3_23,
+                            'ADDR4_27'      =>  $pedido->cliente->ADDR4_23,
+                            'ADDR5_27'      =>  $pedido->cliente->ADDR5_23,
+                            'ADDR6_27'      =>  $pedido->cliente->ADDR6_23,
+                            'MCOMP_27'      =>  $pedido->cliente->MCOMP_23,
+                            'MSITE_27'      =>  $pedido->cliente->MSITE_23,
                             'UDFKEY_27'     =>  '', /*empty*/
                             'UDFREF_27'     =>  '', /*empty*/
                             'SHPTHRU_27'    =>  '', /*empty*/
@@ -175,9 +152,9 @@ class BodegaController extends Controller
                             'XDFDTE_27'     =>  null, /*empty*/
                             'XDFTXT_27'     =>  '', /*empty*/
                             'FILLER_27'     =>  '', /*empty*/
-                            'CreatedBy'     =>  'EVPIU-'.auth()->user()->username ,
+                            'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
                             'CreationDate'  =>  Carbon::now(),
-                            'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username ,
+                            'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
                             'ModificationDate'  =>  Carbon::now(),
                             'BILLCDE_27'    =>  '' /*empty*/
                         ]);
@@ -185,7 +162,7 @@ class BodegaController extends Controller
 
                     $idx = 0;
 
-                    foreach ($detalle_ped as $dp){
+                    foreach ($pedido->detalle as $dp){
                         $n2 = str_pad($idx + 1, 2, 0, STR_PAD_LEFT);
 
 
@@ -211,10 +188,10 @@ class BodegaController extends Controller
                                 'LINNUM_28'     =>  $n2,
                                 'DELNUM_28'     =>  '01',
                                 'STATUS_28'     =>  3,
-                                'CUSTID_28'     =>  $encabezado_ped->CodCliente,
+                                'CUSTID_28'     =>  $pedido->CodCliente,
                                 'PRTNUM_28'     =>  $dp->CodigoProducto,
                                 'EDILIN_28'     =>  '', /*empty*/
-                                'TAXABL_28'     =>  $cliente->TAXABL_23,
+                                'TAXABL_28'     =>  $pedido->cliente->TAXABL_23,
                                 'GLXREF_28'     =>  61209505,
                                 'CURDUE_28'     =>  $fcha_entrega->DateValue, /*empty*/
                                 'QTLINE_28'     =>  '', /*empty*/
@@ -245,7 +222,7 @@ class BodegaController extends Controller
                                 'COMMIS_28'     =>  0,
                                 'DRPSHP_28'     =>  '', /*empty*/
                                 'QUMQTY_28'     =>  0,
-                                'TAXCDE1_28'    =>  $cliente->TXCDE1_23,
+                                'TAXCDE1_28'    =>  $pedido->cliente->TXCDE1_23,
                                 'TAX1_28'       =>  ($dp->Precio * $dp->Cantidad) * 0.19,
                                 'TAXCDE2_28'    =>  '', /*empty*/
                                 'TAX2_28'       =>  0,
@@ -444,31 +421,64 @@ class BodegaController extends Controller
                                 'RECTYP_30' =>  'ST'
                             ]);
 
+
+
+                        DB::connection('MAXP')
+                            ->table('Requirement_detail')
+                            ->insert([
+                                'ORDER_11'      =>  $max_ordnum_27.$n2."01",
+                                'PRTNUM_11'     =>  $dp->CodigoProducto,
+                                'CURDUE_11'     =>  $fcha_entrega,
+                                'FILL01_11'     =>  '',
+                                'TYPE_11'       =>  'CU',
+                                'ORDNUM_11'     =>  $max_ordnum_27,
+                                'LINNUM_11'     =>  '01',
+                                'DELNUM_11'     =>  $n2,
+                                'CURQTY_11'     =>  $dp->Cantidad,
+                                'ORGQTY_11'     =>  $dp->Cantidad,
+                                'DUEQTY_11'     =>  $dp->Cantidad,
+                                'STATUS_11'     =>  '3',
+                                'QTYPER_11'     =>  '1',
+                                'LTOSET_11'     =>  '0',
+                                'SCRAP_11'      =>  '0',
+                                'PICLIN_11'     =>  '0',
+                                'ISSQTY_11'     =>  '0',
+                                'REQREF_11'     =>  $max_ordnum_27.$n2."01",
+                                'ORDPEG_11'     =>  '',
+                                'ASCRAP_11'     =>  '0',
+                                'MCOMP_11'      =>  '',
+                                'MSITE_11'      =>  '',
+                                'UDFKEY_11'     =>  '',
+                                'UDFREF_11'     =>  '',
+                                'DEXPFLG_11'    =>  '',
+                                'XDFINT_11'     =>  '0',
+                                'XDFFLT_11'     =>  '0',
+                                'XDFBOL_11'     =>  '',
+                                'XDFDTE_11'     =>  null,
+                                'XDFTXT_11'     =>  '',
+                                'FILLER_11'     =>  '',
+                                'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
+                                'CreationDate'  =>  Carbon::now(),
+                                'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
+                                'ModificationDate'  =>  Carbon::now(),
+                            ]);
+
                         $idx++;
                     }
 
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Ped_MAX' => $max_ordnum_27
-                        ]);
-
+                    $pedido->Ped_MAX = $max_ordnum_27;
+                    $pedido->save();
                 }else{
-                    DB::table('encabezado_pedidos')
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'Estado' => $request->estado
-                        ]);
+                    $pedido =  EncabezadoPedido::find($request->id);
 
-                    DB::table('pedidos_detalles_area')
-                        ->where('idPedido', '=', $request->id)
-                        ->update([
-                            'Bodega' => $request->estado,
-                            'DetalleBodega' => $request->descripcion,
-                        ]);
+                    $pedido->Estado = $request->estado;
+                    $pedido->save();
+
+                    $pedido->info_area()->update([
+                        'Bodega'        => $request->estado,
+                        'DetalleBodega' => $request->descripcion,
+                    ]);
                 }
-
-
                 DB::commit();
                 return response()->json('Pedido actualizado', 200);
             }catch (\Exception $e){

@@ -356,6 +356,7 @@ Route::middleware(['auth'])->group(function() {
 
                 /*Troqueles*/
                 Route::resource('troqueles', TroquelesController::class)->only('index');
+                Route::post('/troqueles/actualizar_estado', [TroquelesController::class, 'actualizar_pedido']);
             });
 
 

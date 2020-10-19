@@ -507,6 +507,47 @@ class ProduccionController extends Controller
                                 'RECTYP_30' =>  'ST'
                             ]);
 
+                        
+
+                        DB::connection('MAXP')
+                            ->table('Requirement_detail')
+                            ->insert([
+                                'ORDER_11'      =>  $max_ordnum_27.$n2."01",
+                                'PRTNUM_11'     =>  $dp->CodigoProducto,
+                                'CURDUE_11'     =>  $fcha_entrega,
+                                'FILL01_11'     =>  '',
+                                'TYPE_11'       =>  'CU',
+                                'ORDNUM_11'     =>  $max_ordnum_27,
+                                'LINNUM_11'     =>  '01',
+                                'DELNUM_11'     =>  $n2,
+                                'CURQTY_11'     =>  $dp->Cantidad,
+                                'ORGQTY_11'     =>  $dp->Cantidad,
+                                'DUEQTY_11'     =>  $dp->Cantidad,
+                                'STATUS_11'     =>  '3',
+                                'QTYPER_11'     =>  '1',
+                                'LTOSET_11'     =>  '0',
+                                'SCRAP_11'      =>  '0',
+                                'PICLIN_11'     =>  '0',
+                                'ISSQTY_11'     =>  '0',
+                                'REQREF_11'     =>  $max_ordnum_27.$n2."01",
+                                'ORDPEG_11'     =>  '',
+                                'ASCRAP_11'     =>  '0',
+                                'MCOMP_11'      =>  '',
+                                'MSITE_11'      =>  '',
+                                'UDFKEY_11'     =>  '',
+                                'UDFREF_11'     =>  '',
+                                'DEXPFLG_11'    =>  '',
+                                'XDFINT_11'     =>  '0',
+                                'XDFFLT_11'     =>  '0',
+                                'XDFBOL_11'     =>  '',
+                                'XDFDTE_11'     =>  null,
+                                'XDFTXT_11'     =>  '',
+                                'FILLER_11'     =>  '',
+                                'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
+                                'CreationDate'  =>  Carbon::now(),
+                                'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
+                                'ModificationDate'  =>  Carbon::now(),
+                            ]);
                         $idx++;
                     }
 

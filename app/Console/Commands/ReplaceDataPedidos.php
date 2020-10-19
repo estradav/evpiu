@@ -94,7 +94,7 @@ class ReplaceDataPedidos extends Command
         else if ($question == 'Eliminar columnas') {
             $this->info('Eliminando columnas...');
 
-            Artisan::call('migrate', array('--path' => 'database/other_migrations/pedidos'));
+            Artisan::call('migrate', array('--path' => 'database/other_migrations/pedidos/2020_10_15_111801_drop_fields_to_pedidos_detalles_area_table.php'));
 
             $this->question('Columnas eliminadas con exito!');
         }else{

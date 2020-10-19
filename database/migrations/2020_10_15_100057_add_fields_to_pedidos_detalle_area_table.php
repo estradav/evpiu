@@ -29,15 +29,15 @@ class AddFieldsToPedidosDetalleAreaTable extends Migration
             $table->foreign('aprobo_produccion')->references('id')->on('users');
 
 
-            $table->dateTime('bodega_fecha_respuesta')->nullable()->after('DetalleBodega');
+            $table->dateTime('bodega_fecha_resp')->nullable()->after('DetalleBodega');
             $table->unsignedBigInteger('aprobo_bodega')->nullable()->after('bodega_fecha_respuesta');
             $table->foreign('aprobo_bodega')->references('id')->on('users');
 
 
             $table->string('Troqueles')->nullable()->after('AproboBodega');
             $table->string('DetalleTroqueles')->nullable()->after('Troqueles');
-            $table->dateTime('troqueles_fecha_respuesta')->nullable()->after('DetalleTroqueles');
-            $table->unsignedBigInteger('aprobo_troqueles')->nullable()->after('troqueles_fecha_respuesta');
+            $table->dateTime('troqueles_fecha_resp')->nullable()->after('DetalleTroqueles');
+            $table->unsignedBigInteger('aprobo_troqueles')->nullable()->after('troqueles_fecha_resp');
             $table->foreign('aprobo_troqueles')->references('id')->on('users');
         });
     }

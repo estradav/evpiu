@@ -8,7 +8,7 @@ $(document).ready(function () {
     const formatter2 = new Intl.NumberFormat('es-CO',{
         style: 'currency',
         currency: 'COP',
-        minimumFractionDigits: 0,
+        minimumFractionDigits: 0
     });
 
 
@@ -20,36 +20,37 @@ $(document).ready(function () {
             data: {id: id},
             dataType: "json",
             success: function (data) {
-                document.getElementById('pdf_titulo').innerText = 'Pedido '+data.encabezado['id'];
-                document.getElementById('pdf_cliente').innerText = data.encabezado['NombreCliente'];
-                document.getElementById('pdf_fecha').innerText = data.encabezado['created_at'];
-                document.getElementById('pdf_codigo_cliente').innerText = data.encabezado['CodCliente'];
-                document.getElementById('pdf_ciudad').innerText = data.encabezado['Ciudad'];
-                document.getElementById('pdf_direccion').innerText = data.encabezado['DireccionCliente'];
-                document.getElementById('pdf_telefono').innerText = data.encabezado['Telefono'];
-                document.getElementById('pdf_numero_pedido').innerText = data.encabezado['id'];
-                document.getElementById('pdf_oc').innerText = data.encabezado['OrdenCompra'];
-                document.getElementById('pdf_vendedor').innerText = data.encabezado['NombreVendedor'];
-                document.getElementById('pdf_condicion_pago').innerText = data.encabezado['CondicionPago'];
-                document.getElementById('pdf_notas_generales').innerText = data.encabezado['Notas'];
+                console.log(data);
+                document.getElementById('pdf_titulo').innerText = 'Pedido '+data.id;
+                document.getElementById('pdf_cliente').innerText = data.cliente.RAZON_SOCIAL;
+                document.getElementById('pdf_fecha').innerText = data.created_at;
+                document.getElementById('pdf_codigo_cliente').innerText = data.CodCliente;
+                document.getElementById('pdf_ciudad').innerText = data.cliente.CIUDAD;
+                document.getElementById('pdf_direccion').innerText = data.cliente.DIRECCION;
+                document.getElementById('pdf_telefono').innerText = data.cliente.TEL1;
+                document.getElementById('pdf_numero_pedido').innerText = data.id;
+                document.getElementById('pdf_oc').innerText = data.OrdenCompra;
+                document.getElementById('pdf_vendedor').innerText = data.vendedor.name;
+                document.getElementById('pdf_condicion_pago').innerText = data.cliente.PLAZO;
+                document.getElementById('pdf_notas_generales').innerText = data.Notas;
 
                 /*TOTALES*/
-                document.getElementById('pdf_bruto_pedido').innerText = formatter2.format(Math.round(data.encabezado['Bruto']));
-                document.getElementById('pdf_descuento_pedido').innerText = formatter2.format(Math.round(data.encabezado['TotalDescuento']));
-                document.getElementById('pdf_subtotal_pedido').innerText = formatter2.format(Math.round(data.encabezado['TotalSubtotal']));
-                document.getElementById('pdf_iva_pedido').innerText = formatter2.format(Math.round(data.encabezado['TotalIVA']));
-                document.getElementById('pdf_total_pedido').innerText = formatter2.format(Math.round(data.encabezado['TotalPedido']));
+                document.getElementById('pdf_bruto_pedido').innerText = formatter2.format(Math.round(data.Bruto));
+                document.getElementById('pdf_descuento_pedido').innerText = formatter2.format(Math.round(data.TotalDescuento));
+                document.getElementById('pdf_subtotal_pedido').innerText = formatter2.format(Math.round(data.TotalSubtotal));
+                document.getElementById('pdf_iva_pedido').innerText = formatter2.format(Math.round(data.TotalIVA));
+                document.getElementById('pdf_total_pedido').innerText = formatter2.format(Math.round(data.TotalPedido));
 
 
 
-                if (data.encabezado['Estado'] == 1){
+                if (data.Estado == 1){
                     document.getElementById("ProgressPed").style.width = "10%";
                     document.getElementById('ProgressPed').innerHTML = "10%";
                     document.getElementById('ProgressPed').classList.add("bg-success");
                 }
 
 
-                if (data.encabezado['Estado'] == 2 && data.encabezado['Cartera'] == 2){
+                if (data.Estado == 2 && data.info_area.Cartera == 2){
                     document.getElementById("ProgressPed").style.width = "25%";
                     document.getElementById('ProgressPed').innerHTML = "25%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -58,7 +59,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 3 && data.encabezado['Cartera'] == 3){
+                if(data.Estado == 3 && data.info_area.Cartera == 3){
                     document.getElementById("ProgressPed").style.width = "30%";
                     document.getElementById('ProgressPed').innerHTML = "30%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -67,7 +68,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 2 && data.encabezado['Cartera'] == 3.1){
+                if(data.Estado == 2 && data.info_area.Cartera == 3.1){
                     document.getElementById("ProgressPed").style.width="30%";
                     document.getElementById('ProgressPed').innerHTML = "30%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -76,7 +77,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 2 && data.encabezado['Cartera'] == 3.2){
+                if(data.Estado == 2 && data.info_area.Cartera == 3.2){
                     document.getElementById("ProgressPed").style.width = "30%";
                     document.getElementById('ProgressPed').innerHTML = "30%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -86,7 +87,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 4 && data.encabezado['Costos'] == 4){
+                if(data.Estado == 4 && data.info_area.Costos == 4){
                     document.getElementById("ProgressPed").style.width="50%";
                     document.getElementById('ProgressPed').innerHTML = "50%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -97,7 +98,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 5 && data.encabezado['Costos'] == 5){
+                if(data.Estado == 5 && data.info_area.Costos == 5){
                     document.getElementById("ProgressPed").style.width="50%";
                     document.getElementById('ProgressPed').innerHTML = "50%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -108,7 +109,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 6 && data.encabezado['Produccion'] == 6 ){
+                if(data.Estado == 6 && data.info_area.Produccion == 6 ){
                     document.getElementById("ProgressPed").style.width="75%";
                     document.getElementById('ProgressPed').innerHTML = "75%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -121,7 +122,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 7 && data.encabezado['Produccion'] == 7 ){
+                if(data.Estado == 7 && data.info_area.Produccion == 7 ){
                     document.getElementById("ProgressPed").style.width="75%";
                     document.getElementById('ProgressPed').innerHTML = "75%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -134,7 +135,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 8 && data.encabezado['Bodega'] == 8){
+                if(data.Estado == 8 && data.info_area.Bodega == 8){
                     document.getElementById("ProgressPed").style.width="90%";
                     document.getElementById('ProgressPed').innerHTML = "90%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -149,7 +150,7 @@ $(document).ready(function () {
                 }
 
 
-                if(data.encabezado['Estado'] == 9 && data.encabezado['Bodega'] == 9){
+                if(data.Estado == 9 && data.info_area.Bodega == 9){
                     document.getElementById("ProgressPed").style.width="90%";
                     document.getElementById('ProgressPed').innerHTML = "90%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -163,7 +164,7 @@ $(document).ready(function () {
                     document.getElementById("ProgressPed").classList.add("bg-success");
                 }
 
-                if(data.encabezado['Estado'] == 10){
+                if(data.Estado == 10){
                     document.getElementById("ProgressPed").style.width="100%";
                     document.getElementById('ProgressPed').innerHTML = "100%";
                     document.getElementById('ProgCartera').classList.add("active");
@@ -204,6 +205,14 @@ $(document).ready(function () {
                     }
                 }
 
+                function format_marca(marca){
+                    if (marca){
+                        return marca;
+                    }else{
+                        return '';
+                    }
+                }
+
                 for (let i = 0; i < data.detalle.length; i++) {
                     $('#items_pedido').append('<tr>' +
                         '<td style="text-align: center">'+ data.detalle[i].CodigoProducto +'</td>' +
@@ -211,6 +220,7 @@ $(document).ready(function () {
                         '<td style="text-align: center">'+ format_destino(data.detalle[i].Destino) +'</td>' +
                         '<td style="text-align: center">'+ data.detalle[i].R_N +'</td>' +
                         '<td style="text-align: center">'+ format_arte(data.detalle[i].Arte)  + '</td>' +
+                        '<td style="text-align: center">'+ format_marca(data.detalle[i].Marca)  + '</td>' +
                         '<td style="text-align: center">'+ format_notas(data.detalle[i].Notas) +'</td>' +
                         '<td style="text-align: center">'+ data.detalle[i].Unidad +'</td>' +
                         '<td style="text-align: right">'+ data.detalle[i].Cantidad +'</td>' +
