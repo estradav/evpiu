@@ -240,7 +240,7 @@ class VentasController extends Controller
                     ->table('CIEV_V_ProductosVentas')
                     ->where('Descripcion', 'LIKE', '%'.$query.'%')
                     ->orWhere('Pieza', 'LIKE', '%'.$query.'%')
-                    ->take(20)
+                    ->take(50)
                     ->get();
 
                 foreach ($queries as $q) {

@@ -116,7 +116,7 @@ class TroquelesController extends Controller
                             'SHPLBL_27'     =>  0,
                             'INVCE_27'      =>  'N',
                             'APPINV_27'     =>  '', /*empty*/
-                            'REASON_27'     =>  21, // 23 si es bodega
+                            'REASON_27'     =>  '08', // 23 si es bodega
                             'NAME_27'       =>  $pedido->cliente_info->NAME_23,
                             'ADDR1_27'      =>  $pedido->cliente_info->ADDR1_23,
                             'ADDR2_27'      =>  $pedido->cliente_info->ADDR2_23,
