@@ -228,7 +228,7 @@ class ProduccionController extends Controller
                         $n2 = str_pad($idx + 1, 2, 0, STR_PAD_LEFT);
 
 
-                        $part = DB::connection('MAXP')
+                        $part = DB::connection('MAX')
                             ->table('Part_Master')
                             ->where('PRTNUM_01', '=', $dp->CodigoProducto)
                             ->first();
