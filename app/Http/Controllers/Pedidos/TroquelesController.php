@@ -78,10 +78,6 @@ class TroquelesController extends Controller
                     $max_ordnum_27 = $max_ordnum_27 + 1;
 
 
-
-
-
-
                     DB::connection('MAXP')
                         ->table('SO_Master')
                         ->insert([

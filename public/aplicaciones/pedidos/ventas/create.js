@@ -544,12 +544,12 @@ $(document).ready(function () {
         }
     });
 
+
     $('#add_info_modal_form').validate({
         ignore: "",
         rules: {
             add_info_modal_art: "required",
             add_info_modal_marca: "required",
-            add_info_modal_cp_client: "required",
         },
         errorPlacement: function(error,element) {
             return true;
@@ -561,8 +561,6 @@ $(document).ready(function () {
             $(element).closest('.form-control').removeClass('is-invalid');
         }
     });
-
-
 
 
     $('#add_info_modal_art').autocomplete({
@@ -608,9 +606,6 @@ $(document).ready(function () {
             });
         }
     });
-
-
-
 
 
     jQuery.extend(jQuery.validator.messages, {
