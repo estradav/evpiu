@@ -30,7 +30,7 @@ class AddFieldsToPedidosDetalleAreaTable extends Migration
 
 
             $table->dateTime('bodega_fecha_resp')->nullable()->after('DetalleBodega');
-            $table->unsignedBigInteger('aprobo_bodega')->nullable()->after('bodega_fecha_respuesta');
+            $table->unsignedBigInteger('aprobo_bodega')->nullable()->after('bodega_fecha_resp');
             $table->foreign('aprobo_bodega')->references('id')->on('users');
 
 

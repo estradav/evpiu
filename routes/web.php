@@ -440,8 +440,8 @@ Route::middleware(['auth'])->group(function() {
 
 
         /*Backups*/
-        Route::get('backup/download/{file_name}', [BackupController::class, 'download']);
-        Route::get('backup/delete/{file_name}',  [BackupController::class, 'delete']);
+        Route::get('backup/download/{file_name}', [BackupController::class, 'download'])->name('backup.download');
+        Route::get('backup/delete/{file_name}',  [BackupController::class, 'delete'])->name('backup.delete');
         Route::resource('backup', BackupController::class)->only('index', 'create', 'store');
 
 

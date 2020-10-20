@@ -35,9 +35,9 @@
                                         <td>{{ \Carbon\Carbon::createFromTimestamp($backup['last_modified'])->diffForHumans() }}</td>
                                         <td>
                                             <a class="btn btn-xs btn-success"
-                                               href="{{action('BackupController@download', [$backup['file_name']])}}"><i class="fa fa-cloud-download"> </i> Decargar</a>
+                                               href="{{ route('backup.download', [$backup['file_name']])}}"><i class="fa fa-cloud-download"> </i> Decargar</a>
                                             <a class="btn btn-xs btn-danger link_confirmation" data-button-type="delete"
-                                               href="{{action('BackupController@delete', [$backup['file_name']])}}"><i class="fa fa-trash-o"></i>
+                                               href="{{ route('backup.delete', [$backup['file_name']])}}"><i class="fa fa-trash-o"></i>
                                                 Eliminar</a>
                                         </td>
                                     </tr>

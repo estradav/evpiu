@@ -29,14 +29,13 @@ class VentasController extends Controller
      */
     public function index(Request $request){
         if ($request->ajax()){
-            if (Auth::user()->hasRole('super-admin')){
+            if (auth()->user()->hasRole('super-admin')){
                 $data = EncabezadoPedido::orderBy('id', 'asc')
                     ->with('cliente' ,'info_area')
                     ->get();
-
             }else{
                 $data = EncabezadoPedido::where('vendedor_id', auth()->user()->id)
-                    ->with('cliente')
+                    ->with('cliente','info_area')
                     ->orderBy('id','desc')
                     ->get();
             }
