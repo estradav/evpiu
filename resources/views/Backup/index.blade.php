@@ -37,7 +37,7 @@
                                             <a class="btn btn-xs btn-success"
                                                href="{{ route('backup.download', [$backup['file_name']])}}"><i class="fa fa-cloud-download"> </i> Decargar</a>
                                             <a class="btn btn-xs btn-danger link_confirmation" data-button-type="delete"
-                                               href="{{ route('backup.destroy', [$backup['file_name']])}}"><i class="fa fa-trash-o"></i>
+                                               href="{{ route('backup.delete', [$backup['file_name']])}}"><i class="fa fa-trash-o"></i>
                                                 Eliminar</a>
                                         </td>
                                     </tr>
