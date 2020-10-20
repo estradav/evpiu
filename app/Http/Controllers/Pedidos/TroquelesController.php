@@ -164,11 +164,18 @@ class TroquelesController extends Controller
                         $part = DB::connection('MAX')
                             ->table('Part_Master')
                             ->where('PRTNUM_01', '=', $dp->CodigoProducto)
-                            ->get()->toArray();
+                            ->first();
 
-                        $part = $part[0];
 
-                        $fcha_entrega = $this->calcular_fecha_entrega($part->MFGLT_01);
+
+                        $MFGLT_01  = DB::connection('MAX')
+                            ->table('Part_Master')
+                            ->whereIn('PRTNUM_01', $dp->CodigoProducto)
+                            ->first();
+
+
+
+                        $fcha_entrega = $this->calcular_fecha_entrega($MFGLT_01->MFGLT_01);
 
 
                         $almacen =  DB::connection('MAX')

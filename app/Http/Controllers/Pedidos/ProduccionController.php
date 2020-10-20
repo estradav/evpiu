@@ -231,19 +231,28 @@ class ProduccionController extends Controller
                         $part = DB::connection('MAX')
                             ->table('Part_Master')
                             ->where('PRTNUM_01', '=', $dp->CodigoProducto)
-                            ->get()->toArray();
-
-                        $part = $part[0];
-
-                        $fcha_entrega = $this->calcular_fecha_entrega($part->MFGLT_01);
+                            ->first();
 
 
 
+                        $MFGLT_01  = DB::connection('MAX')
+                            ->table('Part_Master')
+                            ->where('PRTNUM_01','=', $dp->CodigoProducto)
+                            ->pluck('MFGLT_01')
+                            ->first();
 
-                        $almacen =  DB::connection('MAXP')
+
+
+                        $fcha_entrega = $this->calcular_fecha_entrega($MFGLT_01);
+
+
+
+                        $almacen =  DB::connection('MAX')
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
                             ->pluck('STK_29');
+
+
 
 
                         DB::connection('MAXP')
