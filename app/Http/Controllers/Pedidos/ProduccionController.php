@@ -231,10 +231,13 @@ class ProduccionController extends Controller
                         $part = DB::connection('MAX')
                             ->table('Part_Master')
                             ->where('PRTNUM_01', '=', $dp->CodigoProducto)
-                            ->first();
+                            ->get()->toArray();
 
+                        $part = $part[0];
 
                         $fcha_entrega = $this->calcular_fecha_entrega($part->MFGLT_01);
+
+
 
 
                         $almacen =  DB::connection('MAXP')
@@ -542,14 +545,21 @@ class ProduccionController extends Controller
 
 
     private function calcular_fecha_entrega( $cantidad_dias){
-       $dias_habiles =  DB::connection('MAXP')
-           ->table('Shop_Calendar')
-           ->where('ShopDay', '=', 1)
-           ->whereDate('DateValue', '>=', Carbon::now())
-           ->get();
+        $dias_habiles =  DB::connection('MAXP')
+            ->table('Shop_Calendar')
+            ->where('ShopDay', '=', 1)
+            ->whereDate('DateValue', '>=', Carbon::now())
+            ->get();
 
-       return $dias_habiles[$cantidad_dias-1];
 
+        if ($cantidad_dias > 0) {
+            return $dias_habiles[$cantidad_dias-1];
+        }else{
+            $date = Carbon::now()->format('Y-m-d h:m:i');
+            return (object) [
+                'DateValue' => $date
+            ];
+        }
     }
 
 }
