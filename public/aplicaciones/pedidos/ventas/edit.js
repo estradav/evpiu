@@ -521,7 +521,6 @@ $(document).ready(function () {
         rules: {
             add_info_modal_art: "required",
             add_info_modal_marca: "required",
-            add_info_modal_cp_client: "required",
         },
         errorPlacement: function(error,element) {
             return true;
