@@ -311,9 +311,29 @@ $(document).ready(function () {
 
         $('.arte_item').autocomplete({
             source: function (request, response) {
-                const query = document.getElementById('arte_item').value;
+                const query =  $('.arte_item').val();
                 $.ajax({
                     url: "/aplicaciones/pedidos/venta/listar_artes",
+                    method: "get",
+                    data: {
+                        query: query,
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        const resp = $.map(data, function (obj) {
+                            return obj
+                        });
+                        response(resp);
+                    }
+                });
+            }
+        });
+
+        $('.marca_item').autocomplete({
+            source: function (request, response) {
+                const query = $('.marca_item').val();
+                $.ajax({
+                    url: "/aplicaciones/pedidos/venta/listar_marcas",
                     method: "get",
                     data: {
                         query: query,
@@ -546,6 +566,7 @@ $(document).ready(function () {
 
 
     $('#add_info_modal_art').autocomplete({
+        appendTo: '#add_info_modal',
         source: function (request, response) {
             const query = document.getElementById('add_info_modal_art').value;
             $.ajax({
@@ -568,6 +589,7 @@ $(document).ready(function () {
 
 
     $('#add_info_modal_marca').autocomplete({
+        appendTo: '#add_info_modal',
         source: function (request, response) {
             const query = document.getElementById('add_info_modal_marca').value;
             $.ajax({
@@ -588,25 +610,7 @@ $(document).ready(function () {
     });
 
 
-    $('.marca_item').autocomplete({
-        source: function (request, response) {
-            const query = document.getElementById('add_info_modal_marca').value;
-            $.ajax({
-                url: "/aplicaciones/pedidos/venta/listar_marcas",
-                method: "get",
-                data: {
-                    query: query,
-                },
-                dataType: "json",
-                success: function (data) {
-                    const resp = $.map(data, function (obj) {
-                        return obj
-                    });
-                    response(resp);
-                }
-            });
-        }
-    });
+
 
 
     jQuery.extend(jQuery.validator.messages, {
