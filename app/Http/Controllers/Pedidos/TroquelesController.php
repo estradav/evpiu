@@ -161,13 +161,12 @@ class TroquelesController extends Controller
                         $n2 = str_pad($idx + 1, 2, 0, STR_PAD_LEFT);
 
 
-                        $part = DB::connection('MAXP')
+                        $part = DB::connection('MAX')
                             ->table('Part_Master')
                             ->where('PRTNUM_01', '=', $dp->CodigoProducto)
-                            ->first();
+                            ->get()->toArray();
 
-
-
+                        $part = $part[0];
 
                         $fcha_entrega = $this->calcular_fecha_entrega($part->MFGLT_01);
 
