@@ -66,8 +66,10 @@ class TroquelesController extends Controller
                     $pedido->save();
 
                     $pedido->info_area()->update([
-                        'Troqueles'           =>  $request->estado,
-                        'DetalleTroqueles'    =>  $request->descripcion,
+                        'Troqueles'             =>  $request->estado,
+                        'DetalleTroqueles'      =>  $request->descripcion,
+                        'troqueles_fecha_resp'  =>  Carbon::now(),
+                        'aprobo_troqueles'      =>  auth()->user()->id
                     ]);
 
                     $max_ordnum_27 =  DB::connection('MAXP')
