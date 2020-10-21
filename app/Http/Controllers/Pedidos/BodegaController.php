@@ -88,7 +88,6 @@ class BodegaController extends Controller
                         ->where('id', '=', $request->id)->first();
 
 
-
                     DB::connection('MAXP')
                         ->table('SO_Master')
                         ->insert([
