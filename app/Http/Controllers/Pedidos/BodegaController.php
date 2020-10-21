@@ -69,8 +69,10 @@ class BodegaController extends Controller
                     $pedido->save();
 
                     $pedido->info_area()->update([
-                        'Bodega'           =>  $request->estado,
-                        'DetalleBodega'    =>  $request->descripcion,
+                        'Bodega'            =>  $request->estado,
+                        'DetalleBodega'     =>  $request->descripcion,
+                        'bodega_fecha_resp' =>  Carbon::now(),
+                        'aprobo_bodega'     =>  auth()->user()->id
                     ]);
 
 
@@ -84,7 +86,6 @@ class BodegaController extends Controller
 
                     $encabezado_ped =  DB::table('encabezado_pedidos')
                         ->where('id', '=', $request->id)->first();
-
 
 
                     DB::connection('MAXP')

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pedidos;
 use App\ClienteMax;
 use App\EncabezadoPedido;
 use App\Http\Controllers\Controller;
+use App\InfoAreaPedido;
 use App\MaestroPedido;
 use App\User;
 use Carbon\Carbon;
@@ -1112,9 +1113,12 @@ class VentasController extends Controller
     public function info_area(Request $request){
         if ($request->ajax()){
             try {
-                $data = DB::table('pedidos_detalles_area')
-                    ->where('idPedido', '=', $request->id)
+
+                $data = InfoAreaPedido::where('idPedido', $request->id)
+                    ->with('aprobocartera', 'aprobocostos', 'aproboproduccion', 'aprobobodega', 'aprobotroqueles')
                     ->first();
+
+
 
                 if ($request->area == 'cartera'){
                     if ($data->Cartera == 2){
@@ -1154,7 +1158,9 @@ class VentasController extends Controller
                             ->json([
                                 'icon'      => 'success',
                                 'estado'    => 'Aprobado',
-                                'detalle'   => '<b>APROBÓ: </b>'.$data->AproboCartera.'<br> <b>DETALLE:</b> '.$data->DetalleCartera
+                                'aprobo'    => $data->aprobocartera->name,
+                                'detalle'   => $data->DetalleCartera,
+                                'fecha'     => $data->cartera_fecha_resp
                             ], 200);
 
                     }else if ($data->Cartera == null){
@@ -1188,7 +1194,9 @@ class VentasController extends Controller
                             ->json([
                                 'icon'      => 'success',
                                 'estado'    => 'Aprobado',
-                                'detalle'   => '<b>APROBÓ: </b>'.$data->AproboCostos.'<br> <b>DETALLE:</b> '.$data->DetalleCostos
+                                'aprobo'    => $data->aprobocostos->name,
+                                'detalle'   => $data->DetalleCostos,
+                                'fecha'     => $data->costos_fecha_resp
                             ], 200);
 
                     }else if ($data->Costos == null){
@@ -1222,7 +1230,9 @@ class VentasController extends Controller
                             ->json([
                                 'icon'      => 'success',
                                 'estado'    => 'Aprobado',
-                                'detalle'   => '<b>APROBÓ: </b>'.$data->AproboProduccion.'<br> <b>DETALLE:</b> '.$data->DetalleProduccion
+                                'aprobo'    => $data->aproboproduccion->name,
+                                'detalle'   => $data->DetalleProduccion,
+                                'fecha'     => $data->produccion_fecha_resp
                             ], 200);
 
                     }else if ($data->Produccion == 8){
@@ -1265,7 +1275,9 @@ class VentasController extends Controller
                             ->json([
                                 'icon'      => 'success',
                                 'estado'    => 'Aprobado',
-                                'detalle'   => '<b>APROBÓ: </b>'.$data->AproboBodega.'<br> <b>DETALLE:</b> '.$data->DetalleBodega
+                                'aprobo'    => $data->aprobobodega->name,
+                                'detalle'   => $data->DetalleBodeha,
+                                'fecha'     => $data->bodega_fecha_resp
                             ], 200);
 
                     }else if ($data->Bodega == null){
@@ -1277,11 +1289,9 @@ class VentasController extends Controller
                             ], 200);
                     }
                 }
-
-
             }catch (Exception $e){
                 return response()
-                    ->json($e->getMessage(), 500);
+                    ->json($e, 500);
             }
         }
     }

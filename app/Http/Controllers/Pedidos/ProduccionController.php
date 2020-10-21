@@ -133,8 +133,10 @@ class ProduccionController extends Controller
                     $pedido->save();
 
                     $pedido->info_area()->update([
-                        'Produccion'           =>  $request->estado,
-                        'DetalleProduccion'    =>  $request->descripcion,
+                        'Produccion'            =>  $request->estado,
+                        'DetalleProduccion'     =>  $request->descripcion,
+                        'Aprobo_produccion'     =>  auth()->user()->id,
+                        'produccion_fecha_resp' =>  Carbon::now()
                     ]);
 
                     $max_ordnum_27 =  DB::connection('MAXP')

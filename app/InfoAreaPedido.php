@@ -39,4 +39,30 @@ class InfoAreaPedido extends Model
      * @var string
      */
     public $primaryKey = 'id_d';
+
+
+    public function aprobocartera(){
+        return $this->hasOne(User::class, 'id', 'aprobo_cartera');
+    }
+
+
+    public function aprobocostos(){
+        return $this->hasOne(User::class, 'id', 'aprobo_costos');
+    }
+
+
+    public function aproboproduccion(){
+        return $this->hasOne(User::class, 'id', 'aprobo_produccion');
+    }
+
+
+    public function aprobobodega(){
+        return $this->hasOne(User::class, 'id', 'aprobo_bodega');
+    }
+
+
+    public function aprobotroqueles(){
+        return $this->hasOne(User::class, 'id', 'aprobo_troqueles');
+    }
+
 }
