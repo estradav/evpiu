@@ -234,18 +234,13 @@ class ProduccionController extends Controller
                             ->first();
 
 
-
                         $fcha_entrega = $this->calcular_fecha_entrega($part->MFGLT_01);
-
 
 
                         $almacen = DB::connection('MAX')
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
                             ->pluck('STK_29')->first();
-
-
-
 
 
 
@@ -447,8 +442,6 @@ class ProduccionController extends Controller
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
                             ->pluck('QTYCOM_29')->first();
-
-
 
 
 
