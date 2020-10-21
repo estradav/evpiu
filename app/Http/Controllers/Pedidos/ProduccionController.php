@@ -133,8 +133,8 @@ class ProduccionController extends Controller
                     $pedido->save();
 
                     $pedido->info_area()->update([
-                        'Troqueles'           =>  $request->estado,
-                        'DetalleTroqueles'    =>  $request->descripcion,
+                        'Produccion'           =>  $request->estado,
+                        'DetalleProduccion'    =>  $request->descripcion,
                     ]);
 
                     $max_ordnum_27 =  DB::connection('MAXP')
@@ -231,19 +231,17 @@ class ProduccionController extends Controller
                         $part = DB::connection('MAX')
                             ->table('Part_Master')
                             ->where('PRTNUM_01', '=', $dp->CodigoProducto)
-                            ->get()->toArray();
+                            ->first();
 
-                        $part = $part[0];
 
                         $fcha_entrega = $this->calcular_fecha_entrega($part->MFGLT_01);
 
 
-
-
-                        $almacen =  DB::connection('MAXP')
+                        $almacen = DB::connection('MAX')
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
-                            ->pluck('STK_29');
+                            ->pluck('STK_29')->first();
+
 
 
                         DB::connection('MAXP')
@@ -279,7 +277,7 @@ class ProduccionController extends Controller
                                 'STYPE_28'      =>  'CU',
                                 'PRNT_28'       =>  'N',
                                 'AKPRNT_28'     =>  'N',
-                                'STK_28'        =>  $almacen[0], /*empty*/
+                                'STK_28'        =>  $almacen, /*empty*/
                                 'COCFLG_28'     =>  '', /*empty*/
                                 'FORCUR_28'     =>  $dp->Precio,
                                 'HSTAT_28'      =>  'R',
@@ -440,10 +438,10 @@ class ProduccionController extends Controller
 
 
 
-                        $cant_comprometida = DB::connection('MAXP')
+                        $cant_comprometida = DB::connection('MAX')
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
-                            ->pluck('QTYCOM_29');
+                            ->pluck('QTYCOM_29')->first();
 
 
 
@@ -451,7 +449,7 @@ class ProduccionController extends Controller
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
                             ->update([
-                                'QTYCOM_29' => $cant_comprometida[0] + floatval($dp->Cantidad)
+                                'QTYCOM_29' => $cant_comprometida + floatval($dp->Cantidad)
                             ]);
 
 
