@@ -1276,7 +1276,7 @@ class VentasController extends Controller
                                 'icon'      => 'success',
                                 'estado'    => 'Aprobado',
                                 'aprobo'    => $data->aprobobodega->name,
-                                'detalle'   => $data->DetalleBodeha,
+                                'detalle'   => $data->DetalleBodega,
                                 'fecha'     => $data->bodega_fecha_resp
                             ], 200);
 
