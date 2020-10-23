@@ -210,15 +210,32 @@ $(document).ready(function () {
                         `);
                     }
                     $('#consultar').attr('disabled', 'disabled');
+                    fecha_limite();
                     console.log(total_cartera);
                 },
                 error: function (data) {
                     console.log(data);
                 }
-            })
+            });
         }
 
     });
+
+    function fecha_limite(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
+
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("fecha_pago").setAttribute("max", today);
+    }
 
 
     function calcular_total_fila(fila, check) {
@@ -643,7 +660,9 @@ $(document).ready(function () {
                 'top': $("#info_documento_modal").data('origionalTop')
             });
         }, 2000);
-
     });
+
+
+
 
 });

@@ -66,6 +66,7 @@
                                         <tr>
                                             <th>CODIGO</th>
                                             <th>DESCRIPCION</th>
+                                            <th>COD. PROD. CLI</th>
                                             <th>DESTINO</th>
                                             <th>R/N</th>
                                             <th>ARTE</th>
