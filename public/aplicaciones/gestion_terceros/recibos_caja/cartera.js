@@ -170,7 +170,7 @@ $(document).ready(function () {
                 for (let i = 0; i < det.length; i++) {
                     $('#table_itm').append(`
                         <tr>
-                            <td><a href="javascript:void(0)" class="info_documento" id="`+ det[i].invoice +`">`+ det[i].invoice +`</a></td>
+                            <td><a href="javascript:void(0)" class="info_documento" id="`+ det[i].invoice + '-' + enc.nit +`">`+ det[i].invoice +`</a></td>
                             <td>`+ formatter.format(det[i].bruto) +`</td>
                             <td>`+ formatter.format(det[i].descuento) +`</td>
                             <td>`+ formatter.format(det[i].retencion) +`</td>
@@ -244,11 +244,18 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.info_documento', function () {
-        let id = this.id;
+        var result = this.id;
+        result  = result.split('-')
+        let id  =  result[0];
+        let nit = result[1];
+
         $.ajax({
             url: '/aplicaciones/recibos_caja/consultar_documento',
             type: 'get',
-            data: {id:id},
+            data: {
+                id: id,
+                nit: nit
+            },
             success: function (data) {
                 const formatter = new Intl.NumberFormat('es-CO', {
                     style: 'currency',

@@ -200,7 +200,7 @@ $(document).ready(function () {
                     if (notas){
                         return notas;
                     }else{
-                        return '';
+                        return 'N/A';
                     }
                 }
 
@@ -208,7 +208,15 @@ $(document).ready(function () {
                     if (marca){
                         return marca;
                     }else{
-                        return '';
+                        return 'N/A';
+                    }
+                }
+
+                function format_cod(cod){
+                    if (cod){
+                        return cod;
+                    }else{
+                        return 'N/A';
                     }
                 }
 
@@ -216,6 +224,7 @@ $(document).ready(function () {
                     $('#items_pedido').append('<tr>' +
                         '<td style="text-align: center">'+ data.detalle[i].CodigoProducto +'</td>' +
                         '<td style="text-align: center">'+ data.detalle[i].Descripcion +'</td>' +
+                        '<td style="text-align: center">'+ format_cod(data.detalle[i].Cod_prod_cliente) +'</td>'+
                         '<td style="text-align: center">'+ format_destino(data.detalle[i].Destino) +'</td>' +
                         '<td style="text-align: center">'+ data.detalle[i].R_N +'</td>' +
                         '<td style="text-align: center">'+ format_arte(data.detalle[i].Arte)  + '</td>' +
