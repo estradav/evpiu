@@ -292,6 +292,11 @@ $(document).ready(function () {
             },
             descripcion: {
                 required: true,
+                remote: {
+                    url: '/aplicaciones/productos/codificado/validar_descripcion',
+                    type: 'POST',
+                    async: true
+                }
             },
             tipo_producto: {
                 select_check: true

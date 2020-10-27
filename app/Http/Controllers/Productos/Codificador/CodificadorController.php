@@ -244,15 +244,45 @@ class CodificadorController extends Controller
                     ->count();
 
                 if ($data == 0){
-                    return response()->json(true,200);
+                    return response()
+                        ->json(true,200);
                 }else{
-                    return response()->json(false,200);
+                    return response()
+                        ->json(false,200);
                 }
             }catch (\Exception $e){
                 return response()->json($e->getMessage(),500);
             }
         }
 
+    }
+
+
+    /**
+     * valida que la descripcion no este repedita
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function validar_descripcion(Request  $request){
+        if ($request->ajax()) {
+            try {
+                $data = CodCodigo::where('descripcion', '=', $request->descripcion)
+                    ->count();
+
+                if ($data == 0){
+                    return response()
+                        ->json(true,200);
+                }else{
+                    return response()
+                        ->json(false,200);
+                }
+
+            }catch (\Exception $e){
+                return response()
+                    ->json($e->getMessage(),500);
+            }
+        }
     }
 
 

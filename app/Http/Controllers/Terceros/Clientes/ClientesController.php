@@ -1030,38 +1030,36 @@ class ClientesController extends Controller
         $correos_string = '';
 
         foreach ($Array as $Ar){
-
             $correos_string = $correos_string.';'.$Ar;
         }
 
-        $correos_string = substr($correos_string,1);
+        $correos_string = substr($correos_string, 1);
 
 
         DB::beginTransaction();
         try {
             DB::connection('MAX')
                 ->table('customer_master_ext')
-                ->where('CUSTID_23','=', $request->cliente)
-                ->update([
+                ->updateOrInsert([
+                    'CUSTID_23'     =>  $request->cliente
+                ],[
                     'CorreosCopia'  =>  $correos_string
                 ]);
 
-            DB::table('log_modifications_clients')->insert([
-                'codigo_cliente'    =>  $request->cliente,
-                'campo_cambiado'    =>  'Correos Copia',
-                'usuario'           =>  Auth::user()->username,
-                'justificacion'     =>  'Correcccion correos copia',
-                'created_at'        =>  Carbon::now(),
-                'updated_at'        =>  Carbon::now()
-            ]);
-
+            DB::table('log_modifications_clients')
+                ->insert([
+                    'codigo_cliente'    =>  $request->cliente,
+                    'campo_cambiado'    =>  'Correos Copia',
+                    'usuario'           =>  Auth::user()->username,
+                    'justificacion'     =>  'Correcccion correos copia',
+                    'created_at'        =>  Carbon::now(),
+                    'updated_at'        =>  Carbon::now()
+                ]);
             DB::commit();
-
-            return response()->json('Datos actualizados',200);
-
+            return response()->json('Datos actualizados', 200);
         }catch (\Exception $e){
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
     }
 

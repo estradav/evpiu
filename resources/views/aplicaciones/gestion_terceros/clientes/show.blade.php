@@ -1815,6 +1815,7 @@
 
                 $('#change_correos_copia').on('click',function () {
                     var correos_copia = @json(trim($cliente->CORREOS_COPIA));
+                    var cliente = @json(trim($cliente->CODIGO_CLIENTE));
 
                     var Array = [];
                     function MailCopy(){
@@ -1892,7 +1893,8 @@
                                 url: '/aplicaciones/terceros/cliente/actualizar/actualizar_correos_copia',
                                 type: 'post',
                                 data: {
-                                    correos_copia: result.value[0]
+                                    correos_copia: result.value[0],
+                                    cliente: cliente
                                 },
                                 success: function () {
                                     Swal.fire({
@@ -1918,6 +1920,8 @@
                         }
                     });
                 });
+
+
 
                 $('#change_rut_entregado').on('click',function () {
                     var username = @json(Auth::user()->name);
