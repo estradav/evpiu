@@ -1119,7 +1119,7 @@ class FacturasController extends Controller
                             'MSCAMT_31' => $request->encabezado['seguro'],
                             'FRTAMT_31' => $request->encabezado['flete'],
                             'TAXTOT_31' => $request->encabezado['subtotal'],
-                            'CUSTPO_31' => $request->encabezado['oc'],
+                            'CUSTPO_31' => $request->encabezado['oc'] ?? '',
                             'TAXCD1_31' => 'IVA-V19',
                             'TAXABL_31' => 'Y',
                             'TERMS_31'  => $request->encabezado['condicion_pago'],
@@ -1158,7 +1158,7 @@ class FacturasController extends Controller
                             'MSCAMT_31' => $request->encabezado['seguro'],
                             'FRTAMT_31' => $request->encabezado['flete'],
                             'TAXTOT_31' => $request->encabezado['subtotal'],
-                            'CUSTPO_31' => $request->encabezado['oc'],
+                            'CUSTPO_31' => $request->encabezado['oc'] ?? '',
                             'TAXCD1_31' => '',
                             'TAXABL_31' => 'N',
                             'TERMS_31'  => $request->encabezado['condicion_pago'],
@@ -1175,7 +1175,7 @@ class FacturasController extends Controller
                             ->where('INVCE_32', '=', $num_factura)
                             ->where('LINNUM_32', '=', $limnnum)
                             ->where('DELNUM_32', '=', $delnum)
-                            ->where('ORDNUM_32', '=', $request->encabezado['oc'])
+                            ->where('ORDNUM_32', '=', $request->encabezado['oc'] ?? '')
                             ->update([
                                 'PRICE_32'      => $item['precio_uni'],
                                 'TAX1_32'       => $item['iva_item'],
