@@ -221,7 +221,7 @@
                                 <td><input type="number" class="form-control" style="text-align: right" id="total_flete" value="{{ $factura->FLETES }}" {{ $factura->TIPOCLIENTE != 'EX' ? 'disabled': '' }}></td>
                                 <td><input type="number" class="form-control" style="text-align: right" id="total_subtotal"  value="{{ $factura->SUBTOTAL }}" disabled></td>
                                 <td><input type="number" class="form-control" style="text-align: right" id="total_iva" value="{{ $factura->IVA }}" disabled></td>
-                                <td><input type="number" class="form-control" style="text-align: right" id="total_factura" value="{{ $factura->subtotal + $factura->iva  - $factura->RTEFTE }}" disabled></td>
+                                <td><input type="number" class="form-control" style="text-align: right" id="total_factura" value="{{ $factura->SUBTOTAL + $factura->IVA - $factura->RTEFTE }}" disabled></td>
                             </tr>
                         </tbody>
                     </table>

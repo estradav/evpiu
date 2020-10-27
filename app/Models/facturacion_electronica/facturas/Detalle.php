@@ -36,4 +36,12 @@ class Detalle extends Model
     public $primaryKey = 'Factura';
 
 
+    /**
+     * The database primary key type
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+
 }

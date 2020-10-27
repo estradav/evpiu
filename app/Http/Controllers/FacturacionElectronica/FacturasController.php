@@ -15,6 +15,7 @@ use Illuminate\View\View;
 use SoapClient;
 use XMLWriter;
 use Yajra\DataTables\DataTables;
+use App\Models\facturacion_electronica\facturas\Encabezado;
 
 class FacturasController extends Controller
 {
@@ -1060,138 +1061,34 @@ class FacturasController extends Controller
      * @throws \SoapFault
      */
     public function edit($numero_factura){
-        /*$login1   = "dcorreah";
-        $password = "FE2020ev*";
-        $wsdl_url = "https://factible.fenalcoantioquia.com/FactibleWebService/FacturacionWebService?wsdl";
-        $client = new SoapClient($wsdl_url);
-        $client->__setLocation($wsdl_url);
 
-        $params = array(
-            'login' => $login1,
-            'password' => $password
-        );
+        try {
+            $factura = Encabezado::where('NUMERO', '=', $numero_factura)
+            ->with('detalle', 'cliente')
+            ->first();
 
-        $auth = $client->autenticar($params);
-        $respuesta = json_decode($auth->return);
-        $token = $respuesta->data->salida;
+            $motivos = DB::connection('MAXP')
+                ->table('Code_Master')
+                ->where('CDEKEY_36','=','REAS')
+                ->get();
 
-        $params = array(
-            'token' => $token,
-            'idEmpresa' => '',
-            'idUsuario' => '',
-            'idEstadoEnvioCliente' => '',
-            'idEstadoEnvioDian' => '',
-            'fechaInicial' => '',
-            'fechaFinal' => '',
-            'fechaInicialReg' => '',
-            'fechaFinalReg' => '',
-            'idEstadoGeneracion' => '',
-            'idTipoDocElectronico' => '',
-            'numeroInicial' => $numero_factura,
-            'numeroFinal' => $numero_factura,
-            'idnumeracion' => '',
-            'estadoAcuse' => '',
-            'razonSocial' => '',
-            'mulCodEstDian' => '',
-            'mulCodEstCliente'  => '',
-            'tipoDocumento' => '',
-            'idDocumento' => '',
-            'idVerficacionFuncional' => ''
-        );
+            $condicion_pago = DB::connection('MAXP')
+                ->table('Code_Master')
+                ->where('Code_Master.CDEKEY_36','=','TERM')
+                ->get();
 
-        $return = $client->ListarDocumentosElectronicos($params);
-        $return = json_decode($return->return);
+            return view('aplicaciones.facturacion_electronica.facturas.edit',
+                compact('factura', 'motivos', 'condicion_pago'));
 
-        if (sizeof($return->data) > 0){
+        }catch (Exception $e){
+          dd($e);
             return redirect()
-                ->route('factura.index')
+                ->back()
                 ->with([
-                    'message'    => 'Esta factura ya fue subida a la DIAN y no puede ser editada.',
+                    'message'    => $e->getMessage(),
                     'alert-type' => 'error'
                 ]);
-        }else{*/
-            try {
-                $encabezado =  DB::connection('MAXP')
-                    ->table('CIEV_V_FE')
-                    ->leftJoin('CIEV_V_FacturasTotalizadas', 'CIEV_V_FE.numero', '=', 'CIEV_V_FacturasTotalizadas.numero')
-                    ->select('CIEV_V_FE.numero',
-                        'CIEV_V_FE.notas',
-                        'CIEV_V_FE.identificacion as nit_cliente',
-                        'CIEV_V_FE.nombres',
-                        'CIEV_V_FE.apellidos',
-                        'CIEV_V_FE.emailcontacto',
-                        'CIEV_V_FE.direccion',
-                        'CIEV_V_FE.emailentrega',
-                        'CIEV_V_FE.digito_verificador',
-                        'CIEV_V_FE.telefono',
-                        'CIEV_V_FE.notas',
-                        'CIEV_V_FE.ciudad',
-                        'CIEV_V_FE.dpto',
-                        'CIEV_V_FE.pais',
-                        'CIEV_V_FacturasTotalizadas.bruto',
-                        'CIEV_V_FE.codigocliente',
-                        'CIEV_V_FE.fechadocumento',
-                        'CIEV_V_FacturasTotalizadas.razonsocial as razon_social',
-                        'CIEV_V_FacturasTotalizadas.bruto',
-                        'CIEV_V_FacturasTotalizadas.descuento',
-                        'CIEV_V_FacturasTotalizadas.subtotal',
-                        'CIEV_V_FacturasTotalizadas.iva',
-                        'CIEV_V_FacturasTotalizadas.fletes',
-                        'CIEV_V_FacturasTotalizadas.seguros',
-                        'CIEV_V_FacturasTotalizadas.retefte',
-                        'CIEV_V_FacturasTotalizadas.moneda',
-                        'CIEV_V_FacturasTotalizadas.ov',
-                        'CIEV_V_FacturasTotalizadas.dias',
-                        'CIEV_V_FacturasTotalizadas.motivo',
-                        'CIEV_V_FacturasTotalizadas.descplazo as plazo',
-                        'CIEV_V_FacturasTotalizadas.descmotivo',
-                        'CIEV_V_FacturasTotalizadas.tipocliente as tipo_cliente',
-                        'CIEV_V_FE.nombres','CIEV_V_FE.fechavencimiento',
-                        'CIEV_V_FE.OC')
-                    ->where('CIEV_V_FE.numero', '=', $numero_factura)
-                    ->first();
-
-                $detalles = DB::connection('MAXP')
-                    ->table('CIEV_V_FacturasDetalladas')
-                    ->select('CIEV_V_FacturasDetalladas.factura',
-                        'CIEV_V_FacturasDetalladas.descripcionproducto',
-                        'CIEV_V_FacturasDetalladas.CodigoProducto',
-                        'CIEV_V_FacturasDetalladas.OV',
-                        'CIEV_V_FacturasDetalladas.item',
-                        'CIEV_V_FacturasDetalladas.cantidad',
-                        'CIEV_V_FacturasDetalladas.precio',
-                        'CIEV_V_FacturasDetalladas.totalitem',
-                        'CIEV_V_FacturasDetalladas.iva as iva_item',
-                        'CIEV_V_FacturasDetalladas.valormercancia',
-                        'CIEV_V_FacturasDetalladas.descuento',
-                        'CIEV_V_FacturasDetalladas.item',
-                        'CIEV_V_FacturasDetalladas.UM')
-                    ->where('CIEV_V_FacturasDetalladas.factura', '=', $numero_factura)
-                    ->get();
-
-                $motivos = DB::connection('MAXP')
-                    ->table('Code_Master')
-                    ->where('CDEKEY_36','=','REAS')
-                    ->get();
-
-                $condicion_pago = DB::connection('MAXP')
-                    ->table('Code_Master')
-                    ->where('Code_Master.CDEKEY_36','=','TERM')
-                    ->get();
-
-                return view('aplicaciones.facturacion_electronica.facturas.edit',
-                    compact('encabezado','detalles', 'numero_factura', 'motivos', 'condicion_pago'));
-
-            }catch (Exception $e){
-                return redirect()
-                    ->back()
-                    ->with([
-                        'message'    => 'Esta factura ya fue subida a la DIAN y no puede ser editada.',
-                        'alert-type' => 'error'
-                    ]);
-            }
-
-        /*}*/
+        }
     }
 
 
