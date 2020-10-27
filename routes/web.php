@@ -285,6 +285,7 @@ Route::middleware(['auth'])->group(function() {
                     Route::get('/listar_caracteristicas_materiales_medidas', [CodificadorController::class, 'listar_caracteristicas_materiales_medidas']);
                     Route::get('/obtener_datos_generacion_cod_desc', [CodificadorController::class, 'obtener_datos_generacion_cod_desc']);
                     Route::post('/validar_codigo', [CodificadorController::class, 'validar_codigo']);
+                    Route::post('/validar_descripcion', [CodificadorController::class, 'validar_descripcion']);
                 });
 
 
