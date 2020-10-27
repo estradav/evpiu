@@ -1,10 +1,6 @@
 
-
-
-
 # EVPIU
-## Plataforma  de informacion unificada de estrada velasquez
+## Plataforma de informacion unificada de estrada velasquez 
 
-<p align="center">
-    <a href="https://travis-ci.com/github/dcorrea-estrav/evpiu"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-</p>
+[![Build Status](https://travis-ci.com/dcorrea-estrav/evpiu.svg?branch=Develop)](https://travis-ci.org/dcorrea-estrav/evpiu)
+

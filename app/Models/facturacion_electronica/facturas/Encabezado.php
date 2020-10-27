@@ -43,6 +43,14 @@ class Encabezado extends Model
 
 
 
+    /**
+     * The database primary key type
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+
 
     public function detalle() {
         return $this->hasMany(Detalle::class, 'Factura', 'NUMERO');
