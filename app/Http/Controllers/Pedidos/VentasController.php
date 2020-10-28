@@ -1289,6 +1289,14 @@ class VentasController extends Controller
                                 'fecha'     => $data->bodega_fecha_resp
                             ], 200);
 
+                    }else if($data->Bodega == null && $data->Produccion == 10){
+                        return response()
+                            ->json([
+                                'icon'      => 'success',
+                                'estado'    => 'Finalizado',
+                                'detalle'   => 'Este pedido fue aprobado por produccion'
+                            ], 200);
+                        
                     }else if ($data->Bodega == null){
                         return response()
                             ->json([
