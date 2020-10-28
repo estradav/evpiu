@@ -120,10 +120,10 @@ class ProduccionController extends Controller
                     DB::table('pedidos_detalles_area')
                         ->where('idPedido', '=', $request->id)
                         ->update([
-                            'Produccion'        => $request->estado,
-                            'DetalleProduccion' => $request->descripcion,
-                            'AproboProduccion'  => Auth::user()->username,
-                            'Bodega'            => $request->estado,
+                            'Produccion'         => $request->estado,
+                            'DetalleProduccion'  => $request->descripcion,
+                            'aprobo_produccion'  => auth()->user()->id,
+                            'Bodega'             => $request->estado,
                     ]);
 
                 }else if($request->estado == 10){
@@ -135,7 +135,7 @@ class ProduccionController extends Controller
                     $pedido->info_area()->update([
                         'Produccion'            =>  $request->estado,
                         'DetalleProduccion'     =>  $request->descripcion,
-                        'Aprobo_produccion'     =>  auth()->user()->id,
+                        'aprobo_produccion'     =>  auth()->user()->id,
                         'produccion_fecha_resp' =>  Carbon::now()
                     ]);
 
