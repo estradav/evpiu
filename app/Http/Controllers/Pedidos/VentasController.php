@@ -1296,6 +1296,13 @@ class VentasController extends Controller
                                 'estado'    => 'Sin enviar',
                                 'detalle'   => 'Este pedido no ha sido enviado a bodega'
                             ], 200);
+                    }else if($data->Bodega == null && $data->Produccion == 10){
+                        return response()
+                            ->json([
+                                'icon'      => 'success',
+                                'estado'    => 'Finalizado',
+                                'detalle'   => 'Este pedido fue aprobado por produccion'
+                            ], 200);
                     }
                 }
             }catch (Exception $e){
