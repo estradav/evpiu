@@ -365,18 +365,19 @@ $(document).ready(function () {
                         },
                         success: function (data) {
                             if (data.aprobo && data.fecha) {
-                              Swal.fire({
-                                  icon: data.icon,
-                                  title: data.estado,
-                                  html:   '<span class="badge badge-success">Aprobo</span> <br>'+ data.aprobo + '<br>' +
-                                          '<span class="badge badge-success">Detalle</span> <br>'+ data.detalle + '<br>' +
-                                          '<span class="badge badge-success">Fecha</span> <br>'+ data.fecha + '<br>',
-                                  showCancelButton: false,
-                                  confirmButtonColor: '#3085d6',
-                                  cancelButtonColor: '#d33',
-                                  confirmButtonText: 'Aceptar',
-                                  cancelButtonText: 'Cancelar'
-                              });
+
+                                Swal.fire({
+                                    icon: data.icon,
+                                    title: data.estado,
+                                    html: '<span class="badge badge-success">Aprobo</span> <br>'+ data.aprobo + '<br>' +
+                                        '<span class="badge badge-success">Detalle</span> <br>'+ data.detalle + '<br>' +
+                                        '<span class="badge badge-success">Fecha</span> <br>'+ data.fecha + '<br>',
+                                    showCancelButton: false,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Aceptar',
+                                    cancelButtonText: 'Cancelar'
+                                });
                             }else{
                               Swal.fire({
                                   icon: data.icon,

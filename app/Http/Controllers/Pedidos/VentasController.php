@@ -1119,7 +1119,6 @@ class VentasController extends Controller
                     ->first();
 
 
-
                 if ($request->area == 'cartera'){
                     if ($data->Cartera == 2){
                         return response()
@@ -1235,12 +1234,14 @@ class VentasController extends Controller
                                 'fecha'     => $data->produccion_fecha_resp
                             ], 200);
 
-                    }else if ($data->Produccion == 8){
+                    }else if ($data->Produccion == 8 || $data->Produccion == 10){
                         return response()
                             ->json([
                                 'icon'      => 'success',
                                 'estado'    => 'Aprobado',
-                                'detalle'   => $data->DetalleProduccion
+                                'aprobo'    => $data->aproboproduccion->name,
+                                'detalle'   => $data->DetalleProduccion,
+                                'fecha'     => $data->produccion_fecha_resp
                             ], 200);
 
                     }
