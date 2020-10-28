@@ -1296,7 +1296,7 @@ class VentasController extends Controller
                                 'estado'    => 'Finalizado',
                                 'detalle'   => 'Este pedido fue aprobado por produccion'
                             ], 200);
-                        
+
                     }else if ($data->Bodega == null){
                         return response()
                             ->json([

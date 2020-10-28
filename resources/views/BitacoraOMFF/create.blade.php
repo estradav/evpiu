@@ -38,6 +38,7 @@
                                 <div class="col-sm-12">
                                     <select name="machine" id="machine" class="form-control">
                                         <option value="" selected>Seleccione...</option>
+                                        <option value="P200">P200</option>
                                         <option value="P300">P300</option>
                                         <option value="P301">P301</option>
                                         <option value="P302">P302</option>
