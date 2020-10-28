@@ -1234,7 +1234,16 @@ class VentasController extends Controller
                                 'fecha'     => $data->produccion_fecha_resp
                             ], 200);
 
-                    }else if ($data->Produccion == 8 || $data->Produccion == 10){
+                    }else if ($data->Produccion == 8 ) {
+                        return response()
+                            ->json([
+                                'icon'      => 'success',
+                                'estado'    => 'Aprobado',
+                                'detalle'   => $data->DetalleProduccion,
+
+                            ], 200);
+
+                    }else if($data->Produccion == 10){
                         return response()
                             ->json([
                                 'icon'      => 'success',
@@ -1243,7 +1252,6 @@ class VentasController extends Controller
                                 'detalle'   => $data->DetalleProduccion,
                                 'fecha'     => $data->produccion_fecha_resp
                             ], 200);
-
                     }
                     else if ($data->Produccion == null){
                         return response()
