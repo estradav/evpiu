@@ -178,9 +178,6 @@ class TroquelesController extends Controller
                             ->pluck('STK_29')->first();
 
 
-
-
-
                         DB::connection('MAX')
                             ->table('SO_Detail')
                             ->insert([
@@ -393,7 +390,8 @@ class TroquelesController extends Controller
                             ]);
 
 
-                        DB::connection('MAX')
+                        if($dp->Notas){
+                            DB::connection('MAX')
                             ->table('SO_Note')
                             ->insert([
                                 'ORDNUM_30'     => $max_ordnum_27,
@@ -414,13 +412,13 @@ class TroquelesController extends Controller
                                 'XDFDTE_30'     =>  null,
                                 'XDFTXT_30'     =>  '',
                                 'FILLER_30'     =>  '',
-                                'CreatedBy'     =>  null,
+                                'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
                                 'CreationDate'  =>  Carbon::now(),
-                                'ModifiedBy'    =>  null,
+                                'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
                                 'ModificationDate' => Carbon::now(),
                                 'RECTYP_30' =>  'ST'
                             ]);
-
+                        }
 
 
                         DB::connection('MAX')
