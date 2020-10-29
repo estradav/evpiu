@@ -186,8 +186,6 @@ class BodegaController extends Controller
                             ->pluck('STK_29')->first();
 
 
-
-
                         DB::connection('MAX')
                             ->table('SO_Detail')
                             ->insert([
@@ -221,7 +219,7 @@ class BodegaController extends Controller
                                 'STYPE_28'      =>  'CU',
                                 'PRNT_28'       =>  'N',
                                 'AKPRNT_28'     =>  'N',
-                                'STK_28'        =>  $almacen[0], /*empty*/
+                                'STK_28'        =>  $almacen, /*empty*/
                                 'COCFLG_28'     =>  '', /*empty*/
                                 'FORCUR_28'     =>  $dp->Precio,
                                 'HSTAT_28'      =>  'R',
@@ -400,7 +398,9 @@ class BodegaController extends Controller
                             ]);
 
 
-                        DB::connection('MAX')
+
+                        if($dp->Notas){
+                            DB::connection('MAX')
                             ->table('SO_Note')
                             ->insert([
                                 'ORDNUM_30'     => $max_ordnum_27,
@@ -421,12 +421,13 @@ class BodegaController extends Controller
                                 'XDFDTE_30'     =>  null,
                                 'XDFTXT_30'     =>  '',
                                 'FILLER_30'     =>  '',
-                                'CreatedBy'     =>  null,
+                                'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
                                 'CreationDate'  =>  Carbon::now(),
-                                'ModifiedBy'    =>  null,
+                                'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
                                 'ModificationDate' => Carbon::now(),
                                 'RECTYP_30' =>  'ST'
                             ]);
+                        }
 
 
 

@@ -419,7 +419,6 @@
                             id_reg: e.querySelector('.id_reg').value,
                         };
                         items.push(fila);
-
                     });
 
 
@@ -445,13 +444,8 @@
                             });
                         }
                     })
-
-
                 });
-
             });
-
-
         </script>
     @endpush
 @stop
