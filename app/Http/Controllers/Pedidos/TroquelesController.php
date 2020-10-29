@@ -72,7 +72,7 @@ class TroquelesController extends Controller
                         'aprobo_troqueles'      =>  auth()->user()->id
                     ]);
 
-                    $max_ordnum_27 =  DB::connection('MAXP')
+                    $max_ordnum_27 =  DB::connection('MAX')
                         ->table('SO_Master')
                         ->where('STYPE_27', '=', 'CU')
                         ->max('ORDNUM_27');
@@ -80,7 +80,7 @@ class TroquelesController extends Controller
                     $max_ordnum_27 = $max_ordnum_27 + 1;
 
 
-                    DB::connection('MAXP')
+                    DB::connection('MAX')
                         ->table('SO_Master')
                         ->insert([
                             'ORDNUM_27'     =>  $max_ordnum_27,
@@ -181,7 +181,7 @@ class TroquelesController extends Controller
 
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('SO_Detail')
                             ->insert([
                                 'ORDNUM_28'     =>  $max_ordnum_27,
@@ -264,7 +264,7 @@ class TroquelesController extends Controller
 
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('SO_Detail_Ext')
                             ->insert([
                                 'ORDER_LIN_DEL'     =>  $max_ordnum_27.$n2."01",
@@ -276,7 +276,7 @@ class TroquelesController extends Controller
 
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('Order_Master')
                             ->insert([
                                 'ORDNUM_10'     =>  $max_ordnum_27,
@@ -385,7 +385,7 @@ class TroquelesController extends Controller
 
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
                             ->update([
@@ -393,7 +393,7 @@ class TroquelesController extends Controller
                             ]);
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('SO_Note')
                             ->insert([
                                 'ORDNUM_30'     => $max_ordnum_27,
@@ -423,7 +423,7 @@ class TroquelesController extends Controller
 
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('Requirement_detail')
                             ->insert([
                                 'ORDER_11'      =>  $max_ordnum_27.$n2."01",
@@ -489,7 +489,7 @@ class TroquelesController extends Controller
 
 
     private function calcular_fecha_entrega( $cantidad_dias){
-        $dias_habiles =  DB::connection('MAXP')
+        $dias_habiles =  DB::connection('MAX')
             ->table('Shop_Calendar')
             ->where('ShopDay', '=', 1)
             ->whereDate('DateValue', '>=', Carbon::now())

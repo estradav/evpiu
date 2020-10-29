@@ -94,7 +94,7 @@ class ProduccionController extends Controller
             try {
 
                 DB::beginTransaction();
-                DB::connection('MAXP')->beginTransaction();
+                DB::connection('MAX')->beginTransaction();
 
                 if ($request->estado == 7){
                     DB::table('encabezado_pedidos')
@@ -139,7 +139,7 @@ class ProduccionController extends Controller
                         'produccion_fecha_resp' =>  Carbon::now()
                     ]);
 
-                    $max_ordnum_27 =  DB::connection('MAXP')
+                    $max_ordnum_27 =  DB::connection('MAX')
                         ->table('SO_Master')
                         ->where('STYPE_27', '=', 'CU')
                         ->max('ORDNUM_27');
@@ -147,7 +147,7 @@ class ProduccionController extends Controller
                     $max_ordnum_27 = $max_ordnum_27 + 1;
 
 
-                    DB::connection('MAXP')
+                    DB::connection('MAX')
                         ->table('SO_Master')
                         ->insert([
                             'ORDNUM_27'     =>  $max_ordnum_27,
@@ -246,7 +246,7 @@ class ProduccionController extends Controller
 
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('SO_Detail')
                             ->insert([
                                 'ORDNUM_28'     =>  $max_ordnum_27,
@@ -328,7 +328,7 @@ class ProduccionController extends Controller
                             ]);
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('SO_Detail_Ext')
                             ->insert([
                                 'ORDER_LIN_DEL'     =>  $max_ordnum_27.$n2."01",
@@ -338,7 +338,7 @@ class ProduccionController extends Controller
                             ]);
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('Order_Master')
                             ->insert([
                                 'ORDNUM_10'     =>  $max_ordnum_27,
@@ -447,7 +447,7 @@ class ProduccionController extends Controller
 
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('Part_Sales')
                             ->where('PRTNUM_29', '=', $dp->CodigoProducto)
                             ->update([
@@ -455,7 +455,7 @@ class ProduccionController extends Controller
                             ]);
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('SO_Note')
                             ->insert([
                                 'ORDNUM_30'     => $max_ordnum_27,
@@ -484,7 +484,7 @@ class ProduccionController extends Controller
                             ]);
 
 
-                        DB::connection('MAXP')
+                        DB::connection('MAX')
                             ->table('Requirement_detail')
                             ->insert([
                                 'ORDER_11'      =>  $max_ordnum_27.$n2."01",
@@ -532,12 +532,12 @@ class ProduccionController extends Controller
 
                 }
                 DB::commit();
-                DB::connection('MAXP')->commit();
+                DB::connection('MAX')->commit();
 
                 return response()->json('Pedido actualizado', 200);
             }catch (\Exception $e){
                 DB::rollBack();
-                DB::connection('MAXP')->rollBack();
+                DB::connection('MAX')->rollBack();
                 return response()->json($e, 500);
             }
         }
@@ -545,7 +545,7 @@ class ProduccionController extends Controller
 
 
     private function calcular_fecha_entrega( $cantidad_dias){
-        $dias_habiles =  DB::connection('MAXP')
+        $dias_habiles =  DB::connection('MAX')
             ->table('Shop_Calendar')
             ->where('ShopDay', '=', 1)
             ->whereDate('DateValue', '>=', Carbon::now())
