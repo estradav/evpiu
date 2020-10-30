@@ -78,7 +78,7 @@ class BodegaController extends Controller
 
                     $max_ordnum_27 =  DB::connection('MAX')
                         ->table('SO_Master')
-                        ->where('STYPE_27', '=', 'CU')
+                        ->whereIn('STYPE_27', ['CU', 'CR'])
                         ->max('ORDNUM_27');
 
 
