@@ -23,7 +23,7 @@ class CostosController extends Controller
      * @return Factory|View
      * @throws Exception
      */
-    public  function index(Request $request){
+    public function index(Request $request){
         if ($request->ajax()){
             try {
                 $data = EncabezadoPedido::with('cliente' ,'info_area' , 'vendedor')
