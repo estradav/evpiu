@@ -157,7 +157,11 @@ $(document).ready(function () {
                                 $('#opciones').modal('hide');
                                 $('#table').DataTable().ajax.reload();
                                 $('#table_terminados').DataTable().ajax.reload();
-                                toastr.success(data);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Pedido Actualizado',
+                                    text: data
+                                });
                             },
                             error: function (data) {
                                 Swal.fire({
