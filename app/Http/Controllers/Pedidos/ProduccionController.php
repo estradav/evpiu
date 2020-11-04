@@ -534,13 +534,16 @@ class ProduccionController extends Controller
 
                     $pedido->Ped_MAX = $max_ordnum_27;
                     $pedido->save();
-
-
                 }
                 DB::commit();
                 DB::connection('MAX')->commit();
 
-                return response()->json('Pedido actualizado', 200);
+                if($request->estado == 10){
+                    return response()->json($max_ordnum_27, 200);
+                }else{
+                    return response()->json('Pedido actualizado', 200);
+                }
+
             }catch (\Exception $e){
                 DB::rollBack();
                 DB::connection('MAX')->rollBack();

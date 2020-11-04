@@ -57,7 +57,7 @@
                                         </a>
                                     @endcan
                                     @can('aplicativos_externos.reque_2d_3d')
-                                        <a href="http://192.168.1.5/intranetev/index.php/aplicaciones-informaticas/creacion-de-articulos" class="btn btn-outline-light" target="_blank">
+                                        <a href="http://192.168.1.12" class="btn btn-outline-light" target="_blank">
                                             <i class="pe-7s-box2 pe-4x icon-gradient bg-premium-dark"></i> <br>
                                             <b class="icon-gradient bg-premium-dark">REQUERIMIENTOS 2D - 3D</b>
                                         </a>
@@ -146,6 +146,10 @@
                                             <b class="icon-gradient bg-premium-dark">CIERRE ORDENES DE VENTA</b>
                                         </a>
                                     @endcan
+                                    <a href="http://glpi.ciev.local/marketplace/formcreator/front/formdisplay.php?id=4" class="btn btn-outline-light" target="_blank">
+                                        <i class="pe-7s-user pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                        <b class="icon-gradient bg-premium-dark">SALIDA / INGRESO PERSONAL</b>
+                                    </a>
                                 </div>
                             </div>
                         </div>

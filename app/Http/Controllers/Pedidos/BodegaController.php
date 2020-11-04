@@ -61,6 +61,7 @@ class BodegaController extends Controller
     public function actualizar_pedido(Request $request){
         if ($request->ajax()){
             DB::beginTransaction();
+            DB::connection('MAX')->beginTransaction();
             try {
                 if ($request->estado == 10) {
                     $pedido =  EncabezadoPedido::find($request->id);
@@ -488,9 +489,15 @@ class BodegaController extends Controller
                     ]);
                 }
                 DB::commit();
-                return response()->json('Pedido actualizado', 200);
+                DB::connection('MAX')->commit();
+                if($request->estado == 10){
+                    return response()->json($max_ordnum_27, 200);
+                }else{
+                    return response()->json('Pedido actualizado', 200);
+                }
             }catch (\Exception $e){
                 DB::rollBack();
+                DB::connection('MAX')->rollBack();
                 return response()->json($e->getMessage(), 500);
             }
         }
