@@ -52,6 +52,35 @@
                         </div>
                     </div>
                 </div>
+                <div class="main-card mb-3 card">
+                    <div class="card-header">
+                        Pedidos terminados
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm" id="table_terminados">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>OC</th>
+                                        <th>PED MAX</th>
+                                        <th>COD CLIENTE</th>
+                                        <th>CLIENTE</th>
+                                        <th>VENDEDOR</th>
+                                        <th>CONDICION PAGO</th>
+                                        <th>DESCUENTO</th>
+                                        <th>IVA</th>
+                                        <th>ESTADO</th>
+                                        <th>FECHA CREACION</th>
+                                        <th style="text-align:center ">ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     @else
@@ -158,6 +187,54 @@
                     }
                 }
             });
+            
+            
+            $('#table_terminados').DataTable({
+                ajax: {
+                    url:'/aplicaciones/pedidos/produccion/listar_terminados',
+                },
+                columns: [
+                    {data: 'id', name: 'id', orderable: false, searchable: true},
+                    {data: 'OrdenCompra', name: 'OrdenCompra', orderable: false, searchable: true},
+                    {data: 'Ped_MAX', name: 'Ped_MAX', orderable: false, searchable: true},
+                    {data: 'CodCliente', name: 'CodCliente', orderable: false, searchable: true},
+                    {data: 'cliente.RAZON_SOCIAL', name: 'cliente.RAZON_SOCIAL', orderable: false, searchable: true},
+                    {data: 'vendedor.name', name: 'vendedor.name', orderable: false, searchable: true},
+                    {data: 'cliente.PLAZO', name: 'cliente.PLAZO', orderable: false, searchable: false},
+                    {data: 'Descuento', name: 'Descuento', orderable: false, searchable: false, render: $.fn.dataTable.render.number('', '', 0, '% ')},
+                    {data: 'Iva', name: 'Iva', orderable: false, searchable: false},
+                    {data: 'Estado', name: 'Estado', orderable: false, searchable: true},
+                    {data: 'created_at', name: 'created_at', orderable: false, searchable: false},
+                    {data: 'opciones', name: 'opciones', orderable: false, searchable: false},
+
+                ],
+                language: {
+                    url: '/Spanish.json'
+                },
+                order: [
+                    [ 0, "desc" ]
+                ],
+                rowCallback: function (row, data, index) {
+                    if (data.Estado == 10) {
+                        $(row).find('td:eq(9)').html('<span class="badge badge-success">Finalizado</span>');
+                    }else{
+                        $(row).find('td:eq(9)').html('<span class="badge badge-danger">Error</span>');
+                    }
+                    if (data.Iva == 'Y') {
+                        $(row).find('td:eq(8)').html('<span class="badge badge-success">SI</span>');
+                    } else{
+                        $(row).find('td:eq(8)').html('<span class="badge badge-danger">NO</span>');
+                    }
+
+                    if (data.Ped_MAX){
+                        $(row).find('td:eq(2)').html('<span class="badge badge-success">'+ data.Ped_MAX +'</span>');
+                    }else{
+                        $(row).find('td:eq(2)').html('<span class="badge badge-danger">N/A</span>');
+                    }
+                }
+            });
+            
+            
 
 
             $(document).on('draw.dt', '#table', function() {
