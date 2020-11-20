@@ -909,6 +909,7 @@ class FacturasController extends Controller
                         ->table('CIEV_V_NotasFacturas')
                         ->where('Factura','=', $factura->numero)
                         ->where('item', '=', $item->item)
+                        ->where('TipoNota', '=', 'I')
                         ->pluck('Nota')->toArray();
 
 
