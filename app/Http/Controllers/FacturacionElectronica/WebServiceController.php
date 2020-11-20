@@ -820,6 +820,7 @@ class WebServiceController extends Controller
                         ->table('CIEV_V_NotasFacturas')
                         ->where('Factura','=', $Factura_seleccionada->numero)
                         ->where('item', '=', $item->item)
+                        ->where('TipoNota', '=', 'I')
                         ->pluck('Nota')->toArray();
 
 
