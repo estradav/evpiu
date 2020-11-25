@@ -1483,9 +1483,11 @@ class ClientesController extends Controller
     public function crear_actividad_economica(Request  $request){
         if ($request->ajax()){
             try {
-                DB::table('Terceros_actividad_economica')->insert([
-                   'codigo'         => $request->codigo,
-                   'descripcion'    => $request->descripcion
+                DB::connection('DMS')
+                    ->table('Terceros_actividad_economica')
+                    ->insert([
+                       'codigo'         => $request->codigo,
+                       'descripcion'    => $request->descripcion
                 ]);
 
                 return response()->json('Actividad guardada con exito', 200);
