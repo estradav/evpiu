@@ -198,8 +198,7 @@ class VentasController extends Controller
      */
     public function edit($id){
         try {
-            $encabezado = EncabezadoPedido::with('detalle', 'cliente')
-                ->find($id);
+            $encabezado = EncabezadoPedido::with('detalle', 'cliente', 'vendedor')->find($id);
 
             if ($encabezado->Estado == 0 || $encabezado->Estado == 1 || $encabezado->Estado == 3 || $encabezado->Estado == 5 || $encabezado->Estado == 7 || $encabezado->Estado == 9 ||  $encabezado->Estado == 12){
                 return view('aplicaciones.pedidos.ventas.edit',

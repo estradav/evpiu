@@ -347,20 +347,20 @@ class ProduccionController extends Controller
                                 'LINNUM_10'     =>  $n2,
                                 'DELNUM_10'     =>  '01',
                                 'PRTNUM_10'     =>  $dp->CodigoProducto,
-                                'CURDUE_10'     =>  '',
+                                'CURDUE_10'     =>  Carbon::now()->addMonth(),
                                 'RECFLG_10'     =>  'N',
                                 'TAXABLE_10'    =>  'N',
                                 'TYPE_10'       =>  'CU',
                                 'ORDER_10'      =>  $max_ordnum_27.$n2."01",
                                 'VENID_10'      =>  '',  /*empty*/
-                                'ORGDUE_10'     =>  '',
+                                'ORGDUE_10'     =>  Carbon::now()->addMonth(),
                                 'PURUOM_10'     =>  '',  /*empty*/
                                 'CURQTY_10'     =>  $dp->Cantidad,
                                 'ORGQTY_10'     =>  $dp->Cantidad,
                                 'DUEQTY_10'     =>  0,
-                                'CURPRM_10'     =>  '',
+                                'CURPRM_10'     =>  Carbon::now()->addMonth(),
                                 'FILL03_10'     =>  '', /*empty*/
-                                'ORGPRM_10'     =>  '',
+                                'ORGPRM_10'     =>  Carbon::now()->addMonth(),
                                 'FILL04_10'     =>  '', /*empty*/
                                 'FRMPLN_10'     =>  'Y',
                                 'STATUS_10'     =>  '3',
@@ -457,36 +457,72 @@ class ProduccionController extends Controller
                             ]);
 
 
-
-
                         if($dp->Notas){
-                            DB::connection('MAX')
-                            ->table('SO_Note')
-                            ->insert([
-                                'ORDNUM_30'     => $max_ordnum_27,
-                                'LINNUM_30'     => '01',
-                                'DELNUM_30'     => $n2,
-                                'COMNUM_30'     => '01',
-                                'CODE_30'       => 'B',
-                                'COMNT_30'      => $dp->Notas ?? '',
-                                'CUSTID_30'     =>  '',
-                                'PIDCOD_30'     =>  '',
-                                'MCOMP_30'      =>  '',
-                                'MSITE_30'      =>  '',
-                                'UDFKEY_30'     =>  '',
-                                'UDFREF_30'     =>  '',
-                                'XDFINT_30'     =>  0,
-                                'XDFFLT_30'     =>  0,
-                                'XDFBOL_30'     =>  '',
-                                'XDFDTE_30'     =>  null,
-                                'XDFTXT_30'     =>  '',
-                                'FILLER_30'     =>  '',
-                                'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
-                                'CreationDate'  =>  Carbon::now(),
-                                'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
-                                'ModificationDate' => Carbon::now(),
-                                'RECTYP_30' =>  'ST'
-                            ]);
+                            if(strlen($dp->Notas) <= 50){
+                                DB::connection('MAX')
+                                ->table('SO_Note')
+                                ->insert([
+                                    'ORDNUM_30'     => $max_ordnum_27,
+                                    'LINNUM_30'     => '01',
+                                    'DELNUM_30'     => $n2,
+                                    'COMNUM_30'     => '01',
+                                    'CODE_30'       => 'B',
+                                    'COMNT_30'      => $dp->Notas ?? '',
+                                    'CUSTID_30'     =>  '',
+                                    'PIDCOD_30'     =>  '',
+                                    'MCOMP_30'      =>  '',
+                                    'MSITE_30'      =>  '',
+                                    'UDFKEY_30'     =>  '',
+                                    'UDFREF_30'     =>  '',
+                                    'XDFINT_30'     =>  0,
+                                    'XDFFLT_30'     =>  0,
+                                    'XDFBOL_30'     =>  '',
+                                    'XDFDTE_30'     =>  null,
+                                    'XDFTXT_30'     =>  '',
+                                    'FILLER_30'     =>  '',
+                                    'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
+                                    'CreationDate'  =>  Carbon::now(),
+                                    'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
+                                    'ModificationDate' => Carbon::now(),
+                                    'RECTYP_30' =>  'ST'
+                                ]);
+                            }else{
+                                $notas = str_split($dp->Notas, 50);
+                                $idx2 = 0;
+
+                                foreach($notas as $nota){
+                                    $nn = str_pad($idx2 + 1, 2, 0, STR_PAD_LEFT);
+
+                                    DB::connection('MAX')
+                                    ->table('SO_Note')
+                                    ->insert([
+                                        'ORDNUM_30'     => $max_ordnum_27,
+                                        'LINNUM_30'     =>  '01',
+                                        'DELNUM_30'     =>  $n2,
+                                        'COMNUM_30'     =>  $nn,
+                                        'CODE_30'       =>  'B',
+                                        'COMNT_30'      =>  $nota ?? '',
+                                        'CUSTID_30'     =>  '',
+                                        'PIDCOD_30'     =>  '',
+                                        'MCOMP_30'      =>  '',
+                                        'MSITE_30'      =>  '',
+                                        'UDFKEY_30'     =>  '',
+                                        'UDFREF_30'     =>  '',
+                                        'XDFINT_30'     =>  0,
+                                        'XDFFLT_30'     =>  0,
+                                        'XDFBOL_30'     =>  '',
+                                        'XDFDTE_30'     =>  null,
+                                        'XDFTXT_30'     =>  '',
+                                        'FILLER_30'     =>  '',
+                                        'CreatedBy'     =>  'EVPIU-'.auth()->user()->username,
+                                        'CreationDate'  =>  Carbon::now(),
+                                        'ModifiedBy'    =>  'EVPIU-'.auth()->user()->username,
+                                        'ModificationDate' => Carbon::now(),
+                                        'RECTYP_30'     =>  'ST'
+                                    ]);
+                                    $idx2++;
+                                }
+                            }
                         }
 
 
