@@ -36,7 +36,7 @@
                                             <span class="input-group-text">Vendedor</span>
                                         </div>
                                         <select name="vendedor" id="vendedor" class="form-control" disabled>
-                                            <option value="{{ $encabezado->CodVendedor }}">{{$encabezado->NombreVendedor }}</option>
+                                            <option value="{{ $encabezado->vendedor->id }}">{{$encabezado->vendedor->name }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -350,14 +350,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Arte</span>
                             </div>
-                            <input type="text" class="form-control" id="add_info_modal_art" name="add_info_modal_art" placeholder="Numero de arte" aria-label="add_info_modal_art" aria-describedby="add_info_modal_art">
+                            <input type="text" class="form-control" id="add_info_modal_art" name="add_info_modal_art" placeholder="Numero de arte" aria-label="add_info_modal_art" aria-describedby="add_info_modal_art" onkeyup="this.value=this.value.toUpperCase();">
                         </div>
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" >Marca</span>
                             </div>
-                            <input type="text" class="form-control" id="add_info_modal_marca" name="add_info_modal_marca" placeholder="Numero de marca" aria-label="add_info_modal_marca" aria-describedby="add_info_modal_marca">
+                            <input type="text" class="form-control" id="add_info_modal_marca" name="add_info_modal_marca" placeholder="Numero de marca" aria-label="add_info_modal_marca" aria-describedby="add_info_modal_marca" onkeyup="this.value=this.value.toUpperCase();">
                         </div>
 
 
@@ -365,7 +365,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" >CP. Cliente</span>
                             </div>
-                            <input type="text" class="form-control" id="add_info_modal_cp_client" name="add_info_modal_cp_client" placeholder="Codigo producto cliente" aria-label="add_info_modal_cp_client" aria-describedby="add_info_modal_cp_client">
+                            <input type="text" class="form-control" id="add_info_modal_cp_client" name="add_info_modal_cp_client" placeholder="Codigo producto cliente" aria-label="add_info_modal_cp_client" aria-describedby="add_info_modal_cp_client" onkeyup="this.value=this.value.toUpperCase();">
                         </div>
 
 
