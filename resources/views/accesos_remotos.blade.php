@@ -150,6 +150,10 @@
                                         <i class="pe-7s-user pe-4x icon-gradient bg-premium-dark"></i> <br>
                                         <b class="icon-gradient bg-premium-dark">SALIDA / INGRESO PERSONAL</b>
                                     </a>
+                                    <a href="http://192.168.1.42:510/Isolucion/PaginaLogin.aspx" class="btn btn-outline-light" target="_blank">
+                                        <i class="pe-7s-next-2 pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                        <b class="icon-gradient bg-premium-dark">SGC</b>
+                                    </a>
                                 </div>
                             </div>
                         </div>
