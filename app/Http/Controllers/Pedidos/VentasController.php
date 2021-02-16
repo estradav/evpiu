@@ -693,10 +693,6 @@ class VentasController extends Controller
                                     ->insertGetId([
                                         'OrdenCompra'       => $request->encabezado['oc'],
                                         'CodCliente'        => $request->encabezado['cod_cliente'],
-                                        'NombreCliente'     => $request->encabezado['nombre_cliente'],
-                                        'DireccionCliente'  => $request->encabezado['direccion'],
-                                        'Ciudad'            => $request->encabezado['ciudad'],
-                                        'Telefono'          => $request->encabezado['telefono'],
                                         'CodVendedor'       => $request->encabezado['vendedor'],
                                         'NombreVendedor'    => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
                                         'CondicionPago'     => $request->encabezado['condicion_pago'],
