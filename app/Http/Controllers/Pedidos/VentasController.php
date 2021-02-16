@@ -693,8 +693,7 @@ class VentasController extends Controller
                                     ->insertGetId([
                                         'OrdenCompra'       => $request->encabezado['oc'],
                                         'CodCliente'        => $request->encabezado['cod_cliente'],
-                                        'CodVendedor'       => $request->encabezado['vendedor'],
-                                        'NombreVendedor'    => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
+                                        'vendedor_id'       => $request->encabezado['vendedor'],
                                         'Descuento'         => $request->encabezado['descuento'],
                                         'Iva'               => $request->encabezado['tiene_iva'],
                                         'Estado'            => 1,
@@ -828,8 +827,7 @@ class VentasController extends Controller
                                     ->insertGetId([
                                         'OrdenCompra'       => $request->encabezado['oc'],
                                         'CodCliente'        => $request->encabezado['cod_cliente'],
-                                        'CodVendedor'       => $request->encabezado['vendedor'],
-                                        'vendedor_id'       => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
+                                        'vendedor_id'       => $request->encabezado['vendedor'],
                                         'Descuento'         => $request->encabezado['descuento'],
                                         'Iva'               => $request->encabezado['tiene_iva'],
                                         'Estado'            => 1,
@@ -964,7 +962,7 @@ class VentasController extends Controller
                                     ->insertGetId([
                                         'OrdenCompra'       => $request->encabezado['oc'],
                                         'CodCliente'        => $request->encabezado['cod_cliente'],
-                                        'vendedor_id'       => User::where('codvendedor','=', $request->encabezado['vendedor'])->pluck('name')->first(),
+                                        'vendedor_id'       => $request->encabezado['vendedor'],
                                         'Descuento'         => $request->encabezado['descuento'],
                                         'Iva'               => $request->encabezado['tiene_iva'],
                                         'Estado'            => 1,
