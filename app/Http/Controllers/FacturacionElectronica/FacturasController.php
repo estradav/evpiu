@@ -138,7 +138,7 @@ class FacturasController extends Controller
                     'CIEV_V_FE_FacturasTotalizadas.razonsocial as razon_social', 'CIEV_V_FE_FacturasTotalizadas.descuento',
                     'CIEV_V_FE_FacturasTotalizadas.subtotal', 'CIEV_V_FE_FacturasTotalizadas.bruto_usd', 'CIEV_V_FE_FacturasTotalizadas.fletes_usd',
                     'CIEV_V_FE_FacturasTotalizadas.seguros_usd', 'CIEV_V_FE_FacturasTotalizadas.iva', 'CIEV_V_FE_FacturasTotalizadas.fletes',
-                    'CIEV_V_FE_FacturasTotalizadas.RTEFTE', 'CIEV_V_FE_FacturasTotalizadas.RTEIVA', 'CIEV_V_FE_FacturasTotalizadas.seguros',
+                    'CIEV_V_FE_FacturasTotalizadas.RTEFTE',  'CIEV_V_FE_FacturasTotalizadas.RTEIVA', 'CIEV_V_FE_FacturasTotalizadas.RTEICA', 'CIEV_V_FE_FacturasTotalizadas.seguros',
                     'CIEV_V_FE_FacturasTotalizadas.moneda', 'CIEV_V_FE_FacturasTotalizadas.ov', 'CIEV_V_FE_FacturasTotalizadas.dias',
                     'CIEV_V_FE_FacturasTotalizadas.motivo', 'CIEV_V_FE_FacturasTotalizadas.descplazo as plazo', 'CIEV_V_FE_FacturasTotalizadas.descmotivo',
                     'CIEV_V_FE_FacturasTotalizadas.correoscopia', 'CIEV_V_FE_FacturasTotalizadas.tipocliente as tipo_cliente')
@@ -949,37 +949,36 @@ class FacturasController extends Controller
 
                 $objetoXML->startElement("datosextra");
 
-                $objetoXML->startElement("datoextra");
+                    $objetoXML->startElement("datoextra");
 
-                $objetoXML->startElement("tipo");
-                $objetoXML->text('1');
-                $objetoXML->endElement();
+                        $objetoXML->startElement("tipo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
 
-                $objetoXML->startElement("clave");
-                $objetoXML->text('CONDICION_PAGO');
-                $objetoXML->endElement();
+                        $objetoXML->startElement("clave");
+                        $objetoXML->text('CONDICION_PAGO');
+                        $objetoXML->endElement();
 
-                $objetoXML->startElement("valor");
-                $objetoXML->text(trim($enc->plazo));
-                $objetoXML->endElement();
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text(trim($enc->plazo));
+                        $objetoXML->endElement();
 
-                $objetoXML->endElement();
+                    $objetoXML->endElement();
 
-                $objetoXML->startElement("datoextra");
-                $objetoXML->startElement("tipo");
-                $objetoXML->text('1');
+                    $objetoXML->startElement("datoextra");
+                        $objetoXML->startElement("tipo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
 
-                $objetoXML->endElement();
-                $objetoXML->startElement("clave");
-                $objetoXML->text('CODIGO_CLIENTE');
+                        $objetoXML->startElement("clave");
+                        $objetoXML->text('CODIGO_CLIENTE');
+                        $objetoXML->endElement();
 
-                $objetoXML->endElement();
-                $objetoXML->startElement("valor");
-                $objetoXML->text($enc->codigocliente);
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text($enc->codigocliente);
+                        $objetoXML->endElement();
 
-                $objetoXML->endElement();
-
-                $objetoXML->endElement();
+                    $objetoXML->endElement();
 
 
                 if ($enc->RTEFTE){
@@ -1014,6 +1013,24 @@ class FacturasController extends Controller
 
                     $objetoXML->startElement("valor");
                     $objetoXML->text(trim($enc->RTEIVA));
+                    $objetoXML->endElement();
+
+                    $objetoXML->endElement();
+                }
+                
+                if($enc->RTEICA != 0){
+                    $objetoXML->startElement("datoextra");
+
+                    $objetoXML->startElement("tipo");
+                    $objetoXML->text('1');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("clave");
+                    $objetoXML->text('RTEICA');
+                    $objetoXML->endElement();
+
+                    $objetoXML->startElement("valor");
+                    $objetoXML->text(trim($enc->RTEICA));
                     $objetoXML->endElement();
 
                     $objetoXML->endElement();
