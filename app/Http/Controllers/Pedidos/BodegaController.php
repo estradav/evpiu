@@ -514,7 +514,9 @@ class BodegaController extends Controller
                     }
                     
                     
-                    DB::connection('MAX')->select(`UPDATE Requirement_Detail SET CURDUE_11 = CONVERT(date ,CURDUE_11, 23) WHERE ORDNUM_11 = $max_ordnum_27`);
+                    DB::connection('MAX')->select(DB::raw(`UPDATE Requirement_Detail SET CURDUE_11 = CONVERT(date ,CURDUE_11, 23) WHERE ORDNUM_11 = :max_ordnum_27`), array(
+                        'max_ordnum_27' => $max_ordnum_27
+                    ));
                     $pedido->Ped_MAX = $max_ordnum_27;
                     $pedido->save();
                 }else{
