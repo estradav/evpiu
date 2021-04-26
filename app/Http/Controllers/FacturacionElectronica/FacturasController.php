@@ -870,6 +870,25 @@ class FacturasController extends Controller
 
                         $objetoXML->endElement();
                     }
+                    
+                    if (trim($item->CodProdCliente) != ''){
+                        $objetoXML->startElement("datoextra");
+
+                        $objetoXML->startElement("tipo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("clave");
+                        $objetoXML->text('CodProdCliente');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text(trim($item->CodProdCliente));
+                        $objetoXML->endElement();
+
+                        $objetoXML->endElement();
+                    }
+                    
 
                     if (trim($item->ARTE) != ''){
                         $objetoXML->startElement("datoextra");
