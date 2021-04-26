@@ -64,7 +64,7 @@ class WebServiceController extends Controller
                     'codigoproducto', 'descripcionproducto', 'OC', 'item','Marca',
                     'cantidad', 'precio', 'precioUSD', 'totalitem', 'totalitemUSD',
                     'iva as iva_item', 'valormercancia', 'Desc_Item', 'UM', 'base',
-                    'bruto_usd', 'posicionarancelaria', 'fletes_usd', 'seguros_usd', 'ARTE')
+                    'bruto_usd', 'posicionarancelaria', 'fletes_usd', 'seguros_usd', 'ARTE', 'CodProdCliente')
                 ->where('CIEV_V_FE_FacturasDetalladas.factura', '=', $Factura_seleccionada->numero)
                 ->get();
 
@@ -816,6 +816,25 @@ class WebServiceController extends Controller
 
                         $objetoXML->endElement();
                     }
+                    if (trim($item->CodProdCliente) != ''){
+                        $objetoXML->startElement("datoextra");
+
+                        $objetoXML->startElement("tipo");
+                        $objetoXML->text('1');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("clave");
+                        $objetoXML->text('CodProdCliente');
+                        $objetoXML->endElement();
+
+                        $objetoXML->startElement("valor");
+                        $objetoXML->text(trim($item->CodProdCliente));
+                        $objetoXML->endElement();
+
+                        $objetoXML->endElement();
+                    }
+                   
+                    
                     $notas_item = DB::connection('MAX')
                         ->table('CIEV_V_NotasFacturas')
                         ->where('Factura','=', $Factura_seleccionada->numero)
