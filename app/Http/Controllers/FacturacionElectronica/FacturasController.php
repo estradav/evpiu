@@ -152,7 +152,7 @@ class FacturasController extends Controller
                     'codigoproducto', 'descripcionproducto', 'OC', 'item','Marca',
                     'cantidad', 'precio', 'precioUSD', 'totalitem', 'totalitemUSD',
                     'iva as iva_item', 'valormercancia', 'Desc_Item', 'UM', 'base',
-                    'bruto_usd', 'posicionarancelaria', 'fletes_usd', 'seguros_usd', 'ARTE')
+                    'bruto_usd', 'posicionarancelaria', 'fletes_usd', 'seguros_usd', 'ARTE', 'CodProdCliente')
                 ->where('factura', '=', $factura->numero)
                 ->get();
 
