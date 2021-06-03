@@ -99,7 +99,7 @@ class BodegaController extends Controller
                             'STATUS_27'     =>  3,
                             'CUSTPO_27'     =>  $encabezado_ped->OrdenCompra ?? '',
                             'ORDID_27'      =>  $pedido->id,
-                            'ORDDTE_27'     =>  Carbon::now(),
+                            'ORDDTE_27'     =>  Carbon::now()->format('YYYY-MM-DD'),
                             'FILL01A_27'    =>  '', /*empty*/
                             'FILL01_27'     =>  '', /*empty*/
                             'SHPCDE_27'     =>  '', /*empty*/
@@ -197,7 +197,7 @@ class BodegaController extends Controller
                                 'CUSTID_28'     =>  $pedido->CodCliente,
                                 'PRTNUM_28'     =>  $dp->CodigoProducto,
                                 'EDILIN_28'     =>  '', /*empty*/
-                                'TAXABL_28'     =>  $pedido->cliente_info->TAXABL_23,
+                                'TAXABL_28'     =>  $encabezado_ped->Iva ? 'Y' : 'N',
                                 'GLXREF_28'     =>  61209505,
                                 'CURDUE_28'     =>  $fcha_entrega->DateValue, /*empty*/
                                 'QTLINE_28'     =>  '', /*empty*/
@@ -229,7 +229,7 @@ class BodegaController extends Controller
                                 'DRPSHP_28'     =>  '', /*empty*/
                                 'QUMQTY_28'     =>  0,
                                 'TAXCDE1_28'    =>  $pedido->cliente_info->TXCDE1_23,
-                                'TAX1_28'       =>  ($dp->Precio * $dp->Cantidad) * 0.19,
+                                'TAX1_28'       =>  $encabezado_ped->Iva ? ($dp->Precio * $dp->Cantidad) * 0.19 : 0,
                                 'TAXCDE2_28'    =>  '', /*empty*/
                                 'TAX2_28'       =>  0,
                                 'TAXCDE3_28'    =>  '', /*empty*/
