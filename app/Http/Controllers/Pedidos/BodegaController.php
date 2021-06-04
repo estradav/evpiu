@@ -99,7 +99,7 @@ class BodegaController extends Controller
                             'STATUS_27'     =>  3,
                             'CUSTPO_27'     =>  $encabezado_ped->OrdenCompra ?? '',
                             'ORDID_27'      =>  $pedido->id,
-                            'ORDDTE_27'     =>  Carbon::now(),
+                            'ORDDTE_27'     =>  Carbon::now()->format('Y-m-d 00:00:00'),
                             'FILL01A_27'    =>  '', /*empty*/
                             'FILL01_27'     =>  '', /*empty*/
                             'SHPCDE_27'     =>  '', /*empty*/
