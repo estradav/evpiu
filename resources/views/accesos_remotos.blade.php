@@ -32,6 +32,11 @@
                         <div class="row mr-1 ml-1 mt-1 mb-1">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="btn-group special" role="group">
+                                    <a href="http://192.168.1.44" class="btn btn-outline-light" target="_blank">
+                                        <i class="pe-7s-next-2 pe-4x icon-gradient bg-premium-dark"></i> <br>
+                                        <b class="icon-gradient bg-premium-dark">EVPIU 2.0</b>
+                                    </a>
+                                
                                     @can('aplicativos_externos.gestionar_clientes_max')
                                         <a href="http://192.168.1.53:81/intraciev/cartera/index.php" class="btn btn-outline-light" target="_blank">
                                             <i class="pe-7s-users pe-4x icon-gradient bg-premium-dark"></i> <br>
