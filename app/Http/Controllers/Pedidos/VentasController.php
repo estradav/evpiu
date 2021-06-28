@@ -59,7 +59,7 @@ class VentasController extends Controller
                                 <button class="dropdown-item ver_pdf" type="button" id="'.$row->id.'">VER</button>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="'.route('venta.edit', $row->id).'" >EDITAR</a>
-                                <button class="dropdown-item clonar" type="button" id="'.$row->id.'">CLONAR</button>
+                                <button class="dropdown-item clonar" type="button" id="'.$row->id.'" disabled>CLONAR</button>
                             </div>
                         </div>
                     ';
