@@ -27,7 +27,7 @@
                 <div class="main-card mb-3 card">
                     @can('aplicaciones.pedidos.ventas.create')
                         <div class="card-header">
-                            <a class="btn btn-primary" href="{{ route('venta.create') }}"><i class="fas fa-plus-circle"></i> Nuevo</a>
+                            <a class="btn btn-primary" href="{{ route('venta.create') }}" disabled><i class="fas fa-plus-circle"></i> Nuevo</a>
                         </div>
                     @endcan
                     <div class="card-body">
