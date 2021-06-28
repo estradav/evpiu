@@ -61,14 +61,15 @@
                                             <b class="icon-gradient bg-premium-dark">CREACION ARTICULOS</b>
                                         </a>
                                     @endcan
-                                    @can('aplicativos_externos.reque_2d_3d')
+                                   
+                                </div>
+                                <div class="btn-group special" role="group">
+                                     @can('aplicativos_externos.reque_2d_3d')
                                         <a href="http://192.168.1.12" class="btn btn-outline-light" target="_blank">
                                             <i class="pe-7s-box2 pe-4x icon-gradient bg-premium-dark"></i> <br>
                                             <b class="icon-gradient bg-premium-dark">REQUERIMIENTOS 2D - 3D</b>
                                         </a>
                                     @endcan
-                                </div>
-                                <div class="btn-group special" role="group">
                                     @can('aplicativos_externos.admin_diseños_2d')
                                         <a href="http://192.168.1.54:81/intraciev/artes/listaartes.php" class="btn btn-outline-light" target="_blank">
                                             <i class="pe-7s-paint-bucket pe-4x icon-gradient bg-premium-dark"></i> <br>
