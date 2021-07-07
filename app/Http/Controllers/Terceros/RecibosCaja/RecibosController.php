@@ -561,7 +561,7 @@ class RecibosController extends Controller
                         'valor'                 =>  $sum_bruto + $sum_otros_ingr - $sum_descuento - $sum_otras_deduc - $sum_reteica - $sum_reteiva - $sum_rete,
                         'documento'             =>  '1',
                         'explicacion'           =>  $enc->comments,
-                        'concilio'              =>  'S',
+                        'concilio'              =>  null,
                     ]);
 
 
